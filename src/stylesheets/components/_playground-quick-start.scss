@@ -1,0 +1,13 @@
+@import "helpers/mixins";
+@import "helpers/placeholders";
+
+@import "components/card";
+
+.quick-start {
+    @extend .card;
+}
+    .quick-start__icon {
+        height: 100px;
+        @include background_img_content(quick_start_icon);
+        @extend %background_img_setting;
+    }

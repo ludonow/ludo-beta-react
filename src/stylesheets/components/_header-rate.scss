@@ -1,0 +1,20 @@
+@import "helpers/placeholders";
+
+@import "components/header-win-rate";
+@import "components/header-finish-rate";
+
+.header-rate {
+    @extend %flex;
+    @extend %as_tall_as_parent;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+    .header-rate__circle {
+        fill: white;
+        stroke-width: 15px;
+    }
+    .header-rate__number {
+        color: black;
+        @extend %text_center;
+        font-size: 15px;
+    }

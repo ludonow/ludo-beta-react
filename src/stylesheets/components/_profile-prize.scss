@@ -1,0 +1,13 @@
+@import "helpers/variables";
+@import "helpers/placeholders";
+
+.profile-prize__element {
+    display: inline-block;
+    width: 130px;
+    margin-left: 10px;
+    margin-right: 10px;
+    @extend %text_center;
+}
+    .profile-prize__icon {
+        @extend %as_wide_as_parent;
+    }

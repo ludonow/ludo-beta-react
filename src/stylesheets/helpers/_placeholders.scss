@@ -1,0 +1,52 @@
+@import "helpers/variables";
+
+// display
+%flex { 
+    display: -webkit-flex;
+    display: flex;
+} 
+
+// position
+%fixed { position: fixed; }
+%absolute { position: absolute; }
+%relative { position: relative; }
+%closer { z-index: 2; }
+%top { top: 0; }
+%bottom { bottom: 0; }
+%right { right: 0; }
+%left { left: 0; }
+
+// dimension
+%as_wide_as_parent { width: 100%; }
+%half_width_of_parent { width: 50%; }
+%as_tall_as_parent { height: 100%; }
+%half_height_of_parent { height: 50%; }
+
+// offset
+%header_height_offset {top: $header_height;}
+
+// margin
+%margin_center_x { margin: 0 auto; }
+
+// border
+%round_border { border-radius: 50%; }
+
+// background
+%background_img_setting {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+%card_background { background-color: white; }
+
+// typography
+%text_center { text-align: center; }
+%remove_text-decoration { text-decoration: none }
+%bold_font { font-weight: bold; }
+%font_Exo2 { font-family: 'EXO 2'; }
+
+// mouse
+%clickable { cursor: pointer; }
+
+

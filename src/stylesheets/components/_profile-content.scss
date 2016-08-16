@@ -1,0 +1,79 @@
+@import "helpers/variables";
+/* 
+variables
+    color
+        $g_background_gray
+*/
+@import "helpers/placeholders";
+@import "components/card";
+
+.profile-content {
+    @extend .card;
+    @extend %as_wide_as_parent;
+}
+        .profile-content-information-avatar {
+            display: inline-block;
+            @extend %half_width_of_parent;
+            height: 230px;
+        }
+        .profile-content-information-tag-div {
+            display: inline-block;
+            @extend %relative;
+            @extend %half_width_of_parent;
+            height: 220px;
+        }
+            .profile-content-information-tag {
+                @extend %as_wide_as_parent;
+                line-height: 1;
+                @extend %absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }
+                .profile-content-information-tag__element {
+                    margin-bottom: 6px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    border-radius: 5px;
+                    border-style: solid;
+                    border-width: 1px;
+                    border-color: rgb(226, 229, 235);
+                    background-color: $g_background_gray;
+                    @extend %text_center;
+                }
+        .profile-content-detail {
+            border-top-style: solid;
+            border-top-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+            border-color: $g_background_gray;
+            padding-left: 20px;
+            padding-right: 10px;
+            padding-top: 15px;
+            padding-bottom: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+            .profile-content-detail__element {
+                display: inline-block;
+                margin-right: 10px;
+                margin-left: 10px;
+                @extend %clickable;
+            }
+            .profile-content-detail__element--last {
+                @extend .profile-content-detail__element;
+                float: right;
+                margin-right: 0;
+                margin-left: 0;
+            }
+        .profile-content-chart {
+            padding-top: 20px;
+            padding-bottom: 10px;
+            padding-right: 15px;
+            padding-left: 5px;
+        }
+            .profile-content-chart__element {
+                display: inline-block;
+                width: 33%;
+                @extend %text_center;
+            }

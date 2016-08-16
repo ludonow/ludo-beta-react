@@ -1,0 +1,32 @@
+@mixin dimensions($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+// background
+@mixin background_img_content($file_name) {
+    background-image: url('../images/#{$file_name}.png');
+}
+
+// animation
+@mixin transition-duration($time) {
+    transition-duration: $time;
+    -moz-transition-duration: $time;
+    -webkit-transition-duration: $time;
+    -o-transition-duration: $time;
+}
+
+@mixin transition-timing-function($animation) {
+    transition-timing-function: $animation;
+    -moz-transition-timing-function: $animation;
+    -webkit-transition-timing-function: $animation;
+    -o-transition-timing-function: $animation;
+}
+
+// box-shadow
+@mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $color) {
+          box-shadow: $h-shadow $v-shadow $blur $spread $color;
+  -webkit-box-shadow: $h-shadow $v-shadow $blur $spread $color;
+     -moz-box-shadow: $h-shadow $v-shadow $blur $spread $color;
+       -o-box-shadow: $h-shadow $v-shadow $blur $spread $color;
+ }

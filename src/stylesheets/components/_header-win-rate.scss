@@ -1,0 +1,21 @@
+@import "helpers/placeholders";
+
+// color
+$green: rgb(140, 200, 40);
+
+.header-win-rate {
+    @extend %as_tall_as_parent;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+    .header-win-rate__circle {
+        stroke: $green;
+    }
+    .header-win-rate__text {
+        font-size: 75%;
+        @extend %text_center;
+    }
+    .header-win-rate__number {
+        top: 33%;
+        left: 25%;
+    }

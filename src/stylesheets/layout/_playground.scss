@@ -1,0 +1,6 @@
+@import "helpers/placeholders";
+
+.playground {
+    @import "components/playground-quick-start";
+    @extend %margin_center_x;
+}

@@ -1,0 +1,46 @@
+@import "helpers/placeholders";
+
+// dimension
+$grid-item_width: 270px;
+$grid-item--half_width: 530px;
+$grid-item--friend_width: 170px;
+
+// border
+$card_border-radius: 5px;
+
+// padding
+$card_padding: 20px;
+$grid-item_padding: 5px;
+
+// color
+$card_border-color: hsla(0, 0%, 0%, 0.5);
+$card_background-color: white;
+
+.grid {
+    @extend %margin_center_x;
+}
+    .grid-item {
+        width: $grid-item_width;
+        padding: $grid-item_padding;
+    }
+    .grid-item--half {
+        @extend .grid-item;
+        width: $grid-item--half_width;
+    }
+    .grid-item--friend {
+        @extend .grid-item;
+        width: $grid-item--friend_width;
+    }
+    .card {
+        border-color: $card_border-color;
+        border-radius: $card_border-radius;
+        padding: $card_padding;
+        background-color: $card_background-color;
+        @include transition-duration(0.3s);
+        @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
+
+        &:hover {
+            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.19);
+            @include transition-duration(0.3s);
+        }
+    }

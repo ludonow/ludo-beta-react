@@ -1,0 +1,81 @@
+@import "helpers/mixins";
+@import "helpers/placeholders";
+
+// position
+$header_height: 140px;
+
+// dimension
+$right-sidebar_width: 100px;
+$right-sidebar_height: 78%;
+$right-sidebar-item_height: 16.7%;
+$right-sidebar-item__icon_width: 55%;
+
+// background
+$color-sidebar4_background-size: 160%;
+$color-sidebar5_background-size: 120%;
+
+// color
+$sidebar-color-1: rgba(255, 252, 121, 1);
+$sidebar-color-2: rgba(255, 212, 121, 1);
+$sidebar-color-3: rgba(255, 126, 121, 1);
+$sidebar-color-4: rgba(215, 131, 255, 1);
+$sidebar-color-5: rgba(118, 214, 255, 1);
+$sidebar-color-6: rgba(115, 250, 121, 1);
+
+.right-sidebar {
+    @extend %fixed;
+    top: $header_height;
+    @extend %right;
+    width: $right-sidebar_width;
+    height: $right-sidebar_height;
+}
+    .right-sidebar-item {
+        @extend %relative;
+        @extend %as_wide_as_parent;
+        height: $right-sidebar-item_height;
+        border-color: white;
+    }
+        .right-sidebar-item__icon {
+            width: $right-sidebar-item__icon_width;
+            @extend %as_tall_as_parent;
+            @extend %margin_center_x;
+            @extend %background_img_setting;
+        }
+    .color-sidebar1 {
+        background-color: $sidebar-color-1;
+        .playground-icon {
+            @include background_img_content(playground_icon);
+        }
+    }
+    .color-sidebar2 {
+        background-color: $sidebar-color-2;
+        .profile-icon {
+            @include background_img_content(profile_icon);
+        }
+    }
+    .color-sidebar3 {
+        background-color: $sidebar-color-3;
+        .start-ludo-icon {
+            @include background_img_content(start_ludo_icon);
+        }
+    }
+    .color-sidebar4 {
+        background-color: $sidebar-color-4;
+        .freinds-icon {
+            @include background_img_content(ludo_friends_icon);
+            background-size: $color-sidebar4_background-size;
+        }
+    }
+    .color-sidebar5 {
+        background-color: $sidebar-color-5;
+        .ludo-sports-icon {
+            @include background_img_content(ludo_sports_icon);
+            background-size: $color-sidebar5_background-size;
+        }
+    }
+    .color-sidebar6 {
+        background-color: $sidebar-color-6;
+        .ludo-read-icon {
+            @include background_img_content(ludo_read_icon);
+        }
+    }

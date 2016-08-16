@@ -1,0 +1,8 @@
+@import "helpers/placeholders";
+
+.header-heart {
+    @extend %flex;
+    align-items: center;
+    width: 100px;
+    @extend %as_tall_as_parent;
+}

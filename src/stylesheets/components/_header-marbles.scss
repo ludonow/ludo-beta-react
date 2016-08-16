@@ -1,0 +1,8 @@
+@import "helpers/placeholders";
+
+.header-marbles {
+    @extend %flex;
+    align-items: center;
+    width: 70px;
+    @extend %as_tall_as_parent;
+}
