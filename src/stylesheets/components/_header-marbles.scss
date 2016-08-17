@@ -2,7 +2,14 @@
 
 .header-marbles {
     @extend %flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 70px;
     @extend %as_tall_as_parent;
 }
+    .header-marbles-number {
+        font-family: Exo, "Microsoft JhengHei";
+        line-height: 0.4;
+        font-size: 18px;
+    }

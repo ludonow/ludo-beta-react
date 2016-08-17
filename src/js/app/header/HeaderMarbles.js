@@ -5,18 +5,14 @@ import marblesIcon from '../../../images/header/marbles.png';
 export default class HeaderMarbles extends React.Component {
     constructor() {
         super();
-        this.state = { marblesNumber: 1000 }
-    }
-
-    getMarblesNumber() {
-
+        this.state = { marblesNumber: 0 }
     }
 
     render() {
         return (
             <div className="header-marbles">
                 <img src={marblesIcon} />
-                <div>{this.state.marblesNumber}</div>
+                <div className="header-marbles-number">{this.state.marblesNumber}</div>
             </div>
         );
     }
