@@ -1,13 +1,48 @@
 import React from 'react';
+import Masonry from 'react-masonry-component';
+import axios from 'axios';
+
+import CreateContent from './CreateContent';
+
+const masonryOptions = {
+    itemSelector: ".grid-item",
+    columnWidth: 290,
+    fitWidth: true
+}
 
 export default class CreateLudoList extends React.Component {
     constructor() {
         super();
-        this.state = { cardContent:[] }
+        this.state = { 
+            rawCardContent: [],
+            masonryCardContent: []
+        };
     }
 
-    getDifferentCardContent() {
-        this.state.cardContent = this.props.data.map( (data, index) => {
+    componentDidMount() {
+        this.getCardContent();
+    }
+
+    componentWillUnmount() {
+        this.serverRequest.abort();
+    }
+
+    getCardContent() {
+        const _this = this;
+
+        this.serverRequest = axios.get('LudoData.json')
+            .then(function (response) {
+                _this.setState({
+                    rawCardContent: response.data
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
+    addMasonryClass() {
+        this.state.masonryCardContent = this.state.rawCardContent.map( (data, index) => {
             return (
                 <div className="grid-item" key={index}>
                     <div className="card">
@@ -20,24 +55,18 @@ export default class CreateLudoList extends React.Component {
                     </div>
                 </div>
             )
-        });
+        })
     }
 
     render() {
-        this.getDifferentCardContent();
+        this.addMasonryClass()
         return (
-            <div>
-                {this.state.cardContent}
-            </div>
+            <Masonry
+                options={masonryOptions}
+                updateOnEachImageLoad={true} >
+                <CreateContent />
+                {this.state.masonryCardContent}
+            </Masonry>
         );
     }
 }
-
-// PlaygroundLudoList.propTypes = {
-//     launchDate: React.PropTypes.string.isRequired,
-//     type: React.PropTypes.number.isRequired,
-//     duration: React.PropTypes.number.isRequired,
-//     introduction: React.PropTypes.string.isRequired,
-//     condition: React.PropTypes.string.isRequired,
-//     marblesNumber: React.PropTypes.number.isRequired,
-// };
