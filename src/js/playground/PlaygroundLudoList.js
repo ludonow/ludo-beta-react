@@ -59,12 +59,11 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     render() {
-        this.addMasonryClass()
+        this.addMasonryClass();
         return (
             <Masonry
                 className="playground"
-                options={masonryOptions}
-                updateOnEachImageLoad={true} >
+                options={masonryOptions} >
                 <QuickStart />
                 {this.state.masonryCardContent}
             </Masonry>

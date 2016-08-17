@@ -1,4 +1,5 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const PurifyCSSPlugin = require('purifycss-webpack-plugin');
 const webpack = require('webpack');
@@ -10,6 +11,22 @@ exports.clean = function(path) {
                 // Without `root` CleanWebpackPlugin won't point to our project and will fail to work.
                 root: process.cwd()
             })
+        ]
+    };
+}
+
+exports.copyImages = function(srcpath, destpath) {
+    return {
+        context: srcpath,
+        devServer: {
+            // This is required for webpack-dev-server if using a version <3.0.0. 
+            // The path should be an absolute path to your build destination. 
+            outputPath: destpath + '/'
+        },
+        plugins: [
+            new CopyWebpackPlugin([
+                { from: srcpath, to: destpath }
+            ])
         ]
     };
 }

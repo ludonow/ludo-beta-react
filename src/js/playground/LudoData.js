@@ -78,5 +78,5 @@ export const rawLudoData = [
         "introduction": "Read every day",
         "condition": "close",
         "marblesNumber": "10"
-    },
+    }
 ];
