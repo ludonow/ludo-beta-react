@@ -2,50 +2,38 @@ import React from 'react';
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
+import QuickStart from './QuickStart';
+
 const masonryOptions = {
     itemSelector: ".grid-item",
     columnWidth: ".grid-item",
+    fitWidth: true
 }
 
 export default class PlaygroundLudoList extends React.Component {
     constructor() {
         super();
         this.state = { 
-            cardContent: []
-        }
+            rawCardContent: [],
+            masonryCardContent: []
+        };
     }
 
     componentDidMount() {
-        this.getDifferentCardContent();
+        this.getCardContent();
     }
 
     componentWillUnmount() {
         this.serverRequest.abort();
     }
 
-    getDifferentCardContent() {
+    getCardContent() {
         const _this = this;
 
         this.serverRequest = axios.get('LudoData.json')
             .then(function (response) {
-                console.log(response)
-                const mapCardContent = response.data.map( (data, index) => {
-                        return (
-                            <div className="grid-item" key={index}>
-                                <div className="card">
-                                    <div>{data.launchDate}</div>
-                                    <div>{data.type}</div>
-                                    <div>{data.duration}</div>
-                                    <div>{data.introduction}</div>
-                                    <div>{data.condition}</div>
-                                    <div>{data.marblesNumber}</div>
-                                </div>
-                            </div>
-                        )
-                    });
-
                 _this.setState({
-                    cardContent: mapCardContent
+                    rawCardContent: response.data
                 });
             })
             .catch(function(error) {
@@ -53,11 +41,33 @@ export default class PlaygroundLudoList extends React.Component {
             });
     }
 
+    addMasonryClass() {
+        this.state.masonryCardContent = this.state.rawCardContent.map( (data, index) => {
+            return (
+                <div className="grid-item" key={index}>
+                    <div className="card">
+                        <div>{data.launchDate}</div>
+                        <div>{data.type}</div>
+                        <div>{data.duration}</div>
+                        <div>{data.introduction}</div>
+                        <div>{data.condition}</div>
+                        <div>{data.marblesNumber}</div>
+                    </div>
+                </div>
+            )
+        })
+    }
+
     render() {
+        this.addMasonryClass()
         return (
-            <div>
-                {this.state.cardContent}
-            </div>
+            <Masonry
+                className="playground"
+                options={masonryOptions}
+                updateOnEachImageLoad={true} >
+                <QuickStart />
+                {this.state.masonryCardContent}
+            </Masonry>
         );
     }
 }
