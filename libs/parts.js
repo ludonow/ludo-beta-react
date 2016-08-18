@@ -15,6 +15,22 @@ exports.clean = function(path) {
     };
 }
 
+exports.copyJSON = function(srcpath, destpath) {
+    return {
+        context: srcpath,
+        devServer: {
+            // This is required for webpack-dev-server if using a version <3.0.0. 
+            // The path should be an absolute path to your build destination. 
+            outputPath: destpath + '/'
+        },
+        plugins: [
+            new CopyWebpackPlugin([
+                { from: srcpath, to: destpath }
+            ])
+        ]
+    };
+}
+
 exports.copyImages = function(srcpath, destpath) {
     return {
         context: srcpath,

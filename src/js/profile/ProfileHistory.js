@@ -1,13 +1,39 @@
 import React from 'react';
+import axios from 'axios';
 
 export default class ProfileHistory extends React.Component {
     constructor() {
         super();
-        this.state = { history:[] }
+        this.state = { 
+            rawData: [],
+            DataWithClass: [] 
+        }
+    }
+
+    componentDidMount() {
+        this.getHistoryData();
+    }
+
+    componentWillUnmount() {
+        // this.serverRequest.abort();
     }
 
     getHistoryData() {
-        this.state.history = this.props.data.map( (data, index) => {
+        const _this = this;
+
+        this.serverRequest = axios.get('data/HistoryData.json')
+            .then(function (response) {
+                _this.setState({
+                    rawData: response.data
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
+    addClass() {
+        this.state.DataWithClass = this.state.rawData.map( (data, index) => {
             let condition_color = '';
             if (data.condition === 'W') {
                 condition_color = 'win';
@@ -28,11 +54,11 @@ export default class ProfileHistory extends React.Component {
     }
 
     render() {
-        this.getHistoryData();
+        this.addClass();
         return (
             <div className="profile-element">
                 <div className="profile-element__title">History</div>
-                {this.state.history}
+                {this.state.DataWithClass}
             </div>
         );
     }

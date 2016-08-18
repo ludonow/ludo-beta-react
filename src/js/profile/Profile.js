@@ -7,10 +7,10 @@ import ProfileHistory from './ProfileHistory';
 import ProfileStatistic from './ProfileStatistic';
 import ProfilePrize from './ProfilePrize';
 
-import { rawLudoingData } from './LudoingData';
-import { rawHistoryData } from './HistoryData';
-import { rawPrizeData } from './PrizeData';
-import { rawStatisticData } from './StatisticData';
+// import { rawLudoingData } from './LudoingData';
+// import { rawHistoryData } from './HistoryData';
+// import { rawPrizeData } from './PrizeData';
+// import { rawStatisticData } from './StatisticData';
 
 /* LUDO TODO: make columnWidth a variable */
 const masonryOptions = {
@@ -30,16 +30,16 @@ export default class Profile extends React.Component {
                         <ProfileContent />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileLudoing data={rawLudoingData} />
+                        <ProfileLudoing />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileHistory data={rawHistoryData} />
+                        <ProfileHistory />
                     </div>
                     <div className="grid-item--half">
-                        <ProfilePrize data={rawPrizeData} />
+                        <ProfilePrize />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileStatistic data={rawStatisticData} />
+                        <ProfileStatistic />
                     </div>
                 </Masonry>
             </div>

@@ -1,13 +1,39 @@
 import React from 'react';
+import axios from 'axios';
 
 export default class ProfileLudoing extends React.Component {
     constructor() {
         super();
-        this.state = { ludoing:[] };
+        this.state = { 
+            rawData: [],
+            DataWithClass: []
+        };
+    }
+
+    componentDidMount() {
+        this.getLudoingData();
+    }
+
+    componentWillUnmount() {
+        // this.serverRequest.abort();
     }
 
     getLudoingData() {
-        this.state.ludoing = this.props.data.map( (data, index) => {
+        const _this = this;
+
+        this.serverRequest = axios.get('data/LudoingData.json')
+            .then(function (response) {
+                _this.setState({
+                    rawData: response.data
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
+    addClass() {
+        this.state.DataWithClass = this.state.rawData.map( (data, index) => {
             return (
                 <div className="profile-ludoing__element" key={index}>
                     <img className="profile-ludoing__icon" src={data.value} />
@@ -17,11 +43,11 @@ export default class ProfileLudoing extends React.Component {
     }
 
     render() {
-        this.getLudoingData();
+        this.addClass();
         return (
             <div className="profile-element">
                 <div className="profile-element__title">Ludoing</div>
-                {this.state.ludoing}
+                {this.state.DataWithClass}
             </div>
         );
     }

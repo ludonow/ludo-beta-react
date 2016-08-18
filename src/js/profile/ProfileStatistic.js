@@ -1,13 +1,39 @@
 import React from 'react';
+import axios from 'axios';
 
 export default class ProfileStatistic extends React.Component {
     constructor() {
         super();
-        this.state = { statistic:[] }
+        this.state = { 
+            rawData: [],
+            DataWithClass: [] 
+        }
+    }
+
+    componentDidMount() {
+        this.getStatisticData();
+    }
+
+    componentWillUnmount() {
+        // this.serverRequest.abort();
     }
 
     getStatisticData() {
-        this.state.statistic = this.props.data.map( (data, index) => {
+        const _this = this;
+
+        this.serverRequest = axios.get('data/StatisticData.json')
+            .then(function (response) {
+                _this.setState({
+                    rawData: response.data
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
+    addClass() {
+        this.state.DataWithClass = this.state.rawData.map( (data, index) => {
             return (
                 <div className="profile-statistic__element" key={index}>
                     <img className="profile-statistic__icon" src={data.value} />
@@ -17,11 +43,11 @@ export default class ProfileStatistic extends React.Component {
     }
 
     render() {
-        this.getStatisticData();
+        this.addClass();
         return (
             <div className="profile-element">
                 <div className="profile-element__title">Statistic</div>
-                {this.state.statistic}
+                {this.state.DataWithClass}
             </div>
         );
     }

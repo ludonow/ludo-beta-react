@@ -24,13 +24,13 @@ export default class CreateLudoList extends React.Component {
     }
 
     componentWillUnmount() {
-        this.serverRequest.abort();
+        // this.serverRequest.abort();
     }
 
     getCardContent() {
         const _this = this;
 
-        this.serverRequest = axios.get('LudoData.json')
+        this.serverRequest = axios.get('data/LudoData.json')
             .then(function (response) {
                 _this.setState({
                     rawCardContent: response.data

@@ -22,13 +22,13 @@ export default class Friend extends React.Component {
     }
 
     componentWillUnmount() {
-        this.serverRequest.abort();
+        // this.serverRequest.abort();
     }
 
     getFriendList() {
         const _this = this;
 
-        this.serverRequest = axios.get('FriendData.json')
+        this.serverRequest = axios.get('data/FriendData.json')
             .then(function (response) {
                 _this.setState({
                     rawFriendList: response.data
