@@ -13,13 +13,11 @@ export default class CreateContent extends React.Component {
                                 <img src={quick_start} />
                             </div>
                         </div>
-                        <div className="create-content-information-tag-div">
-                            <div className="create-content-information-tag">
-                                <div className="create-content-information-tag__element">Type</div>
-                                <div className="create-content-information-tag__element">Date</div>
-                                <div className="create-content-information-tag__element">Report</div>
-                                <div className="create-content-information-tag__element">#tag</div>
-                            </div>
+                        <div className="create-content-information-tag">
+                            <div className="create-content-information-tag__element">Type</div>
+                            <div className="create-content-information-tag__element">Date</div>
+                            <div className="create-content-information-tag__element">Report</div>
+                            <div className="create-content-information-tag__element">#tag</div>
                         </div>
                     </div>
                     <div className="create-content-invitation">invitation</div>

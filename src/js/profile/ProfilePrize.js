@@ -14,16 +14,11 @@ export default class ProfilePrize extends React.Component {
         this.getPrizeData();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getPrizeData() {
         const _this = this;
 
         this.serverRequest = axios.get('data/PrizeData.json')
             .then(function (response) {
-                console.log('response', response);
                 _this.setState({
                     rawData: response.data
                 });

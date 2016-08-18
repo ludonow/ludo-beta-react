@@ -6,22 +6,26 @@
     @extend %as_wide_as_parent;
     @extend %text_center;
 }
+    .create-content-information {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
         .create-content-information-icon {
-            display: inline-block;
             @extend %half_width_of_parent;
         }
             .create-content-information-icon__icon {
                 height: 200px;
+                margin-left: 20px;
+                margin-right: 20px;
+                margin-bottom: 10px;
             }
-        .create-content-information-tag-div {
-            @extend .profile-content-information-tag-div;
+        .create-content-information-tag {
+            @extend .profile-content-information-tag;
         }
-            .create-content-information-tag {
-                @extend .profile-content-information-tag;
+            .create-content-information-tag__element {
+                @extend .profile-content-information-tag__element;
             }
-                .create-content-information-tag__element {
-                    @extend .profile-content-information-tag__element;
-                }
         .create-content-invitation {
             @extend .profile-content-information-tag__element;
             margin-bottom: 0px;

@@ -1,0 +1,40 @@
+@import "components/create-content";
+
+$fluorescent_green: rgba(0, 250, 145, 1);
+
+.matched-content {
+    @extend .create-content;
+}
+    .matched-content-information {
+        @extend .create-content-information;
+    }
+        .matched-content-information-icon {
+            display: flex;
+            align-items: center;
+            height: 185px;
+            width: 345px;
+            margin-left: 30px;
+            margin-right: 30px;
+            border-radius: 50%;
+            background-color: $fluorescent_green;
+        }
+            .matched-content-information-icon__icon {
+                height: 130px;
+                @extend %margin_center_x;
+            }
+        .matched-content-information-tag {
+            @extend .create-content-information-tag;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+            .matched-content-information-tag__element {
+                @extend .create-content-information-tag__element;
+            }
+    .matched-content-invitation {
+        @extend .create-content-invitation;
+    }
+    .matched-content-calendar {
+        @extend .create-content-calendar;
+    }

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from "react-router";
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
 import CreateContent from './CreateContent';
+import Matched from '../matched/Matched';
 
 const masonryOptions = {
     itemSelector: ".grid-item",
@@ -23,10 +25,6 @@ export default class CreateLudoList extends React.Component {
         this.getCardContent();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getCardContent() {
         const _this = this;
 
@@ -45,14 +43,16 @@ export default class CreateLudoList extends React.Component {
         this.state.masonryCardContent = this.state.rawCardContent.map( (data, index) => {
             return (
                 <div className="grid-item" key={index}>
-                    <div className="card">
-                        <div>{data.launchDate}</div>
-                        <div>{data.type}</div>
-                        <div>{data.duration}</div>
-                        <div>{data.introduction}</div>
-                        <div>{data.condition}</div>
-                        <div>{data.marblesNumber}</div>
-                    </div>
+                    <Link to="Matched" className="remove-hyperlink-style">
+                        <div className="card">
+                            <div>{data.launchDate}</div>
+                            <div>{data.type}</div>
+                            <div>{data.duration}</div>
+                            <div>{data.introduction}</div>
+                            <div>{data.condition}</div>
+                            <div>{data.marblesNumber}</div>
+                        </div>
+                    </Link>
                 </div>
             )
         })
@@ -62,8 +62,7 @@ export default class CreateLudoList extends React.Component {
         this.addMasonryClass()
         return (
             <Masonry
-                options={masonryOptions}
-                updateOnEachImageLoad={true} >
+                options={masonryOptions} >
                 <CreateContent />
                 {this.state.masonryCardContent}
             </Masonry>
