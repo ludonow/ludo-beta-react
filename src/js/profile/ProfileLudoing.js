@@ -14,10 +14,6 @@ export default class ProfileLudoing extends React.Component {
         this.getLudoingData();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getLudoingData() {
         const _this = this;
 

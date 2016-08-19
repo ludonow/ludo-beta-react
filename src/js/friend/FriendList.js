@@ -21,10 +21,6 @@ export default class Friend extends React.Component {
         this.getFriendList();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getFriendList() {
         const _this = this;
 

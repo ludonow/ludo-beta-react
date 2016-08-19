@@ -23,10 +23,6 @@ export default class PlaygroundLudoList extends React.Component {
         this.getCardContent();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getCardContent() {
         const _this = this;
 

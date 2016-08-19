@@ -14,10 +14,6 @@ export default class ProfileHistory extends React.Component {
         this.getHistoryData();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getHistoryData() {
         const _this = this;
 

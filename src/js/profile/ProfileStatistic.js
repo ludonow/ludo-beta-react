@@ -14,10 +14,6 @@ export default class ProfileStatistic extends React.Component {
         this.getStatisticData();
     }
 
-    componentWillUnmount() {
-        // this.serverRequest.abort();
-    }
-
     getStatisticData() {
         const _this = this;
 

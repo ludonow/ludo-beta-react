@@ -7,11 +7,6 @@ import ProfileHistory from './ProfileHistory';
 import ProfileStatistic from './ProfileStatistic';
 import ProfilePrize from './ProfilePrize';
 
-// import { rawLudoingData } from './LudoingData';
-// import { rawHistoryData } from './HistoryData';
-// import { rawPrizeData } from './PrizeData';
-// import { rawStatisticData } from './StatisticData';
-
 /* LUDO TODO: make columnWidth a variable */
 const masonryOptions = {
     itemSelector: ".grid-item--half",
