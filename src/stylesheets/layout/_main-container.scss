@@ -2,7 +2,7 @@
 @import "helpers/variables";
 
 .main-container {
-    @extend %fixed;
+    @extend %absolute;
     @extend %header_height_offset;
     right: $g_right-sidebar_width;
     padding-top: 14px;

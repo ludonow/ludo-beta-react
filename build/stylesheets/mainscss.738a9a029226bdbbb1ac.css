@@ -233,11 +233,11 @@ body {
   display: flex;
 }
 
-.playground .header,.playground .main-container,.playground .right-sidebar {
+.playground .header,.playground .right-sidebar {
   position: fixed;
 }
 
-.playground .profile-history__condition,.playground .profile-ludoing__icon {
+.playground .main-container,.playground .profile-history__condition,.playground .profile-ludoing__icon {
   position: absolute;
 }
 
@@ -553,11 +553,11 @@ body {
   display: flex;
 }
 
-.header,.main-container,.right-sidebar {
+.header,.right-sidebar {
   position: fixed;
 }
 
-.profile-history__condition,.profile-ludoing__icon {
+.main-container,.profile-history__condition,.profile-ludoing__icon {
   position: absolute;
 }
 
@@ -677,4 +677,4 @@ body {
 .search-text {
   width: 80%;
 }
-/*# sourceMappingURL=mainscss.410c0d69d0eeced9a021.css.map*/
+/*# sourceMappingURL=mainscss.738a9a029226bdbbb1ac.css.map*/
