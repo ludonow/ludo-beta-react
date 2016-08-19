@@ -1,4 +1,5 @@
 @import "helpers/placeholders";
+@import "helpers/variables";
 
 @import "components/header-logo";
 @import "components/header-marbles";
@@ -6,33 +7,37 @@
 @import "components/header-rate";
 @import "components/header-clock";
 
-// dimension
-$header_height: 140px;
-
 // depth
 $header_depth: 1;
 
 // color
-$gray: rgba(182, 188, 193, 1);
+$gray_border: rgba(182, 188, 193, 1);
 
 .header {
     @extend %fixed;
     z-index: $header_depth;
     @extend %top;
     @extend %as_wide_as_parent;
-    height: $header_height;
     @extend %flex;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-bottom-color: $gray;
+    border-bottom-color: $gray_border;
     background-color: white;
+    @include md-max {
+        height: $g_header_height_md_max;
+    }
+    @include md-min {
+        height: $g_header_height_md_min;
+    }
 }
     .header-left {
         @extend %flex;
         @extend %as_wide_as_parent;
+        @extend %as_tall_as_parent;
     }
     .header-right {
         @extend %flex;
         justify-content: flex-end;
         @extend %as_wide_as_parent;
+        @extend %as_tall_as_parent;
     }

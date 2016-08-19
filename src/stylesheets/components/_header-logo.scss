@@ -1,13 +1,14 @@
 @import "helpers/placeholders";
 
 .header-Ludo-logo {
-        @extend %relative;
-        width: 350px;
-        @extend %as_tall_as_parent;
+    @extend %flex;
+    align-items: center;
+    @extend %relative;
+    width: 350px;
+    @extend %as_tall_as_parent;
 }
     .header-Ludo-logo__icon {
         @extend %relative;
         @extend %as_wide_as_parent;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        @extend %as_tall_as_parent;
     }

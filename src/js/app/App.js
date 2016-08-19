@@ -9,7 +9,7 @@ export default class App extends React.Component {
             <div>
                 <Header />
                 <SideBar />
-                <div style={styles.base}>
+                <div style={styles.base} className="main-container">
                     {this.props.children}
                 </div>
             </div>
@@ -18,26 +18,19 @@ export default class App extends React.Component {
 };
 
 const screenWidth = window.innerWidth;
-const headerHeight = 140;
 const rightSidebarWidth = 100;
 const cardWidth = 230;
 const cardPaddingX = 15;
-const cardPaddingTop = 10;
 const columnWidth = cardWidth + cardPaddingX;
 const mainWidth = screenWidth - rightSidebarWidth;
 const totalColumn = Math.floor(mainWidth / columnWidth);
 const contentPaddingX = Math.round( (mainWidth - totalColumn * columnWidth + cardPaddingX)/2 );
-const contentPaddingY = 14;
+const mainWidthWithoutPaddingX = mainWidth - 2 * contentPaddingX;
 
 const styles = {
     base: {
-        position: 'relative',
-        top: `${headerHeight}px`,
-        paddingTop: `${contentPaddingY}px`,
-        marginRight: `${rightSidebarWidth}px`,
+        width: `${mainWidthWithoutPaddingX}px`,
         paddingRight: `${contentPaddingX}px`,
         paddingLeft: `${contentPaddingX}px`,
-        backgroundColor: 'rgb(232, 235, 237)',
-        fontFamily: ["Exo" , "Microsoft JhengHei"]
     }
 }

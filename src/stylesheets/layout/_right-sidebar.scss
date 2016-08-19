@@ -1,18 +1,9 @@
 @import "helpers/mixins";
 @import "helpers/placeholders";
-
-// position
-$header_height: 140px;
+@import "helpers/variables";
 
 // dimension
-$right-sidebar_width: 100px;
-$right-sidebar_height: 78%;
-$right-sidebar-item_height: 16.7%;
-$right-sidebar-item__icon_width: 55%;
-
-// background
-$color-sidebar4_background-size: 160%;
-$color-sidebar5_background-size: 120%;
+$right-sidebar-item_height: 100%/6;
 
 // color
 $sidebar-color-1: rgba(255, 252, 121, 1);
@@ -24,19 +15,24 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
 
 .right-sidebar {
     @extend %fixed;
-    top: $header_height;
+    @extend %header_height_offset;
     @extend %right;
-    width: $right-sidebar_width;
-    height: $right-sidebar_height;
+    width: $g_right-sidebar_width;
+    background-color: $g_background_gray;
+    @include md-max {
+        height: $g_right-sidebar_height_md_max;
+    }
+    @include md-min {
+        height: $g_right-sidebar_height_md_min;
+    }
 }
     .right-sidebar-item {
-        @extend %relative;
         @extend %as_wide_as_parent;
         height: $right-sidebar-item_height;
         border-color: white;
     }
         .right-sidebar-item__icon {
-            width: $right-sidebar-item__icon_width;
+            width: 55%;
             @extend %as_tall_as_parent;
             @extend %margin_center_x;
             @extend %background_img_setting;
@@ -63,14 +59,14 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
         background-color: $sidebar-color-4;
         .freinds-icon {
             @include background_img_content(ludo_friends_icon);
-            background-size: $color-sidebar4_background-size;
+            background-size: 160%;
         }
     }
     .color-sidebar5 {
         background-color: $sidebar-color-5;
         .ludo-sports-icon {
             @include background_img_content(ludo_sports_icon);
-            background-size: $color-sidebar5_background-size;
+            background-size: 120%;
         }
     }
     .color-sidebar6 {

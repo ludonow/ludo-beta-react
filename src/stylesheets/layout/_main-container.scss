@@ -1,0 +1,9 @@
+@import "helpers/placeholders";
+@import "helpers/variables";
+
+.main-container {
+    @extend %fixed;
+    @extend %header_height_offset;
+    right: $g_right-sidebar_width;
+    padding-top: 14px;
+}

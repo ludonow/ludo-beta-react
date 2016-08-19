@@ -1,1 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Exo);
+@import "helpers/variables";
+
+body {
+    background-color: $g_background_gray;
+    font-family: "Exo" , "Microsoft JhengHei";
+}
