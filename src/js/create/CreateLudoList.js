@@ -62,6 +62,7 @@ export default class CreateLudoList extends React.Component {
         this.addMasonryClass()
         return (
             <Masonry
+                className="grid"
                 options={masonryOptions} >
                 <CreateContent />
                 {this.state.masonryCardContent}
