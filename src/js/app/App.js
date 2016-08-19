@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Header from './header/Header';
+import Search from './Search';
 import SideBar from './SideBar';
 
 export default class App extends React.Component {
@@ -9,7 +10,8 @@ export default class App extends React.Component {
             <div>
                 <Header />
                 <SideBar />
-                <div style={styles.base} className="main-container">
+                <Search />
+                <div style={styles.container} className="main-container">
                     {this.props.children}
                 </div>
             </div>
@@ -28,9 +30,9 @@ const contentPaddingX = Math.round( (mainWidth - totalColumn * columnWidth + car
 const mainWidthWithoutPaddingX = mainWidth - 2 * contentPaddingX;
 
 const styles = {
-    base: {
+    container: {
         width: `${mainWidthWithoutPaddingX}px`,
         paddingRight: `${contentPaddingX}px`,
-        paddingLeft: `${contentPaddingX}px`,
+        paddingLeft: `${contentPaddingX}px`
     }
 }

@@ -1,6 +1,6 @@
-@import "helpers/placeholders";
+@import "components/card";
 
 .playground {
     @import "components/playground-quick-start";
-    @extend %margin_center_x;
+    @extend .grid;
 }

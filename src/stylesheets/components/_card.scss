@@ -14,9 +14,9 @@ $grid-item_padding: 5px;
 
 // color
 $card_border-color: hsla(0, 0%, 0%, 0.5);
-$card_background-color: white;
 
 .grid {
+    @extend %relative;
     @extend %margin_center_x;
 }
     .grid-item {
@@ -31,11 +31,19 @@ $card_background-color: white;
         @extend .grid-item;
         width: $grid-item--friend_width;
     }
+
+    .stamp {
+        @extend .grid-item;
+        @extend %fixed;
+        @extend %right;
+        @extend %bottom;
+    }
+
     .card {
         border-color: $card_border-color;
         border-radius: $card_border-radius;
         padding: $card_padding;
-        background-color: $card_background-color;
+        background-color: white;
         @include transition-duration(0.3s);
         @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
 

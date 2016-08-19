@@ -78,5 +78,21 @@
         "introduction": "Read every day",
         "condition": "close",
         "marblesNumber": "10"
+    },
+    {
+        "launchDate": "2016/07/30",
+        "type": "read",
+        "duration": "7 days",
+        "introduction": "Read every day",
+        "condition": "close",
+        "marblesNumber": "10"
+    },
+    {
+        "launchDate": "2016/07/31",
+        "type": "read",
+        "duration": "7 days",
+        "introduction": "Read every day",
+        "condition": "close",
+        "marblesNumber": "10"
     }
 ]
