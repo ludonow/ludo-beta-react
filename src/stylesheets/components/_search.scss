@@ -9,13 +9,13 @@
     @extend %bottom;
     width: $grid-item_width;
     height: 90px;
-    @media screen and (max-width: 1280px) { // 2 columns
+    @media screen and (max-width: 1070px) { // 2 columns
         margin-right: 86px;
     }
-    @media screen and (min-width: 1281px) and (max-width: 1366px) { // 3 columns
+    @media screen and (min-width: 1071px) and (max-width: 1320px) { // 3 columns
         margin-right: 68px;
     }
-    @media screen and (min-width: 1367px) and (max-width: 1600px) { // 4 columns
+    @media screen and (min-width: 1321px) and (max-width: 1600px) { // 4 columns
         margin-right: 50px;
     }
     @media screen and (min-width: 1601px) and (max-width: 1920px) {  // 5 columns

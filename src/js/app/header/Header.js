@@ -5,8 +5,13 @@ import HeaderHeart from './HeaderHeart';
 import HeaderLogo from './HeaderLogo';
 import HeaderMarbles from './HeaderMarbles';
 import HeaderRate from './HeaderRate';
+import HeaderLevel from './HeaderLevel';
 
 export default class Header extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return ( 
             <div className="header">
@@ -16,10 +21,13 @@ export default class Header extends React.Component {
                 <div className="header-right">
                     <HeaderMarbles />
                     <HeaderHeart />
-                    <HeaderRate />
-                    <HeaderClock />
+                    {this.props.isProfile ? null : <HeaderRate /> }
+                    {this.props.isProfile ? null : <HeaderClock /> }
+                    {this.props.isProfile ? <HeaderLevel />: null }
                 </div>
             </div>
         );
     }
 };
+
+Header.propTypes = { isProfile: React.PropTypes.bool };

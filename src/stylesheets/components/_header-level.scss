@@ -1,0 +1,18 @@
+@import "helpers/placeholders";
+
+.header-level {
+    @extend %flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100px;
+    @extend %as_tall_as_parent;
+    font-family: "Exo 2", "Microsoft JhengHei";
+}
+    .header-level-number {
+        font-size: 30px;
+    }
+    .header-level-text {
+        padding-top: 5px;
+        font-size: 14px;
+    }

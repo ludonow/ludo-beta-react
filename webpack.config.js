@@ -8,19 +8,19 @@ const webpack = require('webpack');
 
 const PATHS = {
     build: path.resolve(__dirname, 'build'),
+    index: path.resolve(__dirname, 'src', 'js', 'app', 'index.js'),
     json: path.resolve(__dirname, 'src', 'data'),
     jsonbuild: path.resolve(__dirname, 'build', 'data'),
     images: path.resolve(__dirname, 'src', 'images'),
     imagesbuild: path.resolve(__dirname, 'build', 'images'),
     mainscss: path.resolve(__dirname, 'src', 'stylesheets', 'main.scss'),
-    routes: path.resolve(__dirname, 'src', 'js', 'app', 'routes.js'),
     src: path.resolve(__dirname, 'src'),
     style: path.resolve(__dirname, 'src', 'stylesheets')
 };
 
 const common = {
     entry: {
-        app: [PATHS.routes],
+        app: [PATHS.index],
         mainscss: [PATHS.mainscss],
         vendor: Object.keys(pkg.dependencies)
     },
