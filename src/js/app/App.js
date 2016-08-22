@@ -17,29 +17,11 @@ export default class App extends React.Component {
             <div>
                 <Header isProfile={isProfile} />
                 <SideBar />
-                {isPlayground ? <Search /> : null}
-                <div style={styles.container} className="main-container">
+                <div className="main-container">
                     {this.props.children}
+                    {isPlayground ? <Search /> : null}
                 </div>
             </div>
         );
     }
 };
-
-const screenWidth = window.innerWidth;
-const rightSidebarWidth = 100;
-const cardWidth = 230;
-const cardPaddingX = 15;
-const columnWidth = cardWidth + cardPaddingX;
-const mainWidth = screenWidth - rightSidebarWidth;
-const totalColumn = Math.floor(mainWidth / columnWidth);
-const contentPaddingX = Math.round( (mainWidth - totalColumn * columnWidth + cardPaddingX)/2 );
-const mainWidthWithoutPaddingX = mainWidth - 2 * contentPaddingX;
-
-const styles = {
-    container: {
-        width: `${mainWidthWithoutPaddingX}px`,
-        paddingRight: `${contentPaddingX}px`,
-        paddingLeft: `${contentPaddingX}px`
-    }
-}

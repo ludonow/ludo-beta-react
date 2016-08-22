@@ -8,7 +8,7 @@ export default class SearchCard extends React.Component {
     render() {
         return (
             <footer className="search" style={styles.search}>
-                <div className="card">
+                <div className="search-card">
                     <div className="search-icon">
                         <div className="search-icon__icon"></div>
                     </div>
@@ -26,13 +26,12 @@ export default class SearchCard extends React.Component {
 
 const screenWidth = window.innerWidth;
 const rightSidebarWidth = 100;
-const cardWidth = 230;
-const cardPaddingX = 15;
-const columnWidth = cardWidth + cardPaddingX;
+const cardPadding = 5;
+const gridItemWidth = 270 + 2*cardPadding;
 const mainWidth = screenWidth - rightSidebarWidth;
-const totalColumn = Math.floor(mainWidth / columnWidth);
-const contentPaddingX = Math.round( (mainWidth - totalColumn * columnWidth + cardPaddingX)/2 );
-const searchRight = rightSidebarWidth + contentPaddingX;
+const totalColumn = Math.floor(mainWidth / gridItemWidth);
+const contentPaddingX = Math.round( (mainWidth - totalColumn * gridItemWidth)/2 );
+const searchRight = rightSidebarWidth + contentPaddingX - cardPadding + 1;
 
 const styles = {
     search: {
