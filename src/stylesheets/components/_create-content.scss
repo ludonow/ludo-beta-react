@@ -1,6 +1,3 @@
-@import "components/card";
-@import "components/profile-content";
-
 .create-content {
     @extend .card;
     @extend %as_wide_as_parent;

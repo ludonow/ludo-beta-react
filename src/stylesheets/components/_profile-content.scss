@@ -1,11 +1,8 @@
-@import "helpers/variables";
 /* 
 variables
     color
         $g_background_gray
 */
-@import "helpers/placeholders";
-@import "components/card";
 
 .profile-content {
     @extend .card;

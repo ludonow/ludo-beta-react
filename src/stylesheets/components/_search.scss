@@ -1,9 +1,3 @@
-@import "helpers/mixins";
-@import "helpers/placeholders";
-@import "helpers/variables";
-
-@import "components/card";
-
 .search {
     @extend %fixed;
     @extend %bottom;

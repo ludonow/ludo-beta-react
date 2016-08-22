@@ -1,13 +1,18 @@
+@import "helpers/mixins";
+@import "helpers/placeholders";
+@import "helpers/variables";
+@import "components/card";
+
 @import "helpers/reset";
 @import "helpers/default";
+
 @import "layout/header";
 @import "layout/right-sidebar";
 @import "layout/main-container";
+@import "components/search";
 
 @import "layout/playground";
 @import "layout/profile";
 @import "layout/create";
 @import "layout/friend";
 @import "layout/matched";
-
-@import "components/search";

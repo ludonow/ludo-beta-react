@@ -1,7 +1,5 @@
-@import "helpers/placeholders";
-
-@import "components/header-win-rate";
 @import "components/header-finish-rate";
+@import "components/header-win-rate";
 
 .header-rate {
     @extend %flex;

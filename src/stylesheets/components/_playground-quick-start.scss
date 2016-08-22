@@ -1,8 +1,3 @@
-@import "helpers/mixins";
-@import "helpers/placeholders";
-
-@import "components/card";
-
 .quick-start {
     @extend .card;
 }
