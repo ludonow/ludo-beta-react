@@ -1,4 +1,6 @@
 // dimension
+$right-sidebar_height_md_min: 100% - $g_header_height_md_min;
+$right-sidebar_height_md_max: calc(100% - 140px);
 $right-sidebar-item_height: 100%/6;
 
 // color
@@ -16,10 +18,10 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
     width: $g_right-sidebar_width;
     background-color: $g_background_gray;
     @include md-max {
-        height: $g_right-sidebar_height_md_max;
+        height: $right-sidebar_height_md_max;
     }
     @include md-min {
-        height: $g_right-sidebar_height_md_min;
+        height: $right-sidebar_height_md_min;
     }
 }
     .right-sidebar-item {
@@ -36,38 +38,38 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
     .color-sidebar1 {
         background-color: $sidebar-color-1;
         .playground-icon {
-            @include background_img_content(playground_icon);
+            background-image: url('../images/sidebar/playground_icon.png');
         }
     }
     .color-sidebar2 {
         background-color: $sidebar-color-2;
         .profile-icon {
-            @include background_img_content(profile_icon);
+            background-image: url('../images/sidebar/profile_icon.png');
         }
     }
     .color-sidebar3 {
         background-color: $sidebar-color-3;
         .start-ludo-icon {
-            @include background_img_content(start_ludo_icon);
+            background-image: url('../images/sidebar/start_ludo_icon.png');
         }
     }
     .color-sidebar4 {
         background-color: $sidebar-color-4;
         .freinds-icon {
-            @include background_img_content(ludo_friends_icon);
+            background-image: url('../images/sidebar/ludo_friends_icon.png');
             background-size: 160%;
         }
     }
     .color-sidebar5 {
         background-color: $sidebar-color-5;
         .ludo-sports-icon {
-            @include background_img_content(ludo_sports_icon);
+            background-image: url('../images/sidebar/ludo_sports_icon.png');
             background-size: 120%;
         }
     }
     .color-sidebar6 {
         background-color: $sidebar-color-6;
         .ludo-read-icon {
-            @include background_img_content(ludo_read_icon);
+            background-image: url('../images/sidebar/ludo_read_icon.png');
         }
     }

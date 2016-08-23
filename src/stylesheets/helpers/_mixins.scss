@@ -1,8 +1,3 @@
-@mixin dimensions($width, $height) {
-    width: $width;
-    height: $height;
-}
-
 // background
 @mixin background_img_content($file_name) {
     background-image: url('../images/#{$file_name}.png');

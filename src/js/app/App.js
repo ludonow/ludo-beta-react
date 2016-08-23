@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from './header/Header';
 import Search from './search/Search';
-import SideBar from './SideBar';
+import Sidebar from './sidebar/Sidebar';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <Header isProfile={isProfile} />
-                <SideBar />
+                <Sidebar />
                 <div className="main-container">
                     {this.props.children}
                     {isPlayground ? <Search /> : null}
