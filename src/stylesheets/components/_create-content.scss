@@ -22,6 +22,8 @@
         }
             .create-content-information-tag__element {
                 @extend .profile-content-information-tag__element;
+                @extend %as_wide_as_parent;
+                font-family: "Exo" , "Microsoft JhengHei";
             }
         .create-content-invitation {
             @extend .profile-content-information-tag__element;
