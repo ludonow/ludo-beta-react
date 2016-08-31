@@ -42,12 +42,19 @@ export default class PlaygroundLudoList extends React.Component {
             return (
                 <div className="grid-item" key={index}>
                     <div className="card">
-                        <div>{data.launchDate}</div>
-                        <div>{data.type}</div>
-                        <div>{data.duration}</div>
-                        <div>{data.introduction}</div>
-                        <div>{data.condition}</div>
-                        <div>{data.marblesNumber}</div>
+                        <div className="card-top">
+                            <div>launch day: {data.launch_day}</div>
+                            <div>duration: {data.duration}</div>
+                            <div>marbles: {data.marbles}</div>
+                            <div>tags: {data.tags}</div>
+                            <div>
+                                {data.start_day ? `${data.start_day} ~ ${data.end_day}` : null}
+                            </div>
+                        </div>
+                        <div className="card-bottom">
+                            <div>starter: {data.starter}</div>
+                            <div>stage: {data.stage}</div>
+                        </div>
                     </div>
                 </div>
             )

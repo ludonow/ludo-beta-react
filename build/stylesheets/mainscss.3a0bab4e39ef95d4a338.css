@@ -112,6 +112,12 @@
   -o-transition-duration: .3s;
 }
 
+.card .card-bottom,.create-content .card-bottom,.matched-content .card-bottom,.playground .quick-start .card-bottom,.profile-content .card-bottom,.profile-element .card-bottom,.search-card .card-bottom {
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: gray;
+}
+
 a,abbr,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video {
   margin: 0;
   padding: 0;
@@ -590,4 +596,4 @@ body {
   flex-direction: column;
   justify-content: center;
 }
-/*# sourceMappingURL=mainscss.c918463cc636dacabf4e.css.map*/
+/*# sourceMappingURL=mainscss.3a0bab4e39ef95d4a338.css.map*/
