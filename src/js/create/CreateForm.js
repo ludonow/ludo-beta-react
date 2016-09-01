@@ -1,4 +1,5 @@
 import React from 'react';
+import DropdownList from 'react-widgets/lib/DropdownList';
 
 import quick_start from '../../images/create/create-content/quick_start_icon.png';
 
@@ -21,6 +22,7 @@ export default class CreateForm extends React.Component {
     }
 
     render() {
+        const type = ['lifestyle', 'read', 'exercise', 'school'];
         return (
             <div className="create-content-information">
                 <div className="create-content-information-icon">
@@ -29,6 +31,11 @@ export default class CreateForm extends React.Component {
                     </div>
                 </div>
                 <div className="create-content-information-tag">
+                    <DropdownList 
+                        className="create-form-drop_down_list"
+                        defaultValue={"lifestyle"}
+                        data={type}
+                    />
                     <input
                         className="create-content-information-tag__element"
                         type="text"

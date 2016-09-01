@@ -43,8 +43,8 @@ const common = {
                 include: PATHS.src
             },
             { 
-                test: /\.(woff|woff2)$/, 
-                loader:"url?prefix=font/&limit=5000",
+                test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, 
+                loader: "url-loader?mimetype=application/font-woff",
                 include: PATHS.src
             },
             { 
