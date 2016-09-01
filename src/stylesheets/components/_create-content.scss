@@ -3,6 +3,11 @@
     @extend %as_wide_as_parent;
     @extend %text_center;
 }
+    .create-form-drop_down_list {
+        .rw-input {
+            color: black;
+        }
+    }
     .create-content-information {
         display: flex;
         flex-direction: row;

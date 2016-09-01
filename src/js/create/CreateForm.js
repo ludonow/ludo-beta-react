@@ -1,5 +1,7 @@
 import React from 'react';
 
+import quick_start from '../../images/create/create-content/quick_start_icon.png';
+
 export default class CreateForm extends React.Component {
     constructor() {
         super();
@@ -20,31 +22,38 @@ export default class CreateForm extends React.Component {
 
     render() {
         return (
-            <div className="create-content-information-tag">
-                <input
-                    className="create-content-information-tag__element"
-                    type="text"
-                    value={this.state.value.key1}
-                    onChange={this.handleChange}
-                />
-                <input
-                    className="create-content-information-tag__element"
-                    type="text"
-                    value={this.state.value.key2}
-                    onChange={this.handleChange}
-                />
-                <input
-                    className="create-content-information-tag__element"
-                    type="text"
-                    value={this.state.value.key3}
-                    onChange={this.handleChange}
-                />
-                <input
-                    className="create-content-information-tag__element"
-                    type="text"
-                    value={this.state.value.key4}
-                    onChange={this.handleChange}
-                />
+            <div className="create-content-information">
+                <div className="create-content-information-icon">
+                    <div className="create-content-information-icon__icon">
+                        <img src={quick_start} />
+                    </div>
+                </div>
+                <div className="create-content-information-tag">
+                    <input
+                        className="create-content-information-tag__element"
+                        type="text"
+                        value={this.state.value.key1}
+                        onChange={this.handleChange}
+                    />
+                    <input
+                        className="create-content-information-tag__element"
+                        type="text"
+                        value={this.state.value.key2}
+                        onChange={this.handleChange}
+                    />
+                    <input
+                        className="create-content-information-tag__element"
+                        type="text"
+                        value={this.state.value.key3}
+                        onChange={this.handleChange}
+                    />
+                    <input
+                        className="create-content-information-tag__element"
+                        type="text"
+                        value={this.state.value.key4}
+                        onChange={this.handleChange}
+                    />
+                </div>
             </div>
         );
     }

@@ -18,7 +18,6 @@ export default class MatchedContent extends React.Component {
                             <div className="matched-content-information-tag__element">#tag</div>
                         </div>
                         </div>
-                    <div className="matched-content-invitation">invitation</div>
                     <div className="matched-content-calendar"></div>
                 </div>
             </div>
