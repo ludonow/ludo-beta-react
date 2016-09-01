@@ -8,7 +8,7 @@ import Matched from '../matched/Matched';
 
 const masonryOptions = {
     itemSelector: ".grid-item",
-    columnWidth: 290,
+    columnWidth: 236,
     fitWidth: true
 }
 

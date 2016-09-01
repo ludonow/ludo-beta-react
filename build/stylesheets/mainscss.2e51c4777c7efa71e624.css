@@ -48,13 +48,13 @@
 
 @media (max-width:1199px) {
   .main-container,  .right-sidebar {
-    top: 140px;
+    top: 112px;
   }
 }
 
 @media (min-width:992px) {
   .main-container,  .right-sidebar {
-    top: 20%;
+    top: 16%;
   }
 }
 
@@ -77,12 +77,12 @@
 }
 
 .grid-item,.grid-item--friend,.grid-item--half,.stamp {
-  width: 270px;
+  width: 216px;
   padding: 5px;
 }
 
 .grid-item--half {
-  width: 530px;
+  width: 424px;
 }
 
 .grid-item--friend {
@@ -160,7 +160,7 @@ body {
 
 .header-Ludo-logo {
   align-items: center;
-  width: 350px;
+  width: 280px;
 }
 
 .header-marbles {
@@ -269,13 +269,13 @@ body {
 
 @media (max-width:1199px) {
   .header {
-    height: 140px;
+    height: 112px;
   }
 }
 
 @media (min-width:992px) {
   .header {
-    height: 20%;
+    height: 16%;
   }
 }
 
@@ -296,7 +296,7 @@ body {
 
 @media (min-width:992px) {
   .right-sidebar {
-    height: 80%;
+    height: 84%;
   }
 }
 
@@ -366,7 +366,7 @@ body {
 }
 
 .search-card {
-  width: 230px;
+  width: 176px;
 }
 
 .search-icon,.search-text {
@@ -596,4 +596,4 @@ body {
   flex-direction: column;
   justify-content: center;
 }
-/*# sourceMappingURL=mainscss.3a0bab4e39ef95d4a338.css.map*/
+/*# sourceMappingURL=mainscss.2e51c4777c7efa71e624.css.map*/
