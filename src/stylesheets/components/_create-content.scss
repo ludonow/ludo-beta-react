@@ -66,17 +66,17 @@ $button_red: rgba(255, 30, 30, 1);
                 width: 30px;
                 background-color: $button_blue;
             }
-            .create-form-day-picker__button--reset {
-                width: 50px;
-            }
-            .create-form-day-picker__button--duration {
+            .create-form-day-picker__button--reset-all {
                 width: 60px;
+            }
+            .create-form-day-picker__button--reset-duration {
+                width: 95px;
                 &:hover {
                     background-color: $button_blue;
                 }
             }
-            .create-form-day-picker__button--checkpoint {
-                width: 80px;
+            .create-form-day-picker__button--reset-checkpoint {
+                width: 110px;
                 &:hover {
                     background-color: $button_red;
                 }

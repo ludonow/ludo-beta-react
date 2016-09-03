@@ -27,9 +27,9 @@ export default class CreateForm extends React.Component {
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
         this.handleDayPickerMouseOver = this.handleDayPickerMouseOver.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
-        this.handleDayPickerReset = this.handleDayPickerReset.bind(this);
-        this.handleDayPickerDuration = this.handleDayPickerDuration.bind(this);
-        this.handleDayPickerCheckpoint =this.handleDayPickerCheckpoint.bind(this);
+        this.handleDayPickerResetAll = this.handleDayPickerResetAll.bind(this);
+        this.handleDayPickerResetDuration = this.handleDayPickerResetDuration.bind(this);
+        this.handleDayPickerResetCheckPoint =this.handleDayPickerResetCheckPoint.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
@@ -72,7 +72,7 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleDayPickerReset(event) {
+    handleDayPickerResetAll(event) {
         const { ludoCreateForm } = this.state;
         this.setState(
             Object.assign(ludoCreateForm, {
@@ -88,26 +88,41 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleDayPickerDuration(event) {
-
+    handleDayPickerResetDuration(event) {
+        this.setState(
+            Object.assign(this.state, {
+                isDurationClick: false
+            })
+        );
     }
 
-    handleDayPickerCheckpoint(event) {
-
+    handleDayPickerResetCheckPoint(event) {
+        
     }
 
     handleDayPickerClick(event) {
-        this.setState(
-            Object.assign(this.state, {
-                isDurationClick: true
-            })
-        );
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                duration: Number(event.target.value)
-            })
-        );
+        if (!this.state.isDurationClick) { // initial
+            this.setState(
+                Object.assign(this.state, {
+                    isDurationClick: true
+                })
+            );
+            const { ludoCreateForm } = this.state;
+            this.setState(
+                Object.assign(ludoCreateForm, {
+                    duration: Number(event.target.value)
+                })
+            );
+        } else { // finish duration setting
+            const { checkpoint } = this.state.ludoCreateForm;
+            const checkPointNumber = Number(event.target.value);
+            const index = checkpoint.indexOf(checkPointNumber);
+            if (index === -1) { // element not in array
+                checkpoint.push(checkPointNumber);
+            } else { // element is in array
+                checkpoint.splice(index, 1);
+            }
+        }
     }
 
     handleDayPickerMouseOver(event) {
@@ -116,7 +131,8 @@ export default class CreateForm extends React.Component {
             if (Number(event.target.value) >= 4) {
                 this.setState(
                     Object.assign(ludoCreateForm, {
-                        duration: Number(event.target.value)
+                        duration: Number(event.target.value),
+                        checkpoint: [Number(event.target.value)]
                     })
                 );
                 this.setState(
@@ -127,7 +143,8 @@ export default class CreateForm extends React.Component {
             } else {
                 this.setState(
                     Object.assign(ludoCreateForm, {
-                        duration: 3
+                        duration: 3,
+                        checkpoint: [3]
                     })
                 );
                 this.setState(
@@ -141,7 +158,7 @@ export default class CreateForm extends React.Component {
 
     handleDayPickerClass(value) {
         if(value <= this.state.currentHoverValue) {
-            return 'create-form-day-picker__button' + '--selected';
+            return 'create-form-day-picker__button--selected';
         } else {
             return 'create-form-day-picker__button';
         }
@@ -184,6 +201,19 @@ export default class CreateForm extends React.Component {
 
     render() {
         const category = ['lifestyle', 'read', 'exercise', 'school'];
+        const dayPickerButton = [];
+        for(let i = 1; i <= 14; i++) {
+            dayPickerButton.push(
+                <input className={this.handleDayPickerClass(i)} type="button" value={i} key={i}
+                    onClick={this.handleDayPickerClick} 
+                    onMouseOver={this.handleDayPickerMouseOver} 
+                    disabled={
+                        i < 3
+                        || (i >= this.state.ludoCreateForm.duration && this.state.isDurationClick)
+                    }
+                />
+            );
+        }
         return (
             <form onSubmit={this.handleSubmit} className="create-form-information">
                 <div className="create-form-information-icon">
@@ -212,42 +242,16 @@ export default class CreateForm extends React.Component {
                     </div>
                     <div className="create-form-day-picker">
                         <label>Duration and Checkpoint:&nbsp;&nbsp;<br /></label>
-                        <input className="create-form-day-picker__button--reset" type="button" value="Reset" 
-                            onClick={this.handleDayPickerReset} />
-                        <input className="create-form-day-picker__button--duration" type="button" value="Duration" 
-                            onClick={this.handleDayPickerDuration} />
-                        <input className="create-form-day-picker__button--checkpoint" type="button" value="Checkpoint" 
-                            onClick={this.handleDayPickerCheckpoint} />
+                        <input className="create-form-day-picker__button--reset-all" type="button" value="Reset all" 
+                            onClick={this.handleDayPickerResetAll} />
                         <br />
-                        <input className={this.handleDayPickerClass(1)} type="button" value="1" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(2)} type="button" value="2" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(3)} type="button" value="3" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(4)} type="button" value="4" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(5)} type="button" value="5" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(6)} type="button" value="6" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(7)} type="button" value="7" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
+                        <input className="create-form-day-picker__button--reset-duration" type="button" value="Reset Duration" 
+                            onClick={this.handleDayPickerResetDuration} />
                         <br />
-                        <input className={this.handleDayPickerClass(8)} type="button" value="8" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(9)} type="button" value="9" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(10)} type="button" value="10" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(11)} type="button" value="11" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(12)} type="button" value="12" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(13)} type="button" value="13" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
-                        <input className={this.handleDayPickerClass(14)} type="button" value="14" 
-                            onClick={this.handleDayPickerClick} onMouseOver={this.handleDayPickerMouseOver} />
+                        <input className="create-form-day-picker__button--reset-checkpoint" type="button" value="Reset Checkpoint" 
+                            onClick={this.handleDayPickerResetCheckPoint} />
+                        <br />
+                        {dayPickerButton}
                         <label>Duration:&nbsp;&nbsp; {this.state.ludoCreateForm.duration}&nbsp;days</label>
                         <br />
                         <label>Checkpoint:&nbsp;&nbsp; {this.state.ludoCreateForm.checkpoint}&nbsp;</label>
