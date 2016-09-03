@@ -6,7 +6,7 @@ export default class CreateContent extends React.Component {
     render() {
         return (
             <div className="grid-item grid-item--half">
-                <div className="create-content">
+                <div className="create-form">
                     <CreateForm />
                 </div>
             </div>

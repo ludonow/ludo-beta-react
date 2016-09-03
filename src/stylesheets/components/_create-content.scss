@@ -1,10 +1,27 @@
-.create-content {
+$button_blue: rgba(0, 190, 250, 1);
+$button_red: rgba(255, 30, 30, 1);
+
+.create-form {
     @extend .card;
     @extend %as_wide_as_parent;
     @extend %text_center;
 }
+.create-form-information {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+    .create-form-information-icon {
+        @extend %half_width_of_parent;
+    }
+        .create-form-information-icon__icon {
+            height: 200px;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
     .create-form-fields {
-        @extend .profile-content-information-tag;
+        @extend %as_wide_as_parent;
     }
         .create-form-field {
             display: flex;
@@ -12,7 +29,8 @@
             label {
                 font-size: 14px;
             }
-            input {
+            div {
+                width: 100px;
                 font-size: 12px;
             }
             button {
@@ -20,10 +38,13 @@
             }
         }
             .create-form-drop_down_list {
-                width: 50%;
+                width: 70%;
                 .rw-input {
                     font-size: 14px;
                     color: black;
+                }
+                span {
+                    font-size: 14px;
                 }
             }
             .create-form-number_picker {
@@ -33,33 +54,30 @@
                     color: black;
                 }
             }
-    .create-content-information {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-        .create-content-information-icon {
-            @extend %half_width_of_parent;
-        }
-            .create-content-information-icon__icon {
-                height: 200px;
-                margin-left: 20px;
-                margin-right: 20px;
-                margin-bottom: 10px;
+        .create-form-day-picker {
+            label {
+                font-size: 14px;
             }
-
-            .create-content-information-tag__element {
-                @extend .profile-content-information-tag__element;
-                width: 50%;
-                font-family: "Exo" , "Microsoft JhengHei";
+        }
+            .create-form-day-picker__button {
+                width: 30px;
             }
-        .create-content-invitation {
-            @extend .profile-content-information-tag__element;
-            margin-bottom: 0px;
-        }
-        .create-content-calendar {
-            height: 320px;
-            @include background_img_content(calendar);
-            @extend %background_img_setting;
-            margin-bottom: 15px;
-        }
+            .create-form-day-picker__button--selected {
+                width: 30px;
+                background-color: $button_blue;
+            }
+            .create-form-day-picker__button--reset {
+                width: 50px;
+            }
+            .create-form-day-picker__button--duration {
+                width: 60px;
+                &:hover {
+                    background-color: $button_blue;
+                }
+            }
+            .create-form-day-picker__button--checkpoint {
+                width: 80px;
+                &:hover {
+                    background-color: $button_red;
+                }
+            }

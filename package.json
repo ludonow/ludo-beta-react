@@ -31,7 +31,8 @@
     "react-router": "^2.5.2",
     "react-thunk": "^1.0.0",
     "react-widgets": "^3.4.4",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "redux-form": "^6.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
