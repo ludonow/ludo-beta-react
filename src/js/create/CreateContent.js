@@ -8,7 +8,6 @@ export default class CreateContent extends React.Component {
             <div className="grid-item grid-item--half">
                 <div className="create-content">
                     <CreateForm />
-                    <div className="create-content-calendar"></div>
                 </div>
             </div>
         );

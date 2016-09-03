@@ -1,24 +1,25 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 
+import numberLocalizer from 'react-widgets/lib/localizers/simple-number';
+import NumberPicker from 'react-widgets/lib/NumberPicker';
+
 import quick_start from '../../images/create/create-content/quick_start_icon.png';
 
 export default class CreateForm extends React.Component {
     constructor() {
         super();
         this.state = {
-            value: {
-                'key1':'Type',
-                'key2':'Date',
-                'key3':'Report',
-                'key4':'#tag'
-            }
+            marbles: 1
         };
-        this.handleChange = this.handleChange.bind(this);
+        this.handleMarbleChange = this.handleMarbleChange.bind(this);
+        numberLocalizer();
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value.substr(0, 20)});
+    handleMarbleChange(event) {
+        this.setState({
+            marbles: event
+        });
     }
 
     render() {
@@ -30,36 +31,30 @@ export default class CreateForm extends React.Component {
                         <img src={quick_start} />
                     </div>
                 </div>
-                <div className="create-content-information-tag">
-                    <DropdownList 
-                        className="create-form-drop_down_list"
-                        defaultValue={"lifestyle"}
-                        data={type}
-                    />
-                    <input
-                        className="create-content-information-tag__element"
-                        type="text"
-                        value={this.state.value.key1}
-                        onChange={this.handleChange}
-                    />
-                    <input
-                        className="create-content-information-tag__element"
-                        type="text"
-                        value={this.state.value.key2}
-                        onChange={this.handleChange}
-                    />
-                    <input
-                        className="create-content-information-tag__element"
-                        type="text"
-                        value={this.state.value.key3}
-                        onChange={this.handleChange}
-                    />
-                    <input
-                        className="create-content-information-tag__element"
-                        type="text"
-                        value={this.state.value.key4}
-                        onChange={this.handleChange}
-                    />
+                <div className="create-form-fields">
+                    <div className="create-form-field">
+                        <label>Type:&nbsp;&nbsp;</label>
+                        <DropdownList 
+                            className="create-form-drop_down_list"
+                            defaultValue={"lifestyle"}
+                            data={type}
+                        />
+                    </div>
+                    <div className="create-form-field">
+                        <label>Marbles:&nbsp;&nbsp;</label>
+                        <NumberPicker 
+                            className="create-form-number_picker"
+                            value={this.state.marbles}
+                            onChange={this.handleMarbleChange}
+                            min={1}
+                        />
+                    </div>
+                    <div className="create-form-field">
+                        <label>Report Format:&nbsp;&nbsp;<br /></label>
+                    </div>
+                    <div className="create-form-field">
+                        <label>Duration and Checkpoint:&nbsp;&nbsp;<br /></label>
+                    </div>
                 </div>
             </div>
         );

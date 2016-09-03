@@ -3,11 +3,36 @@
     @extend %as_wide_as_parent;
     @extend %text_center;
 }
-    .create-form-drop_down_list {
-        .rw-input {
-            color: black;
-        }
+    .create-form-fields {
+        @extend .profile-content-information-tag;
     }
+        .create-form-field {
+            display: flex;
+            align-items: center;
+            label {
+                font-size: 14px;
+            }
+            input {
+                font-size: 12px;
+            }
+            button {
+                font-size: 14px;
+            }
+        }
+            .create-form-drop_down_list {
+                width: 50%;
+                .rw-input {
+                    font-size: 14px;
+                    color: black;
+                }
+            }
+            .create-form-number_picker {
+                width: 50%;
+                height: 30px;
+                .rw-input {
+                    color: black;
+                }
+            }
     .create-content-information {
         display: flex;
         flex-direction: row;
@@ -22,12 +47,10 @@
                 margin-right: 20px;
                 margin-bottom: 10px;
             }
-        .create-content-information-tag {
-            @extend .profile-content-information-tag;
-        }
+
             .create-content-information-tag__element {
                 @extend .profile-content-information-tag__element;
-                @extend %as_wide_as_parent;
+                width: 50%;
                 font-family: "Exo" , "Microsoft JhengHei";
             }
         .create-content-invitation {

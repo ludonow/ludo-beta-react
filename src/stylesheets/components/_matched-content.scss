@@ -21,7 +21,7 @@ $fluorescent_green: rgba(0, 250, 145, 1);
                 @extend %margin_center_x;
             }
         .matched-content-information-tag {
-            @extend .create-content-information-tag;
+            @extend .create-form-fields;
             height: 200px;
             display: flex;
             flex-direction: column;
