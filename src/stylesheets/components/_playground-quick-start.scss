@@ -1,8 +1,10 @@
 .quick-start {
     @extend .card;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
     .quick-start__icon {
-        height: 100px;
+        height: 80px;
         @include background_img_content(quick_start_icon);
         @extend %background_img_setting;
     }

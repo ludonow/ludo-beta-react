@@ -2,7 +2,8 @@
     @extend %flex;
     align-items: center;
     @extend %relative;
-    width: 280px;
+    left: 95px;
+    width: 205px;
     @extend %as_tall_as_parent;
 }
     .header-Ludo-logo__icon {
