@@ -306,8 +306,8 @@ export default class CreateForm extends React.Component {
                         <label>Hash Tags:&nbsp;&nbsp;<br /></label>
                         <input type="text" onChange={this.handleTagsChange}/>
                     </div>
-                    <button className="create-form-field" type="submit">
-                        Submit
+                    <button className="create-form-submit-button" type="submit">
+                        Start
                     </button>
                 </div>
             </form>
