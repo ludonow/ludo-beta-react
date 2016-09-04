@@ -55,16 +55,12 @@ $button_red: rgba(255, 30, 30, 1);
                 }
             }
         .create-form-day-picker {
-            label {
+            label, li {
                 font-size: 14px;
             }
         }
             .create-form-day-picker__button {
                 width: 30px;
-            }
-            .create-form-day-picker__button--selected {
-                width: 30px;
-                background-color: $button_blue;
             }
             .create-form-day-picker__button--reset-all {
                 width: 60px;
@@ -80,4 +76,17 @@ $button_red: rgba(255, 30, 30, 1);
                 &:hover {
                     background-color: $button_red;
                 }
+            }
+            .create-form-day-picker__button--duration {
+                width: 30px;
+                background-color: $button_blue;
+            }
+            .create-form-day-picker__button--checkpoint {
+                width: 30px;
+                color: $button_red;
+                background-color: $button_blue;
+            }
+
+            .create-form-day-picker__check-point-list {
+                display: inline-flex;
             }

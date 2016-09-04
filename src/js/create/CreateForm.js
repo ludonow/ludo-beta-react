@@ -29,7 +29,7 @@ export default class CreateForm extends React.Component {
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleDayPickerResetAll = this.handleDayPickerResetAll.bind(this);
         this.handleDayPickerResetDuration = this.handleDayPickerResetDuration.bind(this);
-        this.handleDayPickerResetCheckPoint =this.handleDayPickerResetCheckPoint.bind(this);
+        this.handleDayPickerResetCheckpoint =this.handleDayPickerResetCheckpoint.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
@@ -54,7 +54,7 @@ export default class CreateForm extends React.Component {
             default:
                 category_id = 0;
                 break;
-        }
+        };
         const { ludoCreateForm } = this.state;
         this.setState(
             Object.assign(ludoCreateForm, {
@@ -96,8 +96,13 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleDayPickerResetCheckPoint(event) {
-        
+    handleDayPickerResetCheckpoint(event) {
+        const { currentHoverValue, ludoCreateForm } = this.state;
+        this.setState(
+            Object.assign(ludoCreateForm, {
+                checkpoint: [currentHoverValue]
+            })
+        );
     }
 
     handleDayPickerClick(event) {
@@ -114,14 +119,21 @@ export default class CreateForm extends React.Component {
                 })
             );
         } else { // finish duration setting
-            const { checkpoint } = this.state.ludoCreateForm;
+            const { ludoCreateForm } = this.state;
+            let { checkpoint } = ludoCreateForm;
             const checkPointNumber = Number(event.target.value);
             const index = checkpoint.indexOf(checkPointNumber);
             if (index === -1) { // element not in array
                 checkpoint.push(checkPointNumber);
             } else { // element is in array
                 checkpoint.splice(index, 1);
-            }
+            };
+            checkpoint = checkpoint.sort();
+            this.setState(
+                Object.assign(ludoCreateForm, {
+                    checkpoint
+                })
+            );
         }
     }
 
@@ -157,11 +169,23 @@ export default class CreateForm extends React.Component {
     }
 
     handleDayPickerClass(value) {
-        if(value <= this.state.currentHoverValue) {
-            return 'create-form-day-picker__button--selected';
-        } else {
+        const { ludoCreateForm, currentHoverValue, isDurationClick } = this.state;
+        const { checkpoint } = ludoCreateForm;
+        const index = checkpoint.indexOf(value);
+
+        if(value <= currentHoverValue) { // before hover and now hover
+            if (!isDurationClick) {
+                return 'create-form-day-picker__button--duration';
+            } else {
+                if(index != -1) { // if exist in checkpoint array
+                    return `create-form-day-picker__button--checkpoint`;
+                } else {
+                    return `create-form-day-picker__button--duration`;
+                };
+            };
+        } else { // after hover
             return 'create-form-day-picker__button';
-        }
+        };
     }
 
     handleTitleChange(event) {
@@ -194,6 +218,8 @@ export default class CreateForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const { ludoCreateForm } = this.state;
+        let { checkpoint } = ludoCreateForm;
+        checkpoint = checkpoint.sort();
         setTimeout(() => {  // simulate server latency
             window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
         }, 200)
@@ -201,6 +227,7 @@ export default class CreateForm extends React.Component {
 
     render() {
         const category = ['lifestyle', 'read', 'exercise', 'school'];
+        const { ludoCreateForm, isDurationClick } = this.state;
         const dayPickerButton = [];
         for(let i = 1; i <= 14; i++) {
             dayPickerButton.push(
@@ -208,12 +235,13 @@ export default class CreateForm extends React.Component {
                     onClick={this.handleDayPickerClick} 
                     onMouseOver={this.handleDayPickerMouseOver} 
                     disabled={
-                        i < 3
-                        || (i >= this.state.ludoCreateForm.duration && this.state.isDurationClick)
+                        (i < 3 && !isDurationClick)
+                        || (i >= ludoCreateForm.duration && isDurationClick)
                     }
                 />
             );
-        }
+        };
+
         return (
             <form onSubmit={this.handleSubmit} className="create-form-information">
                 <div className="create-form-information-icon">
@@ -227,7 +255,6 @@ export default class CreateForm extends React.Component {
                         <DropdownList 
                             className="create-form-drop_down_list"
                             data={category}
-                            value={this.state.category}
                             onChange={this.handleCategoryChange}
                         />
                     </div>
@@ -235,7 +262,7 @@ export default class CreateForm extends React.Component {
                         <label>Marbles:&nbsp;&nbsp;</label>
                         <NumberPicker 
                             className="create-form-number_picker"
-                            value={this.state.ludoCreateForm.marbles}
+                            value={ludoCreateForm.marbles}
                             onChange={this.handleMarblesChange}
                             min={1}
                         />
@@ -249,12 +276,23 @@ export default class CreateForm extends React.Component {
                             onClick={this.handleDayPickerResetDuration} />
                         <br />
                         <input className="create-form-day-picker__button--reset-checkpoint" type="button" value="Reset Checkpoint" 
-                            onClick={this.handleDayPickerResetCheckPoint} />
+                            onClick={this.handleDayPickerResetCheckpoint} />
                         <br />
                         {dayPickerButton}
-                        <label>Duration:&nbsp;&nbsp; {this.state.ludoCreateForm.duration}&nbsp;days</label>
+                        <label>Duration:&nbsp;&nbsp; {ludoCreateForm.duration} &nbsp;days</label>
                         <br />
-                        <label>Checkpoint:&nbsp;&nbsp; {this.state.ludoCreateForm.checkpoint}&nbsp;</label>
+                        <label>Checkpoint:&nbsp;&nbsp;</label>
+                        <br />
+                        <ul> 
+                            <label>day&nbsp;</label>
+                            {ludoCreateForm.checkpoint.map((element, index) => {
+                                if (index == ludoCreateForm.checkpoint.length - 1) { // the last element of array
+                                    return <li key={index} className="create-form-day-picker__check-point-list">{`${element}`}</li>;
+                                } else {
+                                    return <li key={index} className="create-form-day-picker__check-point-list">{`${element} ,`}</li>;
+                                }
+                            })}
+                        </ul>
                     </div>
                     <div className="create-form-field">
                         <label>Title:&nbsp;&nbsp;<br /></label>
