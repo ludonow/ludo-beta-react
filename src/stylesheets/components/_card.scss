@@ -3,9 +3,6 @@ $grid-item_width: 216px; //270px;
 $grid-item--half_width: 424px;//530px;
 $grid-item--friend_width: 170px;
 
-// border
-$card_border-radius: 5px;
-
 // padding
 $card_padding: 20px;
 $grid-item_padding: 5px;
@@ -39,7 +36,6 @@ $card_border-color: hsla(0, 0%, 0%, 0.5);
 
     .card {
         border-color: $card_border-color;
-        border-radius: $card_border-radius;
         padding: $card_padding;
         background-color: white;
         @include transition-duration(0.3s);

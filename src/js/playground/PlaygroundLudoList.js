@@ -43,17 +43,13 @@ export default class PlaygroundLudoList extends React.Component {
                 <div className="grid-item" key={index}>
                     <div className="card">
                         <div className="card-top">
-                            <div>launch day: {data.launch_day}</div>
-                            <div>duration: {data.duration}</div>
-                            <div>marbles: {data.marbles}</div>
-                            <div>tags: {data.tags}</div>
-                            <div>
-                                {data.start_day ? `${data.start_day} ~ ${data.end_day}` : null}
-                            </div>
+                            <div>{data.title}</div>
+                            <div>{data.duration} days</div>
+                            <div>{data.marbles}</div>
                         </div>
                         <div className="card-bottom">
-                            <div>starter: {data.starter}</div>
-                            <div>stage: {data.stage}</div>
+                            <div>{data.category_id}</div>
+                            <div>{data.stage}</div>
                         </div>
                     </div>
                 </div>
@@ -62,13 +58,14 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     render() {
+        const { masonryCardContent } = this.state;
         this.addMasonryClass();
         return (
             <Masonry
                 className="playground"
                 options={masonryOptions} >
                 <QuickStart />
-                {this.state.masonryCardContent}
+                {masonryCardContent}
             </Masonry>
         );
     }
