@@ -3,14 +3,20 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import numberLocalizer from 'react-widgets/lib/localizers/simple-number';
 import NumberPicker from 'react-widgets/lib/NumberPicker';
 
-import quick_start from '../../images/create/create-content/quick_start_icon.png';
+import lifestyleIcon from '../../images/create/create-content/lifestyle.svg';
+import readIcon from '../../images/create/create-content/read.svg';
+import exerciseIcon from '../../images/create/create-content/exercise.png';
+import studyIcon from '../../images/create/create-content/study.svg';
+import newSkillIcon from '../../images/create/create-content/new_skill.svg';
+import unmentionablesIcon from '../../images/create/create-content/unmentionables.png';
+import othersIcon from '../../images/create/create-content/others.svg';
 
 export default class CreateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             ludoCreateForm: {
-                category_id: 0,
+                category_id: 1,
                 marbles: 1,
                 duration: 3,
                 checkpoint: [3],
@@ -23,17 +29,18 @@ export default class CreateForm extends React.Component {
         };
         numberLocalizer();
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
-        this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
         this.handleDayPickerMouseOver = this.handleDayPickerMouseOver.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleDayPickerResetAll = this.handleDayPickerResetAll.bind(this);
         this.handleDayPickerResetDuration = this.handleDayPickerResetDuration.bind(this);
         this.handleDayPickerResetCheckpoint =this.handleDayPickerResetCheckpoint.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleIconChange = this.handleIconChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
-        this.handleTagsChange = this.handleTagsChange.bind(this);
+        this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleTagsChange = this.handleTagsChange.bind(this);
     }
 
     handleCategoryChange(category) {
@@ -48,26 +55,24 @@ export default class CreateForm extends React.Component {
             case 'exercise':
                 category_id = 3;
                 break;
-            case 'school':
+            case 'study':
                 category_id = 4;
                 break;
+            case 'new skill':
+                category_id = 5;
+                break;
+            case 'unmentionalbles':
+                category_id = 6;
+                break;
+            case 'others':
             default:
-                category_id = 0;
+                category_id = 7;
                 break;
         };
         const { ludoCreateForm } = this.state;
         this.setState(
             Object.assign(ludoCreateForm, {
                 category_id
-            })
-        );
-    }
-
-    handleMarblesChange(marbles) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                marbles
             })
         );
     }
@@ -188,13 +193,25 @@ export default class CreateForm extends React.Component {
         };
     }
 
-    handleTitleChange(event) {
+    handleIconChange() {
         const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                title: event.target.value
-            })
-        );
+        const { category_id } = ludoCreateForm;
+        switch (category_id) {
+            case 1:
+                return lifestyleIcon;
+            case 2:
+                return readIcon;
+            case 3:
+                return exerciseIcon;
+            case 4:
+                return studyIcon;
+            case 5:
+                return newSkillIcon;
+            case 6:
+                return unmentionablesIcon;
+            case 7:
+                return othersIcon;
+        }
     }
 
     handleIntroductionChange(event) {
@@ -202,6 +219,39 @@ export default class CreateForm extends React.Component {
         this.setState(
             Object.assign(ludoCreateForm, {
                 introduction: event.target.value
+            })
+        );
+    }
+
+    handleMarblesChange(marbles) {
+        const { ludoCreateForm } = this.state;
+        this.setState(
+            Object.assign(ludoCreateForm, {
+                marbles
+            })
+        );
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        const { isDurationClick } = this.state;
+        if (isDurationClick) {
+            const { ludoCreateForm } = this.state;
+            let { checkpoint } = ludoCreateForm;
+            checkpoint = checkpoint.sort((a, b) => { return a - b });
+            setTimeout(() => {  // simulate server latency
+                window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
+            }, 200)
+        } else {
+            window.alert(`You haven't select the duration`);
+        }
+    }
+
+    handleTitleChange(event) {
+        const { ludoCreateForm } = this.state;
+        this.setState(
+            Object.assign(ludoCreateForm, {
+                title: event.target.value
             })
         );
     }
@@ -215,47 +265,49 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        const { ludoCreateForm } = this.state;
-        let { checkpoint } = ludoCreateForm;
-        checkpoint = checkpoint.sort((a, b) => { return a - b });
-        setTimeout(() => {  // simulate server latency
-            window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
-        }, 200)
-    }
-
     render() {
-        const category = ['lifestyle', 'read', 'exercise', 'school'];
+        const category = ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
         const { ludoCreateForm, isDurationClick } = this.state;
         const dayPickerButton = [];
         for(let i = 1; i <= 14; i++) {
-            dayPickerButton.push(
-                <input className={this.handleDayPickerClass(i)} type="button" value={i} key={i}
-                    onClick={this.handleDayPickerClick} 
-                    onMouseOver={this.handleDayPickerMouseOver} 
-                    disabled={
-                        (i < 3 && !isDurationClick)
-                        || (i >= ludoCreateForm.duration && isDurationClick)
-                    }
-                />
-            );
+            if (i == 7) {
+                dayPickerButton.push(
+                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={i}
+                        onClick={this.handleDayPickerClick} 
+                        onMouseOver={this.handleDayPickerMouseOver} 
+                        disabled={
+                            (i < 3 && !isDurationClick)
+                            || (i >= ludoCreateForm.duration && isDurationClick)
+                        }
+                    />, <br key="br" /> 
+                );
+            } else {
+                dayPickerButton.push(
+                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={i}
+                        onClick={this.handleDayPickerClick} 
+                        onMouseOver={this.handleDayPickerMouseOver} 
+                        disabled={
+                            (i < 3 && !isDurationClick)
+                            || (i >= ludoCreateForm.duration && isDurationClick)
+                        }
+                    />
+                );
+            }
         };
 
         return (
             <form onSubmit={this.handleSubmit} className="create-form-information">
                 <div className="create-form-information-icon">
-                    <div className="create-form-information-icon__icon">
-                        <img src={quick_start} />
-                    </div>
+                    <img className="create-form-information-icon__img" src={this.handleIconChange()} />
                 </div>
                 <div className="create-form-fields">
                     <div className="create-form-field">
                         <label>Category:&nbsp;&nbsp;</label>
                         <DropdownList 
-                            className="create-form-drop_down_list"
+                            className="create-form-category_drop_down_list"
                             data={category}
                             onChange={this.handleCategoryChange}
+                            defaultValue="lifestyle"
                         />
                     </div>
                     <div className="create-form-field">
@@ -279,6 +331,7 @@ export default class CreateForm extends React.Component {
                             onClick={this.handleDayPickerResetCheckpoint} />
                         <br />
                         {dayPickerButton}
+                        <br />
                         <label>Duration:&nbsp;&nbsp; {ludoCreateForm.duration} &nbsp;days</label>
                         <br />
                         <label>Checkpoint:&nbsp;&nbsp;</label>

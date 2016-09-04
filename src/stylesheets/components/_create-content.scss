@@ -16,8 +16,8 @@ $gray_shadow: rgba(160, 160, 160, 1);
     .create-form-information-icon {
         @extend %half_width_of_parent;
     }
-        .create-form-information-icon__icon {
-            height: 200px;
+        .create-form-information-icon__img {
+            height: 150px;
             margin-left: 20px;
             margin-right: 20px;
             margin-bottom: 10px;
@@ -31,16 +31,9 @@ $gray_shadow: rgba(160, 160, 160, 1);
             label {
                 font-size: 14px;
             }
-            div {
-                width: 100px;
+            .create-form-category_drop_down_list {
+                width: 145px;
                 font-size: 12px;
-            }
-            button {
-                font-size: 14px;
-            }
-        }
-            .create-form-drop_down_list {
-                width: 70%;
                 .rw-input {
                     font-size: 14px;
                     color: black;
@@ -52,10 +45,15 @@ $gray_shadow: rgba(160, 160, 160, 1);
             .create-form-number_picker {
                 width: 50%;
                 height: 30px;
+                font-size: 12px;
                 .rw-input {
                     color: black;
                 }
             }
+            button {
+                font-size: 14px;
+            }
+        }
         .create-form-day-picker {
             label, li {
                 font-size: 14px;
