@@ -128,7 +128,7 @@ export default class CreateForm extends React.Component {
             } else { // element is in array
                 checkpoint.splice(index, 1);
             };
-            checkpoint = checkpoint.sort();
+            checkpoint = checkpoint.sort((a,b) => { return a - b });
             this.setState(
                 Object.assign(ludoCreateForm, {
                     checkpoint
@@ -219,7 +219,7 @@ export default class CreateForm extends React.Component {
         event.preventDefault();
         const { ludoCreateForm } = this.state;
         let { checkpoint } = ludoCreateForm;
-        checkpoint = checkpoint.sort();
+        checkpoint = checkpoint.sort((a, b) => { return a - b });
         setTimeout(() => {  // simulate server latency
             window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
         }, 200)
