@@ -4,11 +4,18 @@ $grid-item--half_width: 424px;//530px;
 $grid-item--friend_width: 170px;
 
 // padding
-$card_padding: 20px;
+$card_padding: 50px;
 $grid-item_padding: 5px;
 
 // color
 $card_border-color: hsla(0, 0%, 0%, 0.5);
+$lifestyle-color: #53cef4;
+$read-color: #535cf9;
+$exercise-color: #81ea9f;
+$study-color: #ff6d55;
+$new_skill-color: #f2f297;
+$unmentionables-color: #7f297d;
+$others-color: #f95ab1;
 
 .grid {
     @extend %relative;
@@ -36,7 +43,6 @@ $card_border-color: hsla(0, 0%, 0%, 0.5);
 
     .card {
         border-color: $card_border-color;
-        padding: $card_padding;
         background-color: white;
         @include transition-duration(0.3s);
         @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
@@ -45,11 +51,81 @@ $card_border-color: hsla(0, 0%, 0%, 0.5);
             @include transition-duration(0.3s);
         }
         .card-top {
-            
+            padding-top: $card-padding;
+            @extend %text_center;
+            background-color: $lifestyle-color;
         }
         .card-bottom {
-            border-top-style: solid;
-            border-top-width: 1px;
-            border-top-color: gray;
+            @extend %flex;
+            align-items: center;
+            height: 50px;
+        }
+            .card-bottom__category-icon {
+                justify-content: flex-start;
+                height: 30px;
+                padding-left: 10px;
+            }
+            .card-bottom__stage {
+                align-self: flex-end;
+                margin-left: auto; 
+            }
+            .card-bottom__stage--opened {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 30px 30px;
+                border-color: transparent transparent #33ad69 transparent;
+            }
+            .card-bottom__stage--closed {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 30px 30px;
+                border-color: transparent transparent #eb3341 transparent;
+            }
+
+        .card-marble {
+            @extend %relative;
+            @extend %flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+            .card-marble__icon {
+                width: 25px;
+                height: 25px;
+            }
+            .card-marble__number {
+                @extend %absolute;
+                font-size: 12px;
+                color: white;
+            }
+
+        .lifestyle {
+            color: white;
+            background-color: $lifestyle-color;
+        }
+        .read {
+            color: white;
+            background-color: $read-color;
+        }
+        .exercise {
+            color: white;
+            background-color: $exercise-color;
+        }
+        .study {
+            color: white;
+            background-color: $study-color;
+        }
+        .new_skill {
+            background-color: $new_skill-color;
+        }
+        .unmentionables {
+            color: white;
+            background-color: $unmentionables-color;
+        }
+        .others {
+            color: white;
+            background-color: $others-color;
         }
     }

@@ -3,11 +3,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 70px;
+    width: 40px;
     @extend %as_tall_as_parent;
 }
-    .header-marbles-number {
+    .header-marbles__icon {
+        height: 40px;
+    }
+    .header-marbles__number {
+        padding-top: 2px;
         font-family: Exo, "Microsoft JhengHei";
-        line-height: 0.4;
         font-size: 18px;
     }

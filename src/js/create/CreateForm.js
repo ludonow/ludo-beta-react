@@ -3,13 +3,13 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import numberLocalizer from 'react-widgets/lib/localizers/simple-number';
 import NumberPicker from 'react-widgets/lib/NumberPicker';
 
-import lifestyleIcon from '../../images/create/create-content/lifestyle.svg';
-import readIcon from '../../images/create/create-content/read.svg';
-import exerciseIcon from '../../images/create/create-content/exercise.png';
-import studyIcon from '../../images/create/create-content/study.svg';
-import newSkillIcon from '../../images/create/create-content/new_skill.svg';
-import unmentionablesIcon from '../../images/create/create-content/unmentionables.png';
-import othersIcon from '../../images/create/create-content/others.svg';
+import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
+import readIcon from '../../images/category_icon/read.svg';
+import exerciseIcon from '../../images/category_icon/exercise.png';
+import studyIcon from '../../images/category_icon/study.svg';
+import newSkillIcon from '../../images/category_icon/new_skill.svg';
+import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
+import othersIcon from '../../images/category_icon/others.svg';
 
 export default class CreateForm extends React.Component {
     constructor(props) {

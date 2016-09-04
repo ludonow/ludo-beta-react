@@ -11,8 +11,8 @@ export default class HeaderMarbles extends React.Component {
     render() {
         return (
             <div className="header-marbles">
-                <img src={marblesIcon} />
-                <div className="header-marbles-number">{this.state.marblesNumber}</div>
+                <img className="header-marbles__icon" src={marblesIcon} />
+                <div className="header-marbles__number">{this.state.marblesNumber}</div>
             </div>
         );
     }
