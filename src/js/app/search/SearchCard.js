@@ -27,7 +27,7 @@ export default class SearchCard extends React.Component {
 const screenWidth = window.innerWidth;
 const rightSidebarWidth = 100;
 const cardPadding = 5;
-const gridItemWidth = 270 + 2*cardPadding;
+const gridItemWidth = 210 + 2*cardPadding;
 const mainWidth = screenWidth - rightSidebarWidth;
 const totalColumn = Math.floor(mainWidth / gridItemWidth);
 const contentPaddingX = Math.round( (mainWidth - totalColumn * gridItemWidth)/2 );
@@ -37,4 +37,8 @@ const styles = {
     search: {
         right: `${searchRight}px`
     }
-}
+};
+
+console.log('mainWidth', mainWidth);
+console.log('totalColumn', totalColumn);
+console.log('contentPaddingX', contentPaddingX);

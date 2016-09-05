@@ -1,10 +1,12 @@
 .search {
     @extend %fixed;
     @extend %bottom;
+    padding: $card_padding;
 }
     .search-card {
         @extend .card;
         width: $grid-item_width - 2 * $card_padding;
+        padding: $card_padding;
     }
         .search-icon {
             display: inline-block;
