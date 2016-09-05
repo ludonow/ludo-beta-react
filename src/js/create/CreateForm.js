@@ -1,7 +1,6 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
-import numberLocalizer from 'react-widgets/lib/localizers/simple-number';
-import NumberPicker from 'react-widgets/lib/NumberPicker';
+import RcSlider from 'rc-slider';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -24,23 +23,32 @@ export default class CreateForm extends React.Component {
                 introduction: '',
                 tags: ''
             },
-            currentHoverValue: 0,
-            isDurationClick: false
+            category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            currentHoverValue: 3,
+            durationMarks: {},
+            isDurationClick: false,
+            marblesMarks: {},
+            maxDuration: 14,
+            maxMarbles: 50
         };
-        numberLocalizer();
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
         this.handleDayPickerMouseOver = this.handleDayPickerMouseOver.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
-        this.handleDayPickerResetAll = this.handleDayPickerResetAll.bind(this);
-        this.handleDayPickerResetDuration = this.handleDayPickerResetDuration.bind(this);
-        this.handleDayPickerResetCheckpoint =this.handleDayPickerResetCheckpoint.bind(this);
+        this.handleDurationValue = this.handleDurationValue.bind(this);
         this.handleIconChange = this.handleIconChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
+    }
+
+    componentWillMount() {
+        const { marblesMarks, maxMarbles } = this.state;
+        for(let i = 10; i <= maxMarbles; i = i + 10) {
+            marblesMarks[i] = i.toString();
+        };
     }
 
     handleCategoryChange(category) {
@@ -77,37 +85,20 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleDayPickerResetAll(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                duration: 3,
-                checkpoint: [3]
-            })
-        );
-        this.setState(
-            Object.assign(this.state, {
-                currentHoverValue: 3,
-                isDurationClick: false
-            })
-        );
-    }
+    handleDayPickerClass(value) {
+        const { ludoCreateForm, currentHoverValue, isDurationClick } = this.state;
+        const { checkpoint } = ludoCreateForm;
+        const index = checkpoint.indexOf(value);
 
-    handleDayPickerResetDuration(event) {
-        this.setState(
-            Object.assign(this.state, {
-                isDurationClick: false
-            })
-        );
-    }
-
-    handleDayPickerResetCheckpoint(event) {
-        const { currentHoverValue, ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                checkpoint: [currentHoverValue]
-            })
-        );
+        if(value <= currentHoverValue) { // before hover and now hover
+            if (index != -1) {
+                return `create-form-day-picker__button create-form-day-picker__button--checkpoint`;
+            } else {
+                return `create-form-day-picker__button create-form-day-picker__button--duration`;
+            };
+        } else { // after hover
+            return `create-form-day-picker__button`;
+        };
     }
 
     handleDayPickerClick(event) {
@@ -173,24 +164,33 @@ export default class CreateForm extends React.Component {
         }
     }
 
-    handleDayPickerClass(value) {
-        const { ludoCreateForm, currentHoverValue, isDurationClick } = this.state;
-        const { checkpoint } = ludoCreateForm;
-        const index = checkpoint.indexOf(value);
-
-        if(value <= currentHoverValue) { // before hover and now hover
-            if (!isDurationClick) {
-                return 'create-form-day-picker__button--duration';
-            } else {
-                if(index != -1) { // if exist in checkpoint array
-                    return `create-form-day-picker__button--checkpoint`;
-                } else {
-                    return `create-form-day-picker__button--duration`;
-                };
-            };
-        } else { // after hover
-            return 'create-form-day-picker__button';
-        };
+    handleDurationValue(value) {
+        const { ludoCreateForm } = this.state;
+        if (value >= 4) {
+            this.setState(
+                Object.assign(ludoCreateForm, {
+                    duration: value,
+                    checkpoint: [value]
+                })
+            );
+            this.setState(
+                Object.assign(this.state, {
+                    currentHoverValue: value
+                })
+            );
+        } else {
+            this.setState(
+                Object.assign(ludoCreateForm, {
+                    duration: 3,
+                    checkpoint: [3]
+                })
+            );
+            this.setState(
+                Object.assign(this.state, {
+                    currentHoverValue: 3
+                })
+            );
+        }
     }
 
     handleIconChange() {
@@ -266,13 +266,12 @@ export default class CreateForm extends React.Component {
     }
 
     render() {
-        const category = ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
-        const { ludoCreateForm, isDurationClick } = this.state;
-        const dayPickerButton = [];
-        for(let i = 1; i <= 14; i++) {
+        const { ludoCreateForm, category, durationMarks, isDurationClick, marblesMarks, maxDuration } = this.state;
+        const dayPickerButtons = [];
+        for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
-                dayPickerButton.push(
-                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={i}
+                dayPickerButtons.push(
+                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
                         onClick={this.handleDayPickerClick} 
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
@@ -282,8 +281,8 @@ export default class CreateForm extends React.Component {
                     />, <br key="br" /> 
                 );
             } else {
-                dayPickerButton.push(
-                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={i}
+                dayPickerButtons.push(
+                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
                         onClick={this.handleDayPickerClick} 
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
@@ -292,9 +291,8 @@ export default class CreateForm extends React.Component {
                         }
                     />
                 );
-            }
+            };
         };
-
         return (
             <form onSubmit={this.handleSubmit} className="create-form-information">
                 <div className="create-form-information-icon">
@@ -302,68 +300,61 @@ export default class CreateForm extends React.Component {
                 </div>
                 <div className="create-form-fields">
                     <div className="create-form-field">
-                        <label>Category:&nbsp;&nbsp;</label>
-                        <DropdownList 
-                            className="create-form-category_drop_down_list"
-                            data={category}
-                            onChange={this.handleCategoryChange}
-                            defaultValue="lifestyle"
-                        />
+                        <div className="create-form-field-category">
+                            <label>Category:&nbsp;&nbsp;</label>
+                            <DropdownList 
+                                className="create-form-category_drop_down_list"
+                                data={category}
+                                onChange={this.handleCategoryChange}
+                                defaultValue="lifestyle"
+                            />
+                        </div>
                     </div>
+                    <br />
                     <div className="create-form-field">
-                        <label>Marbles:&nbsp;&nbsp;</label>
-                        <NumberPicker 
-                            className="create-form-number_picker"
-                            value={ludoCreateForm.marbles}
-                            onChange={this.handleMarblesChange}
-                            min={1}
-                        />
+                        <div className="create-form-field-marbles">
+                            <label>Marbles:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <RcSlider max={50} min={1} 
+                                defaultValue={1} value={ludoCreateForm.marbles}
+                                marks={marblesMarks}
+                                onChange={this.handleMarblesChange}
+                            />
+                        </div>
+                    </div>
+                    <br />
+                    <div className="create-form-field">
+                        <div className="create-form-field-duration">
+                            <label>Duration:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <RcSlider 
+                                max={maxDuration} min={3} 
+                                defaultValue={3} value={ludoCreateForm.duration}
+                                onChange={this.handleDurationValue}
+                            />
+                        </div>
                     </div>
                     <div className="create-form-day-picker">
-                        <label>Duration and Checkpoint:&nbsp;&nbsp;<br /></label>
-                        <input className="create-form-day-picker__button--reset-all" type="button" value="Reset all" 
-                            onClick={this.handleDayPickerResetAll} />
                         <br />
-                        <input className="create-form-day-picker__button--reset-duration" type="button" value="Reset Duration" 
-                            onClick={this.handleDayPickerResetDuration} />
+                        <div className="create-form-day-picker__buttons">
+                            {dayPickerButtons}
+                        </div>
                         <br />
-                        <input className="create-form-day-picker__button--reset-checkpoint" type="button" value="Reset Checkpoint" 
-                            onClick={this.handleDayPickerResetCheckpoint} />
-                        <br />
-                        {dayPickerButton}
-                        <br />
-                        <label>Duration:&nbsp;&nbsp; {ludoCreateForm.duration} &nbsp;days</label>
-                        <br />
-                        <label>Checkpoint:&nbsp;&nbsp;</label>
-                        <br />
-                        <ul> 
-                            <label>day&nbsp;</label>
-                            {ludoCreateForm.checkpoint.map((element, index) => {
-                                if (index == ludoCreateForm.checkpoint.length - 1) { // the last element of array
-                                    return <li key={index} className="create-form-day-picker__check-point-list">{`${element}`}</li>;
-                                } else {
-                                    return <li key={index} className="create-form-day-picker__check-point-list">{`${element} ,`}</li>;
-                                }
-                            })}
-                        </ul>
                     </div>
                     <div className="create-form-field">
-                        <label>Title:&nbsp;&nbsp;<br /></label>
-                        <input type="text" onChange={this.handleTitleChange}/>
+                        <input type="text" placeholder="   Title" onChange={this.handleTitleChange}/>
                     </div>
+                    <br />
                     <div className="create-form-field">
-                        <label>Introduction:&nbsp;&nbsp;<br /></label>
-                        <input type="text" onChange={this.handleIntroductionChange}/>
+                        <input type="text" placeholder="   Introduction" onChange={this.handleIntroductionChange}/>
                     </div>
+                    <br />
                     <div className="create-form-field">
-                        <label>Hash Tags:&nbsp;&nbsp;<br /></label>
-                        <input type="text" onChange={this.handleTagsChange}/>
+                        <input type="text" placeholder="   #hashtag" onChange={this.handleTagsChange}/>
                     </div>
                     <button className="create-form-submit-button" type="submit">
-                        Start
+                        START
                     </button>
                 </div>
             </form>
         );
     }
-}
+};

@@ -1,38 +1,51 @@
-$button_blue: rgba(118, 214, 255, 1);
-$button_red: rgba(255, 30, 30, 1);
-$blue_submit-button: rgba(118, 214, 255, 1);
+$black: rgba(0, 0, 0, 0.8);
+$black_button: rgba(60, 60, 60, 1);
 $gray_shadow: rgba(160, 160, 160, 1);
+$gray_text-field: rgba(240, 240, 240, 1);
+$gray_text_in_text-field: rgba(160, 160, 160, 1);
+$orange_button: rgba(248, 182, 45, 1);
 
 .create-form {
     @extend .card;
-    @extend %as_wide_as_parent;
     @extend %text_center;
 }
 .create-form-information {
-    display: flex;
+    @extend %flex;
     flex-direction: row;
     align-items: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+    padding-bottom: 20px;
 }
     .create-form-information-icon {
-        @extend %half_width_of_parent;
+        width: 40%;
+        padding-right: 20px;
+        padding-left: 20px;
     }
         .create-form-information-icon__img {
             height: 150px;
-            margin-left: 20px;
-            margin-right: 20px;
-            margin-bottom: 10px;
         }
     .create-form-fields {
-        @extend %as_wide_as_parent;
+        width: 60%;
+        padding-left: 20px;
     }
         .create-form-field {
-            display: flex;
-            align-items: center;
             label {
                 font-size: 14px;
             }
+            input {
+                @extend %as_wide_as_parent;
+                line-height: 1.8;
+                border: none;
+                color: $gray_text_in_text-field;
+                background-color: $gray_text-field;
+            }
             .create-form-category_drop_down_list {
                 width: 145px;
+                border-radius: 0;
+                border-style: none;
+                background-color: $gray_text-field;
                 font-size: 12px;
                 .rw-input {
                     font-size: 14px;
@@ -42,16 +55,45 @@ $gray_shadow: rgba(160, 160, 160, 1);
                     font-size: 14px;
                 }
             }
-            .create-form-number_picker {
-                width: 50%;
-                height: 30px;
-                font-size: 12px;
-                .rw-input {
-                    color: black;
-                }
+        }
+        .create-form-field-category {
+            @extend %flex;
+            align-items: center;
+        }
+        .create-form-field-marbles {
+            @extend .create-form-field-category;
+            .rc-slider-step {
+                height: 6px;
             }
-            button {
-                font-size: 14px;
+            .rc-slider-track {
+                height: 6px;
+                background-color: $orange_button;
+            }
+            .rc-slider-dot {
+                width: 15px;
+                height: 15px;
+                background-image: url("../images/marble.png");
+                @extend %background_img_setting;
+            }
+            .rc-slider-handle {
+                width: 15px;
+                height: 15px;
+                background-image: url("../images/marble.png");
+                @extend %background_img_setting;
+            }
+        }
+        .create-form-field-duration {
+            @extend .create-form-field-category;
+            .rc-slider-step {
+                height: 2px;
+                background-color: $black;
+            }
+            .rc-slider-track {
+                height: 2px;
+            }
+            .rc-slider-handle {
+                border-color: $orange_button;
+                background-color: $orange_button;
             }
         }
         .create-form-day-picker {
@@ -59,46 +101,34 @@ $gray_shadow: rgba(160, 160, 160, 1);
                 font-size: 14px;
             }
         }
-            .create-form-day-picker__button {
-                width: 30px;
+            .create-form-day-picker__buttons {
+                @extend %as_wide_as_parent;
             }
-            .create-form-day-picker__button--reset-all {
-                width: 60px;
-            }
-            .create-form-day-picker__button--reset-duration {
-                width: 95px;
-                &:hover {
-                    background-color: $button_blue;
+                .create-form-day-picker__button {
+                    @extend %clickable;
+                    width: 30px;
+                    border: none;
+                    margin: 0 2px;
+                    color: $black_button;
+                    background-color: $black_button;
+                    &:disabled {
+                        cursor: auto;
+                    }
                 }
-            }
-            .create-form-day-picker__button--reset-checkpoint {
-                width: 110px;
-                &:hover {
-                    background-color: $button_red;
+                .create-form-day-picker__button--duration {
+                    color: white;
                 }
-            }
-            .create-form-day-picker__button--duration {
-                width: 30px;
-                background-color: $button_blue;
-            }
-            .create-form-day-picker__button--checkpoint {
-                width: 30px;
-                color: $button_red;
-                background-color: $button_blue;
-            }
-
-            .create-form-day-picker__check-point-list {
-                display: inline-flex;
-            }
+                .create-form-day-picker__button--checkpoint {
+                    color: white;
+                    background-color: $orange_button;
+                }
 
         .create-form-submit-button {
+            @extend %clickable;
             width: 80px;
             height: 30px;
-            padding: 0;
-            border-top: none;
-            border-right: none;
-            border-left: none;
-            box-shadow: 0px 1px 1px $gray_shadow;
+            border: none;
+            margin-top: 20px;
             color: white;
-            background-color: $blue_submit-button;
+            background-color: $orange_button;
         }

@@ -1,6 +1,6 @@
 // dimension
 $grid-item_width: 200px;
-$grid-item--half_width: 420px;
+$grid-item--half_width: 550px;
 $grid-item--friend_width: 170px;
 
 // padding
@@ -26,12 +26,14 @@ $others-color: #f95ab1;
         padding: $grid-item_padding;
     }
     .grid-item--half {
-        @extend .grid-item;
         width: $grid-item--half_width;
     }
     .grid-item--friend {
         @extend .grid-item;
         width: $grid-item--friend_width;
+    }
+    .grid-item--sizer {
+        width: $grid-item_width;
     }
 
     .stamp {
