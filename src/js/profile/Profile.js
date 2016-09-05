@@ -10,7 +10,7 @@ import ProfilePrize from './ProfilePrize';
 /* LUDO TODO: make columnWidth a variable */
 const masonryOptions = {
     itemSelector: ".grid-item--half",
-    columnWidth: 480,
+    columnWidth: 440,
     fitWidth: true
 }
 

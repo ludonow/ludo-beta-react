@@ -5,8 +5,7 @@ variables
 */
 
 .profile-content {
-    @extend .card;
-    @extend %as_wide_as_parent;
+    @extend .profile-element;
 }
     .profile-content-information {
         display: flex;

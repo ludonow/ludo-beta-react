@@ -6,7 +6,7 @@
 
     .profile-element {
         @extend .card;
-        @extend %as_wide_as_parent;
+        padding: $card_padding;
     }
         .profile-element__title {
             padding-bottom: 15px;

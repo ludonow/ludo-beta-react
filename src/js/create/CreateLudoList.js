@@ -18,7 +18,7 @@ import marbleIcon from '../../images/marble.png';
 
 const masonryOptions = {
     itemSelector: ".grid-item",
-    columnWidth: 236,
+    columnWidth: 220,
     fitWidth: true
 }
 

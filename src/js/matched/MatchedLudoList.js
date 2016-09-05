@@ -6,7 +6,7 @@ import MatchedContent from './MatchedContent';
 
 const masonryOptions = {
     itemSelector: ".grid-item",
-    columnWidth: 236,
+    columnWidth: 220,
     fitWidth: true
 }
 
