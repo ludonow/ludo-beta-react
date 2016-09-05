@@ -22,7 +22,6 @@ export default class Header extends React.Component {
                     <HeaderMarbles />
                     <HeaderHeart />
                     {this.props.isProfile ? null : <HeaderRate /> }
-                    {this.props.isProfile ? null : <HeaderClock /> }
                     {this.props.isProfile ? <HeaderLevel />: null }
                 </div>
             </div>

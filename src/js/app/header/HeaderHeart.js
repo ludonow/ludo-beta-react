@@ -6,7 +6,7 @@ export default class HeaderHeart extends React.Component {
     render() {
         return (
             <div className="header-heart">
-                <img src={heartIcon} />
+                <img className="header-heart-icon" src={heartIcon} />
             </div>
         );
     }

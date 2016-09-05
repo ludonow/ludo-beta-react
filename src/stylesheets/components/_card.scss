@@ -1,11 +1,12 @@
+// padding
+$card_padding: 5px;
+$grid-item_padding: 5px;
+
 // dimension
 $grid-item_width: 200px;
-$grid-item--half_width: 550px;
+$detail_equal_to_columns_of_grid_item: 3;
+$grid-item--half_width: $grid-item_width * $detail_equal_to_columns_of_grid_item + $grid-item_padding * 2 * ($detail_equal_to_columns_of_grid_item - 1);
 $grid-item--friend_width: 170px;
-
-// padding
-$card_padding: 10px;
-$grid-item_padding: 5px;
 
 // color
 $card_border-color: hsla(0, 0%, 0%, 0.5);

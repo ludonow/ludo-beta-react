@@ -1,6 +1,13 @@
 .header-heart {
     @extend %flex;
     align-items: center;
-    width: 100px;
-    @extend %as_tall_as_parent;
+    justify-content: center;
+    width: 70px;
+    height: 80px;
+    max-height: 100%;
 }
+    .header-heart-icon {
+        @extend %relative;
+        left: 15px;
+        max-height: 60px;
+    }

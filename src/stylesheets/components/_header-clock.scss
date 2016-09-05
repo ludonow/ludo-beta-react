@@ -8,4 +8,5 @@
     .header-clock__icon {
         @extend %relative;
         height: 70px;
+        max-height: 100%;
     }

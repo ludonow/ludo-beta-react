@@ -4,12 +4,12 @@
 .header-rate {
     @extend %flex;
     @extend %as_tall_as_parent;
+    margin-right: 10px;
     margin-left: 10px;
-    margin-right: 5px;
 }
     .header-rate__circle {
         fill: white;
-        stroke-width: 15px;
+        stroke-width: 10px;
     }
     .header-rate__number {
         color: black;

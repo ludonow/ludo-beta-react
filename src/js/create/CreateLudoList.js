@@ -99,6 +99,7 @@ export default class CreateLudoList extends React.Component {
                 return lifestyleIcon;
         }
     }
+
     addMasonryClass() {
         this.state.masonryCardContent = this.state.rawCardContent.map( (data, index) => {
             return (
@@ -126,7 +127,7 @@ export default class CreateLudoList extends React.Component {
     }
 
     render() {
-        this.addMasonryClass()
+        this.addMasonryClass();
         return (
             <Masonry
                 className="grid"
@@ -136,4 +137,4 @@ export default class CreateLudoList extends React.Component {
             </Masonry>
         );
     }
-}
+};

@@ -1,0 +1,170 @@
+$black: rgba(0, 0, 0, 0.8);
+$black_button: rgba(60, 60, 60, 1);
+$gray_shadow: rgba(160, 160, 160, 1);
+$gray_text-field: rgba(240, 240, 240, 1);
+$gray_text_in_text-field: rgba(160, 160, 160, 1);
+$orange_button: rgba(248, 182, 45, 1);
+
+.create-form {
+    @extend .card;
+    @extend %text_center;
+}
+
+.create-form-information {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.create-form-top-fields {
+    @extend %flex;
+    flex-direction: row;
+}
+
+.create-form-information-icon {
+    width: 40%;
+    height: 50%;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+    .create-form-information-icon__img {
+        height: 150px;
+    }
+
+.create-form-right-fields {
+    width: 60%;
+    padding-left: 20px;
+}
+    .create-form-field {
+        label {
+            // size of title of form element
+            font-size: 14px;
+        }
+        .create-form-field__text-field {
+            @extend %as_wide_as_parent;
+            line-height: 1.8;
+            border: none;
+            color: $gray_text_in_text-field;
+            background-color: $gray_text-field;
+        }
+        .create-form-field__text-field--introduction {
+            height: 100px;
+            // &::-moz-placeholder { /* Firefox 19+ */
+            //     @extend %text_center;
+            // }
+            // &:-ms-input-placeholder { /* IE 10+ */
+            //     @extend %text_center;
+            // }
+            // &:-moz-placeholder { /* Firefox 18- */
+            //     @extend %text_center;
+            // }
+            &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                @extend %text_center;
+                line-height: 100px;
+            }
+        }
+    }
+    .create-form-field-category {
+        @extend %flex;
+        align-items: center;
+        .create-form-category_drop_down_list {
+            @extend %as_wide_as_parent;
+            border-radius: 0;
+            border-style: none;
+            background-color: $gray_text-field;
+            // font size in the selection list
+            font-size: 14px;
+            .rw-input {
+                // font size in the text field of drop-down list
+                font-size: 14px;
+                color: black;
+            }
+            span {
+                // size of drop-down list arrow icon
+                font-size: 14px;
+            }
+        }
+    }
+
+.create-form-bottom-fields {
+    margin-top: 20px;
+}
+
+.create-form-slider {
+    @extend %flex;
+    align-items: center;
+}
+    .create-form-slider--marbles {
+        // overwrite react-component slider
+        .rc-slider-step {
+            height: 6px;
+        }
+        .rc-slider-track {
+            height: 6px;
+            background-color: $orange_button;
+        }
+        .rc-slider-dot {
+            width: 15px;
+            height: 15px;
+            background-image: url("../images/marble.png");
+            @extend %background_img_setting;
+        }
+        .rc-slider-handle {
+            width: 15px;
+            height: 15px;
+            background-image: url("../images/marble.png");
+            @extend %background_img_setting;
+        }
+    }
+    .create-form-slider--duration {
+        // overwrite react-component slider
+        .rc-slider-step {
+            height: 2px;
+            background-color: $black;
+        }
+        .rc-slider-track {
+            height: 2px;
+        }
+        .rc-slider-handle {
+            border-color: $orange_button;
+            background-color: $orange_button;
+        }
+    }
+
+.create-form-day-picker {
+    margin-bottom: 30px;
+}
+    .create-form-day-picker__buttons {
+        @extend %as_wide_as_parent;
+    }
+        .create-form-day-picker__button {
+            @extend .ludo-button;
+            width: 30px;
+            margin: 2px;
+            color: $black_button;
+            background-color: $black_button;
+            &:disabled {
+                cursor: auto;
+            }
+        }
+        .create-form-day-picker__button--duration {
+            color: white;
+        }
+        .create-form-day-picker__button--checkpoint {
+            color: white;
+            background-color: $orange_button;
+        }
+
+.create-form-bottom-fields__text-field {
+
+}
+
+.create-form-submit-button {
+    @extend .ludo-button;
+    width: 80px;
+    height: 30px;
+    margin-top: 20px;
+    color: white;
+    background-color: $orange_button;
+}

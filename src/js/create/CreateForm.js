@@ -44,13 +44,6 @@ export default class CreateForm extends React.Component {
         this.handleTagsChange = this.handleTagsChange.bind(this);
     }
 
-    componentWillMount() {
-        const { marblesMarks, maxMarbles } = this.state;
-        for(let i = 10; i <= maxMarbles; i = i + 10) {
-            marblesMarks[i] = i.toString();
-        };
-    }
-
     handleCategoryChange(category) {
         let category_id = 0;
         switch (category) {
@@ -266,7 +259,7 @@ export default class CreateForm extends React.Component {
     }
 
     render() {
-        const { ludoCreateForm, category, durationMarks, isDurationClick, marblesMarks, maxDuration } = this.state;
+        const { ludoCreateForm, category, isDurationClick, maxDuration } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -295,35 +288,51 @@ export default class CreateForm extends React.Component {
         };
         return (
             <form onSubmit={this.handleSubmit} className="create-form-information">
-                <div className="create-form-information-icon">
-                    <img className="create-form-information-icon__img" src={this.handleIconChange()} />
-                </div>
-                <div className="create-form-fields">
-                    <div className="create-form-field">
-                        <div className="create-form-field-category">
-                            <label>Category:&nbsp;&nbsp;</label>
-                            <DropdownList 
-                                className="create-form-category_drop_down_list"
-                                data={category}
-                                onChange={this.handleCategoryChange}
-                                defaultValue="lifestyle"
+                <div className="create-form-top-fields">
+                    <div className="create-form-information-icon">
+                        <img className="create-form-information-icon__img" src={this.handleIconChange()} />
+                    </div>
+                    <div className="create-form-right-fields">
+                        <div className="create-form-field">
+                            <div className="create-form-field-category">
+                                <label>Category:&nbsp;&nbsp;</label>
+                                <DropdownList 
+                                    className="create-form-category_drop_down_list"
+                                    data={category}
+                                    onChange={this.handleCategoryChange}
+                                    defaultValue="lifestyle"
+                                />
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div className="create-form-field">
+                            <input className="create-form-field__text-field" type="text" placeholder="   Title" 
+                                onChange={this.handleTitleChange}
+                            />
+                        </div>
+                        <br />
+                        <br />
+                        <div className="create-form-field">
+                            <input className="create-form-field__text-field" type="text" placeholder="   #hashtag" 
+                                onChange={this.handleTagsChange}
                             />
                         </div>
                     </div>
-                    <br />
+                </div>
+                <div className="create-form-bottom-fields">
                     <div className="create-form-field">
-                        <div className="create-form-field-marbles">
+                        <div className="create-form-slider create-form-slider--marbles">
                             <label>Marbles:&nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <RcSlider max={50} min={1} 
                                 defaultValue={1} value={ludoCreateForm.marbles}
-                                marks={marblesMarks}
                                 onChange={this.handleMarblesChange}
                             />
                         </div>
                     </div>
                     <br />
                     <div className="create-form-field">
-                        <div className="create-form-field-duration">
+                        <div className="create-form-slider create-form-slider--duration">
                             <label>Duration:&nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <RcSlider 
                                 max={maxDuration} min={3} 
@@ -337,19 +346,14 @@ export default class CreateForm extends React.Component {
                         <div className="create-form-day-picker__buttons">
                             {dayPickerButtons}
                         </div>
-                        <br />
                     </div>
                     <div className="create-form-field">
-                        <input type="text" placeholder="   Title" onChange={this.handleTitleChange}/>
+                        <textarea className="create-form-field__text-field create-form-field__text-field--introduction" 
+                            placeholder="Introduction" 
+                            onChange={this.handleIntroductionChange}
+                        />
                     </div>
                     <br />
-                    <div className="create-form-field">
-                        <input type="text" placeholder="   Introduction" onChange={this.handleIntroductionChange}/>
-                    </div>
-                    <br />
-                    <div className="create-form-field">
-                        <input type="text" placeholder="   #hashtag" onChange={this.handleTagsChange}/>
-                    </div>
                     <button className="create-form-submit-button" type="submit">
                         START
                     </button>
