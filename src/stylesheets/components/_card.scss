@@ -27,6 +27,7 @@ $others-color: #f95ab1;
     }
     .grid-item--half {
         width: $grid-item--half_width;
+        padding: $grid-item_padding;
     }
     .grid-item--friend {
         @extend .grid-item;
