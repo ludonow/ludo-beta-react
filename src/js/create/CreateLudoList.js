@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
-import CreateContent from './CreateContent';
+import CreateForm from './CreateForm';
 import Matched from '../matched/Matched';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
@@ -132,7 +132,7 @@ export default class CreateLudoList extends React.Component {
             <Masonry
                 className="grid"
                 options={masonryOptions} >
-                <CreateContent />
+                <CreateForm />
                 {this.state.masonryCardContent}
             </Masonry>
         );

@@ -1,0 +1,161 @@
+$black: rgba(0, 0, 0, 0.8);
+$black_button: rgba(60, 60, 60, 1);
+$gray_shadow: rgba(160, 160, 160, 1);
+$gray_text-field: rgba(240, 240, 240, 1);
+$gray_text_in_text-field: rgba(160, 160, 160, 1);
+$orange_button: rgba(248, 182, 45, 1);
+
+.ludo-detail-information-container {
+    @extend .card;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    @extend %text_center;
+}
+
+.ludo-detail-information-top-container {
+    @extend %flex;
+    flex-direction: row;
+
+    .ludo-detail-information-fields {
+        width: 60%;
+        padding-left: 20px;
+    }
+
+    .ludo-detail-information-icon {
+        width: 40%;
+        height: 50%;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+        .ludo-detail-information-icon__img {
+            height: 150px;
+        }
+}
+
+.ludo-detail-information-bottom-container {
+    margin-top: 20px;
+}
+
+.ludo-detail-information-day-picker {
+    margin: 30px 0;
+}
+    .ludo-detail-information-day-picker__button {
+        @extend .ludo-button;
+        width: 30px;
+        margin: 2px;
+        color: $black_button;
+        background-color: $black_button;
+        &:disabled {
+            cursor: auto;
+        }
+    }
+    .ludo-detail-information-day-picker__button--duration {
+        color: white;
+    }
+    .ludo-detail-information-day-picker__button--checkpoint {
+        color: white;
+        background-color: $orange_button;
+    }
+
+.ludo-detail-information-field {
+    label {
+        // size of title of form element
+        font-size: 14px;
+    }
+}
+    .ludo-detail-information-field__text-field {
+        @extend %as_wide_as_parent;
+        line-height: 1.8;
+        border: none;
+        color: $gray_text_in_text-field;
+        background-color: $gray_text-field;
+    }
+    .ludo-information-field__text-field--introduction {
+        height: 100px;
+        // &::-moz-placeholder { /* Firefox 19+ */
+        //     @extend %text_center;
+        // }
+        // &:-ms-input-placeholder { /* IE 10+ */
+        //     @extend %text_center;
+        // }
+        // &:-moz-placeholder { /* Firefox 18- */
+        //     @extend %text_center;
+        // }
+        &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            @extend %text_center;
+            line-height: 100px;
+        }
+    }
+    .ludo-detail-information-field-dropdown-list-container {
+        @extend %flex;
+        align-items: center;
+        .ludo-detail-information-field-dropdown-list {
+            @extend %as_wide_as_parent;
+            border-radius: 0;
+            border-style: none;
+            background-color: $gray_text-field;
+            // font size in the selection list
+            font-size: 14px;
+            .rw-input {
+                // font size in the text field of drop-down list
+                font-size: 14px;
+                color: black;
+            }
+            span {
+                // size of drop-down list arrow icon
+                font-size: 14px;
+            }
+        }
+    }
+
+.ludo-detail-information-slider {
+    @extend %flex;
+    align-items: center;
+}
+    .ludo-detail-information-slider--marbles {
+        // overwrite react-component slider
+        .rc-slider-step {
+            height: 6px;
+        }
+        .rc-slider-track {
+            height: 6px;
+            background-color: $orange_button;
+        }
+        .rc-slider-dot {
+            width: 15px;
+            height: 15px;
+            background-image: url("../images/marble.png");
+            @extend %background_img_setting;
+        }
+        .rc-slider-handle {
+            width: 15px;
+            height: 15px;
+            background-image: url("../images/marble.png");
+            @extend %background_img_setting;
+        }
+    }
+    .ludo-detail-information-slider--duration {
+        // overwrite react-component slider
+        .rc-slider-step {
+            height: 2px;
+            background-color: $black;
+        }
+        .rc-slider-track {
+            height: 2px;
+        }
+        .rc-slider-handle {
+            border-color: $orange_button;
+            background-color: $orange_button;
+        }
+    }
+
+.ludo-detail-information-submit-button {
+    @extend .ludo-button;
+    width: 80px;
+    height: 30px;
+    margin-top: 20px;
+    color: white;
+    background-color: $orange_button;
+}
