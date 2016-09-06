@@ -91,7 +91,8 @@
 }
 
 .grid-item--half {
-  width: 620px;
+  width: 550px;
+  padding: 5px;
 }
 
 .grid-item--friend {
@@ -623,12 +624,12 @@ body {
 }
 
 .search {
-  padding: 5px;
+  padding: 15px;
 }
 
 .search-card {
-  width: 190px;
-  padding: 5px;
+  width: 170px;
+  padding: 15px;
 }
 
 .search-icon,.search-text {
@@ -788,7 +789,7 @@ body {
 }
 
 .profile-content,.profile-element {
-  padding: 5px;
+  padding: 15px;
 }
 
 .profile-element__title {
@@ -1878,4 +1879,4 @@ button.rw-input::-moz-focus-inner,input.rw-input::-moz-focus-inner {
   border-width: 4px 4px 0;
   border-top-color: #6c6c6c;
 }
-/*# sourceMappingURL=mainscss.a753312c3ed485041948.css.map*/
+/*# sourceMappingURL=mainscss.37c7eee33f7b140e52f0.css.map*/
