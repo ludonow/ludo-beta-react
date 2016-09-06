@@ -42,7 +42,7 @@
   width: 50%;
 }
 
-.header-clock,.header-finish-rate,.header-left,.header-level,.header-Ludo-logo,.header-Ludo-logo__icon,.header-marbles,.header-rate,.header-right,.header-win-rate,.right-sidebar-item__icon,.search-icon,.search-text {
+.grid-item--ludo-detail-information,.header-clock,.header-finish-rate,.header-left,.header-level,.header-Ludo-logo,.header-Ludo-logo__icon,.header-marbles,.header-rate,.header-right,.header-win-rate,.right-sidebar-item__icon,.search-icon,.search-text {
   height: 100%;
 }
 
@@ -85,9 +85,13 @@
   padding: 5px;
 }
 
+.grid-item--ludo-detail-information {
+  width: 620px;
+  margin-top: 5px;
+}
+
 .grid-item--half {
   width: 620px;
-  padding: 5px;
 }
 
 .grid-item--friend {
@@ -1874,4 +1878,4 @@ button.rw-input::-moz-focus-inner,input.rw-input::-moz-focus-inner {
   border-width: 4px 4px 0;
   border-top-color: #6c6c6c;
 }
-/*# sourceMappingURL=mainscss.7fa1befa85109b85835b.css.map*/
+/*# sourceMappingURL=mainscss.a753312c3ed485041948.css.map*/

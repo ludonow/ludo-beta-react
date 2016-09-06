@@ -19,7 +19,8 @@ import marbleIcon from '../../images/marble.png';
 const masonryOptions = {
     itemSelector: ".grid-item",
     columnWidth: 210,
-    fitWidth: true
+    fitWidth: true,
+    stamp: ".grid-item--ludo-detail-information"
 }
 
 export default class CreateLudoList extends React.Component {
