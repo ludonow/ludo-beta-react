@@ -31,7 +31,7 @@ const gridItemWidth = 210 + 2*cardPadding;
 const mainWidth = screenWidth - rightSidebarWidth;
 const totalColumn = Math.floor(mainWidth / gridItemWidth);
 const contentPaddingX = Math.round( (mainWidth - totalColumn * gridItemWidth)/2 );
-const searchRight = rightSidebarWidth + contentPaddingX + cardPadding + 1;
+const searchRight = rightSidebarWidth + contentPaddingX + cardPadding*3 + 1;
 
 const style = {
     search: {

@@ -294,27 +294,21 @@ export default class CreateForm extends React.Component {
                             <img className="ludo-detail-information-icon__img" src={this.handleIconChange()} />
                         </div>
                         <div className="ludo-detail-information-fields">
-                            <div className="ludo-detail-information-field">
-                                <div className="ludo-detail-information-field-dropdown-list-container">
-                                    <label>Category:&nbsp;&nbsp;</label>
-                                    <DropdownList 
-                                        className="ludo-detail-information-field-dropdown-list"
-                                        data={category}
-                                        onChange={this.handleCategoryChange}
-                                        defaultValue="lifestyle"
-                                    />
-                                </div>
+                            <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
+                                <label>Category:&nbsp;&nbsp;</label>
+                                <DropdownList 
+                                    className="ludo-detail-information-field-dropdown-list"
+                                    data={category}
+                                    onChange={this.handleCategoryChange}
+                                    defaultValue="lifestyle"
+                                />
                             </div>
-                            <br />
-                            <br />
-                            <div className="ludo-detail-information-field">
+                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
                                 <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
                                     onChange={this.handleTitleChange}
                                 />
                             </div>
-                            <br />
-                            <br />
-                            <div className="ludo-detail-information-field">
+                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
                                 <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
                                     onChange={this.handleTagsChange}
                                 />
