@@ -295,7 +295,7 @@ export default class CreateForm extends React.Component {
                         </div>
                         <div className="ludo-detail-information-fields">
                             <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
-                                <label>Category:&nbsp;&nbsp;</label>
+                                <label>Category:</label>
                                 <DropdownList 
                                     className="ludo-detail-information-field-dropdown-list"
                                     data={category}
@@ -318,26 +318,25 @@ export default class CreateForm extends React.Component {
                     <div className="ludo-detail-information-bottom-container">
                         <div className="ludo-detail-information-field">
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <label>Marbles:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <label>Marbles:</label>
                                 <RcSlider max={50} min={1} 
                                     defaultValue={1} value={ludoCreateForm.marbles}
                                     onChange={this.handleMarblesChange}
                                 />
                             </div>
                         </div>
-                        <br />
                         <div className="ludo-detail-information-field">
+                            <label>Duration:</label>
+                        </div>
+                        <div className="ludo-detail-information-day-picker">
+                            {dayPickerButtons}
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
-                                <label>Duration:&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                 <RcSlider 
                                     max={maxDuration} min={3} 
                                     defaultValue={3} value={ludoCreateForm.duration}
                                     onChange={this.handleDurationValue}
                                 />
                             </div>
-                        </div>
-                        <div className="ludo-detail-information-day-picker">
-                            {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-field">
                             <textarea 
@@ -346,9 +345,8 @@ export default class CreateForm extends React.Component {
                                 onChange={this.handleIntroductionChange}
                             />
                         </div>
-                        <br />
                         <button className="ludo-detail-information-submit-button" type="submit">
-                            START
+                            Start
                         </button>
                     </div>
                 </form>

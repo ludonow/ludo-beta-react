@@ -59,5 +59,8 @@
 
 .ludo-button {
     @extend %clickable;
-    border: none;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    // border: none;
 }

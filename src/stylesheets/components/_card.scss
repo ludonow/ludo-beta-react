@@ -43,7 +43,7 @@ $new_skill-text-color: #fdcaad;
     .grid-item--ludo-detail-information {
         width: $grid-item--ludo-detail-information_width;
         @extend %as_tall_as_parent;
-        margin-top: $grid-item_padding;
+        padding-top: $grid-item_padding;
     }
     .grid-item--half {
         width: $grid-item--half_width;

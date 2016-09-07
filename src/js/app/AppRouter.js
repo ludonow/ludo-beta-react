@@ -6,7 +6,7 @@ import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
-import Matched from '../matched/Matched';
+import Active from '../active/Active';
 
 // import '../../stylesheets/main.scss';
 
@@ -21,7 +21,7 @@ export default class AppRouter extends React.Component {
                     <Route path="profile" component={Profile}></Route>
                     <Route path="create" component={Create}></Route>
                     <Route path="friend" component={Friend}></Route>
-                    <Route path="matched" component={Matched}></Route>
+                    <Route path="active" component={Active}></Route>
                 </Route>
             </Router>
         );

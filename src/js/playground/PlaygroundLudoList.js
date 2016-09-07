@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router';
 import axios from 'axios';
 import Masonry from 'react-masonry-component';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import QuickStart from './QuickStart';
+import Active from '../active/Active';
+import Create from '../create/Create';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -242,11 +245,11 @@ export default class PlaygroundLudoList extends React.Component {
                             </div>
                         </div>
                         <div className="card-bottom">
-                            <div 
-                                className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`} 
-                                
-                            />
-                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
+                            <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                <Link to={(data.stage === 1) ? `Create` : `Active`}>
+                                    <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

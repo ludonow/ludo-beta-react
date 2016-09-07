@@ -4,7 +4,7 @@ import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
 import CreateForm from './CreateForm';
-import Matched from '../matched/Matched';
+import Active from '../active/Active';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -73,6 +73,27 @@ export default class CreateLudoList extends React.Component {
     }
 
     handleCardBackClass(category_id) {
+        switch (category_id) {
+            case 1:
+                return `lifestyle`;
+            case 2:
+                return `read`;
+            case 3:
+                return `exercise`;
+            case 4:
+                return `study`;
+            case 5:
+                return `new_skill`;
+            case 6:
+                return `unmentionables`;
+            case 7:
+                return `others`;
+            default:
+                return `lifestyle`;
+        }
+    }
+
+    handleCardBottomGoClass(category_id) {
         switch (category_id) {
             case 1:
                 return `lifestyle`;
@@ -176,7 +197,7 @@ export default class CreateLudoList extends React.Component {
             return (
                 <div className={`grid-item`} key={`card-${index}`}>
                     <div 
-                        className={`card card-front ${isThisCardFlipped ? null : "card-flip"}`}
+                        className={`card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
                         id={index}
                         onClick={buttonClickHandler}
                     >
@@ -197,7 +218,7 @@ export default class CreateLudoList extends React.Component {
                         </div>
                     </div>
                     <div 
-                        className={`card card-back ${isThisCardFlipped ? "card-flip" : null} ${this.handleCardBackClass(data.category_id)}`}
+                        className={`card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
                         id={index}
                         onClick={buttonClickHandler}
                     >
@@ -208,6 +229,13 @@ export default class CreateLudoList extends React.Component {
                             <br />
                             <div className="card-hashtags">
                                 {data.tags}
+                            </div>
+                        </div>
+                        <div className="card-bottom">
+                            <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                <Link to={(data.stage === 1) ? `Create` : `Active`}>
+                                    <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
+                                </Link>
                             </div>
                         </div>
                     </div>
