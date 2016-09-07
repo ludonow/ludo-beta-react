@@ -210,7 +210,6 @@ export default class ActiveLudoList extends React.Component {
                         onClick={buttonClickHandler}
                     >
                         <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
-                            <div>{data.title}</div>
                             <div className="title">{data.title}</div>
                             <div className="duration">{data.duration} days</div>
                             <div className="card-marble">
