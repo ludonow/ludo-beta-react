@@ -26,7 +26,7 @@ export default class ActiveLudoList extends React.Component {
     constructor() {
         super();
         this.state = {
-            flippedKey: [0, 1, 2, 3],
+            flippedKey: [],
             rawCardContent: [],
             masonryCardContent: []
         };
@@ -42,6 +42,15 @@ export default class ActiveLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
+        // this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
+        //     .then(function (response) {
+        //         _this.setState({
+        //             rawCardContent: response.data["ludo-list"].Items
+        //         });
+        //     })
+        //     .catch(function(error) {
+        //         console.log(error);
+        //     });
         this.serverRequest = axios.get('data/LudoData.json')
             .then(function (response) {
                 _this.setState({

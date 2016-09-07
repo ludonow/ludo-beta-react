@@ -24,11 +24,13 @@ const masonryOptions = {
     fitWidth: true
 };
 
+const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+
 export default class PlaygroundLudoList extends React.Component {
     constructor() {
         super();
         this.state = {
-            flippedKey: [0, 1, 2, 3],
+            flippedKey: [],
             rawCardContent: [],
             masonryCardContent: []
         };
@@ -44,6 +46,15 @@ export default class PlaygroundLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
+        // this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
+        //     .then(function (response) {
+        //         _this.setState({
+        //             rawCardContent: response.data["ludo-list"].Items
+        //         });
+        //     })
+        //     .catch(function(error) {
+        //         console.log(error);
+        //     });
         this.serverRequest = axios.get('data/LudoData.json')
             .then(function (response) {
                 _this.setState({
@@ -66,7 +77,8 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardStage(stage) {
-        if (stage == 1) {
+        const ludo_stage = Number(stage); 
+        if (ludo_stage == 1) {
             return `card-bottom__stage--opened`;
         } else {
             return `card-bottom__stage--closed`;
@@ -75,6 +87,7 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardBackClass(category_id) {
+        const id = Number(category_id); 
         switch (category_id) {
             case 1:
                 return `lifestyle`;
@@ -96,6 +109,7 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardBottomGoClass(category_id) {
+        const id = Number(category_id); 
         switch (category_id) {
             case 1:
                 return `lifestyle`;
@@ -128,6 +142,7 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardFrontTopClass(category_id) {
+        const id = Number(category_id); 
         switch (category_id) {
             case 1:
                 return `lifestyle`;
@@ -149,6 +164,7 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCategoryIcon(category_id) {
+        const id = Number(category_id); 
         switch (category_id) {
             case 1:
                 return lifestyleIcon;
@@ -182,8 +198,6 @@ export default class PlaygroundLudoList extends React.Component {
                 flippedKey
             })
         );
-        console.log('showBack');
-        console.log('flippedKey', flippedKey);
     }
 
     showFront(event) {
@@ -199,8 +213,6 @@ export default class PlaygroundLudoList extends React.Component {
                 flippedKey
             })
         );
-        console.log('showFront');
-        console.log('flippedKey', flippedKey);
     }
 
     addMasonryClass() {

@@ -23,11 +23,13 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 }
 
+const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+
 export default class CreateLudoList extends React.Component {
     constructor() {
         super();
         this.state = {
-            flippedKey: [0, 1, 2, 3],
+            flippedKey: [],
             rawCardContent: [],
             masonryCardContent: []
         };
@@ -43,6 +45,15 @@ export default class CreateLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
+        // this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
+        //     .then(function (response) {
+        //         _this.setState({
+        //             rawCardContent: response.data["ludo-list"].Items
+        //         });
+        //     })
+        //     .catch(function(error) {
+        //         console.log(error);
+        //     });
         this.serverRequest = axios.get('data/LudoData.json')
             .then(function (response) {
                 _this.setState({
@@ -169,8 +180,6 @@ export default class CreateLudoList extends React.Component {
                 flippedKey
             })
         );
-        console.log('showBack');
-        console.log('flippedKey', flippedKey);
     }
 
     showFront(event) {
@@ -186,8 +195,6 @@ export default class CreateLudoList extends React.Component {
                 flippedKey
             })
         );
-        console.log('showFront');
-        console.log('flippedKey', flippedKey);
     }
 
     addMasonryClass() {

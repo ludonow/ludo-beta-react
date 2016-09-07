@@ -232,6 +232,15 @@ export default class ActiveForm extends React.Component {
             const { ludoCreateForm } = this.state;
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
+
+            // axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
+            // .then(function (response) {
+            //     console.log('response', response.data.status);
+            // })
+            // .catch(function (error) {
+            //     console.log('error', error);
+            // });
+            
             setTimeout(() => {  // simulate server latency
                 window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
             }, 200)

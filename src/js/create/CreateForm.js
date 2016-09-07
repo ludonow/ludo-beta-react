@@ -1,6 +1,7 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
+import axios from 'axios';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -9,6 +10,8 @@ import studyIcon from '../../images/category_icon/study.svg';
 import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
+
+const url = 'http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com';
 
 export default class CreateForm extends React.Component {
     constructor(props) {
@@ -232,6 +235,15 @@ export default class CreateForm extends React.Component {
             const { ludoCreateForm } = this.state;
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
+
+            // axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
+            // .then(function (response) {
+            //     console.log('response', response.data.status);
+            // })
+            // .catch(function (error) {
+            //     console.log('error', error);
+            // });
+
             setTimeout(() => {  // simulate server latency
                 window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
             }, 200)

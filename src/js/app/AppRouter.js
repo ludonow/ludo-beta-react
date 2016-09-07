@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, IndexRedirect, hashHistory } from "react-router";
 
 import App from './App';
+import Login from './Login';
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 import Create from '../create/Create';
@@ -22,6 +23,7 @@ export default class AppRouter extends React.Component {
                     <Route path="create" component={Create}></Route>
                     <Route path="friend" component={Friend}></Route>
                     <Route path="active" component={Active}></Route>
+                    <Route path="login" component={Login}></Route>
                 </Route>
             </Router>
         );

@@ -1,0 +1,25 @@
+.link-to-login-button {
+    @extend %relative;
+    left: 150px;
+    top: 12px;
+    width: 80px;
+    height: 40px;
+    font-size: 20px;
+}
+
+.login-container {
+    @extend %flex;
+    justify-content: center;
+    width: 450px;
+    height: 530px;
+    @extend %margin_center_x;
+    @extend %text_center;
+    background-color: white;
+
+    .logo-container {
+        .logo-icon {
+            margin-top: 50px;
+            width: 205px;
+        }
+    }
+}

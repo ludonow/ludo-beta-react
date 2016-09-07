@@ -19,7 +19,6 @@ export default class App extends React.Component {
                 <Sidebar />
                 <div className="main-container">
                     {this.props.children}
-                    {isPlayground ? <Search /> : null}
                 </div>
             </div>
         );
