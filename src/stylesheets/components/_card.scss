@@ -11,6 +11,9 @@ $grid-item--friend_width: 170px;
 
 // color
 $card_border-color: hsla(0, 0%, 0%, 0.5);
+$green_opened: #009944;
+$red_active: #e60012;
+
 $lifestyle-color: #53cef4;
 $read-color: #535cf9;
 $exercise-color: #81ea9f;
@@ -18,6 +21,16 @@ $study-color: #ff6d55;
 $new_skill-color: #f2f297;
 $unmentionables-color: #7f297d;
 $others-color: #f95ab1;
+
+$lifestyle-triangle-color: #dcf5fc;
+$read-triangle-color: #dcdefd;
+$exercise-triangle-color: #e5faeb;
+$study-triangle-color: #ffe1dd;
+$new_skill-triangle-color: #fcfcea;
+$unmentionables-triangle-color: #e5d4e5;
+$others-triangle-color: #fddeef;
+
+$new_skill-text-color: #fdcaad;
 
 .grid {
     @extend %relative;
@@ -88,10 +101,10 @@ $others-color: #f95ab1;
                 border-width: 0 0 30px 30px;
             }
             .card-bottom__stage--opened {
-                border-color: transparent transparent #33ad69 transparent;
+                border-color: transparent transparent $green_opened transparent;
             }
             .card-bottom__stage--closed {
-                border-color: transparent transparent #eb3341 transparent;
+                border-color: transparent transparent $red_active transparent;
             }
 
         .card-marble {
@@ -113,11 +126,10 @@ $others-color: #f95ab1;
     }
 
     .card-back {
-        position: absolute;
+        @extend %absolute;
         top: 5px;
         left: 5px; 
         width: 200px;
-        height: 285px;
         @extend %text_center;
         font-size: 14px;
         opacity: 0;
@@ -128,14 +140,36 @@ $others-color: #f95ab1;
         .card-introduction {
             @extend %flex;
             justify-content: center;
+            align-items: center;
+            height: 90px;
             padding-top: 80px;
             padding-right: 30px;
             padding-left: 30px;
             line-height: 1.3;
         }
         .card-hashtags {
+            height: 20px;
             padding-bottom: 40px;
         }
+        .card-bottom {
+            @extend %flex;
+            align-items: center;
+            max-height: 118px;
+        }
+            .card-bottom__triangle {
+                align-self: flex-end;
+                margin-left: auto;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 40px 40px;
+            }
+            .card-bottom__text {
+                @extend %absolute;
+                right: 5px;
+                bottom: 5px;
+                color: red;
+            }
     }
 
 // card flip animation
@@ -146,7 +180,7 @@ $others-color: #f95ab1;
     transition-timing-function: linear;
 }
 
-// category color
+// card background color by different category
 .lifestyle {
     color: white;
     background-color: $lifestyle-color;
@@ -173,4 +207,58 @@ $others-color: #f95ab1;
 .others {
     color: white;
     background-color: $others-color;
+}
+
+// card back bottom traiangle color by different category
+.card-bottom__triangle.lifestyle {
+    border-color: transparent transparent $lifestyle-triangle-color transparent;
+}
+.card-bottom__triangle.read {
+    border-color: transparent transparent  $read-triangle-color transparent;
+}
+.card-bottom__triangle.exercise {
+    border-color: transparent transparent  $exercise-triangle-color transparent;
+}
+.card-bottom__triangle.study {
+    border-color: transparent transparent  $study-triangle-color transparent;
+}
+.card-bottom__triangle.new_skill {
+    border-color: transparent transparent  $new_skill-triangle-color transparent;
+}
+.card-bottom__triangle.unmentionables {
+    border-color: transparent transparent  $unmentionables-triangle-color transparent;
+}
+.card-bottom__triangle.others {
+    border-color: transparent transparent  $others-triangle-color transparent;
+}
+
+
+// card back bottom text color by different categor
+.card-bottom__text.lifestyle {
+    color: $lifestyle-color;
+    background-color: $lifestyle-triangle-color;
+}
+.card-bottom__text.read {
+    color: $read-color;
+    background-color: $read-triangle-color;
+}
+.card-bottom__text.exercise {
+    color: $exercise-color;
+    background-color: $exercise-triangle-color;
+}
+.card-bottom__text.study {
+    color: $study-color;
+    background-color: $study-triangle-color;
+}
+.card-bottom__text.new_skill {
+    color: $new_skill-text-color;
+    background-color: $new_skill-triangle-color;
+}
+.card-bottom__text.unmentionables {
+    color: $unmentionables-color;
+    background-color: $unmentionables-triangle-color;
+}
+.card-bottom__text.others {
+    color: $others-color;
+    background-color: $others-triangle-color;
 }

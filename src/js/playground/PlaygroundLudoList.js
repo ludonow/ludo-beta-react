@@ -92,6 +92,27 @@ export default class PlaygroundLudoList extends React.Component {
         }
     }
 
+    handleCardBottomGoClass(category_id) {
+        switch (category_id) {
+            case 1:
+                return `lifestyle`;
+            case 2:
+                return `read`;
+            case 3:
+                return `exercise`;
+            case 4:
+                return `study`;
+            case 5:
+                return `new_skill`;
+            case 6:
+                return `unmentionables`;
+            case 7:
+                return `others`;
+            default:
+                return `lifestyle`;
+        }
+    }
+
     handleCardFlipClass(cardIndex) {
         const { flippedKey } = this.state;
         const index = flippedKey.indexOf(cardIndex);
@@ -186,7 +207,7 @@ export default class PlaygroundLudoList extends React.Component {
             return (
                 <div className={`grid-item`} key={`card-${index}`}>
                     <div 
-                        className={`card card-front ${isThisCardFlipped ? null : "card-flip"}`}
+                        className={`card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
                         id={index}
                         onClick={buttonClickHandler}
                     >
@@ -207,7 +228,7 @@ export default class PlaygroundLudoList extends React.Component {
                         </div>
                     </div>
                     <div 
-                        className={`card card-back ${isThisCardFlipped ? "card-flip" : null} ${this.handleCardBackClass(data.category_id)}`}
+                        className={`card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
                         id={index}
                         onClick={buttonClickHandler}
                     >
@@ -219,6 +240,13 @@ export default class PlaygroundLudoList extends React.Component {
                             <div className="card-hashtags">
                                 {data.tags}
                             </div>
+                        </div>
+                        <div className="card-bottom">
+                            <div 
+                                className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`} 
+                                
+                            />
+                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
                         </div>
                     </div>
                 </div>
