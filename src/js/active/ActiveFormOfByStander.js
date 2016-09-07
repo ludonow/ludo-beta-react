@@ -355,7 +355,7 @@ export default class ActiveFormOfByStander extends React.Component {
                             />
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
-                            Quit
+                            Follow
                         </button>
                     </div>
                 </form>

@@ -8,6 +8,7 @@ import Profile from '../profile/Profile';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
 import Active from '../active/Active';
+import Opened from '../opened/Opened';
 
 // import '../../stylesheets/main.scss';
 
@@ -23,6 +24,7 @@ export default class AppRouter extends React.Component {
                     <Route path="create" component={Create}></Route>
                     <Route path="friend" component={Friend}></Route>
                     <Route path="active" component={Active}></Route>
+                    <Route path="opened" component={Opened}></Route>
                     <Route path="login" component={Login}></Route>
                 </Route>
             </Router>

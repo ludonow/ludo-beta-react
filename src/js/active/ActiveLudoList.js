@@ -3,7 +3,9 @@ import { Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
-import ActiveForm from './ActiveForm';
+import ActiveForm from './ActiveFormOfByStander';
+import Active from '../active/Active';
+import Opened from '../opened/Opened';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -177,8 +179,6 @@ export default class ActiveLudoList extends React.Component {
                 flippedKey
             })
         );
-        console.log('showBack');
-        console.log('flippedKey', flippedKey);
     }
 
     showFront(event) {
@@ -194,8 +194,6 @@ export default class ActiveLudoList extends React.Component {
                 flippedKey
             })
         );
-        console.log('showFront');
-        console.log('flippedKey', flippedKey);
     }
 
     addMasonryClass() {
@@ -237,7 +235,7 @@ export default class ActiveLudoList extends React.Component {
                         </div>
                         <div className="card-bottom">
                             <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                <Link to={(data.stage === 1) ? `Create` : `Active`}>
+                                <Link to={(data.stage === 1) ? `Opened` : `Active`}>
                                     <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
                                 </Link>
                             </div>
