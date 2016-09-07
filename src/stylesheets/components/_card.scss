@@ -40,9 +40,6 @@ $others-color: #f95ab1;
         @extend .grid-item;
         width: $grid-item--friend_width;
     }
-    .grid-item--sizer {
-        width: $grid-item_width;
-    }
 
     .stamp {
         @extend .grid-item;
@@ -60,10 +57,17 @@ $others-color: #f95ab1;
             box-shadow: 0 4px 20px 0 rgba(0,0,0,0.19);
             @include transition-duration(0.3s);
         }
+    }
+
+    .card-front {
+        opacity: 0;
+        transform: rotateY(180deg);
+        transition-duration: 0.3s;
+        transition-timing-function: linear;
+
         .card-top {
             padding-top: 70px;
             @extend %text_center;
-            background-color: $lifestyle-color;
         }
         .card-bottom {
             @extend %flex;
@@ -106,32 +110,67 @@ $others-color: #f95ab1;
                 font-size: 12px;
                 color: white;
             }
+    }
 
-        .lifestyle {
-            color: white;
-            background-color: $lifestyle-color;
+    .card-back {
+        position: absolute;
+        top: 5px;
+        left: 5px; 
+        width: 200px;
+        height: 285px;
+        @extend %text_center;
+        font-size: 14px;
+        opacity: 0;
+        transform: rotateY(180deg);
+        transition-duration: 0.3s;
+        transition-timing-function: linear;
+
+        .card-introduction {
+            @extend %flex;
+            justify-content: center;
+            padding-top: 80px;
+            padding-right: 30px;
+            padding-left: 30px;
+            line-height: 1.3;
         }
-        .read {
-            color: white;
-            background-color: $read-color;
-        }
-        .exercise {
-            color: white;
-            background-color: $exercise-color;
-        }
-        .study {
-            color: white;
-            background-color: $study-color;
-        }
-        .new_skill {
-            background-color: $new_skill-color;
-        }
-        .unmentionables {
-            color: white;
-            background-color: $unmentionables-color;
-        }
-        .others {
-            color: white;
-            background-color: $others-color;
+        .card-hashtags {
+            padding-bottom: 40px;
         }
     }
+
+// card flip animation
+.card-flip {
+    opacity: 1;
+    transform: rotateY(0deg);
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+// category color
+.lifestyle {
+    color: white;
+    background-color: $lifestyle-color;
+}
+.read {
+    color: white;
+    background-color: $read-color;
+}
+.exercise {
+    color: white;
+    background-color: $exercise-color;
+}
+.study {
+    color: white;
+    background-color: $study-color;
+}
+.new_skill {
+    background-color: $new_skill-color;
+}
+.unmentionables {
+    color: white;
+    background-color: $unmentionables-color;
+}
+.others {
+    color: white;
+    background-color: $others-color;
+}

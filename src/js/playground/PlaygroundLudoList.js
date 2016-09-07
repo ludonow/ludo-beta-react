@@ -1,6 +1,7 @@
 import React from 'react';
-import Masonry from 'react-masonry-component';
 import axios from 'axios';
+import Masonry from 'react-masonry-component';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import QuickStart from './QuickStart';
 
@@ -18,15 +19,19 @@ const masonryOptions = {
     itemSelector: ".grid-item",
     columnWidth: 210,
     fitWidth: true
-}
+};
 
 export default class PlaygroundLudoList extends React.Component {
     constructor() {
         super();
-        this.state = { 
+        this.state = {
+            flippedKey: [0, 1, 2, 3],
             rawCardContent: [],
             masonryCardContent: []
         };
+        this.showBack = this.showBack.bind(this);
+        this.showFront = this.showFront.bind(this);
+        this.addMasonryClass = this.addMasonryClass.bind(this);
     }
 
     componentDidMount() {
@@ -47,6 +52,16 @@ export default class PlaygroundLudoList extends React.Component {
             });
     }
 
+    handleCardClick(cardIndex) {
+        const index = Number(cardIndex);
+        const state = this.state;
+        this.setState(
+            Object.assign(state, {
+                flippedKey: index
+            })
+        );
+    }
+
     handleCardStage(stage) {
         if (stage == 1) {
             return `card-bottom__stage--opened`;
@@ -56,24 +71,56 @@ export default class PlaygroundLudoList extends React.Component {
         
     }
 
-    handleCardTopClass(category_id) {
+    handleCardBackClass(category_id) {
         switch (category_id) {
             case 1:
-                return `card-top lifestyle`;
+                return `lifestyle`;
             case 2:
-                return `card-top read`;
+                return `read`;
             case 3:
-                return `card-top exercise`;
+                return `exercise`;
             case 4:
-                return `card-top study`;
+                return `study`;
             case 5:
-                return `card-top new_skill`;
+                return `new_skill`;
             case 6:
-                return `card-top unmentionables`;
+                return `unmentionables`;
             case 7:
-                return `card-top others`;
+                return `others`;
             default:
-                return `card-top lifestyle`;
+                return `lifestyle`;
+        }
+    }
+
+    handleCardFlipClass(cardIndex) {
+        const { flippedKey } = this.state;
+        const index = flippedKey.indexOf(cardIndex);
+        const isElementInArray = (index != -1);
+        if (isElementInArray) {
+            return `card-flip`;
+        } else {
+            return ``;
+        }
+    }
+
+    handleCardFrontTopClass(category_id) {
+        switch (category_id) {
+            case 1:
+                return `lifestyle`;
+            case 2:
+                return `read`;
+            case 3:
+                return `exercise`;
+            case 4:
+                return `study`;
+            case 5:
+                return `new_skill`;
+            case 6:
+                return `unmentionables`;
+            case 7:
+                return `others`;
+            default:
+                return `lifestyle`;
         }
     }
 
@@ -98,12 +145,52 @@ export default class PlaygroundLudoList extends React.Component {
         }
     }
 
+    showBack(event) {
+        const cardIndex = Number(event.currentTarget.id);
+        const { flippedKey } = this.state;
+        const index = flippedKey.indexOf(cardIndex);
+        const isElementInArray = (index != -1);
+        if (!isElementInArray) {
+            flippedKey.push(cardIndex);
+        };
+        this.setState(
+            Object.assign(this.state, {
+                flippedKey
+            })
+        );
+        console.log('showBack');
+        console.log('flippedKey', flippedKey);
+    }
+
+    showFront(event) {
+        const cardIndex = Number(event.currentTarget.id);
+        const { flippedKey } = this.state;
+        const index = flippedKey.indexOf(cardIndex);
+        const isElementInArray = (index != -1);
+        if (isElementInArray) {
+            flippedKey.splice(index, 1);
+        };
+        this.setState(
+            Object.assign(this.state, {
+                flippedKey
+            })
+        );
+        console.log('showFront');
+        console.log('flippedKey', flippedKey);
+    }
+
     addMasonryClass() {
         this.state.masonryCardContent = this.state.rawCardContent.map( (data, index) => {
+            const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
+            const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
             return (
-                <div className="grid-item" key={index}>
-                    <div className="card">
-                        <div className={this.handleCardTopClass(data.category_id)}>
+                <div className={`grid-item`} key={`card-${index}`}>
+                    <div 
+                        className={`card card-front ${isThisCardFlipped ? null : "card-flip"}`}
+                        id={index}
+                        onClick={buttonClickHandler}
+                    >
+                        <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
                             <div>{data.title}</div>
                             <br />
                             <div>{data.duration} days</div>
@@ -117,6 +204,21 @@ export default class PlaygroundLudoList extends React.Component {
                         <div className="card-bottom">
                             <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
                             <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
+                        </div>
+                    </div>
+                    <div 
+                        className={`card card-back ${isThisCardFlipped ? "card-flip" : null} ${this.handleCardBackClass(data.category_id)}`}
+                        id={index}
+                        onClick={buttonClickHandler}
+                    >
+                        <div className={this.handleCardBackClass(data.category_id)}>
+                            <div className="card-introduction">
+                                {data.introduction}
+                            </div>
+                            <br />
+                            <div className="card-hashtags">
+                                {data.tags}
+                            </div>
                         </div>
                     </div>
                 </div>
