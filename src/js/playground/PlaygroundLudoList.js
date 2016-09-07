@@ -227,11 +227,8 @@ export default class PlaygroundLudoList extends React.Component {
                         onClick={buttonClickHandler}
                     >
                         <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
-                            <div>{data.title}</div>
-                            <br />
-                            <div>{data.duration} days</div>
-                            <br />
-                            <br />
+                            <div className="title">{data.title}</div>
+                            <div className="duration">{data.duration} days</div>
                             <div className="card-marble">
                                 <img src={marbleIcon} className="card-marble__icon" />
                                 <span className="card-marble__number">{data.marbles}</span>
@@ -251,7 +248,6 @@ export default class PlaygroundLudoList extends React.Component {
                             <div className="card-introduction">
                                 {data.introduction}
                             </div>
-                            <br />
                             <div className="card-hashtags">
                                 {data.tags}
                             </div>

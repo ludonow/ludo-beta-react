@@ -81,6 +81,13 @@ $new_skill-text-color: #fdcaad;
         .card-top {
             padding-top: 70px;
             @extend %text_center;
+
+            .title {
+                margin-bottom: 29px;
+            }
+            .duration {
+                margin-bottom: 16px;
+            }
         }
         .card-bottom {
             @extend %flex;
