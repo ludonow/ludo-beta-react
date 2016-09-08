@@ -46,7 +46,7 @@ export default class CreateLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
-        this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
+        this.serverRequest = axios.get(url + '/apis/ludo?stage=2')
             .then(function (response) {
                 _this.setState({
                     rawCardContent: response.data.ludoList.Items

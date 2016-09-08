@@ -238,7 +238,11 @@ export default class CreateForm extends React.Component {
 
             axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
                 .then(function (response) {
-                    console.log('response', response.data.status);
+                    if (response.data.status == 'err') {
+                        console.log('response error', response.data.status);
+                    } else {
+                        console.log(response.data);
+                    }
                 })
                 .catch(function (error) {
                     console.log('error', error);
