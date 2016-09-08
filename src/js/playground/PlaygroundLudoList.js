@@ -24,7 +24,7 @@ const masonryOptions = {
     fitWidth: true
 };
 
-const url = "https://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class PlaygroundLudoList extends React.Component {
     constructor() {
@@ -48,9 +48,14 @@ export default class PlaygroundLudoList extends React.Component {
 
         this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
             .then(function (response) {
-                _this.setState({
-                    rawCardContent: response.data.ludoList.Items
-                });
+                if(response.data.status != 'err') {
+                    _this.setState({
+                        rawCardContent: response.data.ludoList.Items
+                    });
+                } else {
+                    console.log(response.data.status);
+                }
+
             })
             .catch(function(error) {
                 console.log(error);

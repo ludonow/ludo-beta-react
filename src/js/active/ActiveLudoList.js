@@ -18,7 +18,7 @@ import othersIcon from '../../images/category_icon/others.svg';
 
 import marbleIcon from '../../images/marble.png';
 
-const url = "https://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 const masonryOptions = {
     itemSelector: ".grid-item",
