@@ -11,7 +11,7 @@ import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
 
-const url = 'http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com';
+const url = 'https://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com';
 
 export default class CreateForm extends React.Component {
     constructor(props) {

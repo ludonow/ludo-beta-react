@@ -24,7 +24,7 @@ const masonryOptions = {
     fitWidth: true
 };
 
-const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+const url = "https://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class PlaygroundLudoList extends React.Component {
     constructor() {

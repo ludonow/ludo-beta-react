@@ -24,7 +24,7 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 };
 
-const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+const url = "https://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class CreateLudoList extends React.Component {
     constructor() {
