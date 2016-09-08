@@ -3,6 +3,7 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
+import axios from 'axios';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -11,6 +12,11 @@ import studyIcon from '../../images/category_icon/study.svg';
 import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
+
+import uploadIcon from '../../images/active/upload-icon.png';
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class ActiveFormOfPlayer extends React.Component {
     constructor(props) {
@@ -26,8 +32,9 @@ export default class ActiveFormOfPlayer extends React.Component {
                 tags: ''
             },
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            isImageLightBoxOpen: false,
             isImageUploaded: false,
-            isOpen: false,
+            isIntroductionBlank: true,
             maxDuration: 14,
             maxMarbles: 50,
             files: [],
@@ -41,14 +48,6 @@ export default class ActiveFormOfPlayer extends React.Component {
         this.closeLightbox = this.closeLightbox.bind(this);
         this.moveNext = this.moveNext.bind(this);
         this.movePrev = this.movePrev.bind(this);
-    }
-
-    componentDidMount() {
-        this.getLudoDetailInformation();
-    }
-
-    getLudoDetailInformation() {
-        console.log('getLudoDetailInformation');
     }
 
     handleDayPickerClass(value) {
@@ -85,29 +84,42 @@ export default class ActiveFormOfPlayer extends React.Component {
     }
 
     handleIntroductionChange(event) {
-        const { ludoDetailInformation } = this.state;
-        this.setState(
-            Object.assign(ludoDetailInformation, {
-                introduction: event.target.value
-            })
-        );
+        if (event.target.value) {
+            const { ludoDetailInformation } = this.state;
+            this.setState(
+                Object.assign(ludoDetailInformation, {
+                    introduction: event.target.value,
+                    isIntroductionBlank: false
+                })
+            );
+        } else {
+            const { ludoDetailInformation } = this.state;
+            this.setState(
+                Object.assign(ludoDetailInformation, {
+                    isIntroductionBlank: true
+                })
+            );
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const { ludoDetailInformation } = this.state;
-        const { introduction } = ludoDetailInformation;
-        // axios.post(url + '/apis/ludo', JSON.stringify(ludoDetailInformation, null, 2))
-        // .then(function (response) {
-        //     console.log('response', response.data.status);
-        // })
-        // .catch(function (error) {
-        //     console.log('error', error);
-        // });
-
-        setTimeout(() => {  // simulate server latency
-            window.alert(`Report ${introduction}`);
-        }, 200)
+        const isConfirmReport = window.confirm(`Are you sure to report?`);
+        if (isConfirmReport) {
+            const { ludoDetailInformation } = this.state;
+            const { introduction } = ludoDetailInformation;
+            axios.post('/apis/ludo', ludoDetailInformation)
+            .then(function (response) {
+                if (response.data.status != 'err') {
+                    window.alert(`Sucessfully Report`);
+                } else {
+                    console.log('response', response.data.status);
+                }
+            })
+            .catch(function (error) {
+                console.log('error', error);
+            });
+        }
     }
 
     onDrop(files) {
@@ -117,18 +129,16 @@ export default class ActiveFormOfPlayer extends React.Component {
             Object.assign(state, {
                 files,
                 isImageUploaded: true,
-                isOpen: true
+                isImageLightBoxOpen: true
             })
         );
-        console.log('state files', state.files);
-        console.log(state.files[0]);
     }
 
     closeLightbox() {
         const state = this.state;
         this.setState(
             Object.assign(state, {
-                isOpen: false
+                isImageLightBoxOpen: false
             })
         );
     }
@@ -152,7 +162,7 @@ export default class ActiveFormOfPlayer extends React.Component {
     }
 
     render() {
-        const { ludoDetailInformation, category, files, isOpen, maxDuration } = this.state;
+        const { ludoDetailInformation, category, files, isIntroductionBlank, isImageLightBoxOpen, isImageUploaded, maxDuration } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -226,16 +236,19 @@ export default class ActiveFormOfPlayer extends React.Component {
                             <DropZone onDrop={this.onDrop}
                                 className="ludo-detail-information-upload-picture-button"
                             >
-                                Pic
+                                <img className="ludo-detail-information-upload-picture-button__icon" src={uploadIcon}/>
                             </DropZone>
                         </div>
-                        <button className="ludo-detail-information-submit-button" type="submit">
+                        <button className="ludo-detail-information-submit-button" type="submit" 
+                            disabled={(isIntroductionBlank && !isImageUploaded)
+                                || isImageLightBoxOpen }
+                            >
                             Report
                         </button>
                     </div>
                 </form>
                 {
-                    isOpen > 0 ? 
+                    isImageLightBoxOpen > 0 ? 
                         <Lightbox 
                             className="lighbox-target"
                             mainSrc={files[this.state.uploadImageIndex].preview}

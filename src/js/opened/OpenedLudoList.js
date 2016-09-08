@@ -3,9 +3,10 @@ import { Link } from "react-router";
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
-import OpenedForm from './OpenedFormOfByStander';
 import Active from '../active/Active';
-import Opened from '../opened/Opened';
+import Opened from './Opened';
+import OpenedFormOfStarter from './OpenedFormOfStarter';
+import OpenedFormOfByStander from './OpenedFormOfByStander';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -24,7 +25,8 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 };
 
-const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class CreateLudoList extends React.Component {
     constructor() {
@@ -46,7 +48,7 @@ export default class CreateLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
-        this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
+        this.serverRequest = axios.get('/apis/ludo?stage=1')
             .then(function (response) {
                 _this.setState({
                     rawCardContent: response.data.ludoList.Items
@@ -254,7 +256,7 @@ export default class CreateLudoList extends React.Component {
             <Masonry
                 className="grid"
                 options={masonryOptions} >
-                <OpenedForm />
+                <OpenedFormOfByStander />
                 {this.state.masonryCardContent}
             </Masonry>
         );

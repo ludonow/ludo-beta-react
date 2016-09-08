@@ -1,17 +1,76 @@
 import React from "react";
+import axios from 'axios';
 
 import logoImgPath from '../../images/Ludo_logo.png';
 import googleIcon from '../../images/login/google-icon.png';
 import twitterIcon from '../../images/login/twitter-icon.png';
 import facebookIcon from '../../images/login/facebook-icon.png';
 
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+
 export default class Login extends React.Component {
     constructor() {
         super();
+        this.state = {
+            loginInformation: {
+                email: '',
+                password: ''
+            },
+            isEmailBlank: true,
+            isPasswordBlank: true
+        };
+        this.handleEmailField = this.handleEmailField.bind(this);
+        this.handlePasswordField = this.handlePasswordField.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+    }
+
+    handleEmailField(event) {
+        if(event.target.value) {
+            this.setState(
+                Object.assign(this.state, {
+                    isEmailBlank: false
+                })
+            );
+        } else {
+            this.setState( 
+                Object.assign(this.state, {
+                    isEmailBlank: true
+                })
+            );
+        }
+    }
+
+    handlePasswordField(event) {
+        if(event.target.value) {
+            this.setState(
+                Object.assign(this.state, {
+                    isPasswordBlank: false
+                })
+            );
+        } else {
+            this.setState(
+                Object.assign(this.state, {
+                    isPasswordBlank: true
+                })
+            );
+        }
     }
 
     handleLogin() {
-        console.log('login');
+        const { isEmailBlank, isPasswordBlank } = this.state;
+        if (!isEmailBlank && !isPasswordBlank) {
+            const { loginInformation } = this.state;
+            axios.post('/login', loginInformation)
+            .then(function (response) {
+                window.alert(`successfully login`);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+            });
+        } else {
+            window.alert(`Lack of email or password`);
+        }
     }
 
     render() {
@@ -23,12 +82,12 @@ export default class Login extends React.Component {
                             <img src={logoImgPath} className="logo-icon" />
                         </div>
                         <div className="email">
-                            <input type="text" placeholder="email" />
+                            <input type="text" placeholder="email" onChange={this.handleEmailField}/>
                         </div>
                         <div className="password">
-                            <input type="text" placeholder="password" />
+                            <input type="text" placeholder="password" onChange={this.handlePasswordField}/>
                         </div>
-                        <button className="login">
+                        <button className="login" onClick={this.handleLogin}>
                             Log in
                         </button>
                         <button className="signup">
@@ -49,7 +108,9 @@ export default class Login extends React.Component {
                                 <img src={googleIcon} className="other-login-icon" />
                             </div>
                             <div className="facebook">
-                                <img src={facebookIcon} className="other-login-icon" />
+                                <a href="http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com/auth/facebook">
+                                    <img src={facebookIcon} className="other-login-icon" />
+                                </a>
                             </div>
                         </div>
                     </div>

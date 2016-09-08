@@ -11,7 +11,8 @@ import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
 
-const url = 'http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com';
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class CreateForm extends React.Component {
     constructor(props) {
@@ -236,12 +237,12 @@ export default class CreateForm extends React.Component {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
 
-            axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
+            axios.post('/apis/ludo', ludoCreateForm)
                 .then(function (response) {
                     if (response.data.status == 'err') {
-                        console.log('response error', response.data.status);
+                        window.alert('response error', response.data.status);
                     } else {
-                        console.log(response.data);
+                        window.alert(response.data);
                     }
                 })
                 .catch(function (error) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
+import axios from 'axios';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -14,7 +15,7 @@ export default class OpenedFormOfByStander extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ludoCreateForm: {
+            ludoDetailInformation: {
                 category_id: 1,
                 marbles: 1,
                 duration: 3,
@@ -24,24 +25,13 @@ export default class OpenedFormOfByStander extends React.Component {
                 tags: ''
             },
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
-            currentHoverValue: 3,
-            durationMarks: {},
             isDurationClick: false,
-            marblesMarks: {},
             maxDuration: 14,
             maxMarbles: 50
         };
-        this.handleCategoryChange = this.handleCategoryChange.bind(this);
-        this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
-        this.handleDayPickerMouseOver = this.handleDayPickerMouseOver.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
-        this.handleDurationValue = this.handleDurationValue.bind(this);
-        this.handleIconChange = this.handleIconChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
-        this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
-        this.handleTagsChange = this.handleTagsChange.bind(this);
     }
 
     handleCategoryChange(category) {
@@ -70,17 +60,17 @@ export default class OpenedFormOfByStander extends React.Component {
                 category_id = 7;
                 break;
         };
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 category_id
             })
         );
     }
 
     handleDayPickerClass(value) {
-        const { ludoCreateForm, currentHoverValue, isDurationClick } = this.state;
-        const { checkpoint } = ludoCreateForm;
+        const { ludoDetailInformation, currentHoverValue, isDurationClick } = this.state;
+        const { checkpoint } = ludoDetailInformation;
         const index = checkpoint.indexOf(value);
 
         if(value <= currentHoverValue) { // before hover and now hover
@@ -94,101 +84,9 @@ export default class OpenedFormOfByStander extends React.Component {
         };
     }
 
-    handleDayPickerClick(event) {
-        if (!this.state.isDurationClick) { // initial
-            this.setState(
-                Object.assign(this.state, {
-                    isDurationClick: true
-                })
-            );
-            const { ludoCreateForm } = this.state;
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: Number(event.target.value)
-                })
-            );
-        } else { // finish duration setting
-            const { ludoCreateForm } = this.state;
-            let { checkpoint } = ludoCreateForm;
-            const checkPointNumber = Number(event.target.value);
-            const index = checkpoint.indexOf(checkPointNumber);
-            if (index === -1) { // element not in array
-                checkpoint.push(checkPointNumber);
-            } else { // element is in array
-                checkpoint.splice(index, 1);
-            };
-            checkpoint = checkpoint.sort((a,b) => { return a - b });
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    checkpoint
-                })
-            );
-        }
-    }
-
-    handleDayPickerMouseOver(event) {
-        if (!this.state.isDurationClick) {
-            const { ludoCreateForm } = this.state;
-            if (Number(event.target.value) >= 4) {
-                this.setState(
-                    Object.assign(ludoCreateForm, {
-                        duration: Number(event.target.value),
-                        checkpoint: [Number(event.target.value)]
-                    })
-                );
-                this.setState(
-                    Object.assign(this.state, {
-                        currentHoverValue: Number(event.target.value)
-                    })
-                );
-            } else {
-                this.setState(
-                    Object.assign(ludoCreateForm, {
-                        duration: 3,
-                        checkpoint: [3]
-                    })
-                );
-                this.setState(
-                    Object.assign(this.state, {
-                        currentHoverValue: 3
-                    })
-                );
-            }
-        }
-    }
-
-    handleDurationValue(value) {
-        const { ludoCreateForm } = this.state;
-        if (value >= 4) {
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: value,
-                    checkpoint: [value]
-                })
-            );
-            this.setState(
-                Object.assign(this.state, {
-                    currentHoverValue: value
-                })
-            );
-        } else {
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: 3,
-                    checkpoint: [3]
-                })
-            );
-            this.setState(
-                Object.assign(this.state, {
-                    currentHoverValue: 3
-                })
-            );
-        }
-    }
-
     handleIconChange() {
-        const { ludoCreateForm } = this.state;
-        const { category_id } = ludoCreateForm;
+        const { ludoDetailInformation } = this.state;
+        const { category_id } = ludoDetailInformation;
         switch (category_id) {
             case 1:
                 return lifestyleIcon;
@@ -208,19 +106,10 @@ export default class OpenedFormOfByStander extends React.Component {
     }
 
     handleIntroductionChange(event) {
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 introduction: event.target.value
-            })
-        );
-    }
-
-    handleMarblesChange(marbles) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                marbles
             })
         );
     }
@@ -229,11 +118,11 @@ export default class OpenedFormOfByStander extends React.Component {
         event.preventDefault();
         const { isDurationClick } = this.state;
         if (isDurationClick) {
-            const { ludoCreateForm } = this.state;
-            let { checkpoint } = ludoCreateForm;
+            const { ludoDetailInformation } = this.state;
+            let { checkpoint } = ludoDetailInformation;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
 
-            // axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
+            // axios.post('/apis/ludo', ludoDetailInformation)
             // .then(function (response) {
             //     console.log('response', response.data.status);
             // })
@@ -242,33 +131,15 @@ export default class OpenedFormOfByStander extends React.Component {
             // });
             
             setTimeout(() => {  // simulate server latency
-                window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
+                window.alert(`You submitted:\n\n${JSON.stringify(ludoDetailInformation, null, 2)}`);
             }, 200)
         } else {
             window.alert(`You haven't select the duration`);
         }
     }
 
-    handleTitleChange(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                title: event.target.value
-            })
-        );
-    }
-
-    handleTagsChange(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                tags: event.target.value
-            })
-        );
-    }
-
     render() {
-        const { ludoCreateForm, category, isDurationClick, maxDuration } = this.state;
+        const { ludoDetailInformation, category, isDurationClick, maxDuration } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -278,18 +149,16 @@ export default class OpenedFormOfByStander extends React.Component {
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
                             (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
+                            || (i >= ludoDetailInformation.duration && isDurationClick)
                         }
                     />, <br key="br" /> 
                 );
             } else {
                 dayPickerButtons.push(
                     <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
-                        onClick={this.handleDayPickerClick} 
-                        onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
                             (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
+                            || (i >= ludoDetailInformation.duration && isDurationClick)
                         }
                     />
                 );
@@ -308,18 +177,15 @@ export default class OpenedFormOfByStander extends React.Component {
                                 <DropdownList 
                                     className="ludo-detail-information-field-dropdown-list"
                                     data={category}
-                                    onChange={this.handleCategoryChange}
                                     defaultValue="lifestyle"
                                 />
                             </div>
                             <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
                                 <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
-                                    onChange={this.handleTitleChange}
                                 />
                             </div>
                             <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
                                 <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
-                                    onChange={this.handleTagsChange}
                                 />
                             </div>
                         </div>
@@ -329,8 +195,7 @@ export default class OpenedFormOfByStander extends React.Component {
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
                                 <label>Marbles:</label>
                                 <RcSlider max={50} min={1} 
-                                    defaultValue={1} value={ludoCreateForm.marbles}
-                                    onChange={this.handleMarblesChange}
+                                    defaultValue={1} value={ludoDetailInformation.marbles}
                                 />
                             </div>
                         </div>
@@ -343,15 +208,13 @@ export default class OpenedFormOfByStander extends React.Component {
                         <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
                             <RcSlider 
                                 max={maxDuration} min={3} 
-                                defaultValue={3} value={ludoCreateForm.duration}
-                                onChange={this.handleDurationValue}
+                                defaultValue={3} value={ludoDetailInformation.duration}
                             />
                         </div>
                         <div className="ludo-detail-information-field">
                             <textarea 
                                 className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
                                 placeholder="Introduction" 
-                                onChange={this.handleIntroductionChange}
                             />
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">

@@ -11,7 +11,6 @@ export default class App extends React.Component {
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const isPlayground = this.props.routes[1].path === "playground";
 
         return (
             <div>

@@ -119,10 +119,19 @@ $orange_button: rgba(248, 182, 45, 1);
         @extend %absolute;
         right: -4px;
         @extend %top;
-        width: 40px;
+        width: 50px;
         height: 40px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #85888d;
+        border-top: none;
+        border-right: none;
         color: white;
-        background-color: red;
+
+        .ludo-detail-information-upload-picture-button__icon {
+            width: 35px;
+            height: 35px;
+        }
     }
 }
     .ludo-detail-information-field__text-field {
@@ -206,4 +215,10 @@ $orange_button: rgba(248, 182, 45, 1);
     font-size: 16px;
     color: $black;
     background-color: $orange_button;
+
+    &:disabled {
+        @extend %unclickable;
+        background-color: $gray_text-field;
+        border: none;
+    }
 }

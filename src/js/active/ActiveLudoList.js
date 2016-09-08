@@ -18,7 +18,8 @@ import othersIcon from '../../images/category_icon/others.svg';
 
 import marbleIcon from '../../images/marble.png';
 
-const url = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://api.ludonow.com";
 
 const masonryOptions = {
     itemSelector: ".grid-item",
@@ -47,24 +48,24 @@ export default class ActiveLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
-        // this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
-        //     .then(function (response) {
-        //         _this.setState({
-        //             rawCardContent: response.data.ludoList.Items
-        //         });
-        //     })
-        //     .catch(function(error) {
-        //         console.log(error);
-        //     });
-        this.serverRequest = axios.get('data/LudoData.json')
+        this.serverRequest = axios.get('/apis/ludo?stage=1')
             .then(function (response) {
                 _this.setState({
-                    rawCardContent: response.data
+                    rawCardContent: response.data.ludoList.Items
                 });
             })
             .catch(function(error) {
                 console.log(error);
             });
+        // this.serverRequest = axios.get('data/LudoData.json')
+        //     .then(function (response) {
+        //         _this.setState({
+        //             rawCardContent: response.data
+        //         });
+        //     })
+        //     .catch(function(error) {
+        //         console.log(error);
+        //     });
     }
 
     handleCardClick(cardIndex) {
@@ -250,12 +251,13 @@ export default class ActiveLudoList extends React.Component {
     }
 
     render() {
+        const { rawCardContent } = this.state;
         this.addMasonryClass()
         return (
             <Masonry
                 className="grid"
                 options={masonryOptions} >
-                <ActiveForm />
+                <ActiveForm data={rawCardContent} />
                 {this.state.masonryCardContent}
             </Masonry>
         );
