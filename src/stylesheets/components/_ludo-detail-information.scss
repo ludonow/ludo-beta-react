@@ -104,10 +104,24 @@ $orange_button: rgba(248, 182, 45, 1);
     }
 
 .ludo-detail-information-field {
+    @extend %relative;
     text-align: left;
     label {
         // size of title of form element
         font-size: 14px;
+    }
+    .ludo-detail-information-upload-picture-button {
+        @extend %clickable;
+        @extend %flex;
+        align-items: center;
+        justify-content: center;
+        @extend %absolute;
+        right: -4px;
+        @extend %top;
+        width: 40px;
+        height: 40px;
+        color: white;
+        background-color: red;
     }
 }
     .ludo-detail-information-field__text-field {
@@ -120,6 +134,8 @@ $orange_button: rgba(248, 182, 45, 1);
     .ludo-detail-information-field__text-field--introduction {
         height: 100px;
         box-shadow: 0 2px 2px 0;
+        line-height: 16px;
+        resize : none;
         // &::-moz-placeholder { /* Firefox 19+ */
         //     @extend %text_center;
         // }

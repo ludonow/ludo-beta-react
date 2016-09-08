@@ -1,6 +1,7 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
+import DropZone from 'react-dropzone';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -14,7 +15,7 @@ export default class ActiveFormOfPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ludoCreateForm: {
+            ludoDetailInformation: {
                 category_id: 1,
                 marbles: 1,
                 duration: 3,
@@ -29,7 +30,8 @@ export default class ActiveFormOfPlayer extends React.Component {
             isDurationClick: false,
             marblesMarks: {},
             maxDuration: 14,
-            maxMarbles: 50
+            maxMarbles: 50,
+            files: null
         };
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
@@ -70,17 +72,17 @@ export default class ActiveFormOfPlayer extends React.Component {
                 category_id = 7;
                 break;
         };
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 category_id
             })
         );
     }
 
     handleDayPickerClass(value) {
-        const { ludoCreateForm, currentHoverValue, isDurationClick } = this.state;
-        const { checkpoint } = ludoCreateForm;
+        const { ludoDetailInformation, currentHoverValue, isDurationClick } = this.state;
+        const { checkpoint } = ludoDetailInformation;
         const index = checkpoint.indexOf(value);
 
         if(value <= currentHoverValue) { // before hover and now hover
@@ -101,15 +103,15 @@ export default class ActiveFormOfPlayer extends React.Component {
                     isDurationClick: true
                 })
             );
-            const { ludoCreateForm } = this.state;
+            const { ludoDetailInformation } = this.state;
             this.setState(
-                Object.assign(ludoCreateForm, {
+                Object.assign(ludoDetailInformation, {
                     duration: Number(event.target.value)
                 })
             );
         } else { // finish duration setting
-            const { ludoCreateForm } = this.state;
-            let { checkpoint } = ludoCreateForm;
+            const { ludoDetailInformation } = this.state;
+            let { checkpoint } = ludoDetailInformation;
             const checkPointNumber = Number(event.target.value);
             const index = checkpoint.indexOf(checkPointNumber);
             if (index === -1) { // element not in array
@@ -119,7 +121,7 @@ export default class ActiveFormOfPlayer extends React.Component {
             };
             checkpoint = checkpoint.sort((a,b) => { return a - b });
             this.setState(
-                Object.assign(ludoCreateForm, {
+                Object.assign(ludoDetailInformation, {
                     checkpoint
                 })
             );
@@ -128,10 +130,10 @@ export default class ActiveFormOfPlayer extends React.Component {
 
     handleDayPickerMouseOver(event) {
         if (!this.state.isDurationClick) {
-            const { ludoCreateForm } = this.state;
+            const { ludoDetailInformation } = this.state;
             if (Number(event.target.value) >= 4) {
                 this.setState(
-                    Object.assign(ludoCreateForm, {
+                    Object.assign(ludoDetailInformation, {
                         duration: Number(event.target.value),
                         checkpoint: [Number(event.target.value)]
                     })
@@ -143,7 +145,7 @@ export default class ActiveFormOfPlayer extends React.Component {
                 );
             } else {
                 this.setState(
-                    Object.assign(ludoCreateForm, {
+                    Object.assign(ludoDetailInformation, {
                         duration: 3,
                         checkpoint: [3]
                     })
@@ -158,10 +160,10 @@ export default class ActiveFormOfPlayer extends React.Component {
     }
 
     handleDurationValue(value) {
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         if (value >= 4) {
             this.setState(
-                Object.assign(ludoCreateForm, {
+                Object.assign(ludoDetailInformation, {
                     duration: value,
                     checkpoint: [value]
                 })
@@ -173,7 +175,7 @@ export default class ActiveFormOfPlayer extends React.Component {
             );
         } else {
             this.setState(
-                Object.assign(ludoCreateForm, {
+                Object.assign(ludoDetailInformation, {
                     duration: 3,
                     checkpoint: [3]
                 })
@@ -187,8 +189,8 @@ export default class ActiveFormOfPlayer extends React.Component {
     }
 
     handleIconChange() {
-        const { ludoCreateForm } = this.state;
-        const { category_id } = ludoCreateForm;
+        const { ludoDetailInformation } = this.state;
+        const { category_id } = ludoDetailInformation;
         switch (category_id) {
             case 1:
                 return lifestyleIcon;
@@ -208,67 +210,70 @@ export default class ActiveFormOfPlayer extends React.Component {
     }
 
     handleIntroductionChange(event) {
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 introduction: event.target.value
             })
         );
     }
 
     handleMarblesChange(marbles) {
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 marbles
+            })
+        );
+    }
+
+    handlePictureUpload(files) {
+        console.log('Received files: ', files);
+        const { state } = this.state;
+        this.setState(
+            Object.assign({
+                files
             })
         );
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const { isDurationClick } = this.state;
-        if (isDurationClick) {
-            const { ludoCreateForm } = this.state;
-            let { checkpoint } = ludoCreateForm;
-            checkpoint = checkpoint.sort((a, b) => { return a - b });
+        const { ludoDetailInformation } = this.state;
+        const { introduction } = ludoDetailInformation;
+        // axios.post(url + '/apis/ludo', JSON.stringify(ludoDetailInformation, null, 2))
+        // .then(function (response) {
+        //     console.log('response', response.data.status);
+        // })
+        // .catch(function (error) {
+        //     console.log('error', error);
+        // });
 
-            // axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
-            // .then(function (response) {
-            //     console.log('response', response.data.status);
-            // })
-            // .catch(function (error) {
-            //     console.log('error', error);
-            // });
-            
-            setTimeout(() => {  // simulate server latency
-                window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
-            }, 200)
-        } else {
-            window.alert(`You haven't select the duration`);
-        }
+        setTimeout(() => {  // simulate server latency
+            window.alert(`Report ${introduction}`);
+        }, 200)
     }
 
     handleTitleChange(event) {
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 title: event.target.value
             })
         );
     }
 
     handleTagsChange(event) {
-        const { ludoCreateForm } = this.state;
+        const { ludoDetailInformation } = this.state;
         this.setState(
-            Object.assign(ludoCreateForm, {
+            Object.assign(ludoDetailInformation, {
                 tags: event.target.value
             })
         );
     }
 
     render() {
-        const { ludoCreateForm, category, isDurationClick, maxDuration } = this.state;
+        const { ludoDetailInformation, category, files, isDurationClick, maxDuration } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -278,24 +283,20 @@ export default class ActiveFormOfPlayer extends React.Component {
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
                             (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
+                            || (i >= ludoDetailInformation.duration && isDurationClick)
                         }
                     />, <br key="br" /> 
                 );
             } else {
                 dayPickerButtons.push(
                     <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
-                        onClick={this.handleDayPickerClick} 
-                        onMouseOver={this.handleDayPickerMouseOver} 
-                        disabled={
-                            (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
-                        }
+                        disabled={true}
                     />
                 );
             };
         };
         return (
+
             <div className="grid-item--ludo-detail-information">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
@@ -329,8 +330,7 @@ export default class ActiveFormOfPlayer extends React.Component {
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
                                 <label>Marbles:</label>
                                 <RcSlider max={50} min={1} 
-                                    defaultValue={1} value={ludoCreateForm.marbles}
-                                    onChange={this.handleMarblesChange}
+                                    value={ludoDetailInformation.marbles}
                                 />
                             </div>
                         </div>
@@ -342,20 +342,32 @@ export default class ActiveFormOfPlayer extends React.Component {
                         </div>
                         <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} 
-                                defaultValue={3} value={ludoCreateForm.duration}
-                                onChange={this.handleDurationValue}
+                                max={maxDuration}
+                                value={ludoDetailInformation.duration}
                             />
                         </div>
                         <div className="ludo-detail-information-field">
                             <textarea 
                                 className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
-                                placeholder="Introduction" 
+                                placeholder="Report here" 
                                 onChange={this.handleIntroductionChange}
                             />
+                            <DropZone onDrop={this.handlePictureUpload}
+                                className="ludo-detail-information-upload-picture-button"
+                            >
+                                Pic
+                            </DropZone>
                         </div>
+                        {
+                            this.state.files ? 
+                            <div>
+                                <h2>Uploading {files.length} files...</h2>
+                                <div>this.state.files.map((file) => <img src={file.preview} />)</div>
+                            </div> 
+                            : null
+                        }
                         <button className="ludo-detail-information-submit-button" type="submit">
-                            Quit
+                            Report
                         </button>
                     </div>
                 </form>

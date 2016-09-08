@@ -236,17 +236,16 @@ export default class CreateForm extends React.Component {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
 
-            // axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
-            // .then(function (response) {
-            //     console.log('response', response.data.status);
-            // })
-            // .catch(function (error) {
-            //     console.log('error', error);
-            // });
-
-            setTimeout(() => {  // simulate server latency
-                window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
-            }, 200)
+            axios.post(url + '/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
+                .then(function (response) {
+                    console.log('response', response.data.status);
+                })
+                .catch(function (error) {
+                    console.log('error', error);
+                });
+            // setTimeout(() => {  // simulate server latency
+            //     window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
+            // }, 200);
         } else {
             window.alert(`You haven't select the duration`);
         }

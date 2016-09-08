@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
-import ActiveForm from './ActiveFormOfByStander';
+// import ActiveForm from './ActiveFormOfByStander';
+import ActiveForm from './ActiveFormOfPlayer';
 import Active from '../active/Active';
 import Opened from '../opened/Opened';
 
@@ -44,24 +45,24 @@ export default class ActiveLudoList extends React.Component {
     getCardContent() {
         const _this = this;
 
-        // this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
-        //     .then(function (response) {
-        //         _this.setState({
-        //             rawCardContent: response.data["ludo-list"].Items
-        //         });
-        //     })
-        //     .catch(function(error) {
-        //         console.log(error);
-        //     });
-        this.serverRequest = axios.get('data/LudoData.json')
+        this.serverRequest = axios.get(url + '/apis/ludo?stage=1')
             .then(function (response) {
                 _this.setState({
-                    rawCardContent: response.data
+                    rawCardContent: response.data.ludoList.Items
                 });
             })
             .catch(function(error) {
                 console.log(error);
             });
+        // this.serverRequest = axios.get('data/LudoData.json')
+        //     .then(function (response) {
+        //         _this.setState({
+        //             rawCardContent: response.data
+        //         });
+        //     })
+        //     .catch(function(error) {
+        //         console.log(error);
+        //     });
     }
 
     handleCardClick(cardIndex) {
