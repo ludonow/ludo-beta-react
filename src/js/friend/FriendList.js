@@ -6,7 +6,7 @@ const masonryOptions = {
     itemSelector: ".grid-item--friend",
     columnWidth: 185,
     fitWidth: true
-}
+};
 
 export default class Friend extends React.Component {
     constructor() {

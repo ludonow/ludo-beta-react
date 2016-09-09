@@ -11,9 +11,6 @@ import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
 
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
-
 export default class CreateForm extends React.Component {
     constructor(props) {
         super(props);

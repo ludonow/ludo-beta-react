@@ -6,12 +6,9 @@ import axios from 'axios';
 // import ActiveForm from './ActiveFormOfByStander';
 import ActiveForm from './ActiveFormOfPlayer';
 
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://api.ludonow.com";
-
 const masonryOptions = {
-    itemSelector: ".grid-item",
-    columnWidth: 210,
+    itemSelector: ".grid-item--ludo-report-information",
+    columnWidth: 220,
     fitWidth: true,
     stamp: ".grid-item--ludo-detail-information"
 };
@@ -57,13 +54,17 @@ export default class ActiveLudoList extends React.Component {
                 className="grid"
                 options={masonryOptions} >
                 <ActiveForm />
-                <div className="ludo-report-infromation-container grid-item">
+                <div className="ludo-report-infromation-container grid-item--ludo-report-information">
                     <div className="card player-container">
-                        <div>player1 photo</div>
+                        <div className="player-photo-container">
+                            <div className="player-photo-container__photo">
+                                player1 photo
+                            </div>
+                        </div>
                         <div> Report</div>
                     </div>
                 </div>
-                <div className="ludo-report-infromation-container grid-item">
+                <div className="ludo-report-infromation-container grid-item--ludo-report-information">
                     <div className="card player-container">
                         <div>player2 photo</div>
                         <div>Report</div>

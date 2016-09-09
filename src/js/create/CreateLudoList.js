@@ -24,9 +24,6 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 };
 
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
-
 export default class CreateLudoList extends React.Component {
     constructor() {
         super();
@@ -230,7 +227,7 @@ export default class CreateLudoList extends React.Component {
                     >
                         <div className={this.handleCardBackClass(data.category_id)}>
                             <div className="card-introduction">
-                                {data.introduction}
+                                {String(data.introduction).substring(0, 20) + ' ...'}
                             </div>
                             <div className="card-hashtags">
                                 {data.tags}

@@ -1,6 +1,7 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
+import axios from 'axios';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';

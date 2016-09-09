@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import Masonry from 'react-masonry-component';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import QuickStart from './QuickStart';
 import Active from '../active/Active';
@@ -23,9 +22,6 @@ const masonryOptions = {
     columnWidth: 210,
     fitWidth: true
 };
-
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class PlaygroundLudoList extends React.Component {
     constructor() {
@@ -151,21 +147,21 @@ export default class PlaygroundLudoList extends React.Component {
         const id = Number(category_id); 
         switch (category_id) {
             case 1:
-                return `lifestyle`;
+                return ` lifestyle`;
             case 2:
-                return `read`;
+                return ` read`;
             case 3:
-                return `exercise`;
+                return ` exercise`;
             case 4:
-                return `study`;
+                return ` study`;
             case 5:
-                return `new_skill`;
+                return ` new_skill`;
             case 6:
-                return `unmentionables`;
+                return ` unmentionables`;
             case 7:
-                return `others`;
+                return ` others`;
             default:
-                return `lifestyle`;
+                return ` lifestyle`;
         }
     }
 
@@ -228,11 +224,11 @@ export default class PlaygroundLudoList extends React.Component {
             return (
                 <div className={`grid-item`} key={`card-${index}`}>
                     <div 
-                        className={`card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
+                        className={`card card-front${isThisCardFlipped ? "" : " card-flip"}`}
                         id={index}
                         onClick={buttonClickHandler}
                     >
-                        <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
+                        <div className={`card-top${this.handleCardFrontTopClass(data.category_id)}`}>
                             <div className="title">{data.title}</div>
                             <div className="duration">{data.duration} days</div>
                             <div className="card-marble">
@@ -246,13 +242,13 @@ export default class PlaygroundLudoList extends React.Component {
                         </div>
                     </div>
                     <div 
-                        className={`card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                        className={`card card-back${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
                         id={index}
                         onClick={buttonClickHandler}
                     >
                         <div className={this.handleCardBackClass(data.category_id)}>
                             <div className="card-introduction">
-                                {data.introduction}
+                                {String(data.introduction).substring(0, 20) + ' ...'}
                             </div>
                             <div className="card-hashtags">
                                 {data.tags}

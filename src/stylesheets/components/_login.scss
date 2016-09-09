@@ -1,9 +1,13 @@
 .link-to-login-button {
+    @extend %clickable;
     @extend %relative;
     left: 150px;
     top: 12px;
     width: 80px;
     height: 40px;
+    border: none;
+    color: white;
+    background-color: white;
     font-size: 20px;
 }
 

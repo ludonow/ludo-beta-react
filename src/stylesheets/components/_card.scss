@@ -45,6 +45,10 @@ $new_skill-text-color: #fdcaad;
         @extend %as_tall_as_parent;
         padding-top: $grid-item_padding;
     }
+    .grid-item--ludo-report-information {
+        width: 210px;
+        padding-top: 5px;
+    }
     .grid-item--half {
         width: $grid-item--half_width;
         padding: $grid-item_padding;
@@ -73,6 +77,7 @@ $new_skill-text-color: #fdcaad;
     }
 
     .card-front {
+        word-wrap: break-word; 
         opacity: 0;
         transform: rotateY(180deg);
         transition-duration: 0.3s;
@@ -83,6 +88,7 @@ $new_skill-text-color: #fdcaad;
             @extend %text_center;
 
             .title {
+                height: 20px;
                 margin-bottom: 29px;
                 font-size: 20px;
             }
@@ -135,6 +141,7 @@ $new_skill-text-color: #fdcaad;
     }
 
     .card-back {
+        word-wrap: break-word;
         @extend %absolute;
         top: 5px;
         left: 5px; 
