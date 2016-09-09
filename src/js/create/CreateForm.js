@@ -329,6 +329,7 @@ export default class CreateForm extends React.Component {
                                     className="ludo-detail-information-field-dropdown-list"
                                     data={category}
                                     onChange={this.handleCategoryChange}
+                                    defaultValue={'lifestyle'}
                                 />
                             </div>
                             <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
