@@ -58,16 +58,29 @@ export default class ActiveLudoList extends React.Component {
                     <div className="card player-container">
                         <div className="player-photo-container">
                             <div className="player-photo-container__photo">
-                                player1 photo
                             </div>
                         </div>
-                        <div> Report</div>
+                        <div className="player-report-container">
+                            Report
+                            <div className="player-report-message-container">
+                                message
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="ludo-report-infromation-container grid-item--ludo-report-information">
                     <div className="card player-container">
-                        <div>player2 photo</div>
-                        <div>Report</div>
+                        <div className="player-photo-container">
+                            <div className="player-photo-container__photo">
+                            </div>
+                        </div>
+                        <div className="player-report-container">
+                            Report
+                            <div className="player-report-message-container">
+                                message
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </Masonry>

@@ -222,3 +222,18 @@ $orange_button: rgba(248, 182, 45, 1);
         border: none;
     }
 }
+
+.ludo-detail-information-upload-instruction {
+    @extend %flex;
+    align-self: flex-end;
+    justify-content: center;
+    @extend %relative;
+    margin-top: 10px;
+    @extend %text_center;
+    color: rgb(180, 180, 180);
+
+    .number {
+        margin: 0 10px;
+        color: $black;
+    }
+}

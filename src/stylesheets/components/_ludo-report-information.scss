@@ -1,4 +1,36 @@
 .ludo-report-infromation-container {
-    .player-container {
-    }
 }
+    .player-container {
+
+    }
+        .player-photo-container {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            height: 70px;
+            border-style: solid;
+            border-width: 1px;
+
+            .player-photo-container__photo {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border-style: solid;
+                border-width: 1px;
+            }
+        }
+
+        .player-report-container {
+            @extend %relative;
+            height: 300px;
+            border-style: solid;
+            border-width: 1px;
+        }
+            .player-report-message-container {
+                @extend %absolute;
+                @extend %bottom;
+                @extend %as_wide_as_parent;
+                height: 70px;
+                border-style: solid;
+                border-width: 1px;
+            }

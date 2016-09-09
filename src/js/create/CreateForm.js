@@ -26,9 +26,9 @@ export default class CreateForm extends React.Component {
             },
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             currentHoverValue: 3,
-            durationMarks: {},
-            isDurationClick: false,
-            marblesMarks: {},
+            isCategorySelected: false,
+            isDurationSelected: false,
+            isMarblesSelected: false,
             maxDuration: 14,
             maxMarbles: 50
         };
@@ -77,10 +77,15 @@ export default class CreateForm extends React.Component {
                 category_id
             })
         );
+        this.setState(
+            Object.assign(this.state, {
+                isCategorySelected, true
+            })
+        );
     }
 
     handleDayPickerClass(value) {
-        const { ludoCreateForm, currentHoverValue, isDurationClick } = this.state;
+        const { ludoCreateForm, currentHoverValue, isDurationSelected } = this.state;
         const { checkpoint } = ludoCreateForm;
         const index = checkpoint.indexOf(value);
 
@@ -96,10 +101,10 @@ export default class CreateForm extends React.Component {
     }
 
     handleDayPickerClick(event) {
-        if (!this.state.isDurationClick) { // initial
+        if (!this.state.isDurationSelected) { // initial
             this.setState(
                 Object.assign(this.state, {
-                    isDurationClick: true
+                    isDurationSelected: true
                 })
             );
             const { ludoCreateForm } = this.state;
@@ -128,7 +133,7 @@ export default class CreateForm extends React.Component {
     }
 
     handleDayPickerMouseOver(event) {
-        if (!this.state.isDurationClick) {
+        if (!this.state.isDurationSelected) {
             const { ludoCreateForm } = this.state;
             if (Number(event.target.value) >= 4) {
                 this.setState(
@@ -224,13 +229,17 @@ export default class CreateForm extends React.Component {
                 marbles
             })
         );
+        this.setState(
+            Object.assign(this.state, {
+                isMarblesSelected: true
+            })
+        );
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const { isDurationClick } = this.state;
-        if (isDurationClick) {
-            const { ludoCreateForm } = this.state;
+        const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
+        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title != '' && ludoCreateForm.tags != '' && ludoCreateForm.introduction != '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
 
@@ -239,17 +248,24 @@ export default class CreateForm extends React.Component {
                     if (response.data.status == 'err') {
                         window.alert('response error', response.data.status);
                     } else {
-                        window.alert(response.data);
+                        window.alert('創立成功!!');
                     }
                 })
                 .catch(function (error) {
                     console.log('error', error);
                 });
-            // setTimeout(() => {  // simulate server latency
-            //     window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
-            // }, 200);
-        } else {
-            window.alert(`You haven't select the duration`);
+        } else if (!isCategorySelected) {
+            window.alert(`You haven't select the category.`);
+        } else if (ludoCreateForm.title == '') {
+            window.alert(`You haven't fill in the title.`);
+        } else if (ludoCreateForm.tags == '') {
+            window.alert(`You haven't fill in the hash tags.`);
+        } else if (ludoCreateForm.introduction == '') {
+            window.alert(`You haven't fill in the introduction.`);
+        } else if (!isMarblesSelected) {
+            window.alert(`You haven't select the marble number.`);
+        } else if (!isDurationSelected) {
+            window.alert(`You haven't select the duration.`);
         }
     }
 
@@ -272,7 +288,7 @@ export default class CreateForm extends React.Component {
     }
 
     render() {
-        const { ludoCreateForm, category, isDurationClick, maxDuration } = this.state;
+        const { ludoCreateForm, category, isDurationSelected, maxDuration } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -281,8 +297,8 @@ export default class CreateForm extends React.Component {
                         onClick={this.handleDayPickerClick} 
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
-                            (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
+                            (i < 3 && !isDurationSelected)
+                            || (i >= ludoCreateForm.duration && isDurationSelected)
                         }
                     />, <br key="br" /> 
                 );
@@ -292,8 +308,8 @@ export default class CreateForm extends React.Component {
                         onClick={this.handleDayPickerClick} 
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
-                            (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
+                            (i < 3 && !isDurationSelected)
+                            || (i >= ludoCreateForm.duration && isDurationSelected)
                         }
                     />
                 );
@@ -313,7 +329,6 @@ export default class CreateForm extends React.Component {
                                     className="ludo-detail-information-field-dropdown-list"
                                     data={category}
                                     onChange={this.handleCategoryChange}
-                                    defaultValue="lifestyle"
                                 />
                             </div>
                             <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">

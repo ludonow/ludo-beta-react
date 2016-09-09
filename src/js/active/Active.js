@@ -1,11 +1,11 @@
 import React from 'react';
 
-import ActiveLudoList from './ActiveLudoList';
+import ActiveReports from './ActiveReports';
 
 export default class Active extends React.Component {
     render() {
         return (
-            <ActiveLudoList />
+            <ActiveReports />
         );
     }
 }

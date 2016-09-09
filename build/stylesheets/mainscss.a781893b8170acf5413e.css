@@ -2,7 +2,7 @@
 
 @import url(https://fonts.googleapis.com/css?family=Exo+2);
 
-.card-back .card-bottom,.card-back .card-introduction,.card-front .card-bottom,.card-front .card-marble,.header,.header-clock,.header-heart,.header-left,.header-level,.header-Ludo-logo,.header-marbles,.header-rate,.header-right,.login-container,.login-container .login-bottom-container .other-login-icon-container,.ludo-detail-information-field .ludo-detail-information-upload-picture-button,.ludo-detail-information-slider,.ludo-detail-information-top-container,.ludo-detail-information-top-container .ludo-detail-information-field-dropdown-list-container {
+.card-back .card-bottom,.card-back .card-introduction,.card-front .card-bottom,.card-front .card-marble,.header,.header-clock,.header-heart,.header-left,.header-level,.header-Ludo-logo,.header-marbles,.header-rate,.header-right,.login-container,.login-container .login-bottom-container .other-login-icon-container,.ludo-detail-information-field .ludo-detail-information-upload-picture-button,.ludo-detail-information-slider,.ludo-detail-information-top-container,.ludo-detail-information-top-container .ludo-detail-information-field-dropdown-list-container,.ludo-detail-information-upload-instruction,.player-photo-container {
   display: flex;
 }
 
@@ -10,11 +10,11 @@
   position: fixed;
 }
 
-.card-back,.card-back .card-bottom__text,.card-front .card-marble__number,.ludo-detail-information-field .ludo-detail-information-upload-picture-button,.main-container,.profile-history__condition,.profile-ludoing__icon {
+.card-back,.card-back .card-bottom__text,.card-front .card-marble__number,.ludo-detail-information-field .ludo-detail-information-upload-picture-button,.main-container,.player-report-message-container,.profile-history__condition,.profile-ludoing__icon {
   position: absolute;
 }
 
-.card-front .card-marble,.grid,.header-clock__icon,.header-heart-icon,.header-Ludo-logo,.header-Ludo-logo__icon,.link-to-login-button,.ludo-detail-information-field,.playground,.profile-history__element,.profile-ludoing__element {
+.card-front .card-marble,.grid,.header-clock__icon,.header-heart-icon,.header-Ludo-logo,.header-Ludo-logo__icon,.link-to-login-button,.ludo-detail-information-field,.ludo-detail-information-upload-instruction,.player-report-container,.playground,.profile-history__element,.profile-ludoing__element {
   position: relative;
 }
 
@@ -22,7 +22,7 @@
   top: 0;
 }
 
-.stamp {
+.player-report-message-container,.stamp {
   bottom: 0;
 }
 
@@ -34,7 +34,7 @@
   left: 0;
 }
 
-.header,.header-left,.header-Ludo-logo__icon,.header-right,.ludo-detail-information-field__text-field,.ludo-detail-information-top-container .ludo-detail-information-field-dropdown-list-container .ludo-detail-information-field-dropdown-list,.ludo-detail-information-top-container .ludo-detail-information-fields__field,.profile-content-information-tag,.profile-prize__icon,.profile-statistic__icon,.right-sidebar-item {
+.header,.header-left,.header-Ludo-logo__icon,.header-right,.ludo-detail-information-field__text-field,.ludo-detail-information-top-container .ludo-detail-information-field-dropdown-list-container .ludo-detail-information-field-dropdown-list,.ludo-detail-information-top-container .ludo-detail-information-fields__field,.player-report-message-container,.profile-content-information-tag,.profile-prize__icon,.profile-statistic__icon,.right-sidebar-item {
   width: 100%;
 }
 
@@ -68,7 +68,7 @@
   background-size: contain;
 }
 
-.card-back,.card-front .card-top,.header-finish-rate__text,.header-rate__number,.header-win-rate__text,.login-container,.login-container .login-top-container input::-webkit-input-placeholder,.ludo-detail-information-container,.ludo-detail-information-field__text-field--introduction::-webkit-input-placeholder,.profile-content-chart__element,.profile-content-information-tag__element,.profile-history__element,.profile-ludoing__element,.profile-prize__element,.profile-statistic__element {
+.card-back,.card-front .card-top,.header-finish-rate__text,.header-rate__number,.header-win-rate__text,.login-container,.login-container .login-top-container input::-webkit-input-placeholder,.ludo-detail-information-container,.ludo-detail-information-field__text-field--introduction::-webkit-input-placeholder,.ludo-detail-information-upload-instruction,.profile-content-chart__element,.profile-content-information-tag__element,.profile-history__element,.profile-ludoing__element,.profile-prize__element,.profile-statistic__element {
   text-align: center;
 }
 
@@ -878,6 +878,46 @@ body {
 .ludo-detail-information-submit-button:disabled {
   background-color: #f0f0f0;
   border: none;
+}
+
+.ludo-detail-information-upload-instruction {
+  align-self: flex-end;
+  justify-content: center;
+  margin-top: 10px;
+  color: #b4b4b4;
+}
+
+.ludo-detail-information-upload-instruction .number {
+  margin: 0 10px;
+  color: rgba(0,0,0,.8);
+}
+
+.player-photo-container {
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.player-photo-container .player-photo-container__photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.player-report-container {
+  height: 300px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.player-report-message-container {
+  height: 70px;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .playground .quick-start {
@@ -2107,4 +2147,4 @@ button.rw-input::-moz-focus-inner,input.rw-input::-moz-focus-inner {
   border-width: 4px 4px 0;
   border-top-color: #6c6c6c;
 }
-/*# sourceMappingURL=mainscss.9a9659209083c185964e.css.map*/
+/*# sourceMappingURL=mainscss.a781893b8170acf5413e.css.map*/

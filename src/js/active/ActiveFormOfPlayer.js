@@ -125,13 +125,14 @@ export default class ActiveFormOfPlayer extends React.Component {
     onDrop(files) {
         console.log('Received files: ', files);
         const state = this.state;
-        this.setState(
-            Object.assign(state, {
-                files,
-                isImageUploaded: true,
-                isImageLightBoxOpen: true
-            })
-        );
+            this.setState(
+                Object.assign(state, {
+                    files,
+                    isImageUploaded: true,
+                    isImageLightBoxOpen: true
+                })
+            );
+        console.log(this.state.files.length);
     }
 
     closeLightbox() {
@@ -162,7 +163,7 @@ export default class ActiveFormOfPlayer extends React.Component {
     }
 
     render() {
-        const { ludoDetailInformation, category, files, isIntroductionBlank, isImageLightBoxOpen, isImageUploaded, maxDuration } = this.state;
+        const { ludoDetailInformation, category, files, isIntroductionBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, uploadImageIndex } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -233,8 +234,12 @@ export default class ActiveFormOfPlayer extends React.Component {
                                 placeholder="Report here" 
                                 onChange={this.handleIntroductionChange}
                             />
-                            <DropZone onDrop={this.onDrop}
+                            <DropZone 
                                 className="ludo-detail-information-upload-picture-button"
+                                maxSize={2000000}
+                                onDrop={this.onDrop}
+                                onClick={this.onDrop}
+                                accept={"image/png", "image/pjepg", "image/jpeg"}
                             >
                                 <img className="ludo-detail-information-upload-picture-button__icon" src={uploadIcon}/>
                             </DropZone>
@@ -246,14 +251,24 @@ export default class ActiveFormOfPlayer extends React.Component {
                             Report
                         </button>
                     </div>
+                    {
+                        files.length > 0 ? 
+                            <div className="ludo-detail-information-upload-instruction">
+                                Ready to upload 
+                                <span className="number">{files.length}</span>
+                                image
+                                {files.length > 1 ? <span>s</span> : null}
+                            </div>
+                        : null
+                    }
                 </form>
                 {
                     isImageLightBoxOpen > 0 ? 
                         <Lightbox 
                             className="lighbox-target"
-                            mainSrc={files[this.state.uploadImageIndex].preview}
-                            nextSrc={files[(this.state.uploadImageIndex + 1) % files.length].preview}
-                            prevSrc={files[(this.state.uploadImageIndex + files.length - 1) % files.length].preview}
+                            mainSrc={files[uploadImageIndex].preview}
+                            nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
+                            prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
 
                             onCloseRequest={this.closeLightbox}
                             onMovePrevRequest={this.movePrev}
