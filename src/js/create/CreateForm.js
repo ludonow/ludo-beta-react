@@ -79,7 +79,7 @@ export default class CreateForm extends React.Component {
         );
         this.setState(
             Object.assign(this.state, {
-                isCategorySelected, true
+                isCategorySelected: true
             })
         );
     }
