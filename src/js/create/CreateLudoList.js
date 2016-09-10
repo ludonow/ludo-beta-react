@@ -35,6 +35,12 @@ export default class CreateLudoList extends React.Component {
         this.addMasonryClass = this.addMasonryClass.bind(this);
     }
 
+    componentDidMount() {
+        this.props.handleLudoListUpdate();
+        this.addMasonryClass();
+        console.log('CreateLudoList did');
+    }
+
     handleCardClick(cardIndex) {
         let index = String(cardIndex);
         const state = this.state;
@@ -218,7 +224,9 @@ export default class CreateLudoList extends React.Component {
     }
 
     render() {
-        this.addMasonryClass();
+        if (this.props.shouldLudoListBeUpdated) {
+            this.addMasonryClass();
+        }
         return (
             <Masonry
                 className="grid"

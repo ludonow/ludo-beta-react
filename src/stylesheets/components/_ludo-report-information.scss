@@ -22,11 +22,21 @@
 
         .player-report-container {
             @extend %relative;
-            height: 300px;
+            height: 345px;
             border-style: solid;
             border-width: 1px;
+            .report-image {
+                height: 200px;
+                border-style: solid;
+                border-width: 1px;
+            }
+            .report-text {
+                height: 70px;
+                border-style: solid;
+                border-width: 1px;
+            }
         }
-            .player-report-message-container {
+            .player-report-comment-box-container {
                 @extend %absolute;
                 @extend %bottom;
                 @extend %as_wide_as_parent;

@@ -8,9 +8,9 @@ import Sidebar from './sidebar/Sidebar';
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state= {
+        this.state = {
             rawData: [],
-            isLudoListUpdated: true
+            shouldLudoListBeUpdated: false
         };
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
     }
@@ -27,7 +27,7 @@ export default class App extends React.Component {
                 if(response.data.status != 'err') {
                     _this.setState({
                         rawData: response.data.ludoList.Items
-                    });
+                    })
                 } else {
                     console.log(response.data.message);
                 }
@@ -51,30 +51,37 @@ export default class App extends React.Component {
 
     handleLudoListUpdate() {
         const state = this.state;
-        this.setState(
-            Object.assign(state, {
-                isLudoListUpdated: true
-            })
-        );
-        this.getCardContent();
-        this.setState(
-            Object.assign(state, {
-                isLudoListUpdated: false
-            })
-        );
+        const { shouldLudoListBeUpdated } = state;
+        if(!shouldLudoListBeUpdated) {
+            this.setState(
+                Object.assign(state, {
+                    shouldLudoListBeUpdated: true
+                })
+            );
+            this.getCardContent();
+            this.setState(
+                Object.assign(state, {
+                    shouldLudoListBeUpdated: false
+                })
+            );
+            console.log('LudoList should be updated');
+        } else {
+            console.log('LudoList should not be updated');
+        }
     }
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const { rawData } = this.state;
+        const { rawData, shouldLudoListBeUpdated } = this.state;
         return (
             <div>
                 <Header isProfile={isProfile} />
                 <Sidebar />
                 <div className="main-container">
                     {React.cloneElement(this.props.children, {
-                        rawData: rawData,
-                        handleLudoListUpdate: this.handleLudoListUpdate
+                        rawData,
+                        handleLudoListUpdate: this.handleLudoListUpdate,
+                        shouldLudoListBeUpdated
                     })}
                 </div>
             </div>

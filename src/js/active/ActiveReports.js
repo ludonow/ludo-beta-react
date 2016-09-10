@@ -48,6 +48,10 @@ export default class ActiveLudoList extends React.Component {
         //     });
     }
 
+    handleMessageSubmit() {
+        console.log('message');
+    }
+
     render() {
         return (
             <Masonry
@@ -61,9 +65,14 @@ export default class ActiveLudoList extends React.Component {
                             </div>
                         </div>
                         <div className="player-report-container">
-                            Report
-                            <div className="player-report-message-container">
-                                message
+                            <div className="report-image">
+                                Report image
+                            </div>
+                            <div className="report-text">
+                                Report text
+                            </div>
+                            <div className="player-report-comment-box-container">
+                                <textarea placeholder="Leave your message here" onChange={this.handleMessageSubmit} />
                             </div>
                         </div>
                     </div>
@@ -75,9 +84,14 @@ export default class ActiveLudoList extends React.Component {
                             </div>
                         </div>
                         <div className="player-report-container">
-                            Report
-                            <div className="player-report-message-container">
-                                message
+                            <div className="report-image">
+                                Report image
+                            </div>
+                            <div className="report-text">
+                                Report text
+                            </div>
+                            <div className="player-report-comment-box-container">
+                                <textarea placeholder="Leave your message here" onChange={this.handleMessageSubmit} />
                             </div>
                         </div>
 
