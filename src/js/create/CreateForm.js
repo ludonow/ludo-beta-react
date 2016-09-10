@@ -246,7 +246,8 @@ export default class CreateForm extends React.Component {
             axios.post('/apis/ludo', ludoCreateForm)
                 .then(function (response) {
                     if (response.data.status == 'err') {
-                        window.alert('response error', response.data.status);
+                        window.alert('response error', response.data.message);
+                        console.log(response.data.message);
                     } else {
                         window.alert('創立成功!!');
                     }
@@ -254,6 +255,7 @@ export default class CreateForm extends React.Component {
                 .catch(function (error) {
                     console.log('error', error);
                 });
+            this.props.handleLudoListUpdate();
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {

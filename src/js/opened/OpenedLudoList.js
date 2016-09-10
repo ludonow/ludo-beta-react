@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from "react-router";
 import Masonry from 'react-masonry-component';
-import axios from 'axios';
 
 import Active from '../active/Active';
 import Opened from './Opened';
@@ -30,39 +29,11 @@ export default class CreateLudoList extends React.Component {
         super();
         this.state = {
             flippedKey: [],
-            rawCardContent: [],
             masonryCardContent: []
         };
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
         this.addMasonryClass = this.addMasonryClass.bind(this);
-    }
-
-    componentDidMount() {
-        this.getCardContent();
-    }
-
-    getCardContent() {
-        const _this = this;
-
-        this.serverRequest = axios.get('/apis/ludo?stage=1')
-            .then(function (response) {
-                _this.setState({
-                    rawCardContent: response.data.ludoList.Items
-                });
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        // this.serverRequest = axios.get('data/LudoData.json')
-        //     .then(function (response) {
-        //         _this.setState({
-        //             rawCardContent: response.data
-        //         });
-        //     })
-        //     .catch(function(error) {
-        //         console.log(error);
-        //     });
     }
 
     handleCardClick(cardIndex) {
@@ -198,7 +169,7 @@ export default class CreateLudoList extends React.Component {
     }
 
     addMasonryClass() {
-        this.state.masonryCardContent = this.state.rawCardContent.map( (data, index) => {
+        this.state.masonryCardContent = this.props.rawData.map( (data, index) => {
             const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
             const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
             return (

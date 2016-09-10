@@ -5,7 +5,7 @@ import OpenedLudoList from './OpenedLudoList';
 export default class Create extends React.Component {
     render() {
         return (
-            <OpenedLudoList />
+            <OpenedLudoList {...this.props}/>
         );
     }
 }
