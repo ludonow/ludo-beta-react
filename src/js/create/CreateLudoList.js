@@ -32,6 +32,7 @@ export default class CreateLudoList extends React.Component {
         };
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
+        this.showTheOtherFace = this.showTheOtherFace.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -45,8 +46,7 @@ export default class CreateLudoList extends React.Component {
         const state = this.state;
         this.setState(
             Object.assign(state, {
-                flippedKey: index,
-                isLastestCardFlip: !isLastestCardFlip
+                flippedKey: index
             })
         );
     }
@@ -173,20 +173,28 @@ export default class CreateLudoList extends React.Component {
         );
     }
 
+    showTheOtherFace() {
+        const state = this.state;
+        const { isLastestCardFlip } = state;
+        this.setState(
+            Object.assign(state, {
+                isLastestCardFlip: !isLastestCardFlip
+            })
+        );
+    }
+
     render() {
-        const { isLastestCardFlip } = this.state;
         const { currentFormValue } = this.props;
         return (
             <Masonry
                 className="grid"
                 options={masonryOptions} >
                 <CreateForm {...this.props}/>
-                { console.log('form introduction: ', this.props.currentFormValue.introduction) }
                 { (this.props.currentFormValue.introduction != '') ? 
                     <div className={`grid-item`}>
                         <div 
-                            className={`card card-front ${isLastestCardFlip ? "" : "card-flip"}`}
-                            onClick={this.showBack}
+                            className={`card card-front ${this.state.isLastestCardFlip ? "" : "card-flip"}`}
+                            onClick={this.showTheOtherFace}
                         >
                             <div className={`card-top ${this.handleCardFrontTopClass(currentFormValue.category_id)}`}>
                                 <div className="title">{currentFormValue.title}</div>
@@ -202,8 +210,8 @@ export default class CreateLudoList extends React.Component {
                             </div>
                         </div>
                         <div 
-                            className={`card card-back ${isLastestCardFlip ? "card-flip" : ""} ${this.handleCardBackClass(currentFormValue.category_id)}`}
-                            onClick={this.showFront}
+                            className={`card card-back ${this.state.isLastestCardFlip ? "card-flip" : ""} ${this.handleCardBackClass(currentFormValue.category_id)}`}
+                            onClick={this.showTheOtherFace}
                         >
                             <div className={this.handleCardBackClass(currentFormValue.category_id)}>
                                 <div className="card-introduction">
