@@ -1,6 +1,10 @@
 import React from "react";
 
 export default class HeaderRate extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     getFinishRate() {
         return (
             <div className="header-finish-rate">
@@ -12,6 +16,7 @@ export default class HeaderRate extends React.Component {
                     <text className="header-finish-rate__text" x="15%" y="45%"></text>
                     <text className="header-rate__number header-finish-rate__number" x="30%" y="66%"></text>
                 </svg>
+                { this.props.success_rate }
             </div>
         );
     }
@@ -27,6 +32,7 @@ export default class HeaderRate extends React.Component {
                     <text className="header-win-rate__text" x="32%" y="45%"></text>
                     <text className="header-rate__number header-win-rate__number" x="30%" y="66%"></text>
                 </svg>
+                { this.props.win_rate }
             </div>
         );
     }

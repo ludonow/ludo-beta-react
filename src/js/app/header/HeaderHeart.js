@@ -6,8 +6,9 @@ export default class HeaderHeart extends React.Component {
     render() {
         return (
             <div className="header-heart">
-                <img className="header-heart-icon" src={heartIcon} />
+                <div>{this.props.heart} / 4 </div>
             </div>
+                // <img className="header-heart-icon" src={heartIcon} />
         );
     }
 }

@@ -16,6 +16,8 @@ export default class Header extends React.Component {
     }
 
     render() {
+        const { userBasicData } = this.props;
+        const { heart, marbles, success_rate, win_rate } = userBasicData;
         return ( 
             <div className="header">
                 <div className="header-left">
@@ -27,9 +29,9 @@ export default class Header extends React.Component {
                     </Link>
                 </div>
                 <div className="header-right">
-                    <HeaderMarbles />
-                    <HeaderHeart />
-                    {this.props.isProfile ? null : <HeaderRate /> }
+                    <HeaderMarbles marbles={marbles}/>
+                    <HeaderHeart heart={heart} />
+                    {this.props.isProfile ? null : <HeaderRate success_rate={success_rate} win_rate={win_rate} /> }
                     {this.props.isProfile ? <HeaderLevel />: null }
                 </div>
             </div>

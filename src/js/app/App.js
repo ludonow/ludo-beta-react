@@ -128,7 +128,7 @@ export default class App extends React.Component {
         const { currentFormValue, currentUserId, rawData, userBasicData } = this.state;
         return (
             <div>
-                <Header isProfile={isProfile} />
+                <Header isProfile={isProfile} userBasicData={userBasicData}/>
                 <Sidebar />
                 <div className="main-container">
                     {React.cloneElement(this.props.children, {
