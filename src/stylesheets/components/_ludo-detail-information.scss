@@ -8,15 +8,25 @@ $orange_button: rgba(248, 182, 45, 1);
 .ludo-detail-information-container {
     @extend %fixed;
     width: 540px;
-    // height: 460px;
     @extend .card;
     padding-right: 40px;
     padding-left: 40px;
-    padding-top: 40px;
-    padding-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 15px;
     @extend %text_center;
 }
-
+        .ludo-detail-information-field-text {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            @extend %as_wide_as_parent;
+            height: 30px;
+            font-size: 16px;
+            border: solid;
+        }
+        .ludo-detail-information-field-text--introduction {
+            height: 100px;
+        }
 .ludo-detail-information-top-container {
     @extend %flex;
     flex-direction: row;
@@ -51,6 +61,15 @@ $orange_button: rgba(248, 182, 45, 1);
                 }
             }
         }
+        .ludo-detail-information-field-category {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            @extend %as_wide_as_parent;
+            height: 30px;
+            font-size: 16px;
+        }
+
         .ludo-detail-information-fields__field {
             @extend %as_wide_as_parent;
             height: 30px;
@@ -78,8 +97,52 @@ $orange_button: rgba(248, 182, 45, 1);
 }
 
 .ludo-detail-information-bottom-container {
+    @extend %relative;
     margin-top: 20px;
+    .marbles-label {
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+    .marbles-label--number {
+        margin-left: 20px;
+    }
+    .duration-label {
+        @extend %flex;
+        margin-top: 16px;
+        font-size: 14px;
+    }
 }
+
+.ludo-detail-information-slider {
+    // @extend %flex;
+    // align-items: center;
+    label {
+        margin-right: 15px;
+    }
+}
+    .ludo-detail-information-slider--marbles {
+        // overwrite react-component slider
+        .rc-slider-step {
+            height: 6px;
+            margin-top: 10px;
+        }
+        .rc-slider-track {
+            height: 6px;
+            background-color: $orange_button;
+        }
+        .rc-slider-dot {
+            width: 15px;
+            height: 15px;
+            background-image: url("../images/marble.png");
+            @extend %background_img_setting;
+        }
+        .rc-slider-handle {
+            width: 15px;
+            height: 15px;
+            background-image: url("../images/marble.png");
+            @extend %background_img_setting;
+        }
+    }
 
 .ludo-detail-information-day-picker {
     margin-bottom: 10px;
@@ -104,13 +167,34 @@ $orange_button: rgba(248, 182, 45, 1);
         background-color: $orange_button;
     }
 
+
+    .ludo-detail-information-slider--duration {
+        margin-top: 12px;
+        margin-bottom: 15px;
+        // overwrite react-component slider
+        .rc-slider-step {
+            height: 2px;
+            background-color: $black;
+        }
+        .rc-slider-track {
+            height: 2px;
+        }
+        .rc-slider-handle {
+            border-color: $orange_button;
+            background-color: $orange_button;
+        }
+    }
+
 .ludo-detail-information-field {
     @extend %relative;
     text-align: left;
-    label {
-        // size of title of form element
-        font-size: 14px;
-    }
+    height: 30px;
+}
+
+.ludo-detail-information-upload-picture-button-container {
+    @extend %relative;
+}
+
     .ludo-detail-information-upload-picture-button {
         @extend %clickable;
         @extend %flex;
@@ -133,7 +217,7 @@ $orange_button: rgba(248, 182, 45, 1);
             height: 35px;
         }
     }
-}
+
     .ludo-detail-information-field__text-field {
         @extend %as_wide_as_parent;
         line-height: 1.8;
@@ -161,57 +245,37 @@ $orange_button: rgba(248, 182, 45, 1);
         }
     }
 
-.ludo-detail-information-slider {
+    .ludo-detail-information-field__text-field--report {
+        height: 100px;
+        box-shadow: 0 2px 2px 0;
+        line-height: 16px;
+        resize : none;
+
+        &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            @extend %text_center;
+            line-height: 100px;
+        }
+    }
+
+.ludo-detail-information-upload-instruction {
     @extend %flex;
-    align-items: center;
-    label {
-        margin-right: 15px;
+    align-self: flex-end;
+    justify-content: center;
+    @extend %relative;
+    @extend %text_center;
+    color: rgb(180, 180, 180);
+
+    .number {
+        margin: 0 10px;
+        color: $black;
     }
 }
-    .ludo-detail-information-slider--marbles {
-        // overwrite react-component slider
-        .rc-slider-step {
-            height: 6px;
-        }
-        .rc-slider-track {
-            height: 6px;
-            background-color: $orange_button;
-        }
-        .rc-slider-dot {
-            width: 15px;
-            height: 15px;
-            background-image: url("../images/marble.png");
-            @extend %background_img_setting;
-        }
-        .rc-slider-handle {
-            width: 15px;
-            height: 15px;
-            background-image: url("../images/marble.png");
-            @extend %background_img_setting;
-        }
-    }
-    .ludo-detail-information-slider--duration {
-        margin-top: 15px;
-        margin-bottom: 15px;
-        // overwrite react-component slider
-        .rc-slider-step {
-            height: 2px;
-            background-color: $black;
-        }
-        .rc-slider-track {
-            height: 2px;
-        }
-        .rc-slider-handle {
-            border-color: $orange_button;
-            background-color: $orange_button;
-        }
-    }
 
 .ludo-detail-information-submit-button {
     @extend .ludo-button;
     width: 80px;
     height: 30px;
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 16px;
     color: $black;
     background-color: $orange_button;
@@ -220,20 +284,5 @@ $orange_button: rgba(248, 182, 45, 1);
         @extend %unclickable;
         background-color: $gray_text-field;
         border: none;
-    }
-}
-
-.ludo-detail-information-upload-instruction {
-    @extend %flex;
-    align-self: flex-end;
-    justify-content: center;
-    @extend %relative;
-    margin-top: 10px;
-    @extend %text_center;
-    color: rgb(180, 180, 180);
-
-    .number {
-        margin: 0 10px;
-        color: $black;
     }
 }

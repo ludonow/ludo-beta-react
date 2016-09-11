@@ -29,8 +29,35 @@ export default class App extends React.Component {
     }
 
     handleLudoListUpdate() {
-        const state = this.state;
         const _this = this;
+
+        axios.get('/apis/user')
+        .then(function (response) {
+            if(response.data.status === '200') {
+                console.log('user', response.data);
+            } else {
+                console.log('user status', response.data.message);
+            }
+        })
+        .catch(function(error) {
+            console.log('user error', error);
+            console.log(response.data.message);
+        });
+
+        axios.get('/apis/profile')
+        .then(function (response) {
+            if(response.data.status === '200') {
+                console.log('profile', response.data);
+            } else {
+                console.log('profile status', response.data.message);
+            }
+        })
+        .catch(function(error) {
+            console.log('profile error', error);
+            console.log(response.data.message);
+        });
+
+        // ludo list 
         const nextState = (response) => {
             return (
                 Object.assign(_this.state, {
@@ -41,14 +68,14 @@ export default class App extends React.Component {
 
         axios.get('/apis/ludo?stage=1')
         .then(function (response) {
-            if(response.data.status != 'err') {
+            if(response.data.status === '200') {
                 _this.setState(nextState(response));
             } else {
                 console.log(response.data.status);
             }
         })
         .catch(function(error) {
-            console.log('error', error);
+            console.log('ludo list error', error);
             console.log(response.data.status);
         });
         /* example data */

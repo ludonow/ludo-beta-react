@@ -140,6 +140,7 @@ export default class OpenedFormOfByStander extends React.Component {
 
     render() {
         const { ludoDetailInformation, category, isDurationClick, maxDuration } = this.state;
+        const { updateCurrentFormValue } = this.props;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -177,7 +178,7 @@ export default class OpenedFormOfByStander extends React.Component {
                                 <DropdownList 
                                     className="ludo-detail-information-field-dropdown-list"
                                     data={category}
-                                    defaultValue="lifestyle"
+                                    value
                                 />
                             </div>
                             <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
@@ -192,30 +193,22 @@ export default class OpenedFormOfByStander extends React.Component {
                     </div>
                     <div className="ludo-detail-information-bottom-container">
                         <div className="ludo-detail-information-field">
+                            <div className="marbles-label">Marbles:<span className="marbles-label--number">{currentFormValue.marbles}</span></div>
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <label>Marbles:</label>
-                                <RcSlider max={50} min={1} 
-                                    defaultValue={1} value={ludoDetailInformation.marbles}
-                                />
+                                <RcSlider value={currentFormValue.marbles} />
                             </div>
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <label>Duration:</label>
-                        </div>
+                        <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} 
-                                defaultValue={3} value={ludoDetailInformation.duration}
+                                max={maxDuration} min={3} value={currentFormValue.duration}
                             />
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <textarea 
-                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
-                                placeholder="Introduction" 
-                            />
+                        <div className="ludo-detail-information-field-text ludo-detail-information-field-text--introduction">
+                            {currentFormValue.introduction} 
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
                             Join

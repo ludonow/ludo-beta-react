@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRedirect, hashHistory } from "react-router";
+import { Router, Route, IndexRedirect, browserHistory } from "react-router";
 import axios from 'axios';
 
 import Active from '../active/Active';
@@ -21,7 +21,7 @@ export default class AppRouter extends React.Component {
     render() {
         return (
             <Router 
-                history={hashHistory}>
+                history={browserHistory}>
                 <Route path="/" component={App}>
                     <IndexRedirect to="playground"></IndexRedirect>
                     <Route path="active" component={Active}></Route>

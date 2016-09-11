@@ -50,6 +50,27 @@ export default class ActiveFormOfPlayer extends React.Component {
         this.movePrev = this.movePrev.bind(this);
     }
 
+    handleCategory(category_id) {
+        switch (category_id) {
+            case 1:
+                return `lifestyle`;
+            case 2:
+                return `read`;
+            case 3:
+                return `exercise`;
+            case 4:
+                return `study`;
+            case 5:
+                return `newSkill`;
+            case 6:
+                return `unmentionables`;
+            case 7:
+                return `others`;
+            default:
+                return `lifestyle`;
+        };
+    }
+
     handleDayPickerClass(value) {
         const { ludoDetailInformation } = this.state;
         const { checkpoint } = ludoDetailInformation;
@@ -164,6 +185,7 @@ export default class ActiveFormOfPlayer extends React.Component {
 
     render() {
         const { ludoDetailInformation, category, files, isIntroductionBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, uploadImageIndex } = this.state;
+        const { currentFormValue } = this.props;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -190,47 +212,38 @@ export default class ActiveFormOfPlayer extends React.Component {
                         <div className="ludo-detail-information-fields">
                             <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
                                 <label>Category:</label>
-                                <DropdownList 
-                                    className="ludo-detail-information-field-dropdown-list"
-                                    data={category}
-                                    defaultValue="lifestyle"
-                                    disabled={true}
-                                />
+                                <div className="ludo-detail-information-field-category">
+                                    {this.handleCategory(currentFormValue.category_id)}
+                                </div>
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
-                                />
+                            <div className="ludo-detail-information-field-text">
+                                {currentFormValue.title}
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
-                                />
+                            <div className="ludo-detail-information-field-text">
+                                {currentFormValue.tags}
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
                         <div className="ludo-detail-information-field">
+                            <div className="marbles-label">Marbles:<span className="marbles-label--number">{currentFormValue.marbles}</span></div>
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <label>Marbles:</label>
-                                <RcSlider max={50} min={1} 
-                                    value={ludoDetailInformation.marbles}
-                                />
+                                <RcSlider value={currentFormValue.marbles} />
                             </div>
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <label>Duration:</label>
-                        </div>
+                        <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration}
-                                value={ludoDetailInformation.duration}
+                                max={maxDuration} min={3}
+                                value={currentFormValue.duration}
                             />
                         </div>
-                        <div className="ludo-detail-information-field">
+                        <div className="ludo-detail-information-upload-picture-button-container">
                             <textarea 
-                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
+                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--report" 
                                 placeholder="Report here" 
                                 onChange={this.handleIntroductionChange}
                             />

@@ -2,6 +2,7 @@ import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import axios from 'axios';
+import history from '../history';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -256,6 +257,7 @@ export default class CreateForm extends React.Component {
                 console.log('error', error);
             });
             this.props.updateCurrentFormValue(ludoCreateForm);
+            history.replaceState(null, '/opened');
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {
@@ -348,17 +350,15 @@ export default class CreateForm extends React.Component {
                     </div>
                     <div className="ludo-detail-information-bottom-container">
                         <div className="ludo-detail-information-field">
+                            <div className="marbles-label">Marbles:<span className="marbles-label--number">{ludoCreateForm.marbles}</span></div>
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <label>Marbles:</label>
                                 <RcSlider max={50} min={1} 
                                     defaultValue={1} value={ludoCreateForm.marbles}
                                     onChange={this.handleMarblesChange}
                                 />
                             </div>
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <label>Duration:</label>
-                        </div>
+                        <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
@@ -369,13 +369,11 @@ export default class CreateForm extends React.Component {
                                 />
                             </div>
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <textarea 
-                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
-                                placeholder="Introduction" 
-                                onChange={this.handleIntroductionChange}
-                            />
-                        </div>
+                        <textarea 
+                            className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
+                            placeholder="Introduction" 
+                            onChange={this.handleIntroductionChange}
+                        />
                         <button className="ludo-detail-information-submit-button" type="submit">
                             Start
                         </button>

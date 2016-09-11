@@ -16,9 +16,6 @@ const masonryOptions = {
 export default class ActiveLudoList extends React.Component {
     constructor() {
         super();
-        this.state = {
-
-        };
     }
 
     componentDidMount() {
@@ -57,7 +54,7 @@ export default class ActiveLudoList extends React.Component {
             <Masonry
                 className="grid"
                 options={masonryOptions} >
-                <ActiveForm />
+                <ActiveForm {...this.props}/>
                 <div className="ludo-report-infromation-container grid-item--ludo-report-information">
                     <div className="card player-container">
                         <div className="player-photo-container">
@@ -71,9 +68,7 @@ export default class ActiveLudoList extends React.Component {
                             <div className="report-text">
                                 Report text
                             </div>
-                            <div className="player-report-comment-box-container">
-                                <textarea placeholder="Leave your message here" onChange={this.handleMessageSubmit} />
-                            </div>
+                            <CommentForm />
                         </div>
                     </div>
                 </div>
@@ -90,14 +85,31 @@ export default class ActiveLudoList extends React.Component {
                             <div className="report-text">
                                 Report text
                             </div>
-                            <div className="player-report-comment-box-container">
-                                <textarea placeholder="Leave your message here" onChange={this.handleMessageSubmit} />
-                            </div>
+                            <CommentForm />
                         </div>
-
                     </div>
                 </div>
             </Masonry>
         );
     }
-}
+};
+
+class CommentForm extends React.Component {
+    render() {
+        return (
+            <div className="player-report-comment-box-container">
+                <textarea placeholder="Leave your message here" onChange={this.handleMessageSubmit} />
+            </div>
+        );
+    }
+};
+
+class CommentList extends React.Component {
+    render() {
+        return (
+            <div>
+                commentlist
+            </div>
+        );
+    }
+};

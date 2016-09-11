@@ -224,7 +224,7 @@ export default class CreateLudoList extends React.Component {
             <Masonry
                 className="grid"
                 options={masonryOptions} >
-                <OpenedFormOfByStander />
+                <OpenedFormOfStarter {...this.props} />
                 {this.state.masonryCardContent}
             </Masonry>
         );

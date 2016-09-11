@@ -32,51 +32,30 @@ export default class OpenedFormOfStarter extends React.Component {
             maxDuration: 14,
             maxMarbles: 50
         };
-        this.handleCategoryChange = this.handleCategoryChange.bind(this);
-        this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
-        this.handleDayPickerMouseOver = this.handleDayPickerMouseOver.bind(this);
+        this.handleCategory = this.handleCategory.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
-        this.handleDurationValue = this.handleDurationValue.bind(this);
-        this.handleIconChange = this.handleIconChange.bind(this);
-        this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
-        this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
-        this.handleTagsChange = this.handleTagsChange.bind(this);
     }
 
-    handleCategoryChange(category) {
-        let category_id = 0;
-        switch (category) {
-            case 'lifestyle':
-                category_id = 1;
-                break;
-            case 'read':
-                category_id = 2;
-                break;
-            case 'exercise':
-                category_id = 3;
-                break;
-            case 'study':
-                category_id = 4;
-                break;
-            case 'new skill':
-                category_id = 5;
-                break;
-            case 'unmentionalbles':
-                category_id = 6;
-                break;
-            case 'others':
+    handleCategory(category_id) {
+        switch (category_id) {
+            case 1:
+                return `lifestyle`;
+            case 2:
+                return `read`;
+            case 3:
+                return `exercise`;
+            case 4:
+                return `study`;
+            case 5:
+                return `newSkill`;
+            case 6:
+                return `unmentionables`;
+            case 7:
+                return `others`;
             default:
-                category_id = 7;
-                break;
+                return `lifestyle`;
         };
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                category_id
-            })
-        );
     }
 
     handleDayPickerClass(value) {
@@ -93,98 +72,6 @@ export default class OpenedFormOfStarter extends React.Component {
         } else { // after hover
             return `ludo-detail-information-day-picker__button`;
         };
-    }
-
-    handleDayPickerClick(event) {
-        if (!this.state.isDurationClick) { // initial
-            this.setState(
-                Object.assign(this.state, {
-                    isDurationClick: true
-                })
-            );
-            const { ludoCreateForm } = this.state;
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: Number(event.target.value)
-                })
-            );
-        } else { // finish duration setting
-            const { ludoCreateForm } = this.state;
-            let { checkpoint } = ludoCreateForm;
-            const checkPointNumber = Number(event.target.value);
-            const index = checkpoint.indexOf(checkPointNumber);
-            if (index === -1) { // element not in array
-                checkpoint.push(checkPointNumber);
-            } else { // element is in array
-                checkpoint.splice(index, 1);
-            };
-            checkpoint = checkpoint.sort((a,b) => { return a - b });
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    checkpoint
-                })
-            );
-        }
-    }
-
-    handleDayPickerMouseOver(event) {
-        if (!this.state.isDurationClick) {
-            const { ludoCreateForm } = this.state;
-            if (Number(event.target.value) >= 4) {
-                this.setState(
-                    Object.assign(ludoCreateForm, {
-                        duration: Number(event.target.value),
-                        checkpoint: [Number(event.target.value)]
-                    })
-                );
-                this.setState(
-                    Object.assign(this.state, {
-                        currentHoverValue: Number(event.target.value)
-                    })
-                );
-            } else {
-                this.setState(
-                    Object.assign(ludoCreateForm, {
-                        duration: 3,
-                        checkpoint: [3]
-                    })
-                );
-                this.setState(
-                    Object.assign(this.state, {
-                        currentHoverValue: 3
-                    })
-                );
-            }
-        }
-    }
-
-    handleDurationValue(value) {
-        const { ludoCreateForm } = this.state;
-        if (value >= 4) {
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: value,
-                    checkpoint: [value]
-                })
-            );
-            this.setState(
-                Object.assign(this.state, {
-                    currentHoverValue: value
-                })
-            );
-        } else {
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: 3,
-                    checkpoint: [3]
-                })
-            );
-            this.setState(
-                Object.assign(this.state, {
-                    currentHoverValue: 3
-                })
-            );
-        }
     }
 
     handleIconChange() {
@@ -206,24 +93,6 @@ export default class OpenedFormOfStarter extends React.Component {
             case 7:
                 return othersIcon;
         }
-    }
-
-    handleIntroductionChange(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                introduction: event.target.value
-            })
-        );
-    }
-
-    handleMarblesChange(marbles) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                marbles
-            })
-        );
     }
 
     handleSubmit(event) {
@@ -250,26 +119,9 @@ export default class OpenedFormOfStarter extends React.Component {
         }
     }
 
-    handleTitleChange(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                title: event.target.value
-            })
-        );
-    }
-
-    handleTagsChange(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                tags: event.target.value
-            })
-        );
-    }
-
     render() {
         const { ludoCreateForm, category, isDurationClick, maxDuration } = this.state;
+        const { currentFormValue } = this.props;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -306,54 +158,36 @@ export default class OpenedFormOfStarter extends React.Component {
                         <div className="ludo-detail-information-fields">
                             <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
                                 <label>Category:</label>
-                                <DropdownList 
-                                    className="ludo-detail-information-field-dropdown-list"
-                                    data={category}
-                                    onChange={this.handleCategoryChange}
-                                    defaultValue="lifestyle"
-                                />
+                                <div className="ludo-detail-information-field-category">
+                                    {this.handleCategory(currentFormValue.category_id)}
+                                </div>
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
-                                    onChange={this.handleTitleChange}
-                                />
+                            <div className="ludo-detail-information-field-text">
+                                {currentFormValue.title}
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
-                                    onChange={this.handleTagsChange}
-                                />
+                            <div className="ludo-detail-information-field-text">
+                                {currentFormValue.tags}
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
                         <div className="ludo-detail-information-field">
+                            <div className="marbles-label">Marbles:<span className="marbles-label--number">{currentFormValue.marbles}</span></div>
                             <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <label>Marbles:</label>
-                                <RcSlider max={50} min={1} 
-                                    defaultValue={1} value={ludoCreateForm.marbles}
-                                    onChange={this.handleMarblesChange}
-                                />
+                                <RcSlider value={currentFormValue.marbles} />
                             </div>
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <label>Duration:</label>
-                        </div>
+                        <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} 
-                                defaultValue={3} value={ludoCreateForm.duration}
-                                onChange={this.handleDurationValue}
+                                max={maxDuration} min={3} value={currentFormValue.duration}
                             />
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <textarea 
-                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
-                                placeholder="Introduction" 
-                                onChange={this.handleIntroductionChange}
-                            />
+                        <div className="ludo-detail-information-field-text ludo-detail-information-field-text--introduction">
+                            {currentFormValue.introduction} 
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
                             Quit
