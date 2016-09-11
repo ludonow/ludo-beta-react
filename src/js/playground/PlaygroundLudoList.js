@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import Masonry from 'react-masonry-component';
-// import history from '../history';
 
 import QuickStart from './QuickStart';
 
@@ -28,6 +27,7 @@ export default class PlaygroundLudoList extends React.Component {
             currentLudoAuthentication: ``,
             flippedKey: []
         };
+        this.handleCardLink = this.handleCardLink.bind(this);
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
     }
@@ -150,6 +150,32 @@ export default class PlaygroundLudoList extends React.Component {
         }
     }
 
+    handleCardLink(event) {
+        const cardIndex = Number(event.currentTarget.id.slice(3));
+        const specificCardData = this.props.rawData[cardIndex];
+        const { stage, starterId } = specificCardData;
+        const { currentUserId, updateCurrentFormValue, getCurrentLudoId } = this.props;
+        const { category_id, checkpoint, duration, introduction, marbles, tags, title } = specificCardData;
+        const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        getCurrentLudoId();
+        updateCurrentFormValue(ludoForm);
+        if (stage == 1) {
+            if(currentUserId == starterId) {
+                browserHistory.push('/opened-for-starter');
+            } else {
+                browserHistory.push('/opened-for-bystander');
+            }
+        } else {
+            if(currentUserId == starterId) {
+                console.log('Active player');
+                browserHistory.push('/active');
+            } else {
+                console.log('Active bystander');
+                browserHistory.push('/active');
+            }
+        }
+    }
+
     showBack(event) {
         const cardIndex = Number(event.currentTarget.id);
         const { flippedKey } = this.state;
@@ -163,48 +189,6 @@ export default class PlaygroundLudoList extends React.Component {
                 flippedKey
             })
         );
-
-        const specificCardData = this.props.rawData[cardIndex];
-        const { stage, starterId } = specificCardData;
-        const { currentUserId, updateCurrentFormValue, getCurrentLudoId } = this.props;
-        console.log('specificCardData', specificCardData);
-        const { category_id, checkpoint, duration, introduction, marbles, tags, title } = specificCardData;
-        const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
-        getCurrentLudoId();
-        updateCurrentFormValue(ludoForm);
-        if (stage == 1) {
-            if(currentUserId == starterId) {
-                console.log('Opened starter');
-                this.setState(
-                    Object.assign(this.state, {
-                        currentLudoAuthentication: `opened-for-starter`
-                    })
-                );
-            } else {
-                console.log('Opened bystander');
-                this.setState(
-                    Object.assign(this.state, {
-                        currentLudoAuthentication: `opened-for-bystander`
-                    })
-                );
-            }
-        } else {
-            if(currentUserId == starterId) {
-                console.log('Active player');
-                this.setState(
-                    Object.assign(this.state, {
-                        currentLudoAuthentication: `Active`
-                    })
-                );
-            } else {
-                console.log('Active bystander');
-                this.setState(
-                    Object.assign(this.state, {
-                        currentLudoAuthentication: `Active`
-                    })
-                );
-            }
-        }
     }
 
     showFront(event) {
@@ -268,11 +252,10 @@ export default class PlaygroundLudoList extends React.Component {
                                     </div>
                                     <div className="card-bottom">
                                         <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                            <Link to={currentLudoAuthentication}>
-                                                <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                                    go
-                                                </div>
-                                            </Link>
+                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}
+                                                onClick={this.handleCardLink} id={`go-${index}`}>
+                                                go
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
