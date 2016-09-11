@@ -23,6 +23,7 @@ export default class App extends React.Component {
             currentUserId: '',
             userBasicData: {}
         };
+        this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoId = this.getCurrentLudoId.bind(this);
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
@@ -39,7 +40,6 @@ export default class App extends React.Component {
         axios.get('/apis/user')
         .then(function (response) {
             if(response.data.status === 'success') {
-                console.log('user', response.data);
                 _this.setState(
                     Object.assign(_this.state, {
                         userBasicData: response.data.user,
@@ -70,30 +70,33 @@ export default class App extends React.Component {
     }
 
     getCurrentLudoId(ludo_id) {
-        this.setState(
-            Object.assign(this.state, {
+        // this.setState(
+        //     Object.assign(this.state, {
+        //         currentLudoId: ludo_id
+        //     })
+        // );
+
+        const _this = this;
+        _this.setState(
+            Object.assign(_this.state, {
                 currentLudoId: ludo_id
             })
         );
+        console.log('ludo id', ludo_id);
+        console.log('getCurrentLudoId');
     }
 
     handleLudoListUpdate() {
         const _this = this;
 
-        // ludo list 
-        const nextState = (response) => {
-            return (
-                Object.assign(_this.state, {
-                    rawData: response.data.ludoList.Items
-                })
-            );
-        };
-
         axios.get('/apis/ludo?stage=1')
         .then(function (response) {
             if(response.data.status === '200') {
-                _this.setState(nextState(response));
-                console.log('ludo list data', response.data.ludoList.Items);
+                _this.setState(
+                    Object.assign(_this.state, {
+                        rawData: response.data.ludoList.Items
+                    })
+                );
             } else {
                 console.log(response.data.message);
             }
@@ -102,6 +105,24 @@ export default class App extends React.Component {
             console.log('ludo list error', error);
             console.log(response.data.message);
         });
+
+        // axios.get('/apis/ludo?stage=1')
+        // .then(function (response) {
+        //     if(response.data.status === '200') {
+        //         this.setState(
+        //             Object.assign(this.state, {
+        //                 rawData: response.data.ludoList.Items
+        //             })
+        //         );
+        //     } else {
+        //         console.log(response.data.message);
+        //     }
+        // })
+        // .catch(function(error) {
+        //     console.log('ludo list error', error);
+        //     console.log(response.data.message);
+        // });
+
         /* example data */
         // config.get('data/LudoData.json')
         // .then(function (response) {
@@ -125,7 +146,7 @@ export default class App extends React.Component {
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const { currentFormValue, currentUserId, rawData, userBasicData } = this.state;
+        const { currentFormValue, currentLudoId, currentUserId, rawData, userBasicData } = this.state;
         return (
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
@@ -133,6 +154,7 @@ export default class App extends React.Component {
                 <div className="main-container">
                     {React.cloneElement(this.props.children, {
                         currentFormValue,
+                        currentLudoId,
                         currentUserId,
                         getCurrentLudoId: this.getCurrentLudoId,
                         handleLudoListUpdate: this.handleLudoListUpdate,

@@ -92,26 +92,26 @@ export default class OpenedFormOfByStander extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { isDurationClick } = this.state;
-        if (isDurationClick) {
-            const { ludoDetailInformation } = this.state;
-            let { checkpoint } = ludoDetailInformation;
-            checkpoint = checkpoint.sort((a, b) => { return a - b });
+        const { currentLudoId, currentFormValue } = this.props;
+        const body = {
+                'type': 'match',
+                'duration': currentFormValue.duration,
+                'marbles': currentFormValue.marbles
+        };
 
-            // axios.post('/apis/ludo', ludoDetailInformation)
-            // .then(function (response) {
-            //     console.log('response', response.data.status);
-            // })
-            // .catch(function (error) {
-            //     console.log('error', error);
-            // });
-            
-            setTimeout(() => {  // simulate server latency
-                window.alert(`You submitted:\n\n${JSON.stringify(ludoDetailInformation, null, 2)}`);
-            }, 200)
-        } else {
-            window.alert(`You haven't select the duration`);
-        }
+        axios.put(`/apis/ludo/${currentLudoId}`, body)
+        .then(function (response) {
+            if(response.data.status == '200') {
+                console.log('response data', response.data);
+            } else {
+                console.log('message from server: ', response.data.message);
+            }
+        })
+        .catch(function (error) {
+            console.log('error', error);
+            console.log('error message from server: ', response.data.message);
+        });
+        console.log('join');
     }
 
     render() {
