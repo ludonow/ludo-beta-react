@@ -10,78 +10,81 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             rawData: [],
-            shouldLudoListBeUpdated: false
+            currentFormValue: {
+                category_id: 1,
+                marbles: 1,
+                duration: 3,
+                checkpoint: [3],
+                title: '',
+                introduction: '',
+                tags: ''
+            }
         };
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
+        this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
     componentDidMount() {
-        this.getCardContent();
-    }
-
-    getCardContent() {
-        const _this = this;
-
-        this.serverRequest = axios.get('/apis/ludo?stage=1')
-            .then(function (response) {
-                if(response.data.status != 'err') {
-                    _this.setState({
-                        rawData: response.data.ludoList.Items
-                    })
-                } else {
-                    console.log(response.data.message);
-                }
-
-            })
-            .catch(function(error) {
-                console.log(error);
-                console.log(response.data.message);
-            });
-        /* example data */
-        // this.serverRequest = axios.get('data/LudoData.json')
-        //     .then(function (response) {
-        //         _this.setState({
-        //             rawCardContent: response.data
-        //         });
-        //     })
-        //     .catch(function(error) {
-        //         console.log(error);
-        //     });
+        this.handleLudoListUpdate();
     }
 
     handleLudoListUpdate() {
         const state = this.state;
-        const { shouldLudoListBeUpdated } = state;
-        if(!shouldLudoListBeUpdated) {
-            this.setState(
-                Object.assign(state, {
-                    shouldLudoListBeUpdated: true
+        const _this = this;
+        const nextState = (response) => {
+            return (
+                Object.assign(_this.state, {
+                    rawData: response.data.ludoList.Items
                 })
             );
-            this.getCardContent();
-            this.setState(
-                Object.assign(state, {
-                    shouldLudoListBeUpdated: false
-                })
-            );
-            console.log('LudoList should be updated');
-        } else {
-            console.log('LudoList should not be updated');
-        }
+        };
+
+        axios.get('/apis/ludo?stage=1')
+        .then(function (response) {
+            if(response.data.status != 'err') {
+                _this.setState(nextState(response));
+            } else {
+                console.log(response.data.status);
+            }
+        })
+        .catch(function(error) {
+            console.log('error', error);
+            console.log(response.data.status);
+        });
+        /* example data */
+        // config.get('data/LudoData.json')
+        // .then(function (response) {
+        //     _this.setState({
+        //         rawCardContent: response.data
+        //     });
+        // })
+        // .catch(function(error) {
+        //     console.log(error);
+        // });
+    }
+
+    updateCurrentFormValue(ludoForm) {
+        this.setState(
+            Object.assign(this.state, {
+                currentFormValue: ludoForm
+            })
+        );
+        console.log('updateCurrentFormValue');
     }
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const { rawData, shouldLudoListBeUpdated } = this.state;
+        const { currentFormValue, rawData } = this.state;
         return (
             <div>
                 <Header isProfile={isProfile} />
                 <Sidebar />
                 <div className="main-container">
                     {React.cloneElement(this.props.children, {
-                        rawData,
+                        currentFormValue,
                         handleLudoListUpdate: this.handleLudoListUpdate,
-                        shouldLudoListBeUpdated
+                        rawData,
+                        updateCurrentFormValue: this.updateCurrentFormValue
                     })}
                 </div>
             </div>

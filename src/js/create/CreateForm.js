@@ -244,18 +244,18 @@ export default class CreateForm extends React.Component {
             checkpoint = checkpoint.sort((a, b) => { return a - b });
 
             axios.post('/apis/ludo', ludoCreateForm)
-                .then(function (response) {
-                    if (response.data.status == 'err') {
-                        window.alert('response error', response.data.message);
-                        console.log(response.data.message);
-                    } else {
-                        window.alert('創立成功!!');
-                    }
-                })
-                .catch(function (error) {
-                    console.log('error', error);
-                });
-            this.props.handleLudoListUpdate();
+            .then(function (response) {
+                if (response.data.status == 'err') {
+                    window.alert('response error', response.data.message);
+                    console.log(response.data.message);
+                } else {
+                    console.log(response.data.message);
+                }
+            })
+            .catch(function (error) {
+                console.log('error', error);
+            });
+            this.props.updateCurrentFormValue(ludoCreateForm);
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {
@@ -331,7 +331,7 @@ export default class CreateForm extends React.Component {
                                     className="ludo-detail-information-field-dropdown-list"
                                     data={category}
                                     onChange={this.handleCategoryChange}
-                                    defaultValue={'lifestyle'}
+                                    defaultValue={'select a category'}
                                 />
                             </div>
                             <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
