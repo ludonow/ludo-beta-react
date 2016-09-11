@@ -4,7 +4,6 @@ import Masonry from 'react-masonry-component';
 
 import CreateForm from './CreateForm';
 import Active from '../active/Active';
-import Opened from '../opened/Opened';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -271,9 +270,7 @@ export default class CreateLudoList extends React.Component {
                                     </div>
                                     <div className="card-bottom">
                                         <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                            <Link to={(data.stage === 1) ? `Opened` : `Active`}>
-                                                <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
-                                            </Link>
+                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
                                         </div>
                                     </div>
                                 </div>

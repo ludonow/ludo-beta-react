@@ -1,10 +1,3 @@
-$black: rgba(0, 0, 0, 0.8);
-$black_button: rgba(60, 60, 60, 1);
-$gray_shadow: rgba(160, 160, 160, 1);
-$gray_text-field: rgba(240, 240, 240, 1);
-$gray_text_in_text-field: rgba(160, 160, 160, 1);
-$orange_button: rgba(248, 182, 45, 1);
-
 .ludo-detail-information-container {
     @extend %fixed;
     width: 540px;
@@ -15,93 +8,62 @@ $orange_button: rgba(248, 182, 45, 1);
     padding-bottom: 15px;
     @extend %text_center;
 }
-        .ludo-detail-information-field-text {
-            @extend %flex;
-            align-items: center;
-            justify-content: center;
-            @extend %as_wide_as_parent;
-            height: 30px;
-            font-size: 16px;
-            border: solid;
-        }
-        .ludo-detail-information-field-text--introduction {
-            height: 100px;
-        }
+    .ludo-detail-information-field__text {
+        @extend %flex;
+        align-items: center;
+        justify-content: center;
+        @extend %as_wide_as_parent;
+        height: 30px;
+        font-size: 16px;
+        margin-bottom: 5px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: $gray_text-field;
+    }
+    .ludo-detail-information-field__text--introduction {
+        height: 100px;
+    }
+
 .ludo-detail-information-top-container {
     @extend %flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
-    .ludo-detail-information-fields {
-        width: 60%;
-    }
-        .ludo-detail-information-field-dropdown-list-container {
-            @extend %flex;
-            align-items: center;
-            
-            label {
-                margin-right: 8px;
-            }
-            .ludo-detail-information-field-dropdown-list {
-                @extend %as_wide_as_parent;
-                border-radius: 0;
-                border-style: none;
-                background-color: $gray_text-field;
-                // font size in the selection list
-                font-size: 14px;
-                .rw-input {
-                    // font size in the text field of drop-down list
-                    font-size: 14px;
-                    color: black;
-                }
-                span {
-                    // size of drop-down list arrow icon
-                    font-size: 14px;
-                }
-            }
-        }
-        .ludo-detail-information-field-category {
-            @extend %flex;
-            align-items: center;
-            justify-content: center;
-            @extend %as_wide_as_parent;
-            height: 30px;
-            font-size: 16px;
-        }
-
-        .ludo-detail-information-fields__field {
-            @extend %as_wide_as_parent;
-            height: 30px;
-            border: none;
-            margin: 10px 0;
-        }
-        .ludo-detail-information-fields__field--text-field {
-            color: $gray_text_in_text-field;
-            background-color: $gray_text-field;
-            line-height: 30px;
-
-            &::-webkit-input-placeholder {
-                line-height: 30px;
-            }
-        }
-    .ludo-detail-information-icon {
+    .category-icon-container {
         width: 40%;
         height: 50%;
         padding-right: 20px;
         padding-left: 20px;
-    }
-        .ludo-detail-information-icon__img {
+
+        .category-icon {
             height: 150px;
         }
+    }
+
+    .top-right-container {
+        width: 60%;
+    }
+        .category-container {
+            @extend %flex;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+            .category-label {
+                width: 30%;
+            }
+            .category-value {
+                width: 70%;
+            }
 }
 
 .ludo-detail-information-bottom-container {
     @extend %relative;
     margin-top: 20px;
     .marbles-label {
-        font-size: 14px;
         margin-bottom: 14px;
+        font-size: 14px;
+        text-align: left;
     }
     .marbles-label--number {
         margin-left: 20px;
@@ -113,50 +75,45 @@ $orange_button: rgba(248, 182, 45, 1);
     }
 }
 
-.ludo-detail-information-slider {
-    // @extend %flex;
-    // align-items: center;
-    label {
-        margin-right: 15px;
+.ludo-detail-information-slider--marbles {
+    // overwrite react-component slider
+    .rc-slider-step {
+        height: 6px;
+        margin-top: 10px;
+    }
+    .rc-slider-track {
+        height: 6px;
+        background-color: $orange_button;
+    }
+    .rc-slider-dot {
+        width: 15px;
+        height: 15px;
+        background-image: url("../images/marble.png");
+        @extend %background_img_setting;
+    }
+    .rc-slider-handle {
+        width: 15px;
+        height: 15px;
+        background-image: url("../images/marble.png");
+        @extend %background_img_setting;
     }
 }
-    .ludo-detail-information-slider--marbles {
-        // overwrite react-component slider
-        .rc-slider-step {
-            height: 6px;
-            margin-top: 10px;
-        }
-        .rc-slider-track {
-            height: 6px;
-            background-color: $orange_button;
-        }
-        .rc-slider-dot {
-            width: 15px;
-            height: 15px;
-            background-image: url("../images/marble.png");
-            @extend %background_img_setting;
-        }
-        .rc-slider-handle {
-            width: 15px;
-            height: 15px;
-            background-image: url("../images/marble.png");
-            @extend %background_img_setting;
-        }
-    }
 
 .ludo-detail-information-day-picker {
     margin-bottom: 10px;
 }
     .ludo-detail-information-day-picker__button {
-        @extend .ludo-button;
         width: 50px;
         height: 30px;
         margin: 5px;
         font-size: 20px;
         color: $black_button;
         background-color: $black_button;
+
+        // overwrite css of default button
         &:disabled {
-            cursor: auto;
+            @extend %unclickable;
+            border: none;
         }
     }
     .ludo-detail-information-day-picker__button--duration {
@@ -168,106 +125,20 @@ $orange_button: rgba(248, 182, 45, 1);
     }
 
 
-    .ludo-detail-information-slider--duration {
-        margin-top: 12px;
-        margin-bottom: 15px;
-        // overwrite react-component slider
-        .rc-slider-step {
-            height: 2px;
-            background-color: $black;
-        }
-        .rc-slider-track {
-            height: 2px;
-        }
-        .rc-slider-handle {
-            border-color: $orange_button;
-            background-color: $orange_button;
-        }
+.ludo-detail-information-slider--duration {
+    margin-top: 12px;
+    margin-bottom: 15px;
+    // overwrite react-component slider
+    .rc-slider-step {
+        height: 2px;
+        background-color: $black;
     }
-
-.ludo-detail-information-field {
-    @extend %relative;
-    text-align: left;
-    height: 30px;
-}
-
-.ludo-detail-information-upload-picture-button-container {
-    @extend %relative;
-}
-
-    .ludo-detail-information-upload-picture-button {
-        @extend %clickable;
-        @extend %flex;
-        align-items: center;
-        justify-content: center;
-        @extend %absolute;
-        right: -4px;
-        @extend %top;
-        width: 50px;
-        height: 40px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #85888d;
-        border-top: none;
-        border-right: none;
-        color: white;
-
-        .ludo-detail-information-upload-picture-button__icon {
-            width: 35px;
-            height: 35px;
-        }
+    .rc-slider-track {
+        height: 2px;
     }
-
-    .ludo-detail-information-field__text-field {
-        @extend %as_wide_as_parent;
-        line-height: 1.8;
-        border: none;
-        color: $gray_text_in_text-field;
-        background-color: $gray_text-field;
-    }
-    .ludo-detail-information-field__text-field--introduction {
-        height: 100px;
-        box-shadow: 0 2px 2px 0;
-        line-height: 16px;
-        resize : none;
-        // &::-moz-placeholder { /* Firefox 19+ */
-        //     @extend %text_center;
-        // }
-        // &:-ms-input-placeholder { /* IE 10+ */
-        //     @extend %text_center;
-        // }
-        // &:-moz-placeholder { /* Firefox 18- */
-        //     @extend %text_center;
-        // }
-        &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-            @extend %text_center;
-            line-height: 100px;
-        }
-    }
-
-    .ludo-detail-information-field__text-field--report {
-        height: 100px;
-        box-shadow: 0 2px 2px 0;
-        line-height: 16px;
-        resize : none;
-
-        &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-            @extend %text_center;
-            line-height: 100px;
-        }
-    }
-
-.ludo-detail-information-upload-instruction {
-    @extend %flex;
-    align-self: flex-end;
-    justify-content: center;
-    @extend %relative;
-    @extend %text_center;
-    color: rgb(180, 180, 180);
-
-    .number {
-        margin: 0 10px;
-        color: $black;
+    div.rc-slider-handle {
+        border-color: $orange_button;
+        background-color: $orange_button;
     }
 }
 

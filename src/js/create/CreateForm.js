@@ -92,12 +92,12 @@ export default class CreateForm extends React.Component {
 
         if(value <= currentHoverValue) { // before hover and now hover
             if (index != -1) {
-                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--checkpoint`;
+                return `ludo-create-information-day-picker__button ludo-create-information-day-picker__button--checkpoint`;
             } else {
-                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--duration`;
+                return `ludo-create-information-day-picker__button ludo-create-information-day-picker__button--duration`;
             };
         } else { // after hover
-            return `ludo-detail-information-day-picker__button`;
+            return `ludo-create-information-day-picker__button`;
         };
     }
 
@@ -321,47 +321,47 @@ export default class CreateForm extends React.Component {
         };
         return (
             <div className="grid-item--ludo-detail-information">
-                <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
-                    <div className="ludo-detail-information-top-container">
-                        <div className="ludo-detail-information-icon">
-                            <img className="ludo-detail-information-icon__img" src={this.handleIconChange()} />
+                <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
+                    <div className="ludo-create-information-top-container">
+                        <div className="category-icon-container">
+                            <img className="category-icon" src={this.handleIconChange()} />
                         </div>
-                        <div className="ludo-detail-information-fields">
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
-                                <label>Category:</label>
+                        <div className="top-right-container">
+                            <div className="dropdown-list-container">
+                                <span className="category-label">Category:</span>
                                 <DropdownList 
-                                    className="ludo-detail-information-field-dropdown-list"
+                                    className="dropdown-list"
                                     data={category}
                                     onChange={this.handleCategoryChange}
                                     defaultValue={'select a category'}
                                 />
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
+                            <div className="text-field-container">
+                                <input className="text-field" type="text" placeholder="Title" 
                                     onChange={this.handleTitleChange}
                                 />
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
+                            <div className="text-field-container">
+                                <input className="text-field" type="text" placeholder="#hashtag" 
                                     onChange={this.handleTagsChange}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className="ludo-detail-information-bottom-container">
-                        <div className="ludo-detail-information-field">
-                            <div className="marbles-label">Marbles:<span className="marbles-label--number">{ludoCreateForm.marbles}</span></div>
-                            <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <RcSlider max={50} min={1} 
-                                    defaultValue={1} value={ludoCreateForm.marbles}
-                                    onChange={this.handleMarblesChange}
-                                />
-                            </div>
+                    <div className="ludo-create-information-bottom-container">
+                        <div className="marbles-label">
+                            Marbles:<span className="marbles-label--number">{ludoCreateForm.marbles}</span>
+                        </div>
+                        <div className="ludo-create-information-slider--marbles">
+                            <RcSlider max={50} min={1} 
+                                defaultValue={1} value={ludoCreateForm.marbles}
+                                onChange={this.handleMarblesChange}
+                            />
                         </div>
                         <div className="duration-label">Duration:</div>
-                        <div className="ludo-detail-information-day-picker">
+                        <div className="ludo-create-information-day-picker">
                             {dayPickerButtons}
-                            <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
+                            <div className="ludo-create-information-slider--duration">
                                 <RcSlider 
                                     max={maxDuration} min={3} 
                                     defaultValue={3} value={ludoCreateForm.duration}
@@ -369,12 +369,15 @@ export default class CreateForm extends React.Component {
                                 />
                             </div>
                         </div>
-                        <textarea 
-                            className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
-                            placeholder="Introduction" 
-                            onChange={this.handleIntroductionChange}
-                        />
-                        <button className="ludo-detail-information-submit-button" type="submit">
+                        <div className="text-field-container">
+                            <textarea 
+                                className="text-field--introduction" 
+                                placeholder="Introduction" 
+                                onChange={this.handleIntroductionChange}
+                                rows="5" cols="70"
+                            />
+                        </div>
+                        <button className="ludo-create-information-submit-button" type="submit">
                             Start
                         </button>
                     </div>

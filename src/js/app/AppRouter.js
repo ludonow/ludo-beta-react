@@ -7,7 +7,8 @@ import App from './App';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
 import Login from './Login';
-import Opened from '../opened/Opened';
+import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
+import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 
@@ -28,7 +29,8 @@ export default class AppRouter extends React.Component {
                     <Route path="create" component={Create}></Route>
                     <Route path="friend" component={Friend}></Route>
                     <Route path="login" component={Login}></Route>
-                    <Route path="opened" component={Opened}></Route>
+                    <Route path="opened-for-starter" component={OpenedForStarter}></Route>
+                    <Route path="opened-for-bystander" component={OpenedForBystander}></Route>
                     <Route path="playground" component={Playground}></Route>
                     <Route path="profile" component={Profile}></Route>
                 </Route>

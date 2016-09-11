@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Masonry from 'react-masonry-component';
+// import history from '../history';
 
 import QuickStart from './QuickStart';
-import Active from '../active/Active';
-import Opened from '../opened/Opened';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -26,12 +25,11 @@ export default class PlaygroundLudoList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            flippedKey: [],
-            masonryCardContent: []
+            currentLudoAuthentication: ``,
+            flippedKey: []
         };
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
-        this.addMasonryClass = this.addMasonryClass.bind(this);
     }
 
     handleCardClick(cardIndex) {
@@ -165,6 +163,48 @@ export default class PlaygroundLudoList extends React.Component {
                 flippedKey
             })
         );
+
+        const specificCardData = this.props.rawData[cardIndex];
+        const { stage, starterId } = specificCardData;
+        const { currentUserId, updateCurrentFormValue, getCurrentLudoId } = this.props;
+        console.log('specificCardData', specificCardData);
+        const { category_id, checkpoint, duration, introduction, marbles, tags, title } = specificCardData;
+        const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        getCurrentLudoId();
+        updateCurrentFormValue(ludoForm);
+        if (stage == 1) {
+            if(currentUserId == starterId) {
+                console.log('Opened starter');
+                this.setState(
+                    Object.assign(this.state, {
+                        currentLudoAuthentication: `opened-for-starter`
+                    })
+                );
+            } else {
+                console.log('Opened bystander');
+                this.setState(
+                    Object.assign(this.state, {
+                        currentLudoAuthentication: `opened-for-bystander`
+                    })
+                );
+            }
+        } else {
+            if(currentUserId == starterId) {
+                console.log('Active player');
+                this.setState(
+                    Object.assign(this.state, {
+                        currentLudoAuthentication: `Active`
+                    })
+                );
+            } else {
+                console.log('Active bystander');
+                this.setState(
+                    Object.assign(this.state, {
+                        currentLudoAuthentication: `Active`
+                    })
+                );
+            }
+        }
     }
 
     showFront(event) {
@@ -182,64 +222,64 @@ export default class PlaygroundLudoList extends React.Component {
         );
     }
 
-    addMasonryClass() {
-        this.state.masonryCardContent = this.props.rawData.map( (data, index) => {
-            const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
-            const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
-            return (
-                <div className={`grid-item`} key={`card-${index}`}>
-                    <div 
-                        className={`card card-front${isThisCardFlipped ? "" : " card-flip"}`}
-                        id={index}
-                        onClick={buttonClickHandler}
-                    >
-                        <div className={`card-top${this.handleCardFrontTopClass(data.category_id)}`}>
-                            <div className="title">{data.title}</div>
-                            <div className="duration">{data.duration} days</div>
-                            <div className="card-marble">
-                                <img src={marbleIcon} className="card-marble__icon" />
-                                <span className="card-marble__number">{data.marbles}</span>
-                            </div>
-                        </div>
-                        <div className="card-bottom">
-                            <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
-                            <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
-                        </div>
-                    </div>
-                    <div 
-                        className={`card card-back${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
-                        id={index}
-                        onClick={buttonClickHandler}
-                    >
-                        <div className={this.handleCardBackClass(data.category_id)}>
-                            <div className="card-introduction">
-                                {String(data.introduction).substring(0, 20) + ' ...'}
-                            </div>
-                            <div className="card-hashtags">
-                                {data.tags}
-                            </div>
-                        </div>
-                        <div className="card-bottom">
-                            <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                <Link to={(data.stage === 1) ? `Opened` : `Active`}>
-                                    <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        })
-    }
-
     render() {
-        this.addMasonryClass();
+        const { currentLudoAuthentication } = this.state;
         return (
             <Masonry
                 className="playground"
                 options={masonryOptions} >
                 <QuickStart />
-                {this.state.masonryCardContent}
+                { 
+                    this.props.rawData.map( (data, index) => {
+                        const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
+                        const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
+                        return (
+                            <div className={`grid-item`} key={`card-${index}`}>
+                                <div 
+                                    className={`card card-front${isThisCardFlipped ? "" : " card-flip"}`}
+                                    id={index}
+                                    onClick={buttonClickHandler}
+                                >
+                                    <div className={`card-top${this.handleCardFrontTopClass(data.category_id)}`}>
+                                        <div className="title">{data.title}</div>
+                                        <div className="duration">{data.duration} days</div>
+                                        <div className="card-marble">
+                                            <img src={marbleIcon} className="card-marble__icon" />
+                                            <span className="card-marble__number">{data.marbles}</span>
+                                        </div>
+                                    </div>
+                                    <div className="card-bottom">
+                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
+                                        <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
+                                    </div>
+                                </div>
+                                <div 
+                                    className={`card card-back${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                                    id={index}
+                                    onClick={buttonClickHandler}
+                                >
+                                    <div className={this.handleCardBackClass(data.category_id)}>
+                                        <div className="card-introduction">
+                                            {String(data.introduction).substring(0, 20) + ' ...'}
+                                        </div>
+                                        <div className="card-hashtags">
+                                            {data.tags}
+                                        </div>
+                                    </div>
+                                    <div className="card-bottom">
+                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                            <Link to={currentLudoAuthentication}>
+                                                <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                                    go
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </Masonry>
         );
     }
