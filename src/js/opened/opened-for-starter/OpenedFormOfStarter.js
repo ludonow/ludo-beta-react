@@ -97,53 +97,45 @@ export default class OpenedFormOfStarter extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { isDurationClick } = this.state;
-        if (isDurationClick) {
-            const { ludoCreateForm } = this.state;
-            let { checkpoint } = ludoCreateForm;
-            checkpoint = checkpoint.sort((a, b) => { return a - b });
+        const { currentLudoId, currentFormValue } = this.props;
+        console.log('before quit axios delete');
+        console.log(`/apis/ludo/${currentLudoId}`);
+        const body = {
+                'marbles': currentFormValue.marbles
+        };
+        console.log('body', body);
 
-            // axios.post('/apis/ludo', JSON.stringify(ludoCreateForm, null, 2))
-            // .then(function (response) {
-            //     console.log('response', response.data.status);
-            // })
-            // .catch(function (error) {
-            //     console.log('error', error);
-            // });
-            
-            setTimeout(() => {  // simulate server latency
-                window.alert(`You submitted:\n\n${JSON.stringify(ludoCreateForm, null, 2)}`);
-            }, 200)
-        } else {
-            window.alert(`You haven't select the duration`);
-        }
+        // axios.delete(`/apis/ludo/${currentLudoId}`, body)
+        // .then(function (response) {
+        //     if(response.data.status == '200') {
+        //         // TODO: Confirm quiting Ludo
+        //         console.log('response data', response.data);
+        //     } else {
+        //         console.log('message from server: ', response.data.message);
+        //     }
+        // })
+        // .catch(function (error) {
+        //     console.log('error', error);
+        //     console.log('error message from server: ', response.data.message);
+        // });
+        console.log('after quit axios delete');
     }
 
     render() {
-        const { ludoCreateForm, category, isDurationClick, maxDuration } = this.state;
+        const { maxDuration } = this.state;
         const { currentFormValue } = this.props;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
                 dayPickerButtons.push(
                     <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
-                        onClick={this.handleDayPickerClick} 
-                        onMouseOver={this.handleDayPickerMouseOver} 
-                        disabled={
-                            (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
-                        }
+                        disabled={true}
                     />, <br key="br" /> 
                 );
             } else {
                 dayPickerButtons.push(
                     <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
-                        onClick={this.handleDayPickerClick} 
-                        onMouseOver={this.handleDayPickerMouseOver} 
-                        disabled={
-                            (i < 3 && !isDurationClick)
-                            || (i >= ludoCreateForm.duration && isDurationClick)
-                        }
+                        disabled={true}
                     />
                 );
             };
@@ -152,41 +144,39 @@ export default class OpenedFormOfStarter extends React.Component {
             <div className="grid-item--ludo-detail-information">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
-                        <div className="ludo-detail-information-icon">
-                            <img className="ludo-detail-information-icon__img" src={this.handleIconChange()} />
+                        <div className="category-icon-container">
+                            <img className="category-icon" src={this.handleIconChange()} />
                         </div>
-                        <div className="ludo-detail-information-fields">
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
-                                <label>Category:</label>
-                                <div className="ludo-detail-information-field-category">
+                        <div className="top-right-container">
+                            <div className="category-container">
+                                <span className="category-label">Category:</span>
+                                <span className="category-value">
                                     {this.handleCategory(currentFormValue.category_id)}
-                                </div>
+                                </span>
                             </div>
-                            <div className="ludo-detail-information-field-text">
+                            <div className="ludo-detail-information-field__text">
                                 {currentFormValue.title}
                             </div>
-                            <div className="ludo-detail-information-field-text">
+                            <div className="ludo-detail-information-field__text">
                                 {currentFormValue.tags}
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="ludo-detail-information-field">
-                            <div className="marbles-label">Marbles:<span className="marbles-label--number">{currentFormValue.marbles}</span></div>
-                            <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <RcSlider value={currentFormValue.marbles} />
-                            </div>
+                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{currentFormValue.marbles}</span></div>
+                        <div className="ludo-detail-information-slider--marbles">
+                            <RcSlider value={currentFormValue.marbles} disabled={true} />
                         </div>
                         <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
-                        <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
+                        <div className="ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} value={currentFormValue.duration}
+                                max={maxDuration} min={3} value={currentFormValue.duration} disabled={true}
                             />
                         </div>
-                        <div className="ludo-detail-information-field-text ludo-detail-information-field-text--introduction">
+                        <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
                             {currentFormValue.introduction} 
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">

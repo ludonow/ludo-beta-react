@@ -21,16 +21,14 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 };
 
-export default class CreateLudoList extends React.Component {
+export default class OpenedForStarter extends React.Component {
     constructor() {
         super();
         this.state = {
             flippedKey: [],
-            masonryCardContent: []
         };
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
-        this.addMasonryClass = this.addMasonryClass.bind(this);
     }
 
     handleCardClick(cardIndex) {
@@ -165,64 +163,61 @@ export default class CreateLudoList extends React.Component {
         );
     }
 
-    addMasonryClass() {
-        this.state.masonryCardContent = this.props.rawData.map( (data, index) => {
-            const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
-            const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
-            return (
-                <div className={`grid-item`} key={`card-${index}`}>
-                    <div 
-                        className={`card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
-                        id={index}
-                        onClick={buttonClickHandler}
-                    >
-                        <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
-                            <div className="title">{data.title}</div>
-                            <div className="duration">{data.duration} days</div>
-                            <div className="card-marble">
-                                <img src={marbleIcon} className="card-marble__icon" />
-                                <span className="card-marble__number">{data.marbles}</span>
-                            </div>
-                        </div>
-                        <div className="card-bottom">
-                            <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
-                            <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
-                        </div>
-                    </div>
-                    <div 
-                        className={`card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
-                        id={index}
-                        onClick={buttonClickHandler}
-                    >
-                        <div className={this.handleCardBackClass(data.category_id)}>
-                            <div className="card-introduction">
-                                {String(data.introduction).substring(0, 20) + ' ...'}
-                            </div>
-                            <div className="card-hashtags">
-                                {data.tags}
-                            </div>
-                        </div>
-                        <div className="card-bottom">
-                            <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                <Link to={(data.stage === 1) ? `Opened` : `Active`}>
-                                    <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        })
-    }
-
     render() {
-        this.addMasonryClass();
         return (
             <Masonry
                 className="grid"
                 options={masonryOptions} >
                 <OpenedFormOfStarter {...this.props} />
-                {this.state.masonryCardContent}
+                {
+                    this.props.rawData.map( (data, index) => {
+                        const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
+                        const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
+                        return (
+                            <div className={`grid-item`} key={`card-${index}`}>
+                                <div 
+                                    className={`card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
+                                    id={index}
+                                    onClick={buttonClickHandler}
+                                >
+                                    <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
+                                        <div className="title">{data.title}</div>
+                                        <div className="duration">{data.duration} days</div>
+                                        <div className="card-marble">
+                                            <img src={marbleIcon} className="card-marble__icon" />
+                                            <span className="card-marble__number">{data.marbles}</span>
+                                        </div>
+                                    </div>
+                                    <div className="card-bottom">
+                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
+                                        <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
+                                    </div>
+                                </div>
+                                <div 
+                                    className={`card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                                    id={index}
+                                    onClick={buttonClickHandler}
+                                >
+                                    <div className={this.handleCardBackClass(data.category_id)}>
+                                        <div className="card-introduction">
+                                            {String(data.introduction).substring(0, 20) + ' ...'}
+                                        </div>
+                                        <div className="card-hashtags">
+                                            {data.tags}
+                                        </div>
+                                    </div>
+                                    <div className="card-bottom">
+                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                            <Link to={(data.stage === 1) ? `Opened` : `Active`}>
+                                                <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </Masonry>
         );
     }

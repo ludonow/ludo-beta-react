@@ -2,6 +2,7 @@ import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -245,15 +246,16 @@ export default class CreateForm extends React.Component {
 
             axios.post('/apis/ludo', ludoCreateForm)
             .then(function (response) {
-                if (response.data.status == 'err') {
-                    window.alert('response error', response.data.message);
-                    console.log(response.data.message);
+                if (response.data.status == '200') {
+                    // TODO: Confirm creating Ludo
+                    browserHistory.push('/opened-for-starter');
                 } else {
-                    console.log(response.data.message);
+                    console.log('response error', response.data.message);
                 }
             })
             .catch(function (error) {
                 console.log('error', error);
+                console.log('message from server: ', response.data.message);
             });
             this.props.updateCurrentFormValue(ludoCreateForm);
             history.replaceState(null, '/opened');

@@ -21,7 +21,7 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 };
 
-export default class CreateLudoList extends React.Component {
+export default class OpenedForBystander extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

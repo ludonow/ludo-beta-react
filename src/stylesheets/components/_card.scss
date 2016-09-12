@@ -181,6 +181,7 @@ $new_skill-text-color: #fdcaad;
                 border-width: 0 0 40px 40px;
             }
             .card-bottom__text {
+                @extend %clickable;
                 @extend %absolute;
                 right: 5px;
                 bottom: 5px;

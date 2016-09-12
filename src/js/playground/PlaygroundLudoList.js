@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import Masonry from 'react-masonry-component';
 
 import QuickStart from './QuickStart';
@@ -153,20 +153,23 @@ export default class PlaygroundLudoList extends React.Component {
     handleCardLink(event) {
         const cardIndex = Number(event.currentTarget.id.slice(3));
         const specificCardData = this.props.rawData[cardIndex];
-        const { stage, starterId } = specificCardData;
+        const { stage, starter_id } = specificCardData;
         const { currentUserId, updateCurrentFormValue, getCurrentLudoId } = this.props;
         const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
         const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
         getCurrentLudoId(ludo_id);
         updateCurrentFormValue(ludoForm);
+        console.log('specificCardData', specificCardData);
         if (stage == 1) {
-            if(currentUserId == starterId) {
+            if(currentUserId == starter_id) {
+                console.log('opened-for-starter starter_id', starter_id);
                 browserHistory.push('/opened-for-starter');
             } else {
+                console.log('opened-for-bystander starter_id',starter_id);
                 browserHistory.push('/opened-for-bystander');
             }
         } else {
-            if(currentUserId == starterId) {
+            if(currentUserId == starter_id) {
                 console.log('Active player');
                 browserHistory.push('/active');
             } else {

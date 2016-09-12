@@ -93,29 +93,33 @@ export default class OpenedFormOfByStander extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const { currentLudoId, currentFormValue } = this.props;
+        console.log('before join axios put');
+        console.log(`/apis/ludo/${currentLudoId}`);
         const body = {
                 'type': 'match',
                 'duration': currentFormValue.duration,
                 'marbles': currentFormValue.marbles
         };
+        console.log('body', body);
 
-        axios.put(`/apis/ludo/${currentLudoId}`, body)
-        .then(function (response) {
-            if(response.data.status == '200') {
-                console.log('response data', response.data);
-            } else {
-                console.log('message from server: ', response.data.message);
-            }
-        })
-        .catch(function (error) {
-            console.log('error', error);
-            console.log('error message from server: ', response.data.message);
-        });
-        console.log('join');
+        // axios.put(`/apis/ludo/${currentLudoId}`, body)
+        // .then(function (response) {
+        //     if(response.data.status == '200') {
+        //         // TODO: Confirm joining Ludo
+        //         console.log('response data', response.data);
+        //     } else {
+        //         console.log('message from server: ', response.data.message);
+        //     }
+        // })
+        // .catch(function (error) {
+        //     console.log('error', error);
+        //     console.log('error message from server: ', response.data.message);
+        // });
+        console.log('after join axios put');
     }
 
     render() {
-        const { ludoDetailInformation, category, isDurationClick, maxDuration } = this.state;
+        const { maxDuration } = this.state;
         const { currentFormValue } = this.props;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {

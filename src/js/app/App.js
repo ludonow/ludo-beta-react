@@ -39,13 +39,14 @@ export default class App extends React.Component {
 
         axios.get('/apis/user')
         .then(function (response) {
-            if(response.data.status === 'success') {
+            if(response.data.status === '200') {
                 _this.setState(
                     Object.assign(_this.state, {
                         userBasicData: response.data.user,
                         currentUserId: response.data.user.user_id
                     })
-                )
+                );
+                console.log('userId', _this.state.currentUserId);
             } else {
                 console.log('user status', response.data.message);
             }
@@ -57,7 +58,7 @@ export default class App extends React.Component {
 
         // axios.get('/apis/profile')
         // .then(function (response) {
-        //     if(response.data.status === 'success') {
+        //     if(response.data.status === '200') {
         //         console.log('profile', response.data);
         //     } else {
         //         console.log('profile status', response.data.message);
