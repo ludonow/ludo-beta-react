@@ -1,0 +1,25 @@
+.form {
+    width: 55%;
+    height: 1000px;
+    @extend %flex;
+    justify-content: flex-end;
+    padding-top: 5px;
+}
+
+.form-ludo-list-container {
+    @extend %relative;
+    width: 45%;
+    padding-left: 25px;
+}
+
+    .form-item {
+        display: inline-flex;
+        width: 220px;
+        height: 270px;
+        padding: 5px;
+    }
+        .form-card {
+            @extend .card;
+            margin-left: 10px;
+            margin-right: 10px;
+        }

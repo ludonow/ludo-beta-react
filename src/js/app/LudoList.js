@@ -1,9 +1,6 @@
 import React from 'react';
-import { Link } from "react-router";
+import { browserHistory } from 'react-router';
 import Masonry from 'react-masonry-component';
-
-import CreateForm from './CreateForm';
-import Active from '../active/Active';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -16,29 +13,29 @@ import othersIcon from '../../images/category_icon/others.svg';
 import marbleIcon from '../../images/marble.png';
 
 const masonryOptions = {
-    itemSelector: ".grid-item",
-    columnWidth: 210,
-    fitWidth: true,
-    stamp: ".grid-item--ludo-detail-information"
+    itemSelector: ".form-item",
+    columnWidth: 230,
+    fitWidth: true
 };
 
-export default class CreateLudoList extends React.Component {
+export default class LudoList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             flippedKey: [],
             isLastestCardFlip: false
         };
+        this.handleCardLink = this.handleCardLink.bind(this);
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
         this.showTheOtherFace = this.showTheOtherFace.bind(this);
     }
 
-    componentWillReceiveProps(nextProps){
-       if (this.props.rawData.length != nextProps.rawData.length) {
-            console.log('componentWillReceiveProps');
-       }
-    }  
+    // componentWillReceiveProps(nextProps){
+    //    if (this.props.rawData.length != nextProps.rawData.length) {
+    //         console.log('componentWillReceiveProps');
+    //    }
+    // }  
 
     handleCardClick(cardIndex) {
         let index = String(cardIndex);
@@ -121,6 +118,35 @@ export default class CreateLudoList extends React.Component {
         }
     }
 
+    handleCardLink(event) {
+        const cardIndex = Number(event.currentTarget.id.slice(3));
+        const specificCardData = this.props.rawData[cardIndex];
+        const { stage, starter_id } = specificCardData;
+        const { currentUserId, updateCurrentFormValue, getCurrentLudoId } = this.props;
+        const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
+        const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        getCurrentLudoId(ludo_id);
+        updateCurrentFormValue(ludoForm);
+        console.log('specificCardData', specificCardData);
+        if (stage == 1) {
+            if(currentUserId == starter_id) {
+                console.log('opened-for-starter starter_id', starter_id);
+                browserHistory.push('/opened-for-starter');
+            } else {
+                console.log('opened-for-bystander starter_id',starter_id);
+                browserHistory.push('/opened-for-bystander');
+            }
+        } else {
+            if(currentUserId == starter_id) {
+                console.log('Active player');
+                browserHistory.push('/active');
+            } else {
+                console.log('Active bystander');
+                browserHistory.push('/active');
+            }
+        }
+    }
+
     handleCategoryIcon(category_id) {
         switch (category_id) {
             case 1:
@@ -185,60 +211,16 @@ export default class CreateLudoList extends React.Component {
     render() {
         const { currentFormValue } = this.props;
         return (
-            <Masonry
-                className="grid"
-                options={masonryOptions} >
-                <CreateForm {...this.props}/>
-                { (this.props.currentFormValue.introduction != '') ? 
-                    <div className={`grid-item`}>
-                        <div 
-                            className={`card card-front ${this.state.isLastestCardFlip ? "" : "card-flip"}`}
-                            onClick={this.showTheOtherFace}
-                        >
-                            <div className={`card-top ${this.handleCardFrontTopClass(currentFormValue.category_id)}`}>
-                                <div className="title">{currentFormValue.title}</div>
-                                <div className="duration">{currentFormValue.duration} days</div>
-                                <div className="card-marble">
-                                    <img src={marbleIcon} className="card-marble__icon" />
-                                    <span className="card-marble__number">{currentFormValue.marbles}</span>
-                                </div>
-                            </div>
-                            <div className="card-bottom">
-                                <img className="card-bottom__category-icon" src={this.handleCategoryIcon(currentFormValue.category_id)} />
-                                <div className={`card-bottom__stage ${this.handleCardStage(currentFormValue.stage)}`} />
-                            </div>
-                        </div>
-                        <div 
-                            className={`card card-back ${this.state.isLastestCardFlip ? "card-flip" : ""} ${this.handleCardBackClass(currentFormValue.category_id)}`}
-                            onClick={this.showTheOtherFace}
-                        >
-                            <div className={this.handleCardBackClass(currentFormValue.category_id)}>
-                                <div className="card-introduction">
-                                    {String(currentFormValue.introduction).substring(0, 20) + ' ...'}
-                                </div>
-                                <div className="card-hashtags">
-                                    {currentFormValue.tags}
-                                </div>
-                            </div>
-                            <div className="card-bottom">
-                                <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}>
-                                    <Link to={(currentFormValue.stage === 1) ? `Opened` : `Active`}>
-                                        <div className={`card-bottom__text ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}>go</div>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                : null
-                }
+            <div className="form-ludo-list-container">
+            <Masonry options={masonryOptions}>
                 {
                     this.props.rawData.map( (data, index) => {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
-                            <div className={`grid-item`} key={`card-${index}`}>
+                            <div className={`form-item`} key={`card-${index}`}>
                                 <div 
-                                    className={`card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
+                                    className={`form-card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
@@ -256,7 +238,7 @@ export default class CreateLudoList extends React.Component {
                                     </div>
                                 </div>
                                 <div 
-                                    className={`card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                                    className={`form-card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
@@ -268,9 +250,13 @@ export default class CreateLudoList extends React.Component {
                                             {data.tags}
                                         </div>
                                     </div>
-                                    <div className="card-bottom">
+                                    <div className={`card-bottom ${this.handleCardBottomGoClass(data.category_id)}`}>
                                         <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}>go</div>
+                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}
+                                                onClick={this.handleCardLink} id={`go-${index}`}
+                                            >
+                                                go
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -279,6 +265,7 @@ export default class CreateLudoList extends React.Component {
                     })
                 }
             </Masonry>
+            </div>
         );
     }
 };

@@ -1,7 +1,9 @@
 .main-container {
     @extend %absolute;
     @extend %header_height_offset;
-    right: $g_right-sidebar_width;
+    // right: $g_right-sidebar_width;
     width: calc(100% - #{$g_right-sidebar_width});
     padding-top: 14px;
+    display: flex;
+    justify-content: center;
 }

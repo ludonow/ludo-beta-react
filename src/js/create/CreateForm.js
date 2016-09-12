@@ -321,7 +321,7 @@ export default class CreateForm extends React.Component {
             };
         };
         return (
-            <div className="grid-item--ludo-detail-information">
+            <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
                     <div className="ludo-create-information-top-container">
                         <div className="category-icon-container">

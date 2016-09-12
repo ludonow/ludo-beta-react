@@ -15,15 +15,6 @@ export default class OpenedFormOfByStander extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ludoDetailInformation: {
-                category_id: 1,
-                marbles: 1,
-                duration: 3,
-                checkpoint: [3],
-                title: '',
-                introduction: '',
-                tags: ''
-            },
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             isDurationClick: false,
             maxDuration: 14,
@@ -54,24 +45,7 @@ export default class OpenedFormOfByStander extends React.Component {
         };
     }
 
-    handleDayPickerClass(value) {
-        const { checkpoint, duration } = this.props.currentFormValue;
-        const index = checkpoint.indexOf(value);
-
-        if(value <= duration) { // before hover and now hover
-            if (index != -1) {
-                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--checkpoint`;
-            } else {
-                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--duration`;
-            };
-        } else { // after hover
-            return `ludo-detail-information-day-picker__button`;
-        };
-    }
-
-    handleIconChange() {
-        const { ludoDetailInformation } = this.state;
-        const { category_id } = ludoDetailInformation;
+    handleCategoryIcon(category_id) {
         switch (category_id) {
             case 1:
                 return lifestyleIcon;
@@ -87,7 +61,24 @@ export default class OpenedFormOfByStander extends React.Component {
                 return unmentionablesIcon;
             case 7:
                 return othersIcon;
+            default:
+                return lifestyleIcon;
         }
+    }
+
+    handleDayPickerClass(value) {
+        const { checkpoint, duration } = this.props.currentFormValue;
+        const index = checkpoint.indexOf(value);
+
+        if(value <= duration) { // before hover and now hover
+            if (index != -1) {
+                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--checkpoint`;
+            } else {
+                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--duration`;
+            };
+        } else { // after hover
+            return `ludo-detail-information-day-picker__button`;
+        };
     }
 
     handleSubmit(event) {
@@ -138,11 +129,11 @@ export default class OpenedFormOfByStander extends React.Component {
             };
         };
         return (
-            <div className="grid-item--ludo-detail-information">
+            <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img className="category-icon" src={this.handleIconChange()} />
+                            <img className="category-icon" src={this.handleCategoryIcon(currentFormValue.category_id)} />
                         </div>
                         <div className="top-right-container">
                             <div className="category-container">

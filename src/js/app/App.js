@@ -152,18 +152,16 @@ export default class App extends React.Component {
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
                 <Sidebar />
-                <div className="main-container">
-                    {React.cloneElement(this.props.children, {
-                        currentFormValue,
-                        currentLudoId,
-                        currentUserId,
-                        getCurrentLudoId: this.getCurrentLudoId,
-                        handleLudoListUpdate: this.handleLudoListUpdate,
-                        rawData,
-                        updateCurrentFormValue: this.updateCurrentFormValue,
-                        userBasicData
-                    })}
-                </div>
+                {React.cloneElement(this.props.children, {
+                    currentFormValue,
+                    currentLudoId,
+                    currentUserId,
+                    getCurrentLudoId: this.getCurrentLudoId,
+                    handleLudoListUpdate: this.handleLudoListUpdate,
+                    rawData,
+                    updateCurrentFormValue: this.updateCurrentFormValue,
+                    userBasicData
+                })}
             </div>
         );
     }
