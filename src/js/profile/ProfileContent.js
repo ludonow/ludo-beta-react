@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import config from '../axios-config';
 
 export default class ProfileContent extends React.Component {
     constructor() {
@@ -19,7 +19,7 @@ export default class ProfileContent extends React.Component {
     getImages() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/ProfileContent.json')
+        this.serverRequest = config.get('data/ProfileContent.json')
             .then(function (response) {
                 _this.setState({
                     avatar_photo: response.data.avatar_photo,

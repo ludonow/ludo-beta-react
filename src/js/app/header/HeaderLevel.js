@@ -1,5 +1,6 @@
 import React from "react";
-import axios from 'axios';
+// import axios from 'axios';
+import config from '../../axios-config';
 
 export default class HeaderLevel extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class HeaderLevel extends React.Component {
     getLevel() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/LevelData.json')
+        this.serverRequest = config.get('data/LevelData.json')
             .then(function (response) {
                 _this.setState({
                     level: response.data.value

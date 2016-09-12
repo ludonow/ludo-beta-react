@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import config from '../axios-config';
 
 export default class ProfileLudoing extends React.Component {
     constructor() {
@@ -17,7 +17,7 @@ export default class ProfileLudoing extends React.Component {
     getLudoingData() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/LudoingData.json')
+        this.serverRequest = config.get('data/LudoingData.json')
             .then(function (response) {
                 _this.setState({
                     rawData: response.data

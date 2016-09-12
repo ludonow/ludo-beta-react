@@ -1,6 +1,7 @@
 import React from 'react';
 import Masonry from 'react-masonry-component';
-import axios from 'axios';
+// import axios from 'axios';
+import config from '../axios-config';
 
 const masonryOptions = {
     itemSelector: ".grid-item--friend",
@@ -24,7 +25,7 @@ export default class Friend extends React.Component {
     getFriendList() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/FriendData.json')
+        this.serverRequest = config.get('data/FriendData.json')
             .then(function (response) {
                 _this.setState({
                     rawFriendList: response.data

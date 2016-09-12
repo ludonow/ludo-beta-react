@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import config from '../axios-config';
 
 export default class ProfileStatistic extends React.Component {
     constructor() {
@@ -17,7 +17,7 @@ export default class ProfileStatistic extends React.Component {
     getStatisticData() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/StatisticData.json')
+        this.serverRequest = config.get('data/StatisticData.json')
             .then(function (response) {
                 _this.setState({
                     rawData: response.data

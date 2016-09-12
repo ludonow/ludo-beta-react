@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import config from '../axios-config';
 
 export default class ProfileHistory extends React.Component {
     constructor() {
@@ -17,7 +17,7 @@ export default class ProfileHistory extends React.Component {
     getHistoryData() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/HistoryData.json')
+        this.serverRequest = config.get('data/HistoryData.json')
             .then(function (response) {
                 _this.setState({
                     rawData: response.data

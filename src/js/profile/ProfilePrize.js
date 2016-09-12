@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import config from '../axios-config';
 
 export default class ProfilePrize extends React.Component {
     constructor() {
@@ -17,7 +17,7 @@ export default class ProfilePrize extends React.Component {
     getPrizeData() {
         const _this = this;
 
-        this.serverRequest = axios.get('data/PrizeData.json')
+        this.serverRequest = config.get('data/PrizeData.json')
             .then(function (response) {
                 _this.setState({
                     rawData: response.data

@@ -152,6 +152,7 @@ export default class App extends React.Component {
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
                 <Sidebar />
+                <div className="main-container">
                 {React.cloneElement(this.props.children, {
                     currentFormValue,
                     currentLudoId,
@@ -162,6 +163,7 @@ export default class App extends React.Component {
                     updateCurrentFormValue: this.updateCurrentFormValue,
                     userBasicData
                 })}
+                </div>
             </div>
         );
     }
