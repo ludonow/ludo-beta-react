@@ -1,6 +1,7 @@
 import React from 'react';
 import RcSlider from 'rc-slider';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';
@@ -95,6 +96,7 @@ export default class OpenedFormOfStarter extends React.Component {
                 // TODO: Confirm quiting Ludo
                 console.log('response data', response.data);
                 console.log('after quit axios delete');
+                browserHistory.push(`/playground`);
             } else {
                 console.log('message from server: ', response.data.message);
             }

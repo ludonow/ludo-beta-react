@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from "react-router";
 
 import LudoList from '../../app/LudoList';
 import OpenedFormOfStarter from './OpenedFormOfStarter';
@@ -10,6 +9,10 @@ export default class OpenedForStarter extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.currentFormValue.category_id == 0) {
+            const { ludoId } = this.params;
+            getCurrentLudoData(ludoId);
+        }
     }
 
     render() {

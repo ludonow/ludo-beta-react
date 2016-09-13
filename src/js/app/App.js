@@ -11,7 +11,7 @@ export default class App extends React.Component {
         this.state = {
             rawData: [],
             currentFormValue: {
-                category_id: 1,
+                category_id: 0,
                 checkpoint: [3],
                 duration: 3,
                 introduction: '',
@@ -21,10 +21,12 @@ export default class App extends React.Component {
             },
             currentLudoId: '',
             currentUserId: '',
+            isCreatingNewLudo: false,
             userBasicData: {}
         };
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
+        this.handleIsCreatingNewLudo = this.handleIsCreatingNewLudo.bind(this);
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
@@ -78,6 +80,16 @@ export default class App extends React.Component {
         .catch((error) => {
             console.log('app getCurrentLudoData error', error);
         });
+    }
+
+    handleIsCreatingNewLudo(boolean) {
+        const { isCreatingNewLudo } = this.state;
+        this.setState(
+            Object.assign(this.state, {
+                isCreatingNewLudo: boolean
+            })
+        );
+        console.log('handleIsCreatingNewLudo', boolean);
     }
 
     handleLudoListUpdate() {
@@ -140,7 +152,7 @@ export default class App extends React.Component {
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const { currentFormValue, currentLudoId, currentUserId, rawData, userBasicData } = this.state;
+        const { currentFormValue, currentLudoId, currentUserId, isCreatingNewLudo, rawData, userBasicData } = this.state;
         return (
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
@@ -152,7 +164,9 @@ export default class App extends React.Component {
                     getBasicUserData: this.getBasicUserData,
                     getCurrentLudoData: this.getCurrentLudoData,
                     getCurrentLudoId: this.getCurrentLudoId,
+                    handleIsCreatingNewLudo: this.handleIsCreatingNewLudo,
                     handleLudoListUpdate: this.handleLudoListUpdate,
+                    isCreatingNewLudo,
                     rawData,
                     updateCurrentFormValue: this.updateCurrentFormValue,
                     userBasicData

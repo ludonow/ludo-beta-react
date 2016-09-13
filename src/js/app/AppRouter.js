@@ -35,15 +35,15 @@ export default class AppRouter extends React.Component {
         return (
             <Router history={browserHistory}>
                 <Route path="/" component={App}>
-                    <IndexRedirect to="/playground"></IndexRedirect>
-                    <Route path="/active(/:ludoId)" component={Active}></Route>
-                    <Route path="/create" component={Create} onEnter={isLoggedIn}></Route>
-                    <Route path="/friend" component={Friend}></Route>
-                    <Route path="/login" component={Login}></Route>
-                    <Route path="/opened-for-starter(/:ludoId)" component={OpenedForStarter}></Route>
-                    <Route path="/opened-for-bystander(/:ludoId)" component={OpenedForBystander}></Route>
-                    <Route path="/playground" component={Playground}></Route>
-                    <Route path="/profile" component={Profile}></Route>
+                    <IndexRedirect to="playground"></IndexRedirect>
+                    <Route path="active/:ludoId" component={Active}></Route>
+                    <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
+                    <Route path="friend" component={Friend}></Route>
+                    <Route path="login" component={Login}></Route>
+                    <Route path="opened-for-starter/:ludoId" component={OpenedForStarter}></Route>
+                    <Route path="opened-for-bystander/:ludoId" component={OpenedForBystander}></Route>
+                    <Route path="playground" component={Playground}></Route>
+                    <Route path="profile" component={Profile}></Route>
                 </Route>
             </Router>
         );

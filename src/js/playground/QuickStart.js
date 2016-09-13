@@ -7,7 +7,7 @@ export default class QuickStart extends React.Component {
     render() {
         return (
             <div className="grid-item">
-                <Link to="Create" className="remove-hyperlink-style">
+                <Link to="create" className="remove-hyperlink-style">
                      <div className="quick-start">
                         <div className="quick-start__icon"></div>
                      </div>

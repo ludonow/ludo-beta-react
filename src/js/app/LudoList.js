@@ -215,12 +215,12 @@ export default class LudoList extends React.Component {
 
     render() {
         const { isLastestCardFlip } = this.state;
-        const { currentFormValue, rawData } = this.props;
+        const { currentFormValue, isCreatingNewLudo, rawData } = this.props;
         return (
             <div className="form-ludo-list-container">
             <Masonry options={masonryOptions}>
                 {
-                    currentFormValue.views ?
+                    isCreatingNewLudo ?
                         <div className={`form-item`} key={`new-card`}>
                             <div 
                                 className={`form-card card-front ${isLastestCardFlip ? "" : "card-flip"}`}
