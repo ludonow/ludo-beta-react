@@ -1,17 +1,19 @@
 import React from "react";
-import { Link } from "react-router";
+import { browserHistory } from "react-router";
 import Playground from '../../playground/Playground';
 
 import imageLogo from '../../../images/Ludo_logo.png';
 
 export default class HeaderLogo extends React.Component {
+    handleLogoLink() {
+        browserHistory.push(`/playground`);
+    }
+
     render() {
         return (
-            <Link to="Playground">
-                <div className="header-Ludo-logo" style={style}>
-                    <img src={imageLogo} className="header-Ludo-logo__icon"/>
-                </div>
-            </Link>
+            <div className="header-Ludo-logo" style={style} onClick={this.handleLogoLink}>
+                <img src={imageLogo} className="header-Ludo-logo__icon"/>
+            </div>
         );
     }
 };

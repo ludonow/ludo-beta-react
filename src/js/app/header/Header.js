@@ -10,6 +10,8 @@ import HeaderLevel from './HeaderLevel';
 
 import Login from '../Login';
 
+import facebookIcon from '../../../images/login/facebook-icon.png';
+
 export default class Header extends React.Component {
     constructor(props) {
         super(props);
@@ -22,11 +24,23 @@ export default class Header extends React.Component {
             <div className="header">
                 <div className="header-left">
                     <HeaderLogo />
-                    <Link to="login">
-                        <button className="link-to-login-button" onClick={this.handleLogin}>
-                            Login
-                        </button>
-                    </Link>
+                    { console.log('userId', this.props.userBasicData.name) }
+                    {
+                        this.props.userBasicData.name ?
+                            <div className="header-facebook-login">
+                                Hi, {this.props.userBasicData.name}
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com/logout">
+                                    Log Out
+                                </a>
+                            </div>
+                        :
+                        <div className="header-facebook-login">
+                            <a href="http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com/auth/facebook">
+                                <img src={facebookIcon} className="facebook-login-icon" />
+                            </a>
+                        </div>
+                    }
                 </div>
                 <div className="header-right">
                     <HeaderMarbles marbles={marbles}/>

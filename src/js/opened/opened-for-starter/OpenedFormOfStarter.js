@@ -81,28 +81,28 @@ export default class OpenedFormOfStarter extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // const { currentLudoId, currentFormValue } = this.props;
-        // console.log('before quit axios delete');
-        // console.log(`/apis/ludo/${currentLudoId}`);
-        // const body = {
-        //     'marbles': currentFormValue.marbles
-        // };
-        // console.log('body', body);
+        const { currentLudoId, currentFormValue } = this.props;
+        console.log(`/apis/ludo/${currentLudoId}`);
+        const body = {
+            'marbles': currentFormValue.marbles
+        };
+        console.log('body', body);
 
-        // axios.delete(`/apis/ludo/${currentLudoId}`, body)
-        // .then(function (response) {
-        //     if(response.data.status == '200') {
-        //         // TODO: Confirm quiting Ludo
-        //         console.log('response data', response.data);
-        //     } else {
-        //         console.log('message from server: ', response.data.message);
-        //     }
-        // })
-        // .catch(function (error) {
-        //     console.log('error', error);
-        //     console.log('error message from server: ', response.data.message);
-        // });
-        console.log('after quit axios delete');
+        console.log('before quit axios delete');
+        axios.delete(`/apis/ludo/${currentLudoId}`, body)
+        .then(response => {
+            if(response.data.status == '200') {
+                // TODO: Confirm quiting Ludo
+                console.log('response data', response.data);
+                console.log('after quit axios delete');
+            } else {
+                console.log('message from server: ', response.data.message);
+            }
+        })
+        .catch(error => {
+            console.log('error', error);
+            console.log('error message from server: ', response.data.message);
+        });
     }
 
     render() {

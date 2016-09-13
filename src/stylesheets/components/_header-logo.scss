@@ -1,4 +1,5 @@
 .header-Ludo-logo {
+    @extend %clickable;
     @extend %flex;
     align-items: center;
     @extend %relative;
