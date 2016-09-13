@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router";
 
 import SidebarPlayground from './SidebarPlayground';
 import SidebarProfile from './SidebarProfile';
@@ -9,6 +8,10 @@ import SidebarSportsPlayground from './SidebarSportsPlayground';
 import SidebarReadPlayground from './SidebarReadPlayground';
 
 export default class SideBar extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return ( 
             <div className="right-sidebar">
@@ -19,7 +22,7 @@ export default class SideBar extends React.Component {
                     <SidebarProfile />
                 </div>
                 <div className="right-sidebar-item color-sidebar3">
-                    <SidebarCreate />
+                    <SidebarCreate {...this.props}/>
                 </div>
                 <div className="right-sidebar-item color-sidebar4">
                     <SidebarFriend />

@@ -24,6 +24,7 @@ export default class App extends React.Component {
             userBasicData: {}
         };
         this.getBasicUserData = this.getBasicUserData.bind(this);
+        this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getCurrentLudoId = this.getCurrentLudoId.bind(this);
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
@@ -46,50 +47,48 @@ export default class App extends React.Component {
                         currentUserId: response.data.user.user_id
                     })
                 );
-                console.log('userId', _this.state.currentUserId);
             } else {
-                console.log('user status', response.data.message);
+                console.log('message from server: ', response.data.message);
             }
         })
         .catch(function(error) {
             console.log('user error', error);
             console.log(response.data.message);
         });
+    }
 
-        // axios.get('/apis/profile')
-        // .then(function (response) {
-        //     if(response.data.status === '200') {
-        //         console.log('profile', response.data);
-        //     } else {
-        //         console.log('profile status', response.data.message);
-        //     }
-        // })
-        // .catch(function(error) {
-        //     console.log('profile error', error);
-        //     console.log(response.data.message);
-        // });
+    getCurrentLudoData(ludo_id) {
+        const _this = this;
+        axios.get(`/apis/ludo/${ludo_id}`)
+        .then((response) => {
+            if(response.data.status === '200') {
+                _this.setState(
+                    Object.assign(_this.state, {
+                        currentFormValue: response.data.ludo
+                    })
+                );
+                console.log('getCurrentLudoData');
+            } else {
+                console.log('get current ludo');
+                console.log('message from server: ', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.log('get current ludo error', error);
+            console.log(response.data.message);
+        });
     }
 
     getCurrentLudoId(ludo_id) {
-        // this.setState(
-        //     Object.assign(this.state, {
-        //         currentLudoId: ludo_id
-        //     })
-        // );
-
-        const _this = this;
-        _this.setState(
-            Object.assign(_this.state, {
+        this.setState(
+            Object.assign(this.state, {
                 currentLudoId: ludo_id
             })
         );
-        console.log('ludo id', ludo_id);
-        console.log('getCurrentLudoId');
     }
 
     handleLudoListUpdate() {
         const _this = this;
-
         axios.get('/apis/ludo?stage=1')
         .then(function (response) {
             if(response.data.status === '200') {
@@ -99,7 +98,8 @@ export default class App extends React.Component {
                     })
                 );
             } else {
-                console.log(response.data.message);
+                console.log('get ludo list');
+                console.log('message from server: ', response.data.message);
             }
         })
         .catch(function(error) {
@@ -151,12 +151,13 @@ export default class App extends React.Component {
         return (
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
-                <Sidebar />
+                <Sidebar currentUserId={currentUserId} />
                 <div className="main-container">
                 {React.cloneElement(this.props.children, {
                     currentFormValue,
                     currentLudoId,
                     currentUserId,
+                    getCurrentLudoData: this.getCurrentLudoData,
                     getCurrentLudoId: this.getCurrentLudoId,
                     handleLudoListUpdate: this.handleLudoListUpdate,
                     rawData,

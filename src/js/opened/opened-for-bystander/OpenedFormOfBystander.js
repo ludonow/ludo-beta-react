@@ -1,5 +1,4 @@
 import React from 'react';
-import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import axios from 'axios';
 
@@ -16,7 +15,6 @@ export default class OpenedFormOfByStander extends React.Component {
         super(props);
         this.state = {
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
-            isDurationClick: false,
             maxDuration: 14,
             maxMarbles: 50
         };
@@ -24,7 +22,16 @@ export default class OpenedFormOfByStander extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleCategory(category_id) {
+    componentWillReceiveProps(nextProps) {
+        if (this.props.params.ludoId != nextProps.params.ludoId) {
+            console.log('OpenedFormOfByStander componentWillReceiveProps');
+            console.log('this.props', this.props.params.ludoId);
+            console.log('nextProps', nextProps.params.ludoId);
+            this.props.getCurrentLudoData(this.props.params.ludoId);
+        }
+    }
+
+    getCategory(category_id) {
         switch (category_id) {
             case 1:
                 return `lifestyle`;
@@ -45,7 +52,7 @@ export default class OpenedFormOfByStander extends React.Component {
         };
     }
 
-    handleCategoryIcon(category_id) {
+    getCategoryIcon(category_id) {
         switch (category_id) {
             case 1:
                 return lifestyleIcon;
@@ -67,31 +74,26 @@ export default class OpenedFormOfByStander extends React.Component {
     }
 
     handleDayPickerClass(value) {
-        const { checkpoint, duration } = this.props.currentFormValue;
+        const { checkpoint } = this.props.currentFormValue;
         const index = checkpoint.indexOf(value);
-
-        if(value <= duration) { // before hover and now hover
-            if (index != -1) {
-                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--checkpoint`;
-            } else {
-                return `ludo-detail-information-day-picker__button ludo-detail-information-day-picker__button--duration`;
-            };
-        } else { // after hover
-            return `ludo-detail-information-day-picker__button`;
-        };
+        if (index != -1) {
+            return ` ludo-detail-information-day-picker__button--checkpoint`;
+        } else {
+            return ` ludo-detail-information-day-picker__button--duration`;
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const { currentLudoId, currentFormValue } = this.props;
-        console.log('before join axios put');
-        console.log(`/apis/ludo/${currentLudoId}`);
-        const body = {
-                'type': 'match',
-                'duration': currentFormValue.duration,
-                'marbles': currentFormValue.marbles
-        };
-        console.log('body', body);
+        // const { currentLudoId, currentFormValue } = this.props;
+        // console.log('before join axios put');
+        // console.log(`/apis/ludo/${currentLudoId}`);
+        // const body = {
+        //     'type': 'match',
+        //     'duration': currentFormValue.duration,
+        //     'marbles': currentFormValue.marbles
+        // };
+        // console.log('body', body);
 
         // axios.put(`/apis/ludo/${currentLudoId}`, body)
         // .then(function (response) {
@@ -110,50 +112,51 @@ export default class OpenedFormOfByStander extends React.Component {
     }
 
     render() {
-        const { maxDuration } = this.state;
+        const { maxDuration, maxMarbles } = this.state;
         const { currentFormValue } = this.props;
+        const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
                 dayPickerButtons.push(
-                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
+                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                         disabled={true}
                     />, <br key="br" /> 
                 );
             } else {
                 dayPickerButtons.push(
-                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
+                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                         disabled={true}
                     />
                 );
-            };
-        };
+            }
+        }
         return (
             <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img className="category-icon" src={this.handleCategoryIcon(currentFormValue.category_id)} />
+                            <img className="category-icon" src={this.getCategoryIcon(category_id)} />
                         </div>
                         <div className="top-right-container">
                             <div className="category-container">
                                 <span className="category-label">Category:</span>
                                 <span className="category-value">
-                                    {this.handleCategory(currentFormValue.category_id)}
+                                    {this.getCategory(category_id)}
                                 </span>
                             </div>
                             <div className="ludo-detail-information-field__text">
-                                {currentFormValue.title}
+                                {title}
                             </div>
                             <div className="ludo-detail-information-field__text">
-                                {currentFormValue.tags}
+                                {tags}
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{currentFormValue.marbles}</span></div>
+                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
-                            <RcSlider value={currentFormValue.marbles} disabled={true} />
+                            <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
                         </div>
                         <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
@@ -161,11 +164,11 @@ export default class OpenedFormOfByStander extends React.Component {
                         </div>
                         <div className="ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} value={currentFormValue.duration} disabled={true}
+                                max={maxDuration} value={currentFormValue.duration} disabled={true}
                             />
                         </div>
                         <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
-                            {currentFormValue.introduction} 
+                            {introduction} 
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
                             Join

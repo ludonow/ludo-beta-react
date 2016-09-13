@@ -258,7 +258,6 @@ export default class CreateForm extends React.Component {
                 console.log('message from server: ', response.data.message);
             });
             this.props.updateCurrentFormValue(ludoCreateForm);
-            history.replaceState(null, '/opened');
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {

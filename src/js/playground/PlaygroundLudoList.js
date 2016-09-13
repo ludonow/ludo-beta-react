@@ -24,7 +24,6 @@ export default class PlaygroundLudoList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentLudoAuthentication: ``,
             flippedKey: []
         };
         this.handleCardLink = this.handleCardLink.bind(this);
@@ -143,27 +142,28 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id.slice(3));
         const specificCardData = this.props.rawData[cardIndex];
         const { stage, starter_id } = specificCardData;
-        const { currentUserId, updateCurrentFormValue, getCurrentLudoId } = this.props;
+        const { currentUserId, updateCurrentFormValue, getCurrentLudoData, getCurrentLudoId } = this.props;
         const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
         const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        getCurrentLudoData(ludo_id);
         getCurrentLudoId(ludo_id);
         updateCurrentFormValue(ludoForm);
         console.log('specificCardData', specificCardData);
         if (stage == 1) {
             if(currentUserId == starter_id) {
                 console.log('opened-for-starter starter_id', starter_id);
-                browserHistory.push('/opened-for-starter');
+                browserHistory.push(`/opened-for-starter/${ludo_id}`);
             } else {
                 console.log('opened-for-bystander starter_id',starter_id);
-                browserHistory.push('/opened-for-bystander');
+                browserHistory.push(`/opened-for-bystander/${ludo_id}`);
             }
         } else {
             if(currentUserId == starter_id) {
                 console.log('Active player');
-                browserHistory.push('/active');
+                browserHistory.push(`/active`);
             } else {
                 console.log('Active bystander');
-                browserHistory.push('/active');
+                browserHistory.push(`/active`);
             }
         }
     }
@@ -199,7 +199,6 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     render() {
-        const { currentLudoAuthentication } = this.state;
         return (
             <Masonry
                 options={masonryOptions} >
