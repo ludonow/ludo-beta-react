@@ -24,8 +24,10 @@ export default class OpenedFormOfStarter extends React.Component {
     }
 
     componentDidMount() {
-        // const ludoId = this.props.params.ludoId;
-        // console.log('OpenedFormOfStarter componentDidMount ludoId', ludoId);
+        const { ludoId }= this.props.params;
+        const { getCurrentLudoData } = this.props;
+        getCurrentLudoData(ludoId);
+        console.log('OpenedFormOfStarter componentDidMount ludoId', ludoId);
     }
 
     getCategory(category_id) {
@@ -82,15 +84,16 @@ export default class OpenedFormOfStarter extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { currentLudoId, currentFormValue } = this.props;
-        console.log(`/apis/ludo/${currentLudoId}`);
+        const { currentFormValue, params } = this.props;
+        const { ludoId } = params;
+        console.log(`/apis/ludo/${ludoId}`);
         const body = {
             'marbles': currentFormValue.marbles
         };
         console.log('body', body);
 
         console.log('before quit axios delete');
-        axios.delete(`/apis/ludo/${currentLudoId}`, body)
+        axios.delete(`/apis/ludo/${ludoId}`, body)
         .then(response => {
             if(response.data.status == '200') {
                 // TODO: Confirm quiting Ludo

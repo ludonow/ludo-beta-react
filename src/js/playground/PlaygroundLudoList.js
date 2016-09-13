@@ -142,9 +142,10 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id.slice(3));
         const specificCardData = this.props.rawData[cardIndex];
         const { stage, starter_id } = specificCardData;
-        const { currentUserId, updateCurrentFormValue, getCurrentLudoData } = this.props;
+        const { currentUserId, updateCurrentFormValue, getCurrentLudoData, handleIsgettingLatestData } = this.props;
         const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
         const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        handleIsgettingLatestData(false);
         getCurrentLudoData(ludo_id);
         if (stage == 1) {
             if(currentUserId == starter_id) {

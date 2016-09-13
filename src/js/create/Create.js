@@ -6,11 +6,6 @@ import LudoList from '../app/LudoList';
 export default class Create extends React.Component {
     constructor(props) {
         super(props);
-        this.props.handleIsCreatingNewLudo(true);
-    }
-
-    componentWillUnmount() {
-        this.props.handleIsCreatingNewLudo(false);
     }
 
     render() {

@@ -31,10 +31,6 @@ export default class LudoList extends React.Component {
         this.showTheOtherFace = this.showTheOtherFace.bind(this);
     }
 
-    componentDidMount() {
-        console.log('LudoList componentDidMount');
-    }
-
     componentWillReceiveProps(nextProps){
        if (this.props.currentFormValue.title != nextProps.currentFormValue.title) {
             console.log('LudoList componentWillReceiveProps');
@@ -123,31 +119,37 @@ export default class LudoList extends React.Component {
     }
 
     handleCardLink(event) {
-        const cardIndex = Number(event.currentTarget.id.slice(3));
-        if (cardIndex) {
+        const indexString = event.currentTarget.id.slice(3);
+        if (indexString == '') {  // the latest create card
+            const { currentFormValue } = this.props;
+            const { ludo_id } = currentFormValue; 
+            browserHistory.push(`/opened-for-starter/${ludo_id}`);
+            return;
+        } else {
+            const cardIndex = Number(indexString);
             const specificCardData = this.props.rawData[cardIndex];
             const { stage, starter_id } = specificCardData;
-            const { currentUserId, updateCurrentFormValue, getCurrentLudoData, getCurrentLudoId } = this.props;
+            const { currentUserId, updateCurrentFormValue, getCurrentLudoData, handleIsgettingLatestData } = this.props;
             const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
             const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+            handleIsgettingLatestData(false);
             getCurrentLudoData(ludo_id);
-        }
-
-        if (stage == 1) {
-            if(currentUserId == starter_id) {
-                console.log('opened-for-starter starter_id', starter_id);
-                browserHistory.push(`/opened-for-starter/${ludo_id}`);
+            if (stage == 1) {
+                if(currentUserId == starter_id) {
+                    console.log('opened-for-starter starter_id', starter_id);
+                    browserHistory.push(`/opened-for-starter/${ludo_id}`);
+                } else {
+                    console.log('opened-for-bystander starter_id',starter_id);
+                    browserHistory.push(`/opened-for-bystander/${ludo_id}`);
+                }
             } else {
-                console.log('opened-for-bystander starter_id',starter_id);
-                browserHistory.push(`/opened-for-bystander/${ludo_id}`);
-            }
-        } else {
-            if(currentUserId == starter_id) {
-                console.log('Active player');
-                browserHistory.push('/active');
-            } else {
-                console.log('Active bystander');
-                browserHistory.push('/active');
+                if(currentUserId == starter_id) {
+                    console.log('Active player');
+                    browserHistory.push('/active');
+                } else {
+                    console.log('Active bystander');
+                    browserHistory.push('/active');
+                }
             }
         }
     }
@@ -215,12 +217,12 @@ export default class LudoList extends React.Component {
 
     render() {
         const { isLastestCardFlip } = this.state;
-        const { currentFormValue, isCreatingNewLudo, rawData } = this.props;
+        const { currentFormValue, isgettingLatestData, rawData } = this.props;
         return (
             <div className="form-ludo-list-container">
             <Masonry options={masonryOptions}>
                 {
-                    isCreatingNewLudo ?
+                    isgettingLatestData ?
                         <div className={`form-item`} key={`new-card`}>
                             <div 
                                 className={`form-card card-front ${isLastestCardFlip ? "" : "card-flip"}`}

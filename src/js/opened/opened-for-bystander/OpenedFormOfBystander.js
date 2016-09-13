@@ -1,6 +1,7 @@
 import React from 'react';
 import RcSlider from 'rc-slider';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';

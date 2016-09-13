@@ -21,12 +21,12 @@ export default class App extends React.Component {
             },
             currentLudoId: '',
             currentUserId: '',
-            isCreatingNewLudo: false,
+            isgettingLatestData: false,
             userBasicData: {}
         };
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
-        this.handleIsCreatingNewLudo = this.handleIsCreatingNewLudo.bind(this);
+        this.handleIsgettingLatestData = this.handleIsgettingLatestData.bind(this);
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
@@ -82,14 +82,14 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsCreatingNewLudo(boolean) {
-        const { isCreatingNewLudo } = this.state;
+    handleIsgettingLatestData(boolean) {
+        const { isgettingLatestData } = this.state;
         this.setState(
             Object.assign(this.state, {
-                isCreatingNewLudo: boolean
+                isgettingLatestData: boolean
             })
         );
-        console.log('handleIsCreatingNewLudo', boolean);
+        console.log('handleIsgettingLatestData', boolean);
     }
 
     handleLudoListUpdate() {
@@ -152,7 +152,7 @@ export default class App extends React.Component {
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const { currentFormValue, currentLudoId, currentUserId, isCreatingNewLudo, rawData, userBasicData } = this.state;
+        const { currentFormValue, currentLudoId, currentUserId, isgettingLatestData, rawData, userBasicData } = this.state;
         return (
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
@@ -164,9 +164,9 @@ export default class App extends React.Component {
                     getBasicUserData: this.getBasicUserData,
                     getCurrentLudoData: this.getCurrentLudoData,
                     getCurrentLudoId: this.getCurrentLudoId,
-                    handleIsCreatingNewLudo: this.handleIsCreatingNewLudo,
+                    handleIsgettingLatestData: this.handleIsgettingLatestData,
                     handleLudoListUpdate: this.handleLudoListUpdate,
-                    isCreatingNewLudo,
+                    isgettingLatestData,
                     rawData,
                     updateCurrentFormValue: this.updateCurrentFormValue,
                     userBasicData

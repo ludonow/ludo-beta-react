@@ -254,8 +254,10 @@ export default class CreateForm extends React.Component {
                     .then(response => {
                         if (response.data.status == '200') {
                             console.log('get after create post', response.data);
-                            this.props.updateCurrentFormValue(response.data.ludo);
-                            this.props.getBasicUserData();
+                            const { getBasicUserData, handleIsgettingLatestData, updateCurrentFormValue } = this.props;
+                            updateCurrentFormValue(response.data.ludo);
+                            getBasicUserData();
+                            handleIsgettingLatestData(true);
                             browserHistory.push(`/opened-for-starter/${ludo_id}`);
                         } else {
                             console.log('get after create post message from server: ', response.data.message);
