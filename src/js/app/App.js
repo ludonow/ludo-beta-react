@@ -25,7 +25,6 @@ export default class App extends React.Component {
         };
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
-        this.getCurrentLudoId = this.getCurrentLudoId.bind(this);
         this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
@@ -53,7 +52,7 @@ export default class App extends React.Component {
         })
         .catch(function(error) {
             console.log('user error', error);
-            console.log(response.data.message);
+            console.log('message from server: ', response.data.message);
         });
     }
 
@@ -67,24 +66,18 @@ export default class App extends React.Component {
                         currentFormValue: response.data.ludo
                     })
                 );
-                console.log('getCurrentLudoData');
+                _this.setState(
+                    Object.assign(_this.state, {
+                        currentLudoId: ludo_id
+                    })
+                );
             } else {
-                console.log('get current ludo');
-                console.log('message from server: ', response.data.message);
+                console.log('app else message from server: ', response.data.message);
             }
         })
         .catch((error) => {
-            console.log('get current ludo error', error);
-            console.log(response.data.message);
+            console.log('app getCurrentLudoData error', error);
         });
-    }
-
-    getCurrentLudoId(ludo_id) {
-        this.setState(
-            Object.assign(this.state, {
-                currentLudoId: ludo_id
-            })
-        );
     }
 
     handleLudoListUpdate() {
@@ -155,8 +148,8 @@ export default class App extends React.Component {
                 <div className="main-container">
                 {React.cloneElement(this.props.children, {
                     currentFormValue,
-                    currentLudoId,
                     currentUserId,
+                    getBasicUserData: this.getBasicUserData,
                     getCurrentLudoData: this.getCurrentLudoData,
                     getCurrentLudoId: this.getCurrentLudoId,
                     handleLudoListUpdate: this.handleLudoListUpdate,

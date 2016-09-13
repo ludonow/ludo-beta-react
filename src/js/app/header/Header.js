@@ -24,7 +24,6 @@ export default class Header extends React.Component {
             <div className="header">
                 <div className="header-left">
                     <HeaderLogo />
-                    { console.log('userId', this.props.userBasicData.name) }
                     {
                         this.props.userBasicData.name ?
                             <div className="header-facebook-login">

@@ -22,6 +22,11 @@ export default class OpenedFormOfByStander extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        const ludoId = this.props.params.ludoId;
+        console.log('OpenedFormOfByStander componentDidMount ludoId', ludoId);
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.params.ludoId != nextProps.params.ludoId) {
             console.log('OpenedFormOfByStander componentWillReceiveProps');

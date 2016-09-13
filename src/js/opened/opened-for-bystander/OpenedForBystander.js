@@ -10,8 +10,6 @@ export default class OpenedForBystander extends React.Component {
     }
 
     componentDidMount() {
-        const { handleLudoListUpdate } = this.props;
-        handleLudoListUpdate();
     }
 
     render() {

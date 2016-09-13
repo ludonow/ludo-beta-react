@@ -23,8 +23,8 @@ export default class OpenedFormOfStarter extends React.Component {
     }
 
     componentDidMount() {
-        const ludoId = this.props.params.ludoId;
-        console.log('OpenedFormOfByStander ludoId', ludoId);
+        // const ludoId = this.props.params.ludoId;
+        // console.log('OpenedFormOfStarter componentDidMount ludoId', ludoId);
     }
 
     getCategory(category_id) {

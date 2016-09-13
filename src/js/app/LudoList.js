@@ -31,11 +31,15 @@ export default class LudoList extends React.Component {
         this.showTheOtherFace = this.showTheOtherFace.bind(this);
     }
 
-    // componentWillReceiveProps(nextProps){
-    //    if (this.props.rawData.length != nextProps.rawData.length) {
-    //         console.log('componentWillReceiveProps');
-    //    }
-    // }  
+    componentDidMount() {
+        console.log('LudoList componentDidMount');
+    }
+
+    componentWillReceiveProps(nextProps){
+       if (this.props.currentFormValue.title != nextProps.currentFormValue.title) {
+            console.log('LudoList componentWillReceiveProps');
+       }
+    }  
 
     handleCardClick(cardIndex) {
         let index = String(cardIndex);
@@ -120,15 +124,15 @@ export default class LudoList extends React.Component {
 
     handleCardLink(event) {
         const cardIndex = Number(event.currentTarget.id.slice(3));
-        const specificCardData = this.props.rawData[cardIndex];
-        const { stage, starter_id } = specificCardData;
-        const { currentUserId, updateCurrentFormValue, getCurrentLudoData, getCurrentLudoId } = this.props;
-        const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
-        const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
-        getCurrentLudoData(ludo_id);
-        getCurrentLudoId(ludo_id);
-        updateCurrentFormValue(ludoForm);
-        console.log('specificCardData', specificCardData);
+        if (cardIndex) {
+            const specificCardData = this.props.rawData[cardIndex];
+            const { stage, starter_id } = specificCardData;
+            const { currentUserId, updateCurrentFormValue, getCurrentLudoData, getCurrentLudoId } = this.props;
+            const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
+            const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+            getCurrentLudoData(ludo_id);
+        }
+
         if (stage == 1) {
             if(currentUserId == starter_id) {
                 console.log('opened-for-starter starter_id', starter_id);
@@ -210,12 +214,58 @@ export default class LudoList extends React.Component {
     }
 
     render() {
-        const { currentFormValue } = this.props;
+        const { isLastestCardFlip } = this.state;
+        const { currentFormValue, rawData } = this.props;
         return (
             <div className="form-ludo-list-container">
             <Masonry options={masonryOptions}>
                 {
-                    this.props.rawData.map( (data, index) => {
+                    currentFormValue.views ?
+                        <div className={`form-item`} key={`new-card`}>
+                            <div 
+                                className={`form-card card-front ${isLastestCardFlip ? "" : "card-flip"}`}
+                                onClick={this.showTheOtherFace}
+                            >
+                                <div className={`card-top ${this.handleCardFrontTopClass(currentFormValue.category_id)}`}>
+                                    <div className="title">{currentFormValue.title}</div>
+                                    <div className="duration">{currentFormValue.duration} days</div>
+                                    <div className="card-marble">
+                                        <img src={marbleIcon} className="card-marble__icon" />
+                                        <span className="card-marble__number">{currentFormValue.marbles}</span>
+                                    </div>
+                                </div>
+                                <div className="card-bottom">
+                                    <img className="card-bottom__category-icon" src={this.handleCategoryIcon(currentFormValue.category_id)} />
+                                    <div className={`card-bottom__stage ${this.handleCardStage(currentFormValue.stage)}`} />
+                                </div>
+                            </div>
+                            <div 
+                                className={`form-card card-back ${isLastestCardFlip ? "card-flip" : ""} ${this.handleCardBackClass(currentFormValue.category_id)}`}
+                                onClick={this.showTheOtherFace}
+                            >
+                                <div className={this.handleCardBackClass(currentFormValue.category_id)}>
+                                    <div className="card-introduction">
+                                        {String(currentFormValue.introduction).substring(0, 20) + ' ...'}
+                                    </div>
+                                    <div className="card-hashtags">
+                                        {currentFormValue.tags}
+                                    </div>
+                                </div>
+                                <div className={`card-bottom ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}>
+                                    <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}>
+                                        <div className={`card-bottom__text ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}
+                                            onClick={this.handleCardLink} id={`go`}
+                                        >
+                                            go
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    : null
+                }
+                {
+                    rawData.map( (data, index) => {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (

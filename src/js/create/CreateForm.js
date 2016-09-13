@@ -245,19 +245,35 @@ export default class CreateForm extends React.Component {
             checkpoint = checkpoint.sort((a, b) => { return a - b });
 
             axios.post('/apis/ludo', ludoCreateForm)
-            .then(function (response) {
+            .then(response => {
                 if (response.data.status == '200') {
                     // TODO: Confirm creating Ludo
-                    browserHistory.push('/opened-for-starter');
+                    console.log('create post', response.data);
+                    const { ludo_id } = response.data;
+                    axios.get(`/apis/ludo/${ludo_id}`)
+                    .then(response => {
+                        if (response.data.status == '200') {
+                            console.log('get after create post', response.data);
+                            this.props.updateCurrentFormValue(response.data.ludo);
+                            this.props.getBasicUserData();
+                            browserHistory.push(`/opened-for-starter/${ludo_id}`);
+                        } else {
+                            console.log('get after create post message from server: ', response.data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.log('get after create post error', error);
+                        console.log('message from server: ', response.data.message);
+                    });
                 } else {
-                    console.log('response error', response.data.message);
+                    console.log('create post message from server: ', response.data.message);
                 }
             })
-            .catch(function (error) {
-                console.log('error', error);
-                console.log('message from server: ', response.data.message);
+            .catch(error => {
+                console.log('create post error', error);
+                console.log('create post message from server: ', response.data.message);
             });
-            this.props.updateCurrentFormValue(ludoCreateForm);
+            
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {
