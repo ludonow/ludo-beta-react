@@ -1,15 +1,10 @@
-// .ludo-report-infromation-container {
-//     @extend %fixed;
-//     width: 540px;
-//     @extend .card;
-//     padding-right: 40px;
-//     padding-left: 40px;
-//     padding-top: 30px;
-//     padding-bottom: 15px;
-//     @extend %text_center;
-// }
+.report-list-container {
+    @extend %flex;
+    width: 45%;
+}
     .player-container {
-
+        width: 50%;
+        margin: 5px 15px 0 15px;
     }
         .player-photo-container {
             @extend %flex;
@@ -52,44 +47,3 @@
                 border-style: solid;
                 border-width: 1px;
             }
-
-.ludo-report-information-upload-picture-button-container {
-    @extend %relative;
-}
-
-    .ludo-report-information-upload-picture-button {
-        @extend %clickable;
-        @extend %flex;
-        align-items: center;
-        justify-content: center;
-        @extend %absolute;
-        right: -4px;
-        @extend %top;
-        width: 50px;
-        height: 40px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #85888d;
-        border-top: none;
-        border-right: none;
-        color: white;
-
-        .ludo-report-information-upload-picture-button__icon {
-            width: 35px;
-            height: 35px;
-        }
-    }
-
-.ludo-report-information-upload-instruction {
-    @extend %flex;
-    align-self: flex-end;
-    justify-content: center;
-    @extend %relative;
-    @extend %text_center;
-    color: rgb(180, 180, 180);
-
-    .number {
-        margin: 0 10px;
-        color: $black;
-    }
-}

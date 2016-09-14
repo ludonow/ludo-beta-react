@@ -46,39 +46,35 @@ export default class ActiveReports extends React.Component {
 
     render() {
         return (
-            <div>
-                <div className="ludo-report-infromation-container grid-item--ludo-report-information">
-                    <div className="card player-container">
-                        <div className="player-photo-container">
-                            <div className="player-photo-container__photo">
-                            </div>
-                        </div>
-                        <div className="player-report-container">
-                            <div className="report-image">
-                                Report image
-                            </div>
-                            <div className="report-text">
-                                Report text
-                            </div>
-                            <CommentForm />
+            <div className="report-list-container">
+                <div className="card player-container">
+                    <div className="player-photo-container">
+                        <div className="player-photo-container__photo">
                         </div>
                     </div>
+                    <div className="player-report-container">
+                        <div className="report-image">
+                            Report image
+                        </div>
+                        <div className="report-text">
+                            Report text
+                        </div>
+                        <CommentForm />
+                    </div>
                 </div>
-                <div className="ludo-report-infromation-container grid-item--ludo-report-information">
-                    <div className="card player-container">
-                        <div className="player-photo-container">
-                            <div className="player-photo-container__photo">
-                            </div>
+                <div className="card player-container">
+                    <div className="player-photo-container">
+                        <div className="player-photo-container__photo">
                         </div>
-                        <div className="player-report-container">
-                            <div className="report-image">
-                                Report image
-                            </div>
-                            <div className="report-text">
-                                Report text
-                            </div>
-                            <CommentForm />
+                    </div>
+                    <div className="player-report-container">
+                        <div className="report-image">
+                            Report image
                         </div>
+                        <div className="report-text">
+                            Report text
+                        </div>
+                        <CommentForm />
                     </div>
                 </div>
             </div>

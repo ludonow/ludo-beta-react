@@ -231,23 +231,25 @@ export default class ActivePlayerForm extends React.Component {
                                 max={maxDuration} value={currentFormValue.duration} disabled={true}
                             />
                         </div>
-                        <div className="ludo-report-information-upload-picture-button-container">
-                            <div className="text-field-container">
-                                <textarea 
-                                    className="text-field--introduction" 
-                                    placeholder="Report here" 
-                                    onChange={this.handleIntroductionChange}
-                                />
+                        <div className="upload-container">
+                            <div className="upload-picture-button-container">
+                                <span className="upload-hint-text">140字為限(#tag不在此限)</span>
+                                <DropZone 
+                                    className="upload-picture-button"
+                                    maxSize={2000000}
+                                    onDrop={this.onDrop}
+                                    onClick={this.onDrop}
+                                    accept={"image/png", "image/pjepg", "image/jpeg"}
+                                >
+                                    <img className="upload-picture-button__icon" src={uploadIcon}/>
+                                </DropZone>
                             </div>
-                            <DropZone 
-                                className="ludo-report-information-upload-picture-button"
-                                maxSize={2000000}
-                                onDrop={this.onDrop}
-                                onClick={this.onDrop}
-                                accept={"image/png", "image/pjepg", "image/jpeg"}
-                            >
-                                <img className="ludo-report-information-upload-picture-button__icon" src={uploadIcon}/>
-                            </DropZone>
+                            <textarea 
+                                className="upload-text-container"
+                                placeholder="Report here"
+                                rows="6" cols="74"
+                                onChange={this.handleIntroductionChange}
+                            />
                         </div>
                         <button className="ludo-report-information-submit-button" type="submit" 
                             disabled={(isIntroductionBlank && !isImageUploaded)
@@ -258,7 +260,7 @@ export default class ActivePlayerForm extends React.Component {
                     </div>
                     {
                         files.length > 0 ? 
-                            <div className="ludo-report-information-upload-instruction">
+                            <div className="upload-instruction">
                                 Ready to upload 
                                 <span className="number">{files.length}</span>
                                 image

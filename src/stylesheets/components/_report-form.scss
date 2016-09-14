@@ -1,0 +1,73 @@
+.upload-container {
+    @extend %relative;
+    margin-top: 20px;
+}
+
+    .upload-picture-button-container {
+        // @extend %as_wide_as_parent;
+        width: 539px;
+        display: inline-flex;
+        border-color: #85888d;
+        border-style: solid;
+        border-width: 1px;
+        border-bottom: none;
+        background-color: rgb(240, 240, 240);
+    }
+
+        .upload-hint-text {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            @extend %margin_center_x;
+        }
+
+        .upload-picture-button {
+            @extend %clickable;
+            @extend %relative;
+            @extend %right;
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 40px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #85888d;
+            border-top: none;
+            border-right: none;
+
+            .upload-picture-button__icon {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+    .upload-text-container {
+        background-color: rgb(240, 240, 240);
+        margin: 0;
+        border-color: #85888d;
+        border-top: none;
+        &::-webkit-input-placeholder {
+            @extend %text_center;
+            line-height: 85px;
+        }
+    }
+    // overwrite default style
+    textarea.upload-text-container {
+        resize: none;
+    }
+
+.upload-instruction {
+    @extend %flex;
+    align-self: flex-end;
+    justify-content: center;
+    @extend %relative;
+    @extend %text_center;
+    color: rgb(180, 180, 180);
+
+    .number {
+        margin: 0 10px;
+        color: $black;
+    }
+}
