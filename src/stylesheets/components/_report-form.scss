@@ -58,6 +58,22 @@
         resize: none;
     }
 
+.report-submit-button {
+    @extend .ludo-button;
+    width: 80px;
+    height: 30px;
+    margin-top: 5px;
+    font-size: 16px;
+    color: $black;
+    background-color: $orange_button;
+
+    &:disabled {
+        @extend %unclickable;
+        background-color: $gray_text-field;
+        border: none;
+    }
+}
+
 .upload-instruction {
     @extend %flex;
     align-self: flex-end;

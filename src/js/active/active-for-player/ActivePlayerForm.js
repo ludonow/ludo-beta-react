@@ -22,14 +22,14 @@ export default class ActivePlayerForm extends React.Component {
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             isImageLightBoxOpen: false,
             isImageUploaded: false,
-            isIntroductionBlank: true,
+            isReportTextBlank: true,
             maxDuration: 14,
             maxMarbles: 50,
             files: [],
             uploadImageIndex: 0
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
-        this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
+        this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
@@ -96,20 +96,19 @@ export default class ActivePlayerForm extends React.Component {
         }
     }
 
-    handleIntroductionChange(event) {
+    handleReportTextChange(event) {
+        const { currentFormValue } = this.props;
         if (event.target.value) {
-            const { ludoDetailInformation } = this.state;
             this.setState(
-                Object.assign(ludoDetailInformation, {
+                Object.assign(currentFormValue, {
                     introduction: event.target.value,
-                    isIntroductionBlank: false
+                    isReportTextBlank: false
                 })
             );
         } else {
-            const { ludoDetailInformation } = this.state;
             this.setState(
-                Object.assign(ludoDetailInformation, {
-                    isIntroductionBlank: true
+                Object.assign(currentFormValue, {
+                    isReportTextBlank: true
                 })
             );
         }
@@ -117,7 +116,7 @@ export default class ActivePlayerForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // const isConfirmReport = window.confirm(`Are you sure to report?`);
+        const isConfirmReport = window.confirm(`Are you sure to report?`);
         // if (isConfirmReport) {
         //     const { ludoDetailInformation } = this.state;
         //     const { introduction } = ludoDetailInformation;
@@ -176,7 +175,7 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     render() {
-        const { ludoDetailInformation, category, files, isIntroductionBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, maxMarbles, uploadImageIndex } = this.state;
+        const { ludoDetailInformation, category, files, isReportTextBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, maxMarbles, uploadImageIndex } = this.state;
         const { currentFormValue } = this.props;
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
@@ -248,11 +247,11 @@ export default class ActivePlayerForm extends React.Component {
                                 className="upload-text-container"
                                 placeholder="Report here"
                                 rows="6" cols="74"
-                                onChange={this.handleIntroductionChange}
+                                onChange={this.handleReportTextChange}
                             />
                         </div>
-                        <button className="ludo-report-information-submit-button" type="submit" 
-                            disabled={(isIntroductionBlank && !isImageUploaded)
+                        <button className="report-submit-button" type="submit" 
+                            disabled={(isReportTextBlank && !isImageUploaded)
                                 || isImageLightBoxOpen }
                             >
                             Report

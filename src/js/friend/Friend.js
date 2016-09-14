@@ -7,7 +7,9 @@ import FriendList from './FriendList';
 export default class Friend extends React.Component {
     render() {
         return (
-            <FriendList />
+            <div className="main-container">
+                <FriendList />
+            </div>
         );
     }
 }

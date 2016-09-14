@@ -136,60 +136,40 @@ export default class ActiveBystanderForm extends React.Component {
             <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
-                        <div className="ludo-detail-information-icon">
-                            <img className="ludo-detail-information-icon__img" src={this.handleIconChange()} />
+                        <div className="category-icon-container">
+                            <img className="category-icon" src={this.getCategoryIcon(category_id)} />
                         </div>
-                        <div className="ludo-detail-information-fields">
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
-                                <label>Category:</label>
-                                <DropdownList 
-                                    className="ludo-detail-information-field-dropdown-list"
-                                    data={category}
-                                    onChange={this.handleCategoryChange}
-                                    defaultValue="lifestyle"
-                                />
+                        <div className="top-right-container">
+                            <div className="category-container">
+                                <span className="category-label">Category:</span>
+                                <span className="category-value">
+                                    {this.getCategory(category_id)}
+                                </span>
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
-                                    onChange={this.handleTitleChange}
-                                />
+                            <div className="ludo-detail-information-field__text">
+                                {title}
                             </div>
-                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
-                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
-                                    onChange={this.handleTagsChange}
-                                />
+                            <div className="ludo-detail-information-field__text">
+                                {tags}
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="ludo-detail-information-field">
-                            <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
-                                <label>Marbles:</label>
-                                <RcSlider max={50} min={1} 
-                                    defaultValue={1} value={ludoCreateForm.marbles}
-                                    onChange={this.handleMarblesChange}
-                                />
-                            </div>
+                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{marbles}</span></div>
+                        <div className="ludo-detail-information-slider--marbles">
+                            <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
                         </div>
-                        <div className="ludo-detail-information-field">
-                            <label>Duration:</label>
-                        </div>
+                        <div className="duration-label">Duration:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
-                        <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
+                        <div className="ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} 
-                                defaultValue={3} value={ludoCreateForm.duration}
-                                onChange={this.handleDurationValue}
+                                max={maxDuration} value={currentFormValue.duration} disabled={true}
                             />
                         </div>
                         <div className="ludo-detail-information-field">
-                            <textarea 
-                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
-                                placeholder="Introduction" 
-                                onChange={this.handleIntroductionChange}
-                            />
+                            Timeline
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
                             Follow
