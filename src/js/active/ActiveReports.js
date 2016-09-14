@@ -1,10 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
-import Masonry from 'react-masonry-component';
 import axios from 'axios';
-
-// import ActiveForm from './ActiveFormOfByStander';
-import ActiveForm from './ActiveFormOfPlayer';
 
 const masonryOptions = {
     itemSelector: ".grid-item--ludo-report-information",
@@ -13,9 +8,9 @@ const masonryOptions = {
     stamp: ".grid-item--ludo-detail-information"
 };
 
-export default class ActiveLudoList extends React.Component {
-    constructor() {
-        super();
+export default class ActiveReports extends React.Component {
+    constructor(props) {
+        super(props);
     }
 
     componentDidMount() {
@@ -51,10 +46,7 @@ export default class ActiveLudoList extends React.Component {
 
     render() {
         return (
-            <Masonry
-                className="grid"
-                options={masonryOptions} >
-                <ActiveForm {...this.props}/>
+            <div>
                 <div className="ludo-report-infromation-container grid-item--ludo-report-information">
                     <div className="card player-container">
                         <div className="player-photo-container">
@@ -89,7 +81,7 @@ export default class ActiveLudoList extends React.Component {
                         </div>
                     </div>
                 </div>
-            </Masonry>
+            </div>
         );
     }
 };

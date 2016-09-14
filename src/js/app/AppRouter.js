@@ -2,7 +2,8 @@ import React from 'react';
 import { Router, Route, IndexRedirect, browserHistory } from "react-router";
 import axios from 'axios';
 
-import Active from '../active/Active';
+import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
+import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
@@ -36,7 +37,8 @@ export default class AppRouter extends React.Component {
             <Router history={browserHistory}>
                 <Route path="/" component={App}>
                     <IndexRedirect to="playground"></IndexRedirect>
-                    <Route path="active/:ludoId" component={Active}></Route>
+                    <Route path="active-for-bystander/:ludoId" component={ActiveForBystander}></Route>
+                    <Route path="active-for-player/:ludoId" component={ActiveForPlayer}></Route>
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
                     <Route path="friend" component={Friend}></Route>
                     <Route path="login" component={Login}></Route>

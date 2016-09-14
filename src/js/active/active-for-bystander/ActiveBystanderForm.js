@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import axios from 'axios';
 import RcSlider from 'rc-slider';
 
@@ -11,7 +10,7 @@ import newSkillIcon from '../../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../../images/category_icon/unmentionables.png';
 import othersIcon from '../../../images/category_icon/others.svg';
 
-export default class OpenedFormOfBystander extends React.Component {
+export default class ActiveBystanderForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -84,33 +83,33 @@ export default class OpenedFormOfBystander extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { currentFormValue, params } = this.props;
-        const { ludoId } = params;
-        console.log(`/apis/ludo/${ludoId}`);
-        const body = {
-            'type': 'match',
-            'duration': currentFormValue.duration,
-            'marbles': currentFormValue.marbles,
-            'stage': currentFormValue.stage
-        };
-        console.log('body', body);
+        // const { currentFormValue, params } = this.props;
+        // const { ludoId } = params;
+        // console.log(`/apis/ludo/${ludoId}`);
+        // const body = {
+        //     'type': 'match',
+        //     'duration': currentFormValue.duration,
+        //     'marbles': currentFormValue.marbles,
+        //     'stage': currentFormValue.stage
+        // };
+        // console.log('body', body);
 
-        console.log('before join axios put');
-        axios.put(`/apis/ludo/${ludoId}`, body)
-        .then(function (response) {
-            if(response.data.status == '200') {
-                // TODO: Confirm joining Ludo
-                console.log('response data', response.data);
-                console.log('after join axios put');
-                browserHistory.push(`/active-for-player/${ludoId}`);
-            } else {
-                console.log('message from server: ', response.data.message);
-            }
-        })
-        .catch(function (error) {
-            console.log('error', error);
-            console.log('error message from server: ', response.data.message);
-        });
+        // console.log('before join axios put');
+        // axios.put(`/apis/ludo/${ludoId}`, body)
+        // .then(function (response) {
+        //     if(response.data.status == '200') {
+        //         // TODO: Confirm joining Ludo
+        //         console.log('response data', response.data);
+        //         console.log('after join axios put');
+        //         browserHistory.push(`/active/${ludoId}`);
+        //     } else {
+        //         console.log('message from server: ', response.data.message);
+        //     }
+        // })
+        // .catch(function (error) {
+        //     console.log('error', error);
+        //     console.log('error message from server: ', response.data.message);
+        // });
     }
 
     render() {
@@ -137,43 +136,63 @@ export default class OpenedFormOfBystander extends React.Component {
             <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
-                        <div className="category-icon-container">
-                            <img className="category-icon" src={this.getCategoryIcon(category_id)} />
+                        <div className="ludo-detail-information-icon">
+                            <img className="ludo-detail-information-icon__img" src={this.handleIconChange()} />
                         </div>
-                        <div className="top-right-container">
-                            <div className="category-container">
-                                <span className="category-label">Category:</span>
-                                <span className="category-value">
-                                    {this.getCategory(category_id)}
-                                </span>
+                        <div className="ludo-detail-information-fields">
+                            <div className="ludo-detail-information-fields__field ludo-detail-information-field-dropdown-list-container">
+                                <label>Category:</label>
+                                <DropdownList 
+                                    className="ludo-detail-information-field-dropdown-list"
+                                    data={category}
+                                    onChange={this.handleCategoryChange}
+                                    defaultValue="lifestyle"
+                                />
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {title}
+                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
+                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   Title" 
+                                    onChange={this.handleTitleChange}
+                                />
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {tags}
+                            <div className="ludo-detail-information-fields__field ludo-detail-information-fields__field--text-field">
+                                <input className="ludo-detail-information-field__text-field" type="text" placeholder="   #hashtag" 
+                                    onChange={this.handleTagsChange}
+                                />
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{marbles}</span></div>
-                        <div className="ludo-detail-information-slider--marbles">
-                            <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
+                        <div className="ludo-detail-information-field">
+                            <div className="ludo-detail-information-slider ludo-detail-information-slider--marbles">
+                                <label>Marbles:</label>
+                                <RcSlider max={50} min={1} 
+                                    defaultValue={1} value={ludoCreateForm.marbles}
+                                    onChange={this.handleMarblesChange}
+                                />
+                            </div>
                         </div>
-                        <div className="duration-label">Duration:</div>
+                        <div className="ludo-detail-information-field">
+                            <label>Duration:</label>
+                        </div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
-                        <div className="ludo-detail-information-slider--duration">
+                        <div className="ludo-detail-information-slider ludo-detail-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} value={currentFormValue.duration} disabled={true}
+                                max={maxDuration} min={3} 
+                                defaultValue={3} value={ludoCreateForm.duration}
+                                onChange={this.handleDurationValue}
                             />
                         </div>
-                        <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
-                            {introduction} 
+                        <div className="ludo-detail-information-field">
+                            <textarea 
+                                className="ludo-detail-information-field__text-field ludo-detail-information-field__text-field--introduction" 
+                                placeholder="Introduction" 
+                                onChange={this.handleIntroductionChange}
+                            />
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
-                            Join
+                            Follow
                         </button>
                     </div>
                 </form>

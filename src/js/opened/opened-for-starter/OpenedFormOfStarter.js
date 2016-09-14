@@ -131,7 +131,7 @@ export default class OpenedFormOfStarter extends React.Component {
             }
         }
         return (
-            <div className="grid-item--ludo-detail-information">
+            <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">

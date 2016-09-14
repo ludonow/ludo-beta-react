@@ -37,13 +37,11 @@ export default class App extends React.Component {
     }
 
     getBasicUserData() {
-        const _this = this;
-
         axios.get('/apis/user')
-        .then(function (response) {
+        .then(response => {
             if(response.data.status === '200') {
-                _this.setState(
-                    Object.assign(_this.state, {
+                this.setState(
+                    Object.assign(this.state, {
                         userBasicData: response.data.user,
                         currentUserId: response.data.user.user_id
                     })
@@ -52,24 +50,23 @@ export default class App extends React.Component {
                 console.log('message from server: ', response.data.message);
             }
         })
-        .catch(function(error) {
+        .catch(error => {
             console.log('user error', error);
             console.log('message from server: ', response.data.message);
         });
     }
 
     getCurrentLudoData(ludo_id) {
-        const _this = this;
         axios.get(`/apis/ludo/${ludo_id}`)
-        .then((response) => {
+        .then(response => {
             if(response.data.status === '200') {
-                _this.setState(
-                    Object.assign(_this.state, {
+                this.setState(
+                    Object.assign(this.state, {
                         currentFormValue: response.data.ludo
                     })
                 );
-                _this.setState(
-                    Object.assign(_this.state, {
+                this.setState(
+                    Object.assign(this.state, {
                         currentLudoId: ludo_id
                     })
                 );
@@ -77,7 +74,7 @@ export default class App extends React.Component {
                 console.log('app else message from server: ', response.data.message);
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.log('app getCurrentLudoData error', error);
         });
     }
@@ -93,50 +90,31 @@ export default class App extends React.Component {
     }
 
     handleLudoListUpdate() {
-        const _this = this;
-        axios.get('/apis/ludo?stage=1')
-        .then(function (response) {
+        axios.get('/apis/ludo?stage=2')
+        .then(response => {
             if(response.data.status === '200') {
-                _this.setState(
-                    Object.assign(_this.state, {
+                this.setState(
+                    Object.assign(this.state, {
                         rawData: response.data.ludoList.Items
                     })
                 );
             } else {
-                console.log('get ludo list');
-                console.log('message from server: ', response.data.message);
+                console.log(response.data.message);
             }
         })
-        .catch(function(error) {
+        .catch(error => {
             console.log('ludo list error', error);
             console.log(response.data.message);
         });
 
-        // axios.get('/apis/ludo?stage=1')
-        // .then(function (response) {
-        //     if(response.data.status === '200') {
-        //         this.setState(
-        //             Object.assign(this.state, {
-        //                 rawData: response.data.ludoList.Items
-        //             })
-        //         );
-        //     } else {
-        //         console.log(response.data.message);
-        //     }
-        // })
-        // .catch(function(error) {
-        //     console.log('ludo list error', error);
-        //     console.log(response.data.message);
-        // });
-
         /* example data */
         // config.get('data/LudoData.json')
-        // .then(function (response) {
-        //     _this.setState({
+        // .then(response => {
+        //     this.setState({
         //         rawCardContent: response.data
         //     });
         // })
-        // .catch(function(error) {
+        // .catch(error => {
         //     console.log(error);
         // });
     }
@@ -157,7 +135,6 @@ export default class App extends React.Component {
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
                 <Sidebar currentUserId={currentUserId} />
-                <div className="main-container">
                 {React.cloneElement(this.props.children, {
                     currentFormValue,
                     currentUserId,
@@ -171,7 +148,6 @@ export default class App extends React.Component {
                     updateCurrentFormValue: this.updateCurrentFormValue,
                     userBasicData
                 })}
-                </div>
             </div>
         );
     }
