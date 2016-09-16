@@ -136,7 +136,7 @@ export default class ActivePlayerForm extends React.Component {
 
     onDrop(files) {
         console.log('Received files: ', files);
-        const state = this.state;
+        const { state } = this;
             this.setState(
                 Object.assign(state, {
                     files,
@@ -148,7 +148,7 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     closeLightbox() {
-        const state = this.state;
+        const { state } = this;
         this.setState(
             Object.assign(state, {
                 isImageLightBoxOpen: false
@@ -157,7 +157,7 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     moveNext() {
-        const state = this.state;
+        const { state } = this;
         this.setState(
             Object.assign(state, {
                 uploadImageIndex: (state.uploadImageIndex + 1) % state.files.length
@@ -166,7 +166,7 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     movePrev() {
-        const state = this.state;
+        const { state } = this;
         this.setState(
             Object.assign(state, {
                 uploadImageIndex: (state.uploadImageIndex + state.files.length - 1) % state.files.length

@@ -58,6 +58,22 @@
         resize: none;
     }
 
+.report-time-line-container {
+    @extend %as_wide_as_parent;
+    height: 130px;
+    @extend %flex;
+    justify-content: center;
+}
+    .time-line {
+        transform: rotate(180deg);
+        .rc-slider-handle {
+            display: none;
+        }
+        .rc-slider-mark-text {
+            transform: rotate(180deg);
+        }
+    }
+
 .report-submit-button {
     @extend .ludo-button;
     width: 80px;
