@@ -20,21 +20,22 @@ export default class ActivePlayerForm extends React.Component {
         super(props);
         this.state = {
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            files: [],
             isImageLightBoxOpen: false,
             isImageUploaded: false,
             isReportTextBlank: true,
             maxDuration: 14,
             maxMarbles: 50,
-            files: [],
+            reportText: '',
             uploadImageIndex: 0
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onDrop = this.onDrop.bind(this);
-        this.closeLightbox = this.closeLightbox.bind(this);
-        this.moveNext = this.moveNext.bind(this);
-        this.movePrev = this.movePrev.bind(this);
+        // this.closeLightbox = this.closeLightbox.bind(this);
+        // this.moveNext = this.moveNext.bind(this);
+        // this.movePrev = this.movePrev.bind(this);
     }
 
     componentDidMount() {
@@ -97,17 +98,17 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     handleReportTextChange(event) {
-        const { currentFormValue } = this.props;
+        const { state } = this;
         if (event.target.value) {
             this.setState(
-                Object.assign(currentFormValue, {
-                    introduction: event.target.value,
+                Object.assign(state, {
+                    reportText: event.target.value,
                     isReportTextBlank: false
                 })
             );
         } else {
             this.setState(
-                Object.assign(currentFormValue, {
+                Object.assign(state, {
                     isReportTextBlank: true
                 })
             );
@@ -117,67 +118,67 @@ export default class ActivePlayerForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const isConfirmReport = window.confirm(`Are you sure to report?`);
-        // if (isConfirmReport) {
-        //     const { ludoDetailInformation } = this.state;
-        //     const { introduction } = ludoDetailInformation;
-        //     axios.post('/apis/ludo', ludoDetailInformation)
-        //     .then(function (response) {
-        //         if (response.data.status != 'err') {
-        //             window.alert(`Sucessfully Report`);
-        //         } else {
-        //             console.log('response', response.data.status);
-        //         }
-        //     })
-        //     .catch(function (error) {
-        //         console.log('error', error);
-        //     });
-        // }
+        if (isConfirmReport) {
+            const { files } = this.state;
+            const file_stream = files[0];
+            console.log('file_stream', file_stream);
+            console.log('before post files');
+            axios.post('/apis/report_image', file_stream)
+            .then(function (response) {
+                if (response.data.status == '200') {
+                    window.alert(`Sucessfully Report`);
+                    console.log('response.data: ', response.data);
+                } else {
+                    console.log('message from server: ', response.data.message);
+                }
+            })
+            .catch(function (error) {
+                console.log('Report error', error);
+            });
+        }
     }
 
     onDrop(files) {
-        console.log('Received files: ', files);
         const { state } = this;
             this.setState(
                 Object.assign(state, {
                     files,
-                    isImageUploaded: true,
-                    isImageLightBoxOpen: true
+                    isImageUploaded: true
                 })
             );
-        console.log(this.state.files.length);
     }
 
-    closeLightbox() {
-        const { state } = this;
-        this.setState(
-            Object.assign(state, {
-                isImageLightBoxOpen: false
-            })
-        );
-    }
+    // closeLightbox() {
+    //     const { state } = this;
+    //     this.setState(
+    //         Object.assign(state, {
+    //             isImageLightBoxOpen: false
+    //         })
+    //     );
+    // }
 
-    moveNext() {
-        const { state } = this;
-        this.setState(
-            Object.assign(state, {
-                uploadImageIndex: (state.uploadImageIndex + 1) % state.files.length
-            })
-        );
-    }
+    // moveNext() {
+    //     const { state } = this;
+    //     this.setState(
+    //         Object.assign(state, {
+    //             uploadImageIndex: (state.uploadImageIndex + 1) % state.files.length
+    //         })
+    //     );
+    // }
 
-    movePrev() {
-        const { state } = this;
-        this.setState(
-            Object.assign(state, {
-                uploadImageIndex: (state.uploadImageIndex + state.files.length - 1) % state.files.length
-            })
-        );
-    }
+    // movePrev() {
+    //     const { state } = this;
+    //     this.setState(
+    //         Object.assign(state, {
+    //             uploadImageIndex: (state.uploadImageIndex + state.files.length - 1) % state.files.length
+    //         })
+    //     );
+    // }
 
     render() {
         const { ludoDetailInformation, category, files, isReportTextBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, maxMarbles, uploadImageIndex } = this.state;
         const { currentFormValue } = this.props;
-        const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
+        const { category_id, duration, reportText, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
@@ -186,9 +187,15 @@ export default class ActivePlayerForm extends React.Component {
                         disabled={true}
                     />, <br key="br" /> 
                 );
-            } else {
+            } else if (i <= duration) {
                 dayPickerButtons.push(
                     <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                        disabled={true}
+                    />
+                );
+            } else {
+                dayPickerButtons.push(
+                    <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
                         disabled={true}
                     />
                 );
@@ -247,42 +254,51 @@ export default class ActivePlayerForm extends React.Component {
                                 className="upload-text-container"
                                 placeholder="Report here"
                                 rows="6" cols="74"
+                                maxLength="140"
                                 onChange={this.handleReportTextChange}
                             />
                         </div>
+                        {
+                            isImageUploaded > 0 ?
+                                <div className="upload-preview">
+                                    <span className="upload-preview__text">正要上傳的圖片: </span>
+                                    <img className="upload-preview__image" src={files[uploadImageIndex].preview} />
+                                </div>
+                            : null
+                        }
                         <button className="report-submit-button" type="submit" 
-                            disabled={(isReportTextBlank && !isImageUploaded)
-                                || isImageLightBoxOpen }
+                            disabled={(isReportTextBlank && !isImageUploaded)}
                             >
                             Report
                         </button>
                     </div>
-                    {
-                        files.length > 0 ? 
-                            <div className="upload-instruction">
-                                Ready to upload 
-                                <span className="number">{files.length}</span>
-                                image
-                                {files.length > 1 ? <span>s</span> : null}
-                            </div>
-                        : null
-                    }
                 </form>
-                {
-                    isImageLightBoxOpen > 0 ? 
-                        <Lightbox 
-                            className="lighbox-target"
-                            mainSrc={files[uploadImageIndex].preview}
-                            nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
-                            prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
-
-                            onCloseRequest={this.closeLightbox}
-                            onMovePrevRequest={this.movePrev}
-                            onMoveNextRequest={this.moveNext}
-                        />
-                    : null
-                }
             </div>
+            // {
+            //     isImageLightBoxOpen > 0 ? 
+            //         <Lightbox 
+            //             className="lighbox-target"
+            //             mainSrc={files[uploadImageIndex].preview}
+            //             nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
+            //             prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
+
+            //             onCloseRequest={this.closeLightbox}
+            //             onMovePrevRequest={this.movePrev}
+            //             onMoveNextRequest={this.moveNext}
+            //         />
+            //     : null
+            // }
+
+                    // {
+                    //     files.length > 0 ? 
+                    //         <div className="upload-instruction">
+                    //             Ready to upload 
+                    //             <span className="number">{files.length}</span>
+                    //             image
+                    //             {files.length > 1 ? <span>s</span> : null}
+                    //         </div>
+                    //     : null
+                    // }
         );
     }
 };

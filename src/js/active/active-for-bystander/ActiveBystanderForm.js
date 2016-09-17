@@ -140,9 +140,15 @@ export default class ActiveBystanderForm extends React.Component {
                         disabled={true}
                     />, <br key="br" /> 
                 );
-            } else {
+            } else if (i <= duration) {
                 dayPickerButtons.push(
                     <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                        disabled={true}
+                    />
+                );
+            } else {
+                dayPickerButtons.push(
+                    <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
                         disabled={true}
                     />
                 );

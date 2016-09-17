@@ -1,6 +1,8 @@
 .ludo-detail-information-container {
     @extend %fixed;
     width: 540px;
+    overflow-y: scroll;
+    height: 82%;
     @extend .card;
     padding-right: 40px;
     padding-left: 40px;
