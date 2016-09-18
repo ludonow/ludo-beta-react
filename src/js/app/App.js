@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '../axios-config';
 
 import Header from './header/Header';
 import Search from './search/Search';
@@ -47,7 +47,7 @@ export default class App extends React.Component {
                     })
                 );
             } else {
-                console.log('message from server: ', response.data.message);
+                console.log('app getBasicUserData else message from server: ', response.data.message);
             }
         })
         .catch(error => {
@@ -77,6 +77,21 @@ export default class App extends React.Component {
         .catch(error => {
             console.log('app getCurrentLudoData error', error);
         });
+
+        /* example data */
+        // this.setState(
+        //     Object.assign(this.state, {
+        //         currentFormValue: {
+        //             category_id: 3,
+        //             checkpoint: [1,2,3],
+        //             duration: 3,
+        //             introduction: 'jog 30 min',
+        //             marbles: 5,
+        //             tags: '#jog #exercise',
+        //             title: 'Jog Everyday'
+        //         }
+        //     })
+        // );
     }
 
     handleIsgettingLatestData(boolean) {
@@ -111,11 +126,11 @@ export default class App extends React.Component {
         // config.get('data/LudoData.json')
         // .then(response => {
         //     this.setState({
-        //         rawCardContent: response.data
+        //         rawData: response.data
         //     });
         // })
         // .catch(error => {
-        //     console.log(error);
+        //     console.log('ludo list error', error);
         // });
     }
 

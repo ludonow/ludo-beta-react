@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LudoList from '../../app/LudoList';
-import OpenedFormOfStarter from './OpenedFormOfStarter';
+import OpenedStarterForm from './OpenedStarterForm';
 
 export default class OpenedForStarter extends React.Component {
     constructor(props) {
@@ -11,7 +11,7 @@ export default class OpenedForStarter extends React.Component {
     render() {
         return (
             <div className="main-container">
-                <OpenedFormOfStarter {...this.props} />
+                <OpenedStarterForm {...this.props} />
                 <LudoList {...this.props} />
             </div>
         );

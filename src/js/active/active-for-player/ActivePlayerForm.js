@@ -30,10 +30,11 @@ export default class ActivePlayerForm extends React.Component {
             uploadImageIndex: 0
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
+        this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onDrop = this.onDrop.bind(this);
-        // this.closeLightbox = this.closeLightbox.bind(this);
+        this.closeLightbox = this.closeLightbox.bind(this);
         // this.moveNext = this.moveNext.bind(this);
         // this.movePrev = this.movePrev.bind(this);
     }
@@ -42,7 +43,6 @@ export default class ActivePlayerForm extends React.Component {
         const { ludoId }= this.props.params;
         const { getCurrentLudoData } = this.props;
         getCurrentLudoData(ludoId);
-        console.log('ActivePlayerForm componentDidMount ludoId', ludoId);
     }
 
     getCategory(category_id) {
@@ -60,9 +60,8 @@ export default class ActivePlayerForm extends React.Component {
             case 6:
                 return `unmentionables`;
             case 7:
-                return `others`;
             default:
-                return `lifestyle`;
+                return `others`;
         };
     }
 
@@ -81,9 +80,8 @@ export default class ActivePlayerForm extends React.Component {
             case 6:
                 return unmentionablesIcon;
             case 7:
-                return othersIcon;
             default:
-                return lifestyleIcon;
+                return othersIcon;
         }
     }
 
@@ -95,6 +93,15 @@ export default class ActivePlayerForm extends React.Component {
         } else {
             return ` ludo-detail-information-day-picker__button--duration`;
         }
+    }
+
+    handleImageEnlarge() {
+        const { state } = this;
+        this.setState(
+            Object.assign(state, {
+                isImageLightBoxOpen: true
+            })
+        );
     }
 
     handleReportTextChange(event) {
@@ -120,10 +127,14 @@ export default class ActivePlayerForm extends React.Component {
         const isConfirmReport = window.confirm(`Are you sure to report?`);
         if (isConfirmReport) {
             const { files } = this.state;
-            const file_stream = files[0];
-            console.log('file_stream', file_stream);
+            const { ludoId }= this.props.params;
+            const ludoReportPost = {
+                file_stream:  files[0],
+                ludo_id: ludoId
+            };
+            console.log('ludoReportPost', ludoReportPost);
             console.log('before post files');
-            axios.post('/apis/report_image', file_stream)
+            axios.post('/apis/report_image', ludoReportPost)
             .then(function (response) {
                 if (response.data.status == '200') {
                     window.alert(`Sucessfully Report`);
@@ -148,14 +159,14 @@ export default class ActivePlayerForm extends React.Component {
             );
     }
 
-    // closeLightbox() {
-    //     const { state } = this;
-    //     this.setState(
-    //         Object.assign(state, {
-    //             isImageLightBoxOpen: false
-    //         })
-    //     );
-    // }
+    closeLightbox() {
+        const { state } = this;
+        this.setState(
+            Object.assign(state, {
+                isImageLightBoxOpen: false
+            })
+        );
+    }
 
     // moveNext() {
     //     const { state } = this;
@@ -181,24 +192,32 @@ export default class ActivePlayerForm extends React.Component {
         const { category_id, duration, reportText, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
-            if (i == 7) {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />, <br key="br" /> 
-                );
-            } else if (i <= duration) {
+            if (i <= duration) {
                 dayPickerButtons.push(
                     <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                         disabled={true}
                     />
                 );
+                if(i == 7) {
+                    dayPickerButtons.push(
+                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                            disabled={true}
+                        />, <br key="br" /> 
+                    );
+                }
             } else {
                 dayPickerButtons.push(
                     <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
                         disabled={true}
                     />
                 );
+                if(i == 7) {
+                    dayPickerButtons.push(
+                        <input className={`ludo-detail-information-day-picker__button$`} type="button" value={i} key={`button-${i}`}
+                            disabled={true}
+                        />, <br key="br" /> 
+                    );
+                }
             }
         }
         return (
@@ -262,7 +281,9 @@ export default class ActivePlayerForm extends React.Component {
                             isImageUploaded > 0 ?
                                 <div className="upload-preview">
                                     <span className="upload-preview__text">正要上傳的圖片: </span>
-                                    <img className="upload-preview__image" src={files[uploadImageIndex].preview} />
+                                    <img className="upload-preview__image" src={files[uploadImageIndex].preview}
+                                        onClick={this.handleImageEnlarge}
+                                    />
                                 </div>
                             : null
                         }
@@ -273,21 +294,21 @@ export default class ActivePlayerForm extends React.Component {
                         </button>
                     </div>
                 </form>
-            </div>
-            // {
-            //     isImageLightBoxOpen > 0 ? 
-            //         <Lightbox 
-            //             className="lighbox-target"
-            //             mainSrc={files[uploadImageIndex].preview}
-            //             nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
-            //             prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
+                {
+                    isImageLightBoxOpen ? 
+                        <Lightbox 
+                            className="lighbox-target"
+                            mainSrc={files[uploadImageIndex].preview}
+                            nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
+                            prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
 
-            //             onCloseRequest={this.closeLightbox}
-            //             onMovePrevRequest={this.movePrev}
-            //             onMoveNextRequest={this.moveNext}
-            //         />
-            //     : null
-            // }
+                            onCloseRequest={this.closeLightbox}
+                            onMovePrevRequest={this.movePrev}
+                            onMoveNextRequest={this.moveNext}
+                        />
+                    : null
+                }
+            </div>
 
                     // {
                     //     files.length > 0 ? 

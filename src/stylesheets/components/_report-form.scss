@@ -61,19 +61,48 @@
 .report-time-line-container {
     @extend %as_wide_as_parent;
     // height: 130px;  // in the page
-    height: 300px;
-    // overflow: auto;
+    height: 500px;
     @extend %flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
     .time-line {
         transform: rotate(180deg);
+        span.rc-slider-dot {
+            width: 20px;
+            height: 20px;
+            border-color: $black;
+        }
         .rc-slider-handle {
-            display: none;
+            left: -4px;
+            width: 23px;
+            height: 23px;
+            // display: none;
+        }
+        div.rc-slider-handle {
+            border-color: $black;
+            background-color: rgb(248, 182, 45);
         }
         .rc-slider-mark-text {
+            color: $black;
             transform: rotate(180deg);
         }
+        div.rc-slider-mark {
+            left: -1px;
+            top: -9px;
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .rc-slider-step {
+            right: 6px;
+        }
+        div.rc-slider-track {
+            background-color: $black;
+        }
+    }
+    .time-line.rc-slider-disabled {
+        background-color: $black;
     }
 
 .report-submit-button {
@@ -96,11 +125,13 @@
     @extend %flex;
     justify-content: center;
     align-items: center;
+    margin: 5px 0;
 }
     .upload-preview__text {
         margin-right: 10px;
     }
     .upload-preview__image {
+        @extend %clickable;
         max-width: 200px;
         max-height: 200px;
         border-style: solid;

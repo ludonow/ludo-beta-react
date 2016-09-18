@@ -12,6 +12,8 @@ import Login from '../Login';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
 
+// http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com
+
 export default class Header extends React.Component {
     constructor(props) {
         super(props);
@@ -29,13 +31,13 @@ export default class Header extends React.Component {
                             <div className="header-facebook-login">
                                 Hi, {this.props.userBasicData.name}
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com/logout">
+                                <a href="http://api.ludonow.com/logout">
                                     Log Out
                                 </a>
                             </div>
                         :
                         <div className="header-facebook-login">
-                            <a href="http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com/auth/facebook">
+                            <a href="http://api.ludonow.com/auth/facebook">
                                 <img src={facebookIcon} className="facebook-login-icon" />
                             </a>
                         </div>

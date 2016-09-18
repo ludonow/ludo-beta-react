@@ -17,23 +17,9 @@ export default class ActiveBystanderForm extends React.Component {
             category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             maxDuration: 14,
             maxMarbles: 50,
-            timeLineMarks: {
-                1: 1,
-                2: 2,
-                3: 3,
-                4: 4,
-                5: 5,
-                6: 6,
-                7: 7,
-                8: 8,
-                9: 9,
-                10: 10,
-                11: 11,
-                12: 12,
-                13: 13,
-                14: 14
-            }
+            timeLineMarks: {}
         };
+        this.getTimeLineMarks = this.getTimeLineMarks.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -42,7 +28,12 @@ export default class ActiveBystanderForm extends React.Component {
         const { ludoId }= this.props.params;
         const { getCurrentLudoData } = this.props;
         getCurrentLudoData(ludoId);
-        console.log('OpenedFormOfStarter componentDidMount ludoId', ludoId);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.currentFormValue.category_id != 0) {
+            this.getTimeLineMarks();
+        }
     }
 
     getCategory(category_id) {
@@ -87,6 +78,31 @@ export default class ActiveBystanderForm extends React.Component {
         }
     }
 
+    getTimeLineMarks() {
+        const { props, state } = this;
+        const { currentFormValue } = props;
+        const { checkpoint, duration } = currentFormValue;
+
+        const { timeLineMarks } = state;
+        const durationTimeMarks = {};
+        for (let i = 1; i <= duration; i++) {
+            if (checkpoint.indexOf(i) != -1) {
+                durationTimeMarks[i] = {
+                    style: {
+                        color: 'white'
+                    },
+                    label: i
+                };
+            } else {
+                durationTimeMarks[i] = i;
+            }
+            
+        }
+        this.setState(
+            Object.assign(timeLineMarks, durationTimeMarks)
+        );
+    }
+
     handleDayPickerClass(value) {
         const { checkpoint } = this.props.currentFormValue;
         const index = checkpoint.indexOf(value);
@@ -129,31 +145,10 @@ export default class ActiveBystanderForm extends React.Component {
     }
 
     render() {
-        const { maxDuration, maxMarbles, timeLineMarks } = this.state;
+        const { maxMarbles, timeLineMarks } = this.state;
         const { currentFormValue } = this.props;
-        const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
-        const dayPickerButtons = [];
-        for(let i = 1; i <= maxDuration; i++) {
-            if (i == 7) {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />, <br key="br" /> 
-                );
-            } else if (i <= duration) {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />
-                );
-            } else {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />
-                );
-            }
-        }
+        const { category_id, checkpoint, duration, marbles, tags, title } = currentFormValue;
+
         return (
             <div className="form">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
@@ -182,16 +177,11 @@ export default class ActiveBystanderForm extends React.Component {
                             <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
                         </div>
                         <div className="duration-label">Duration:</div>
-                        <div className="ludo-detail-information-day-picker">
-                            {dayPickerButtons}
-                        </div>
-                        <div className="ludo-detail-information-slider--duration">
-                            <RcSlider 
-                                max={maxDuration} value={currentFormValue.duration} disabled={true}
-                            />
-                        </div>
                         <div className="report-time-line-container">
-                            <RcSlider dots marks={timeLineMarks} vertical={true} className="time-line" disabled={true} max={maxDuration}/>
+                            <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
+                                max={duration} min={1} value={checkpoint} range={duration}
+                                marks={timeLineMarks}
+                            />
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit">
                             Follow

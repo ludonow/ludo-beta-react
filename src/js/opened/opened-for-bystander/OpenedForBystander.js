@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LudoList from '../../app/LudoList';
-import OpenedFormOfBystander from './OpenedFormOfBystander';
+import OpenedBystanderForm from './OpenedBystanderForm';
 
 export default class OpenedForBystander extends React.Component {
     constructor(props) {
@@ -11,7 +11,7 @@ export default class OpenedForBystander extends React.Component {
     render() {
         return (
             <div className="main-container">
-                <OpenedFormOfBystander {...this.props} />
+                <OpenedBystanderForm {...this.props} />
                 <LudoList {...this.props} />
             </div>
         );
