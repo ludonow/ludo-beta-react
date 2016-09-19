@@ -47,7 +47,8 @@ export default class App extends React.Component {
                     })
                 );
             } else {
-                console.log('app getBasicUserData else message from server: ', response.data.message);
+                console.log('app getBasicUserData else message from server: ', response.data);
+                // console.log('app getBasicUserData else message from server: ', response.data.message);
             }
         })
         .catch(error => {

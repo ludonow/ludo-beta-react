@@ -117,30 +117,24 @@ export default class ActiveBystanderForm extends React.Component {
         event.preventDefault();
         // const { currentFormValue, params } = this.props;
         // const { ludoId } = params;
-        // console.log(`/apis/ludo/${ludoId}`);
         // const body = {
-        //     'type': 'match',
-        //     'duration': currentFormValue.duration,
-        //     'marbles': currentFormValue.marbles,
-        //     'stage': currentFormValue.stage
         // };
         // console.log('body', body);
 
-        // console.log('before join axios put');
+        // console.log('before follow axios put');
         // axios.put(`/apis/ludo/${ludoId}`, body)
         // .then(function (response) {
         //     if(response.data.status == '200') {
-        //         // TODO: Confirm joining Ludo
+        //         // TODO: Confirm following Ludo
         //         console.log('response data', response.data);
-        //         console.log('after join axios put');
-        //         browserHistory.push(`/active/${ludoId}`);
+        //         console.log('after follow axios put');
         //     } else {
-        //         console.log('message from server: ', response.data.message);
+        //         console.log('follow else message from server: ', response.data.message);
         //     }
         // })
         // .catch(function (error) {
-        //     console.log('error', error);
-        //     console.log('error message from server: ', response.data.message);
+        //     console.log('follow error', error);
+        //     console.log('follow error message from server: ', response.data.message);
         // });
     }
 
