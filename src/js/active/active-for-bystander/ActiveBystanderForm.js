@@ -98,6 +98,7 @@ export default class ActiveBystanderForm extends React.Component {
             }
             
         }
+        console.log(Object.assign(timeLineMarks, durationTimeMarks));
         this.setState(
             Object.assign(timeLineMarks, durationTimeMarks)
         );
@@ -144,7 +145,7 @@ export default class ActiveBystanderForm extends React.Component {
         const { category_id, checkpoint, duration, marbles, tags, title } = currentFormValue;
 
         return (
-            <div className="form">
+            <div className="form form--bystander">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
