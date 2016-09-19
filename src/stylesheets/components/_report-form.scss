@@ -87,7 +87,7 @@
             transform: rotate(180deg);
         }
         div.rc-slider-mark {
-            left: -1px;
+            left: 0;
             top: -9px;
             @extend %flex;
             align-items: center;

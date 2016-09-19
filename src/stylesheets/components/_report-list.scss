@@ -51,6 +51,22 @@
 
                 }
                 .comment-list {
-                    
                 }
+                    .comment-container {
+                        @extend %as_wide_as_parent;
+                        @extend %flex;
+                        align-items: center;
+                        margin-bottom: 5px;
+                        background-color: $gray;
+                        .comment__avatar {
+                            @extend %flex;
+                            align-items: center;
+                            width: 20%;
+                            height: 40px;
+                            margin-right: 5px;
+                        }
+                        .comment__message {
+                            width: 80%;
+                        }
+                    }
             }
