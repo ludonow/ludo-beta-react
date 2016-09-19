@@ -90,13 +90,11 @@ export default class CreateForm extends React.Component {
         const { checkpoint } = ludoCreateForm;
         const index = checkpoint.indexOf(value);
 
-        if(value <= currentHoverValue) { // before hover and now hover
-            if (index != -1) {
-                return ` ludo-create-information-day-picker__button--checkpoint`;
-            } else {
-                return ` ludo-create-information-day-picker__button--duration`;
-            };
-        }
+        if (index != -1) {
+            return ` ludo-create-information-day-picker__button--checkpoint`;
+        } else {
+            return ` ludo-create-information-day-picker__button--duration`;
+        };
     }
 
     handleDayPickerClick(event) {

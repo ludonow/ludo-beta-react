@@ -105,7 +105,7 @@ export default class App extends React.Component {
     }
 
     getLatestLudoList() {
-        axios.get('/apis/ludo?stage=2')
+        axios.get('/apis/ludo')
         .then(response => {
             if(response.data.status === '200') {
                 this.setState(

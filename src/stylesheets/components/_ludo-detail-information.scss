@@ -1,7 +1,7 @@
 .ludo-detail-information-container {
     @extend %fixed;
     width: 540px;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 82%;
     @extend .card;
     padding-right: 40px;
@@ -9,6 +9,10 @@
     padding-top: 10px;
     padding-bottom: 10px;
     @extend %text_center;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
     .ludo-detail-information-field__text {
         @extend %flex;
