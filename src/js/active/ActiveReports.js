@@ -1,16 +1,11 @@
 import React from 'react';
-import axios from 'axios';
-
-const masonryOptions = {
-    itemSelector: ".grid-item--ludo-report-information",
-    columnWidth: 220,
-    fitWidth: true,
-    stamp: ".grid-item--ludo-detail-information"
-};
+import axios from '../axios-config';
+import Textarea from 'react-textarea-autosize';
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
+        this.getLudoReportInformation = this.getLudoReportInformation.bind(this);
     }
 
     componentDidMount() {
@@ -18,30 +13,26 @@ export default class ActiveReports extends React.Component {
     }
 
     getLudoReportInformation() {
-        const _this = this;
-
-        // this.serverRequest = axios.get('/apis/ludo?stage=1')
-        //     .then(function (response) {
-        //         _this.setState({
+        // axios.get('/apis/ludo?stage=1')
+        //     .then(response => {
+        //         this.setState({
         //             rawCardContent: response.data.ludoList.Items
         //         });
         //     })
-        //     .catch(function(error) {
+        //     .catch(error => {
         //         console.log(error);
         //     });
+
+        /* example data */
         // this.serverRequest = axios.get('data/LudoData.json')
-        //     .then(function (response) {
-        //         _this.setState({
+        //     .then(response => {
+        //         this.setState({
         //             rawCardContent: response.data
         //         });
         //     })
-        //     .catch(function(error) {
+        //     .catch(error => {
         //         console.log(error);
         //     });
-    }
-
-    handleMessageSubmit() {
-        console.log('message');
     }
 
     render() {
@@ -59,7 +50,7 @@ export default class ActiveReports extends React.Component {
                         <div className="report-text">
                             Report text
                         </div>
-                        <CommentForm />
+                        <CommentBox />
                     </div>
                 </div>
                 <div className="card player-container">
@@ -74,7 +65,7 @@ export default class ActiveReports extends React.Component {
                         <div className="report-text">
                             Report text
                         </div>
-                        <CommentForm />
+                        <CommentBox />
                     </div>
                 </div>
             </div>
@@ -82,20 +73,56 @@ export default class ActiveReports extends React.Component {
     }
 };
 
-class CommentForm extends React.Component {
+class CommentBox extends React.Component {
     render() {
         return (
             <div className="player-report-comment-box-container">
-                <textarea placeholder="Leave your message here" onChange={this.handleMessageSubmit} />
+                <CommentList />
+                <CommentForm />
             </div>
         );
     }
 };
 
+class CommentForm extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            message: null
+        };
+        this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+    }
+
+    handleMessageSubmit(event) {
+        if (event.keyCode == 13 && !event.shiftKey) {
+            event.preventDefault();
+            const { state } = this;
+            this.setState(
+                Object.assign(state, {
+                    message: event.target.value
+                })
+            );
+            console.log('state message', this.state.message);
+            event.target.value = null;
+            this.setState(
+                Object.assign(state, {
+                    message: null
+                })
+            );
+        }
+    }
+
+    render() {
+        return (
+            <Textarea minRows={2} onKeyDown={this.handleMessageSubmit} placeholder="留言..."/>
+        );
+    }
+}
+
 class CommentList extends React.Component {
     render() {
         return (
-            <div>
+            <div className="comment-list">
                 commentlist
             </div>
         );

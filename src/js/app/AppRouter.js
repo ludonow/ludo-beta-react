@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route, IndexRedirect, browserHistory } from "react-router";
-import axios from 'axios';
+import axios from '../axios-config';
 
 import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
 import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';

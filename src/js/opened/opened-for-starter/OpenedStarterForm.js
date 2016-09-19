@@ -1,6 +1,6 @@
 import React from 'react';
 import RcSlider from 'rc-slider';
-import axios from 'axios';
+import axios from '../../axios-config';
 import { browserHistory } from 'react-router';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
@@ -27,7 +27,6 @@ export default class OpenedStarterForm extends React.Component {
         const { ludoId }= this.props.params;
         const { getCurrentLudoData } = this.props;
         getCurrentLudoData(ludoId);
-        console.log('OpenedStarterForm componentDidMount ludoId', ludoId);
     }
 
     getCategory(category_id) {
@@ -117,29 +116,31 @@ export default class OpenedStarterForm extends React.Component {
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= duration) {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />
-                );
                 if(i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />, <br key="br" /> 
                     );
+                } else {
+                    dayPickerButtons.push(
+                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                            disabled={true}
+                        />
+                    );
                 }
             } else {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />
-                );
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button$`} type="button" value={i} key={`button-${i}`}
+                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />, <br key="br" /> 
+                    );
+                } else {
+                    dayPickerButtons.push(
+                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
+                            disabled={true}
+                        />
                     );
                 }
             }

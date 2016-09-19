@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '../../axios-config';
 import RcSlider from 'rc-slider';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';

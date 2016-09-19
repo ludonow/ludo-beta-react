@@ -32,6 +32,7 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     componentDidMount() {
+        this.props.getLatestLudoList();
         this.props.handleIsgettingLatestData(false);
     }
 

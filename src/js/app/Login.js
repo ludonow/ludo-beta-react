@@ -1,13 +1,10 @@
 import React from "react";
-import axios from 'axios';
+import axios from '../axios-config';
 
 import logoImgPath from '../../images/Ludo_logo.png';
 import googleIcon from '../../images/login/google-icon.png';
 import twitterIcon from '../../images/login/twitter-icon.png';
 import facebookIcon from '../../images/login/facebook-icon.png';
-
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com";
 
 export default class Login extends React.Component {
     constructor() {
@@ -108,7 +105,7 @@ export default class Login extends React.Component {
                                 <img src={googleIcon} className="other-login-icon" />
                             </div>
                             <div className="facebook">
-                                <a href="http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com/auth/facebook">
+                                <a href="http://api.ludonow.com/auth/facebook">
                                     <img src={facebookIcon} className="other-login-icon" />
                                 </a>
                             </div>

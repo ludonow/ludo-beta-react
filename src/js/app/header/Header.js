@@ -19,6 +19,10 @@ export default class Header extends React.Component {
         super(props);
     }
 
+    handleChange(event) {
+        console.log('files', event.target.files);
+    }
+
     render() {
         const { userBasicData } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
@@ -50,6 +54,7 @@ export default class Header extends React.Component {
                     {this.props.isProfile ? <HeaderLevel />: null }
                 </div>
             </div>
+                    // <input type="file" onChange={this.handleChange}/>
         );
     }
 };

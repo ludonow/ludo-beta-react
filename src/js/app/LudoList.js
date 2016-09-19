@@ -33,7 +33,6 @@ export default class LudoList extends React.Component {
 
     componentWillReceiveProps(nextProps){
        if (this.props.currentFormValue.title != nextProps.currentFormValue.title) {
-            console.log('LudoList componentWillReceiveProps');
        }
     }  
 

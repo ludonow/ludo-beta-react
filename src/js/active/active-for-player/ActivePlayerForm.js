@@ -3,7 +3,7 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
-import axios from 'axios';
+import axios from '../../axios-config';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';
@@ -134,18 +134,18 @@ export default class ActivePlayerForm extends React.Component {
             };
             console.log('ludoReportPost', ludoReportPost);
             console.log('before post files');
-            axios.post('/apis/report_image', ludoReportPost)
-            .then(function (response) {
-                if (response.data.status == '200') {
-                    window.alert(`Sucessfully Report`);
-                    console.log('response.data: ', response.data);
-                } else {
-                    console.log('message from server: ', response.data.message);
-                }
-            })
-            .catch(function (error) {
-                console.log('Report error', error);
-            });
+            // axios.post('/apis/report_image', ludoReportPost)
+            // .then(function (response) {
+            //     if (response.data.status == '200') {
+            //         window.alert(`Sucessfully Report`);
+            //         console.log('response.data: ', response.data);
+            //     } else {
+            //         console.log('message from server: ', response.data.message);
+            //     }
+            // })
+            // .catch(function (error) {
+            //     console.log('Report error', error);
+            // });
         }
     }
 
@@ -193,32 +193,35 @@ export default class ActivePlayerForm extends React.Component {
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= duration) {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />
-                );
                 if(i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />, <br key="br" /> 
                     );
+                } else {
+                    dayPickerButtons.push(
+                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                            disabled={true}
+                        />
+                    );
                 }
             } else {
-                dayPickerButtons.push(
-                    <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                        disabled={true}
-                    />
-                );
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button$`} type="button" value={i} key={`button-${i}`}
+                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />, <br key="br" /> 
                     );
+                } else {
+                    dayPickerButtons.push(
+                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
+                            disabled={true}
+                        />
+                    );
                 }
             }
+
         }
         return (
             <div className="form">

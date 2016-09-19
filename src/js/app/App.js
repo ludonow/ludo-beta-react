@@ -27,13 +27,13 @@ export default class App extends React.Component {
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.handleIsgettingLatestData = this.handleIsgettingLatestData.bind(this);
-        this.handleLudoListUpdate = this.handleLudoListUpdate.bind(this);
+        this.getLatestLudoList = this.getLatestLudoList.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
     componentDidMount() {
         this.getBasicUserData();
-        this.handleLudoListUpdate();
+        this.getLatestLudoList();
     }
 
     getBasicUserData() {
@@ -101,10 +101,10 @@ export default class App extends React.Component {
                 isgettingLatestData: boolean
             })
         );
-        console.log('handleIsgettingLatestData', boolean);
+        // console.log('handleIsgettingLatestData', boolean);
     }
 
-    handleLudoListUpdate() {
+    getLatestLudoList() {
         axios.get('/apis/ludo?stage=2')
         .then(response => {
             if(response.data.status === '200') {
@@ -157,7 +157,7 @@ export default class App extends React.Component {
                     getCurrentLudoData: this.getCurrentLudoData,
                     getCurrentLudoId: this.getCurrentLudoId,
                     handleIsgettingLatestData: this.handleIsgettingLatestData,
-                    handleLudoListUpdate: this.handleLudoListUpdate,
+                    getLatestLudoList: this.getLatestLudoList,
                     isgettingLatestData,
                     rawData,
                     updateCurrentFormValue: this.updateCurrentFormValue,

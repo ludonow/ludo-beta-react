@@ -1,7 +1,7 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
-import axios from 'axios';
+import axios from '../axios-config';
 import { browserHistory } from 'react-router';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
@@ -92,13 +92,11 @@ export default class CreateForm extends React.Component {
 
         if(value <= currentHoverValue) { // before hover and now hover
             if (index != -1) {
-                return `ludo-create-information-day-picker__button ludo-create-information-day-picker__button--checkpoint`;
+                return ` ludo-create-information-day-picker__button--checkpoint`;
             } else {
-                return `ludo-create-information-day-picker__button ludo-create-information-day-picker__button--duration`;
+                return ` ludo-create-information-day-picker__button--duration`;
             };
-        } else { // after hover
-            return `ludo-create-information-day-picker__button`;
-        };
+        }
     }
 
     handleDayPickerClick(event) {
@@ -248,12 +246,10 @@ export default class CreateForm extends React.Component {
             .then(response => {
                 if (response.data.status == '200') {
                     // TODO: Confirm creating Ludo
-                    console.log('create post', response.data);
                     const { ludo_id } = response.data;
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then(response => {
                         if (response.data.status == '200') {
-                            console.log('get after create post', response.data);
                             const { getBasicUserData, handleIsgettingLatestData, updateCurrentFormValue } = this.props;
                             updateCurrentFormValue(response.data.ludo);
                             getBasicUserData();
@@ -315,7 +311,7 @@ export default class CreateForm extends React.Component {
         for(let i = 1; i <= maxDuration; i++) {
             if (i == 7) {
                 dayPickerButtons.push(
-                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
+                    <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                         onClick={this.handleDayPickerClick} 
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
@@ -326,7 +322,7 @@ export default class CreateForm extends React.Component {
                 );
             } else {
                 dayPickerButtons.push(
-                    <input className={this.handleDayPickerClass(i)} type="button" value={i} key={`button-${i}`}
+                    <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
                         onClick={this.handleDayPickerClick} 
                         onMouseOver={this.handleDayPickerMouseOver} 
                         disabled={
