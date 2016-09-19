@@ -31,8 +31,8 @@ export default class ActiveBystanderForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.currentFormValue.category_id != 0) {
-            this.getTimeLineMarks();
+        if(this.props.currentFormValue.ludo_id != nextProps.currentFormValue.ludo_id) {
+            this.getTimeLineMarks(nextProps);
         }
     }
 
@@ -78,9 +78,9 @@ export default class ActiveBystanderForm extends React.Component {
         }
     }
 
-    getTimeLineMarks() {
-        const { props, state } = this;
-        const { currentFormValue } = props;
+    getTimeLineMarks(nextProps) {
+        const { state } = this;
+        const { currentFormValue } = nextProps;
         const { checkpoint, duration } = currentFormValue;
 
         const { timeLineMarks } = state;
@@ -173,7 +173,7 @@ export default class ActiveBystanderForm extends React.Component {
                         <div className="duration-label">Duration:</div>
                         <div className="report-time-line-container">
                             <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
-                                max={duration} min={1} value={checkpoint} range={duration}
+                                max={duration} min={1} value={checkpoint} range={checkpoint.length}
                                 marks={timeLineMarks}
                             />
                         </div>
