@@ -38,7 +38,7 @@ export default class ActiveReports extends React.Component {
     render() {
         return (
             <div className="report-list-container">
-                <div className="card player-container">
+                <div className="player-container">
                     <div className="player-photo-container">
                         <div className="player-photo-container__photo">
                         </div>
@@ -53,7 +53,7 @@ export default class ActiveReports extends React.Component {
                         <CommentBox {...this.props} />
                     </div>
                 </div>
-                <div className="card player-container">
+                <div className="player-container">
                     <div className="player-photo-container">
                         <div className="player-photo-container__photo">
                         </div>
@@ -125,7 +125,7 @@ class CommentForm extends React.Component {
 
             // const commentPost = {
             //     'type': 'report',
-            //     'report_id': this.props.currentFormValue.ludo_id,
+            //     'report_id': ,
             //     'content': state.message
             // };
             // axios.post('/apis/comment', commentPost)
@@ -154,7 +154,14 @@ class CommentForm extends React.Component {
 
     render() {
         return (
-            <Textarea minRows={2} onKeyDown={this.handleMessageSubmit} placeholder="留言..."/>
+            <div className="comment-container">
+                <div className="comment-avatar-container">
+                    <img className="comment__avatar" 
+                        src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
+                </div>
+                <Textarea className="comment__message"
+                    minRows={2} onKeyDown={this.handleMessageSubmit} placeholder="留言..."/>
+            </div>
         );
     }
 }
@@ -171,8 +178,8 @@ class CommentList extends React.Component {
                     this.props.list.map( (value, index) => {
                         return (
                             <div className="comment-container" key={`message-${index}`}>
-                                <div className="comment__avatar">
-                                    大頭
+                                <div className="comment-avatar-container">
+                                    <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
                                 </div>
                                 <div className="comment__message">
                                     {value}
