@@ -357,24 +357,31 @@ export default class CreateForm extends React.Component {
                                     className="dropdown-list"
                                     data={category}
                                     onChange={this.handleCategoryChange}
-                                    defaultValue={'select a category'}
+                                    // defaultValue={'select a category'}
+                                    defaultValue={'選擇一個種類'}
                                 />
                             </div>
                             <div className="text-field-container">
-                                <input className="text-field" type="text" placeholder="Title" 
+                                <span className="text-field-label">標題:</span>
+                                <input className="text-field" type="text"
+                                    // placeholder="Title"
+                                    placeholder="輸入想要的標題"
                                     onChange={this.handleTitleChange}
                                 />
                             </div>
                             <div className="text-field-container">
-                                <input className="text-field" type="text" placeholder="#hashtag" 
+                                <span className="text-field-label">#標籤:</span>
+                                <input className="text-field" type="text"
+                                    // placeholder="#hashtag"
+                                    placeholder="輸入想要的#標籤"
                                     onChange={this.handleTagsChange}
                                 />
                             </div>
                         </div>
                     </div>
                     <div className="ludo-create-information-bottom-container">
-                        <div className="marbles-label">
-                            彈珠數:<span className="marbles-label--number">{ludoCreateForm.marbles}</span>
+                        <div className="text-label">
+                            彈珠數:<span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
                         </div>
                         <div className="ludo-create-information-slider--marbles">
                             <RcSlider max={50} min={1} 
@@ -382,7 +389,7 @@ export default class CreateForm extends React.Component {
                                 onChange={this.handleMarblesChange}
                             />
                         </div>
-                        <div className="duration-label">持續期間:</div>
+                        <div className="text-label">持續期間:</div>
                         <div className="ludo-create-information-day-picker">
                             {dayPickerButtons}
                             <div className="ludo-create-information-slider--duration">
@@ -393,12 +400,14 @@ export default class CreateForm extends React.Component {
                                 />
                             </div>
                         </div>
+                        <div className="text-label">介紹:</div>
                         <div className="text-field-container">
                             <textarea 
                                 className="text-field--introduction" 
-                                placeholder="Introduction" 
+                                // placeholder="Introduction" 
+                                placeholder="詳細的說明(最多140字)"
                                 onChange={this.handleIntroductionChange}
-                                rows="5" cols="70"
+                                maxLength="140"
                             />
                         </div>
                         <button className="ludo-create-information-submit-button" type="submit">

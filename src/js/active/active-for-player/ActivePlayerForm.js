@@ -256,17 +256,23 @@ export default class ActivePlayerForm extends React.Component {
                             <img className="category-icon" src={this.getCategoryIcon(category_id)} />
                         </div>
                         <div className="top-right-container">
-                            <div className="category-container">
-                                <span className="category-label">種類:</span>
-                                <span className="category-value">
+                            <div className="text-container">
+                                <span className="text-label">種類:</span>
+                                <span className="text-value">
                                     {this.getCategory(category_id)}
                                 </span>
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {title}
+                            <div className="text-container">
+                                <span className="text-label">標題:</span>
+                                <span className="text-value">
+                                    {title}
+                                </span>
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {tags}
+                            <div className="text-container">
+                                <span className="text-label">#標籤:</span>
+                                <span className="text-value">
+                                    {tags}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -300,7 +306,7 @@ export default class ActivePlayerForm extends React.Component {
                             <textarea 
                                 className="upload-text-container"
                                 placeholder="Report here"
-                                rows="6" cols="74"
+                                rows="6"
                                 maxLength="140"
                                 onChange={this.handleReportTextChange}
                             />

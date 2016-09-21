@@ -51,25 +51,23 @@ $orange_button: rgba(248, 182, 45, 1);
 
             .category-label {
                 width: 20%;
-                margin-right: 8px;
                 font-size: 16px;
             }
 
             .dropdown-list {
-                // @extend %as_wide_as_parent;
                 width: 80%;
                 border-radius: 0;
                 border-style: none;
                 background-color: $gray_text-field;
-                // font size in the selection list
+                /* font size in the selection list */
                 font-size: 14px;
                 .rw-input {
-                    // font size in the text field of drop-down list
+                    /* font size in the text field of drop-down list */
                     font-size: 14px;
                     color: black;
                 }
                 span {
-                    // size of drop-down list arrow icon
+                    /* size of drop-down list arrow icon */
                     font-size: 14px;
                 }
             }
@@ -77,26 +75,34 @@ $orange_button: rgba(248, 182, 45, 1);
     }
 
     .text-field-container {
+        @extend %flex;
+        align-items: center;
         margin-bottom: 10px;
+        font-size: 16px;
 
+        .text-field-label {
+            width: 20%;
+        }
         .text-field {
-            @extend %as_wide_as_parent;
+            // @extend %as_wide_as_parent;
+            width: 80%;
             height: 30px;
             border: none;
             background-color: $gray_text-field;
-            font-size: 16px;
             &::-webkit-input-placeholder {
                 line-height: 30px;
                 @extend %text_center;
             }
         }
         .text-field--introduction {
+            @extend %as_wide_as_parent;
+            height: 75px;
             resize: none;
             border: none;
             background-color: $gray_text-field;
             &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
                 @extend %text_center;
-                line-height: 65px;
+                line-height: 75px;
             }
 
         }
@@ -105,18 +111,17 @@ $orange_button: rgba(248, 182, 45, 1);
 .ludo-create-information-bottom-container {
     @extend %relative;
     margin-top: 20px;
-    .marbles-label {
+    font-size: 14px;
+
+    .rc-slider {
+        margin-bottom: 16px;
+    }
+    .text-label {
         text-align: left;
-        font-size: 14px;
-        margin-bottom: 14px;
+        margin-bottom: 5px;
     }
-    .marbles-label--number {
+    .text-label--marble-number {
         margin-left: 20px;
-    }
-    .duration-label {
-        @extend %flex;
-        margin-top: 16px;
-        font-size: 14px;
     }
 }
 
@@ -145,7 +150,7 @@ $orange_button: rgba(248, 182, 45, 1);
 }
 
 .ludo-create-information-day-picker {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
 }
     .ludo-create-information-day-picker__button {
         @extend .ludo-button;

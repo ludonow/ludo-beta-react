@@ -37,18 +37,18 @@
     //     display: none;
     // }
 }
-    .ludo-detail-information-field__text {
-        @extend %flex;
-        align-items: center;
-        justify-content: center;
-        @extend %as_wide_as_parent;
-        height: 30px;
-        font-size: 16px;
-        margin-bottom: 5px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: $gray_text-field;
-    }
+    // .ludo-detail-information-field__text {
+    //     @extend %flex;
+    //     align-items: center;
+    //     justify-content: center;
+    //     @extend %as_wide_as_parent;
+    //     height: 30px;
+    //     font-size: 16px;
+    //     margin-bottom: 5px;
+    //     border-style: solid;
+    //     border-width: 1px;
+    //     border-color: $gray_text-field;
+    // }
     .ludo-detail-information-field__text--introduction {
         height: 100px;
     }
@@ -73,16 +73,22 @@
     .top-right-container {
         width: 60%;
     }
-        .category-container {
+        .text-container {
             @extend %flex;
+            align-items: center;
+            height: 30px;
             margin-bottom: 10px;
             font-size: 16px;
         }
-            .category-label {
+            .text-label {
                 width: 30%;
             }
-            .category-value {
+            .text-value {
                 width: 70%;
+                height: 30px;
+                line-height: 30px;
+                border: solid 1px $gray_text-field;
+                background-color: $gray;
             }
 }
 

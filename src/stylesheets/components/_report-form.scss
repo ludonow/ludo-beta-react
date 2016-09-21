@@ -4,7 +4,7 @@
 }
 
     .upload-picture-button-container {
-        width: 539px;
+        @extend %as_wide_as_parent;
         display: inline-flex;
         border-color: #85888d;
         border-style: solid;
@@ -43,10 +43,11 @@
         }
 
     .upload-text-container {
-        background-color: rgb(240, 240, 240);
+        width: 99.2%;
         margin: 0;
         border-color: #85888d;
         border-top: none;
+        background-color: rgb(240, 240, 240);
         &::-webkit-input-placeholder {
             @extend %text_center;
             line-height: 85px;
@@ -55,6 +56,7 @@
     // overwrite default style
     textarea.upload-text-container {
         resize: none;
+        font-family: "Exo" , "Microsoft JhengHei";
     }
 
 .report-time-line-container {
@@ -109,9 +111,10 @@
     height: 30px;
     margin-top: 5px;
     font-size: 16px;
+    font-family: "Exo" , "Microsoft JhengHei";
     color: $black;
     background-color: $orange_button;
-
+    
     &:disabled {
         @extend %unclickable;
         background-color: $gray_text-field;
