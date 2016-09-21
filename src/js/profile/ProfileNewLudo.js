@@ -10,38 +10,38 @@ import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
 
-export default class ProfileLudoing extends React.Component {
+export default class ProfileNewLudo extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
             rawData: []
         };
-        this.getLudoingData = this.getLudoingData.bind(this);
+        this.getNewLudoData = this.getNewLudoData.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.currentUserId && this.props.currentUserId != nextProps.currentUserId) {
-            console.log('ProfileLudoing componentWillReceiveProps');
-            this.getLudoingData(nextProps.currentUserId);
+            console.log('ProfileNewLudo componentWillReceiveProps');
+            this.getNewLudoData(nextProps.currentUserId);
         }
     }
 
-    getLudoingData(user_id) {
-        console.log('getLudoingData before get');
-        axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
+    getNewLudoData(user_id) {
+        console.log('getNewLudoData before get');
+        axios.get(`apis/ludo?stage=1&user_id=${user_id}`)
         .then(response => {
             if(response.data.status === '200') {
                 this.setState({
                     rawData: response.data.ludoList.Items
                 });
-                console.log('getLudoingData after successfully get');
+                console.log('getNewLudoData after successfully get');
             } else {
-                console.log('getLudoingData else message from server: ', response.data.message);
+                console.log('getNewLudoData else message from server: ', response.data.message);
             }
         })
         .catch(error => {
-            console.log('getLudoingData error', error);
-            console.log('getLudoingData error message from server: ', response.data.message);
+            console.log('getNewLudoData error', error);
+            console.log('getNewLudoData error message from server: ', response.data.message);
         });
 
         /* example data */
@@ -79,18 +79,18 @@ export default class ProfileLudoing extends React.Component {
 
     handleIconClick(event) {
         const ludo_id = event.currentTarget.id;
-        browserHistory.push(`/active-for-player/${ludo_id}`);
+        browserHistory.push(`/opened-for-starter/${ludo_id}`);
     }
 
     render() {
         return (
             <div className="profile-element">
-                <div className="profile-element__title">Ludoing</div>
+                <div className="profile-element__title">New Ludo</div>
                 {
                     this.state.rawData.map( (data, index) => {
                         return (
-                            <div className="profile-ludo__element" 
-                                key={`ludoing-${index}`}
+                            <div className="profile-ludo__element"
+                                key={`new-ludo-${index}`}
                                 id={data.ludo_id}
                                 onClick={this.handleIconClick}
                             >

@@ -51,10 +51,9 @@ export default class Header extends React.Component {
                     <HeaderMarbles marbles={marbles}/>
                     <HeaderHeart heart={heart} />
                     {this.props.isProfile ? null : <HeaderRate success_rate={success_rate} win_rate={win_rate} /> }
-                    {this.props.isProfile ? <HeaderLevel />: null }
                 </div>
             </div>
-                    // <input type="file" onChange={this.handleChange}/>
+                    // {this.props.isProfile ? <HeaderLevel />: null }
         );
     }
 };

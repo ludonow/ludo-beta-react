@@ -1,6 +1,5 @@
 import React from "react";
-// import axios from 'axios';
-import config from '../../axios-config';
+import axios from '../../axios-config';
 
 export default class HeaderLevel extends React.Component {
     constructor(props) {
@@ -8,24 +7,23 @@ export default class HeaderLevel extends React.Component {
         this.state = { 
             level: 0
         };
+        this.getLevel = this.getLevel.bind(this);
     }
 
-    componentDidMount() {
-        this.getLevel();
-    }
+    // componentDidMount() {
+    //     this.getLevel();
+    // }
 
     getLevel() {
-        const _this = this;
-
-        this.serverRequest = config.get('data/LevelData.json')
-            .then(function (response) {
-                _this.setState({
-                    level: response.data.value
-                });
-            })
-            .catch(function(error) {
-                console.log(error);
+        axios.get('data/LevelData.json')
+        .then(response => {
+            this.setState({
+                level: response.data.value
             });
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     render() {

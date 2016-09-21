@@ -14,7 +14,6 @@ export default class ActiveBystanderForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             maxDuration: 14,
             maxMarbles: 50,
             timeLineMarks: {}
@@ -98,10 +97,9 @@ export default class ActiveBystanderForm extends React.Component {
             }
             
         }
-        console.log(Object.assign(timeLineMarks, durationTimeMarks));
-        this.setState(
-            Object.assign(timeLineMarks, durationTimeMarks)
-        );
+        this.setState({
+            timeLineMarks: durationTimeMarks
+        });
     }
 
     handleDayPickerClass(value) {
@@ -116,6 +114,7 @@ export default class ActiveBystanderForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        // const isSureToFollow = window.confirm(`Are you sure to follow?`);
         // const { currentFormValue, params } = this.props;
         // const { ludoId } = params;
         // const body = {

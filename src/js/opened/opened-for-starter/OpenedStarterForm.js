@@ -15,7 +15,7 @@ export default class OpenedStarterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            isSubmitted: false,
             maxDuration: 14,
             maxMarbles: 50
         };
@@ -27,6 +27,9 @@ export default class OpenedStarterForm extends React.Component {
         const { ludoId }= this.props.params;
         const { getCurrentLudoData } = this.props;
         getCurrentLudoData(ludoId);
+        this.setState({
+            isSubmitted: false
+        });
     }
 
     getCategory(category_id) {
@@ -83,34 +86,45 @@ export default class OpenedStarterForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { currentFormValue, params } = this.props;
-        const { ludoId } = params;
-        console.log(`/apis/ludo/${ludoId}`);
-        const body = {
-            'marbles': currentFormValue.marbles
-        };
-        console.log('body', body);
-
-        console.log('before quit axios delete');
-        axios.delete(`/apis/ludo/${ludoId}`, body)
-        .then(response => {
-            if(response.data.status == '200') {
-                // TODO: Confirm quiting Ludo
-                console.log('response data', response.data);
-                console.log('after quit axios delete');
-                browserHistory.push(`/playground`);
-            } else {
-                console.log('message from server: ', response.data.message);
-            }
-        })
-        .catch(error => {
-            console.log('error', error);
-            console.log('error message from server: ', response.data.message);
-        });
+        const { isSubmitted } = this.state;
+        // TODO: Use notification confirming delete ludo 
+        const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
+        if (!isSubmitted && isSureToDelete) {
+            const { currentFormValue, params } = this.props;
+            const { ludoId } = params;
+            console.log(`/apis/ludo/${ludoId}`);
+            const body = {
+                'marbles': currentFormValue.marbles
+            };
+            console.log('body', body);
+            console.log('before quit axios delete');
+            axios.delete(`/apis/ludo/${ludoId}`, body)
+            .then(response => {
+                if(response.data.status == '200') {
+                    this.setState({
+                        isSubmitted: true
+                    });
+                    console.log('response data', response.data);
+                    console.log('after quit axios delete');
+                    browserHistory.push(`/playground`);
+                } else {
+                    console.log('message from server: ', response.data.message);
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+                console.log('error message from server: ', response.data.message);
+            });
+        } else {
+            console.log('error in state isSubmitted');
+            this.setState({
+                isSubmitted: true
+            });
+        }
     }
 
     render() {
-        const { maxDuration, maxMarbles } = this.state;
+        const { isSubmitted, maxDuration, maxMarbles } = this.state;
         const { currentFormValue } = this.props; 
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
@@ -154,7 +168,7 @@ export default class OpenedStarterForm extends React.Component {
                         </div>
                         <div className="top-right-container">
                             <div className="category-container">
-                                <span className="category-label">Category:</span>
+                                <span className="category-label">種類:</span>
                                 <span className="category-value">
                                     {this.getCategory(category_id)}
                                 </span>
@@ -168,11 +182,11 @@ export default class OpenedStarterForm extends React.Component {
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{marbles}</span></div>
+                        <div className="marbles-label">彈珠數:<span className="marbles-label--number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
                             <RcSlider value={marbles} max={currentFormValue.maxMarbles} disabled={true} />
                         </div>
-                        <div className="duration-label">Duration:</div>
+                        <div className="duration-label">持續期間:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
@@ -184,8 +198,8 @@ export default class OpenedStarterForm extends React.Component {
                         <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
                             {introduction} 
                         </div>
-                        <button className="ludo-detail-information-submit-button" type="submit">
-                            Quit
+                        <button className="ludo-detail-information-submit-button" type="submit" disabled={isSubmitted}>
+                            刪除
                         </button>
                     </div>
                 </form>

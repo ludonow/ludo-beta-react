@@ -19,10 +19,10 @@ export default class SideBar extends React.Component {
                     <SidebarPlayground />
                 </div>
                 <div className="right-sidebar-item color-sidebar2">
-                    <SidebarProfile />
+                    <SidebarProfile {...this.props} />
                 </div>
                 <div className="right-sidebar-item color-sidebar3">
-                    <SidebarCreate {...this.props}/>
+                    <SidebarCreate {...this.props} />
                 </div>
                 <div className="right-sidebar-item color-sidebar4">
                     <SidebarFriend />

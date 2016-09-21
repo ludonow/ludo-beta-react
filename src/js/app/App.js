@@ -9,7 +9,6 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rawData: [],
             currentFormValue: {
                 category_id: 0,
                 checkpoint: [3],
@@ -22,12 +21,17 @@ export default class App extends React.Component {
             currentLudoId: '',
             currentUserId: '',
             isgettingLatestData: false,
-            userBasicData: {}
+            ludoList: [],
+            userBasicData: {},
+            userLudoData: {},
+            userProfileData: {}
         };
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
-        this.handleIsgettingLatestData = this.handleIsgettingLatestData.bind(this);
         this.getLatestLudoList = this.getLatestLudoList.bind(this);
+        this.getProfileData = this.getProfileData.bind(this);
+        this.getUserLudoData = this.getUserLudoData.bind(this);
+        this.handleIsgettingLatestData = this.handleIsgettingLatestData.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
@@ -40,19 +44,16 @@ export default class App extends React.Component {
         axios.get('/apis/user')
         .then(response => {
             if(response.data.status === '200') {
-                this.setState(
-                    Object.assign(this.state, {
-                        userBasicData: response.data.user,
-                        currentUserId: response.data.user.user_id
-                    })
-                );
+                this.setState({
+                    userBasicData: response.data.user,
+                    currentUserId: response.data.user.user_id
+                });
             } else {
                 console.log('app getBasicUserData else message from server: ', response.data.message);
             }
         })
         .catch(error => {
             console.log('user error', error);
-            console.log('message from server: ', response.data.message);
         });
     }
 
@@ -60,16 +61,10 @@ export default class App extends React.Component {
         axios.get(`/apis/ludo/${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
-                this.setState(
-                    Object.assign(this.state, {
-                        currentFormValue: response.data.ludo
-                    })
-                );
-                this.setState(
-                    Object.assign(this.state, {
-                        currentLudoId: ludo_id
-                    })
-                );
+                this.setState({
+                    currentFormValue: response.data.ludo,
+                    currentLudoId: ludo_id
+                });
             } else {
                 console.log('app else message from server: ', response.data.message);
             }
@@ -94,39 +89,27 @@ export default class App extends React.Component {
         // );
     }
 
-    handleIsgettingLatestData(boolean) {
-        const { isgettingLatestData } = this.state;
-        this.setState(
-            Object.assign(this.state, {
-                isgettingLatestData: boolean
-            })
-        );
-        // console.log('handleIsgettingLatestData', boolean);
-    }
-
     getLatestLudoList() {
         axios.get('/apis/ludo')
         .then(response => {
             if(response.data.status === '200') {
-                this.setState(
-                    Object.assign(this.state, {
-                        rawData: response.data.ludoList.Items
-                    })
-                );
+                this.setState({
+                    ludoList: response.data.ludoList.Items,
+                    isgettingLatestData: false
+                });
             } else {
-                console.log(response.data.message);
+                console.log('app getLatestLudoList else message from server: ', response.data.message);
             }
         })
         .catch(error => {
-            console.log('ludo list error', error);
-            console.log(response.data.message);
+            console.log('app getLatestLudoList error', error);
         });
 
         /* example data */
         // config.get('data/LudoData.json')
         // .then(response => {
         //     this.setState({
-        //         rawData: response.data
+        //         ludoList: response.data
         //     });
         // })
         // .catch(error => {
@@ -134,18 +117,61 @@ export default class App extends React.Component {
         // });
     }
 
+    getProfileData() {
+        console.log('app getProfileData');
+        axios.get('/apis/profile')
+        .then(response => {
+            if(response.data.status === '200') {
+                this.setState({
+                    userProfileData: response.data.user
+                });
+            } else {
+                console.log('app getProfileData else message from server: ', response.data.message);
+            }
+        })
+        .catch(error => {
+            console.log('app getProfileData error', error);
+        });
+    }
+
+    getUserLudoData(user_id) {
+        console.log('app getUserLudoData');
+        axios.get(`apis/ludo?user_id=${user_id}`)
+        .then(response => {
+            if(response.data.status === '200') {
+                this.setState({
+                    userLudoData: response.data.ludoList.Items
+                });
+            } else {
+                console.log('app getUserLudoData else message from server: ', response.data.message);
+            }
+        })
+        .catch(error => {
+            console.log('app getUserLudoData error', error);
+        });
+    }
+
+    handleIsgettingLatestData(boolean) {
+        const { isgettingLatestData } = this.state;
+        this.setState({
+            isgettingLatestData: boolean
+        });
+        // console.log('handleIsgettingLatestData', boolean);
+    }
+
     updateCurrentFormValue(ludoForm) {
-        this.setState(
-            Object.assign(this.state, {
-                currentFormValue: ludoForm
-            })
-        );
+        this.setState({
+            currentFormValue: ludoForm
+        });
         console.log('updateCurrentFormValue');
     }
 
     render() {
         const isProfile = this.props.routes[1].path === "profile";
-        const { currentFormValue, currentLudoId, currentUserId, isgettingLatestData, rawData, userBasicData } = this.state;
+        const { 
+            currentFormValue, currentLudoId, currentUserId, isgettingLatestData, ludoList, 
+            userBasicData, userLudoData, userProfileData 
+        } = this.state;
         return (
             <div>
                 <Header isProfile={isProfile} userBasicData={userBasicData}/>
@@ -153,15 +179,18 @@ export default class App extends React.Component {
                 {React.cloneElement(this.props.children, {
                     currentFormValue,
                     currentUserId,
+                    isgettingLatestData,
+                    ludoList,
+                    userBasicData,
+                    userLudoData,
+                    userProfileData,
                     getBasicUserData: this.getBasicUserData,
                     getCurrentLudoData: this.getCurrentLudoData,
-                    getCurrentLudoId: this.getCurrentLudoId,
-                    handleIsgettingLatestData: this.handleIsgettingLatestData,
                     getLatestLudoList: this.getLatestLudoList,
-                    isgettingLatestData,
-                    rawData,
-                    updateCurrentFormValue: this.updateCurrentFormValue,
-                    userBasicData
+                    getProfileData: this.getProfileData,
+                    getUserLudoData: this.getUserLudoData,
+                    handleIsgettingLatestData: this.handleIsgettingLatestData,
+                    updateCurrentFormValue: this.updateCurrentFormValue
                 })}
             </div>
         );

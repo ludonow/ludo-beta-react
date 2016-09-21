@@ -12,7 +12,9 @@ export default class OpenedForBystander extends React.Component {
         return (
             <div className="main-container">
                 <OpenedBystanderForm {...this.props} />
-                <LudoList {...this.props} />
+                <div className="form-ludo-list-container">
+                    <LudoList {...this.props} />
+                </div>
             </div>
         );
     }

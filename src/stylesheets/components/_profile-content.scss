@@ -16,7 +16,9 @@ variables
             @extend %half_width_of_parent;
         }
             .profile-content-information-avatar__photo {
-                margin-bottom: 10px;
+                width: 90%;
+                height: 90%;
+                padding: 5px;
             }
         .profile-content-information-tag {
             @extend %as_wide_as_parent;

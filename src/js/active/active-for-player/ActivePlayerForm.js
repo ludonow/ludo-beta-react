@@ -19,7 +19,6 @@ export default class ActivePlayerForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             files: [],
             isImageLightBoxOpen: false,
             isImageUploaded: false,
@@ -97,66 +96,92 @@ export default class ActivePlayerForm extends React.Component {
 
     handleImageEnlarge() {
         const { state } = this;
-        this.setState(
-            Object.assign(state, {
-                isImageLightBoxOpen: true
-            })
-        );
+        // this.setState(
+        //     Object.assign(state, {
+        //         isImageLightBoxOpen: true
+        //     })
+        // );
+        this.setState({
+            isImageLightBoxOpen: true
+        });
     }
 
     handleReportTextChange(event) {
         const { state } = this;
         if (event.target.value) {
-            this.setState(
-                Object.assign(state, {
-                    reportText: event.target.value,
-                    isReportTextBlank: false
-                })
-            );
+            this.setState({
+                reportText: event.target.value,
+                isReportTextBlank: false
+            });
         } else {
-            this.setState(
-                Object.assign(state, {
-                    isReportTextBlank: true
-                })
-            );
+            this.setState({
+                isReportTextBlank: true
+            });
         }
+        // console.log('this.state: ', this.state);
+        // console.log('this.state.reportText: ', this.state.reportText);
+        // console.log('this.state.isReportTextBlank: ', this.state.isReportTextBlank);
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const isConfirmReport = window.confirm(`Are you sure to report?`);
-        if (isConfirmReport) {
-            const { files } = this.state;
+        // TODO: Use notification confirming report 
+        const isSureToReport = window.confirm(`Are you sure to report?`);
+        if (isSureToReport) {
             const { ludoId }= this.props.params;
+            const { currentFormValue, currentUserId } = this.props;
+            let whoIsUser = '';
+            (currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
             const ludoReportPost = {
-                file_stream:  files[0],
-                ludo_id: ludoId
+                'ludo_id': ludoId,
+                'player': whoIsUser,
+                'content': this.state.reportText,
+                'img_location': ''
             };
-            console.log('ludoReportPost', ludoReportPost);
-            console.log('before post files');
-            // axios.post('/apis/report_image', ludoReportPost)
-            // .then(function (response) {
-            //     if (response.data.status == '200') {
-            //         window.alert(`Sucessfully Report`);
-            //         console.log('response.data: ', response.data);
-            //     } else {
-            //         console.log('message from server: ', response.data.message);
-            //     }
-            // })
-            // .catch(function (error) {
-            //     console.log('Report error', error);
-            // });
+            console.log('ludoTextReportPost', ludoReportPost);
+            console.log('before post report');
+            axios.post('apis/report', ludoReportPost)
+            .then(response => {
+                if (response.data.status == '200') {
+                    window.alert(`Report done!`);
+                    console.log('Report response.data: ', response.data);
+                } else {
+                    console.log('Report else message from server: ', response.data.message);
+                    console.log('Report else body from server: ', response.data.ludo_id);
+                }
+            })
+            .catch(error => {
+                console.log('Report error', error);
+            });
+        } else {
+            console.log('not sure to report');
         }
     }
 
     onDrop(files) {
         const { state } = this;
-            this.setState(
-                Object.assign(state, {
-                    files,
-                    isImageUploaded: true
-                })
-            );
+        this.setState({
+            files,
+            isImageUploaded: true
+        });
+        const { ludoId }= this.props.params;
+        const imgPost = new FormData();
+        imgPost.append('file_stream', files[0]);
+        // console.log('imgPost file_stream', imgPost.get('file_stream'));
+        console.log('before post image');
+        axios.post('/apis/report-image', imgPost)
+        .then(response => {
+            if (response.data.status == '200') {
+                window.alert(`image upload success!`);
+                console.log('image upload response.data: ', response.data);
+            } else {
+                console.log('image upload message from server: ', response.data.message);
+                console.log('image upload error from server: ', response.data.err);
+            }
+        })
+        .catch(error => {
+            console.log('image upload error', error);
+        });
     }
 
     closeLightbox() {
@@ -232,7 +257,7 @@ export default class ActivePlayerForm extends React.Component {
                         </div>
                         <div className="top-right-container">
                             <div className="category-container">
-                                <span className="category-label">Category:</span>
+                                <span className="category-label">種類:</span>
                                 <span className="category-value">
                                     {this.getCategory(category_id)}
                                 </span>
@@ -246,11 +271,11 @@ export default class ActivePlayerForm extends React.Component {
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{marbles}</span></div>
+                        <div className="marbles-label">彈珠數:<span className="marbles-label--number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
                             <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
                         </div>
-                        <div className="duration-label">Duration:</div>
+                        <div className="duration-label">持續期間:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
@@ -281,7 +306,7 @@ export default class ActivePlayerForm extends React.Component {
                             />
                         </div>
                         {
-                            isImageUploaded > 0 ?
+                            isImageUploaded ?
                                 <div className="upload-preview">
                                     <span className="upload-preview__text">正要上傳的圖片: </span>
                                     <img className="upload-preview__image" src={files[uploadImageIndex].preview}
@@ -292,8 +317,8 @@ export default class ActivePlayerForm extends React.Component {
                         }
                         <button className="report-submit-button" type="submit" 
                             disabled={(isReportTextBlank && !isImageUploaded)}
-                            >
-                            Report
+                        >
+                            回報
                         </button>
                     </div>
                 </form>
@@ -302,12 +327,11 @@ export default class ActivePlayerForm extends React.Component {
                         <Lightbox 
                             className="lighbox-target"
                             mainSrc={files[uploadImageIndex].preview}
-                            nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
-                            prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
-
+                            // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
+                            // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
                             onCloseRequest={this.closeLightbox}
-                            onMovePrevRequest={this.movePrev}
-                            onMoveNextRequest={this.moveNext}
+                            // onMovePrevRequest={this.movePrev}
+                            // onMoveNextRequest={this.moveNext}
                         />
                     : null
                 }

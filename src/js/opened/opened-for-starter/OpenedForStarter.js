@@ -12,7 +12,9 @@ export default class OpenedForStarter extends React.Component {
         return (
             <div className="main-container">
                 <OpenedStarterForm {...this.props} />
-                <LudoList {...this.props} />
+                <div className="form-ludo-list-container">
+                    <LudoList {...this.props} />
+                </div>
             </div>
         );
     }

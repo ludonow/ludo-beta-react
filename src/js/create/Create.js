@@ -12,7 +12,9 @@ export default class Create extends React.Component {
         return (
             <div className="main-container">
                 <CreateForm {...this.props} />
-                <LudoList {...this.props} />
+                <div className="form-ludo-list-container">
+                    <LudoList {...this.props} />
+                </div>
             </div>
         );
     }

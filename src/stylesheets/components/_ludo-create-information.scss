@@ -50,12 +50,14 @@ $orange_button: rgba(248, 182, 45, 1);
             margin: 10px 0;
 
             .category-label {
+                width: 20%;
                 margin-right: 8px;
                 font-size: 16px;
             }
 
             .dropdown-list {
-                @extend %as_wide_as_parent;
+                // @extend %as_wide_as_parent;
+                width: 80%;
                 border-radius: 0;
                 border-style: none;
                 background-color: $gray_text-field;

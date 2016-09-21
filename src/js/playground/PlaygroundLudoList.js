@@ -31,19 +31,12 @@ export default class PlaygroundLudoList extends React.Component {
         this.showFront = this.showFront.bind(this);
     }
 
-    componentDidMount() {
-        this.props.getLatestLudoList();
-        this.props.handleIsgettingLatestData(false);
-    }
-
-    handleCardClick(cardIndex) {
-        const index = Number(cardIndex);
-        const state = this.state;
-        this.setState(
-            Object.assign(state, {
-                flippedKey: index
-            })
-        );
+    componentWillReceiveProps(nextProps) {
+        console.log('PlaygroundLudoList componentWillReceiveProps');
+        if(this.props.ludoList.length != nextProps.ludoList.length || this.props.isgettingLatestData) {
+            console.log('PlaygroundLudoList componentWillReceiveProps getLatestLudoList');
+            // this.props.getLatestLudoList();
+        }
     }
 
     handleCardStage(stage) {
@@ -145,8 +138,8 @@ export default class PlaygroundLudoList extends React.Component {
 
     handleCardLink(event) {
         const cardIndex = Number(event.currentTarget.id.slice(3));
-        const specificCardData = this.props.rawData[cardIndex];
-        const { stage, starter_id } = specificCardData;
+        const specificCardData = this.props.ludoList[cardIndex];
+        const { stage, player_id, starter_id } = specificCardData;
         const { currentUserId, updateCurrentFormValue, getCurrentLudoData, handleIsgettingLatestData } = this.props;
         const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
         const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
@@ -159,7 +152,7 @@ export default class PlaygroundLudoList extends React.Component {
                 browserHistory.push(`/opened-for-bystander/${ludo_id}`);
             }
         } else {
-            if(currentUserId == starter_id) {
+            if(currentUserId == starter_id || currentUserId == player_id) {
                 browserHistory.push(`/active-for-player/${ludo_id}`);
             } else {
                 browserHistory.push(`/active-for-bystander/${ludo_id}`);
@@ -173,13 +166,10 @@ export default class PlaygroundLudoList extends React.Component {
         const index = flippedKey.indexOf(cardIndex);
         const isElementInArray = (index != -1);
         if (!isElementInArray) {
-            flippedKey.push(cardIndex);
-        };
-        this.setState(
-            Object.assign(this.state, {
-                flippedKey
+            this.setState({
+                flippedKey: flippedKey.concat([cardIndex])
             })
-        );
+        }
     }
 
     showFront(event) {
@@ -189,12 +179,10 @@ export default class PlaygroundLudoList extends React.Component {
         const isElementInArray = (index != -1);
         if (isElementInArray) {
             flippedKey.splice(index, 1);
-        };
-        this.setState(
-            Object.assign(this.state, {
+            this.setState({
                 flippedKey
-            })
-        );
+            });
+        }
     }
 
     render() {
@@ -204,7 +192,7 @@ export default class PlaygroundLudoList extends React.Component {
                     options={masonryOptions} >
                     <QuickStart />
                     { 
-                        this.props.rawData.map( (data, index) => {
+                        this.props.ludoList.map( (data, index) => {
                             const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                             const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                             return (

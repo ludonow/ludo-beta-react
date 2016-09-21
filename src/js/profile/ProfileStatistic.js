@@ -1,49 +1,44 @@
 import React from 'react';
-import config from '../axios-config';
+import axios from '../axios-config';
 
 export default class ProfileStatistic extends React.Component {
     constructor() {
         super();
         this.state = { 
-            rawData: [],
-            DataWithClass: [] 
-        }
+            rawData: []
+        };
+        this.getStatisticData = this.getStatisticData.bind(this);
     }
 
-    componentDidMount() {
-        this.getStatisticData();
-    }
+    // componentDidMount() {
+    //     this.getStatisticData();
+    // }
 
     getStatisticData() {
-        const _this = this;
-
-        this.serverRequest = config.get('data/StatisticData.json')
-            .then(function (response) {
-                _this.setState({
-                    rawData: response.data
-                });
-            })
-            .catch(function(error) {
-                console.log(error);
+        axios.get('data/StatisticData.json')
+        .then(response => {
+            this.setState({
+                rawData: response.data
             });
-    }
-
-    addClass() {
-        this.state.DataWithClass = this.state.rawData.map( (data, index) => {
-            return (
-                <div className="profile-statistic__element" key={index}>
-                    <img className="profile-statistic__icon" src={data.value} />
-                </div>
-            );
+        })
+        .catch(error => {
+            console.log(error);
         });
     }
 
     render() {
-        this.addClass();
         return (
             <div className="profile-element">
                 <div className="profile-element__title">Statistic</div>
-                {this.state.DataWithClass}
+                {
+                    this.state.DataWithClass = this.state.rawData.map( (data, index) => {
+                        return (
+                            <div className="profile-statistic__element" key={index}>
+                                <img className="profile-statistic__icon" src={data.value} />
+                            </div>
+                        )
+                    })
+                }
             </div>
         );
     }
