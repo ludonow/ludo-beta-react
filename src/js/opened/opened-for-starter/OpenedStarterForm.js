@@ -167,26 +167,32 @@ export default class OpenedStarterForm extends React.Component {
                             <img className="category-icon" src={this.getCategoryIcon(category_id)} />
                         </div>
                         <div className="top-right-container">
-                            <div className="category-container">
-                                <span className="category-label">種類:</span>
-                                <span className="category-value">
+                            <div className="text-field-container">
+                                <span className="text-field-label">種類:</span>
+                                <span className="text-field-value">
                                     {this.getCategory(category_id)}
                                 </span>
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {title}
+                            <div className="text-field-container">
+                                <span className="text-field-label">標題:</span>
+                                <span className="text-field-value">
+                                    {title}
+                                </span>
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {tags}
+                            <div className="text-field-container">
+                                <span className="text-field-label">#標籤:</span>
+                                <span className="text-field-value">
+                                    {tags}
+                                </span>
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">彈珠數:<span className="marbles-label--number">{marbles}</span></div>
+                        <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
                             <RcSlider value={marbles} max={currentFormValue.maxMarbles} disabled={true} />
                         </div>
-                        <div className="duration-label">持續期間:</div>
+                        <div className="text-label">持續期間:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
@@ -195,8 +201,11 @@ export default class OpenedStarterForm extends React.Component {
                                 max={maxDuration} value={currentFormValue.duration} disabled={true}
                             />
                         </div>
-                        <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
-                            {introduction} 
+                        <div className="text-label">介紹:</div>
+                        <div className="text-field-container">
+                            <div className="text-field__introduction">
+                                {introduction}
+                            </div>
                         </div>
                         <button className="ludo-detail-information-submit-button" type="submit" disabled={isSubmitted}>
                             刪除
@@ -204,6 +213,7 @@ export default class OpenedStarterForm extends React.Component {
                     </div>
                 </form>
             </div>
+            // <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
         );
     }
 };

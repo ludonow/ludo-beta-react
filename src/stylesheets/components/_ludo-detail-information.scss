@@ -1,15 +1,6 @@
 .ludo-detail-information-container {
-    @extend %fixed;
-    width: 540px;
-    overflow-y: auto;
-    height: 82%;
-    @extend .card;
-    padding-right: 40px;
-    padding-left: 40px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    @extend %text_center;
-
+    @extend .ludo-create-information-container;
+    
     &::-webkit-scrollbar {
         width: 8px;
     }
@@ -37,6 +28,7 @@
     //     display: none;
     // }
 }
+
     // .ludo-detail-information-field__text {
     //     @extend %flex;
     //     align-items: center;
@@ -73,17 +65,17 @@
     .top-right-container {
         width: 60%;
     }
-        .text-container {
+        .text-field-container {
             @extend %flex;
             align-items: center;
             height: 30px;
             margin-bottom: 10px;
             font-size: 16px;
         }
-            .text-label {
+            .text-field-label {
                 width: 30%;
             }
-            .text-value {
+            .text-field-value {
                 width: 70%;
                 height: 30px;
                 line-height: 30px;
@@ -93,20 +85,15 @@
 }
 
 .ludo-detail-information-bottom-container {
-    @extend %relative;
-    margin-top: 20px;
-    .marbles-label {
-        margin-bottom: 14px;
-        font-size: 14px;
-        text-align: left;
-    }
-    .marbles-label--number {
-        margin-left: 20px;
-    }
-    .duration-label {
+    @extend .ludo-create-information-bottom-container;
+
+    .text-field__introduction {
         @extend %flex;
-        margin-top: 16px;
-        font-size: 14px;
+        align-items: center;
+        justify-content: center;
+        @extend %as_wide_as_parent;
+        height: 80px;
+        background-color: $gray_text-field;
     }
 }
 

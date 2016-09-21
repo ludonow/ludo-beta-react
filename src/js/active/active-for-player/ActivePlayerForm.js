@@ -256,32 +256,32 @@ export default class ActivePlayerForm extends React.Component {
                             <img className="category-icon" src={this.getCategoryIcon(category_id)} />
                         </div>
                         <div className="top-right-container">
-                            <div className="text-container">
-                                <span className="text-label">種類:</span>
-                                <span className="text-value">
+                            <div className="text-field-container">
+                                <span className="text-field-label">種類:</span>
+                                <span className="text-field-value">
                                     {this.getCategory(category_id)}
                                 </span>
                             </div>
-                            <div className="text-container">
-                                <span className="text-label">標題:</span>
-                                <span className="text-value">
+                            <div className="text-field-container">
+                                <span className="text-field-label">標題:</span>
+                                <span className="text-field-value">
                                     {title}
                                 </span>
                             </div>
-                            <div className="text-container">
-                                <span className="text-label">#標籤:</span>
-                                <span className="text-value">
+                            <div className="text-field-container">
+                                <span className="text-field-label">#標籤:</span>
+                                <span className="text-field-value">
                                     {tags}
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">彈珠數:<span className="marbles-label--number">{marbles}</span></div>
+                        <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
                             <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
                         </div>
-                        <div className="duration-label">持續期間:</div>
+                        <div className="text-label">持續期間:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
@@ -305,7 +305,8 @@ export default class ActivePlayerForm extends React.Component {
                             </div>
                             <textarea 
                                 className="upload-text-container"
-                                placeholder="Report here"
+                                // placeholder="Report here"
+                                placeholder="在此輸入要回報的文字"
                                 rows="6"
                                 maxLength="140"
                                 onChange={this.handleReportTextChange}

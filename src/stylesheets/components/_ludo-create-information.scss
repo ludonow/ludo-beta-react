@@ -8,6 +8,8 @@ $orange_button: rgba(248, 182, 45, 1);
 .ludo-create-information-container {
     @extend %fixed;
     width: 540px;
+    height: 80%;
+    overflow-y: auto;
     @extend .card;
     padding-right: 40px;
     padding-left: 40px;
@@ -104,7 +106,6 @@ $orange_button: rgba(248, 182, 45, 1);
                 @extend %text_center;
                 line-height: 75px;
             }
-
         }
     }
 
