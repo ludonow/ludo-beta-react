@@ -24,34 +24,19 @@ export default class Profile extends React.Component {
             activeLudo: [],
             finishedLudo: []
         };
-        // this.getDifferentStageLudo = this.getDifferentStageLudo.bind(this);
     }
 
     componentDidMount() {
+        console.log('Profile componentDidMount');
         this.props.getProfileData();
-        this.props.getUserLudoData(this.props.currentUserId);
     }
 
-    // getDifferentStageLudo() {
-    //     userLudoData.map( (ludoObject, index) => {
-    //         switch (ludoObject.stage) {
-    //             case 1:
-    //                 this.state.newLudo.push(ludoObject);
-    //             case 2:
-    //                 this.state.activeLudo.push(ludoObject);
-    //             case 3:
-    //                 this.state.finishedLudo.push(ludoObject);
-    //             default:
-    //                 break;
-    //         }
-    //     });
-    //     const { newLudo, activeLudo, finishedLudo } = this.state;
-    //     this.setState({
-        //     newLudo,
-        //     activeLudo,
-        //     finishedLudo
-        // };
-    // }
+    componentWillReceiveProps(nextProps) {
+        console.log('Profile componentWillReceiveProps');
+        if(this.props.isUpdatingProfile) {
+            console.log('Profile getProfileData');
+        }
+    }
 
     render() {
         const { currentUserId, userProfileData } = this.props;

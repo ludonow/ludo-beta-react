@@ -33,8 +33,8 @@ export default class PlaygroundLudoList extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         console.log('PlaygroundLudoList componentWillReceiveProps');
-        if(this.props.ludoList.length != nextProps.ludoList.length || this.props.isgettingLatestData) {
-            console.log('PlaygroundLudoList componentWillReceiveProps getLatestLudoList');
+        if(this.props.ludoList.length != nextProps.ludoList.length || this.props.isUpdatingProfile) {
+            console.log('PlaygroundLudoList getLatestLudoList');
             // this.props.getLatestLudoList();
         }
     }
@@ -140,10 +140,10 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id.slice(3));
         const specificCardData = this.props.ludoList[cardIndex];
         const { stage, player_id, starter_id } = specificCardData;
-        const { currentUserId, updateCurrentFormValue, getCurrentLudoData, handleIsgettingLatestData } = this.props;
+        const { currentUserId, updateCurrentFormValue, getCurrentLudoData, handleIsUpdatingProfile } = this.props;
         const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
         const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
-        handleIsgettingLatestData(false);
+        handleIsUpdatingProfile(false);
         getCurrentLudoData(ludo_id);
         if (stage == 1) {
             if(currentUserId == starter_id) {

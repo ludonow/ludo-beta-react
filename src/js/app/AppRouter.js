@@ -45,7 +45,7 @@ export default class AppRouter extends React.Component {
                     <Route path="opened-for-starter/:ludoId" component={OpenedForStarter}></Route>
                     <Route path="opened-for-bystander/:ludoId" component={OpenedForBystander}></Route>
                     <Route path="playground" component={Playground}></Route>
-                    <Route path="profile/:userId" component={Profile}></Route>
+                    <Route path="profile/:userId" component={Profile} onEnter={isLoggedIn}></Route>
                 </Route>
             </Router>
         );

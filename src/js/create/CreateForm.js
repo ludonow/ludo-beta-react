@@ -226,7 +226,6 @@ export default class CreateForm extends React.Component {
         if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title != '' && ludoCreateForm.tags != '' && ludoCreateForm.introduction != '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
-
             axios.post('/apis/ludo', ludoCreateForm)
             .then(response => {
                 if (response.data.status == '200') {
@@ -234,10 +233,10 @@ export default class CreateForm extends React.Component {
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then(response => {
                         if (response.data.status == '200') {
-                            const { getBasicUserData, handleIsgettingLatestData, updateCurrentFormValue } = this.props;
-                            updateCurrentFormValue(response.data.ludo);
+                            const { getBasicUserData, handleIsUpdatingProfile, updateCurrentFormValue } = this.props;
                             getBasicUserData();
-                            handleIsgettingLatestData(true);
+                            handleIsUpdatingProfile(true);
+                            updateCurrentFormValue(response.data.ludo);
                             browserHistory.push(`/opened-for-starter/${ludo_id}`);
                         } else {
                             console.log('get after create post message from server: ', response.data.message);

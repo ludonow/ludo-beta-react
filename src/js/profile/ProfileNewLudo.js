@@ -19,11 +19,20 @@ export default class ProfileNewLudo extends React.Component {
         this.getNewLudoData = this.getNewLudoData.bind(this);
     }
 
+    componentDidMount() {
+        console.log('ProfileNewLudo componentDidMount');
+    }
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.currentUserId && this.props.currentUserId != nextProps.currentUserId) {
-            console.log('ProfileNewLudo componentWillReceiveProps');
-            this.getNewLudoData(nextProps.currentUserId);
+        console.log('ProfileNewLudo componentWillReceiveProps');
+        if(this.props.isUpdatingProfile) {
+            console.log('ProfileNewLudo getNewLudoData');
+        //     this.getNewLudoData(nextProps.currentUserId);
         }
+    }
+
+    componentWillUnMount() {
+        console.log('ProfileNewLudo componentWillUnMount');
     }
 
     getNewLudoData(user_id) {

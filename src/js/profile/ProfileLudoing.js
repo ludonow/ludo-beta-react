@@ -19,11 +19,20 @@ export default class ProfileLudoing extends React.Component {
         this.getLudoingData = this.getLudoingData.bind(this);
     }
 
+    componentDidMount() {
+        console.log('ProfileLudoing componentDidMount');
+    }
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.currentUserId && this.props.currentUserId != nextProps.currentUserId) {
-            console.log('ProfileLudoing componentWillReceiveProps');
-            this.getLudoingData(nextProps.currentUserId);
+        console.log('ProfileLudoing componentWillReceiveProps');
+        if(this.props.isUpdatingProfile) {
+            console.log('ProfileLudoing getLudoingData');
+        //     this.getLudoingData(nextProps.currentUserId);
         }
+    }
+
+    componentWillUnmount() {
+        console.log('ProfileLudoing componentWillUnmount');
     }
 
     getLudoingData(user_id) {

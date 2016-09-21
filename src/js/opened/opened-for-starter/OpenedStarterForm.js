@@ -104,6 +104,7 @@ export default class OpenedStarterForm extends React.Component {
                     this.setState({
                         isSubmitted: true
                     });
+                    this.props.handleIsUpdatingProfile(true);
                     console.log('response data', response.data);
                     console.log('after quit axios delete');
                     browserHistory.push(`/playground`);

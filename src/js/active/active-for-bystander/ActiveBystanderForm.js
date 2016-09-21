@@ -114,6 +114,7 @@ export default class ActiveBystanderForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        this.props.handleIsUpdatingProfile(true);
         // const isSureToFollow = window.confirm(`Are you sure to follow?`);
         // const { currentFormValue, params } = this.props;
         // const { ludoId } = params;

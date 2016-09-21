@@ -20,18 +20,22 @@ export default class App extends React.Component {
             },
             currentLudoId: '',
             currentUserId: '',
-            isgettingLatestData: false,
+            isUpdatingProfile: false,
             ludoList: [],
             userBasicData: {},
-            userLudoData: {},
+            userWillLudoData: {},
+            userLudoingData: {},
+            userDidLudoData: {},
             userProfileData: {}
         };
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getLatestLudoList = this.getLatestLudoList.bind(this);
         this.getProfileData = this.getProfileData.bind(this);
-        this.getUserLudoData = this.getUserLudoData.bind(this);
-        this.handleIsgettingLatestData = this.handleIsgettingLatestData.bind(this);
+        this.getUserWillLudoData = this.getUserWillLudoData.bind(this);
+        this.getUserLudoingData = this.getUserLudoingData.bind(this);
+        this.getUserDidLudoData = this.getUserDidLudoData.bind(this);
+        this.handleIsUpdatingProfile = this.handleIsUpdatingProfile.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
@@ -95,7 +99,7 @@ export default class App extends React.Component {
             if(response.data.status === '200') {
                 this.setState({
                     ludoList: response.data.ludoList.Items,
-                    isgettingLatestData: false
+                    isUpdatingProfile: false
                 });
             } else {
                 console.log('app getLatestLudoList else message from server: ', response.data.message);
@@ -134,29 +138,62 @@ export default class App extends React.Component {
         });
     }
 
-    getUserLudoData(user_id) {
-        console.log('app getUserLudoData');
-        axios.get(`apis/ludo?user_id=${user_id}`)
+    getUserWillLudoData(user_id) {
+        console.log('app getUserWillLudoData');
+        axios.get(`apis/ludo?stage=1&user_id=${user_id}`)
         .then(response => {
             if(response.data.status === '200') {
                 this.setState({
-                    userLudoData: response.data.ludoList.Items
+                    userWillLudoData: response.data.ludoList.Items
                 });
             } else {
-                console.log('app getUserLudoData else message from server: ', response.data.message);
+                console.log('app getUserWillLudoData else message from server: ', response.data.message);
             }
         })
         .catch(error => {
-            console.log('app getUserLudoData error', error);
+            console.log('app getUserWillLudoData error', error);
         });
     }
 
-    handleIsgettingLatestData(boolean) {
-        const { isgettingLatestData } = this.state;
-        this.setState({
-            isgettingLatestData: boolean
+    getUserLudoingData(user_id) {
+        console.log('app getUserLudoingData');
+        axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
+        .then(response => {
+            if(response.data.status === '200') {
+                this.setState({
+                    userLudoingData: response.data.ludoList.Items
+                });
+            } else {
+                console.log('app getUserLudoingData else message from server: ', response.data.message);
+            }
+        })
+        .catch(error => {
+            console.log('app getUserLudoingData error', error);
         });
-        // console.log('handleIsgettingLatestData', boolean);
+    }
+
+    getUserDidLudoData(user_id) {
+        console.log('app getUserDidLudoData');
+        axios.get(`apis/ludo?stage=3&user_id=${user_id}`)
+        .then(response => {
+            if(response.data.status === '200') {
+                this.setState({
+                    userDidLudoData: response.data.ludoList.Items
+                });
+            } else {
+                console.log('app getUserDidLudoData else message from server: ', response.data.message);
+            }
+        })
+        .catch(error => {
+            console.log('app getUserDidLudoData error', error);
+        });
+    }
+
+    handleIsUpdatingProfile(boolean) {
+        this.setState({
+            IsUpdatingProfile: boolean
+        });
+        console.log('handleIsUpdatingProfile', boolean);
     }
 
     updateCurrentFormValue(ludoForm) {
@@ -169,7 +206,7 @@ export default class App extends React.Component {
     render() {
         const isProfile = this.props.routes[1].path === "profile";
         const { 
-            currentFormValue, currentLudoId, currentUserId, isgettingLatestData, ludoList, 
+            currentFormValue, currentLudoId, currentUserId, isUpdatingProfile, ludoList, 
             userBasicData, userLudoData, userProfileData 
         } = this.state;
         return (
@@ -179,7 +216,7 @@ export default class App extends React.Component {
                 {React.cloneElement(this.props.children, {
                     currentFormValue,
                     currentUserId,
-                    isgettingLatestData,
+                    isUpdatingProfile,
                     ludoList,
                     userBasicData,
                     userLudoData,
@@ -189,7 +226,7 @@ export default class App extends React.Component {
                     getLatestLudoList: this.getLatestLudoList,
                     getProfileData: this.getProfileData,
                     getUserLudoData: this.getUserLudoData,
-                    handleIsgettingLatestData: this.handleIsgettingLatestData,
+                    handleIsUpdatingProfile: this.handleIsUpdatingProfile,
                     updateCurrentFormValue: this.updateCurrentFormValue
                 })}
             </div>
