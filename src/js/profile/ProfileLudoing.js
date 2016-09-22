@@ -13,56 +13,6 @@ import othersIcon from '../../images/category_icon/others.svg';
 export default class ProfileLudoing extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            rawData: []
-        };
-        this.getLudoingData = this.getLudoingData.bind(this);
-    }
-
-    componentDidMount() {
-        console.log('ProfileLudoing componentDidMount');
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log('ProfileLudoing componentWillReceiveProps');
-        if(this.props.isUpdatingProfile) {
-            console.log('ProfileLudoing getLudoingData');
-        //     this.getLudoingData(nextProps.currentUserId);
-        }
-    }
-
-    componentWillUnmount() {
-        console.log('ProfileLudoing componentWillUnmount');
-    }
-
-    getLudoingData(user_id) {
-        console.log('getLudoingData before get');
-        axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
-        .then(response => {
-            if(response.data.status === '200') {
-                this.setState({
-                    rawData: response.data.ludoList.Items
-                });
-                console.log('getLudoingData after successfully get');
-            } else {
-                console.log('getLudoingData else message from server: ', response.data.message);
-            }
-        })
-        .catch(error => {
-            console.log('getLudoingData error', error);
-            console.log('getLudoingData error message from server: ', response.data.message);
-        });
-
-        /* example data */
-        // this.serverRequest = axios.get('data/LudoingData.json')
-        //     .then(response => {
-        //         this.setState({
-        //             rawData: response.data
-        //         });
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
     }
 
     handleCategoryIcon(category_id) {
@@ -96,10 +46,10 @@ export default class ProfileLudoing extends React.Component {
             <div className="profile-element">
                 <div className="profile-element__title">Ludoing</div>
                 {
-                    this.state.rawData.map( (data, index) => {
+                    this.props.profileLudoingData.map( (data, index) => {
                         return (
                             <div className="profile-ludo__element" 
-                                key={`ludoing-${index}`}
+                                key={`Ludoing-${index}`}
                                 id={data.ludo_id}
                                 onClick={this.handleIconClick}
                             >

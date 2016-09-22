@@ -233,9 +233,9 @@ export default class CreateForm extends React.Component {
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then(response => {
                         if (response.data.status == '200') {
-                            const { getBasicUserData, handleIsUpdatingProfile, updateCurrentFormValue } = this.props;
+                            const { getBasicUserData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
                             getBasicUserData();
-                            handleIsUpdatingProfile(true);
+                            handleShouldProfileUpdate(true);
                             updateCurrentFormValue(response.data.ludo);
                             browserHistory.push(`/opened-for-starter/${ludo_id}`);
                         } else {

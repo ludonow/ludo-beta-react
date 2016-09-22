@@ -143,7 +143,7 @@ export default class ActivePlayerForm extends React.Component {
             axios.post('apis/report', ludoReportPost)
             .then(response => {
                 if (response.data.status == '200') {
-                    this.props.handleIsUpdatingProfile(true);
+                    this.props.handleShouldProfileUpdate(true);
                     window.alert(`Report done!`);
                     console.log('Report response.data: ', response.data);
                 } else {

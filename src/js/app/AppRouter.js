@@ -17,16 +17,15 @@ import Profile from '../profile/Profile';
 
 const isLoggedIn = (nextState, replace, callback) => {
     // TODO: Look up the detail usage of replace function
-    axios.get('apis/user').
-    then(response => {
+    axios.get('/apis/user')
+    .then(response => {
         if(response.data.status != '200') {
-            replace(`/login`);
+            replace(`login`);
         }
         callback();
     })
     .catch(error => {
-        console.log('isloggedin error');
-        console.log(response.data.message);
+        console.log('AppRouter isloggedin error');
         callback(error);
     })
 };

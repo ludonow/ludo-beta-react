@@ -120,7 +120,7 @@ export default class OpenedBystanderForm extends React.Component {
                     this.setState({
                         isSubmitted: true
                     });
-                    this.props.handleIsUpdatingProfile(true);
+                    this.props.handleShouldProfileUpdate(true);
                     console.log('response data', response.data);
                     console.log('after join axios put');
                     browserHistory.push(`/active-for-player/${ludoId}`);

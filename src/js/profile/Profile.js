@@ -19,43 +19,34 @@ const masonryOptions = {
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            newLudo: [],
-            activeLudo: [],
-            finishedLudo: []
-        };
     }
 
-    componentDidMount() {
-        console.log('Profile componentDidMount');
-        this.props.getProfileData();
+    componentWillMount() {
+        this.props.handleIsOpeningProfile(true);
+        this.props.handleShouldProfileUpdate(true);
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log('Profile componentWillReceiveProps');
-        if(this.props.isUpdatingProfile) {
-            console.log('Profile getProfileData');
-        }
+    componentWillUnmount() {
+        this.props.handleIsOpeningProfile(false);
     }
 
     render() {
-        const { currentUserId, userProfileData } = this.props;
         return ( 
             <div className="main-container">
                 <Masonry
                     className="grid"
                     options={masonryOptions}>
                     <div className="grid-item--half">
-                        <ProfileContent user={userProfileData} />
+                        <ProfileContent {...this.props} />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileNewLudo currentUserId={currentUserId} />
+                        <ProfileNewLudo {...this.props} />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileLudoing currentUserId={currentUserId} />
+                        <ProfileLudoing {...this.props} />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileHistory />
+                        <ProfileHistory {...this.props} />
                     </div>
                     <div className="grid-item--half">
                         <ProfilePrize />
