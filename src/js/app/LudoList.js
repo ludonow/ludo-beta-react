@@ -31,14 +31,6 @@ export default class LudoList extends React.Component {
         this.showTheOtherFace = this.showTheOtherFace.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log('LudoList componentWillReceiveProps');
-        if(this.props.ludoList.length != nextProps.ludoList.length || this.props.isUpdatingProfile) {
-            console.log('LudoList getLatestLudoList');
-            // this.props.getLatestLudoList();
-        }
-    }
-
     handleCardStage(stage) {
         if (stage == 1) {
             return `card-bottom__stage--opened`;
@@ -121,10 +113,9 @@ export default class LudoList extends React.Component {
             const cardIndex = Number(indexString);
             const specificCardData = this.props.ludoList[cardIndex];
             const { stage, player_id, starter_id } = specificCardData;
-            const { currentUserId, updateCurrentFormValue, getCurrentLudoData, handleIsUpdatingProfile } = this.props;
+            const { currentUserId, getCurrentLudoData } = this.props;
             const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
             const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
-            handleIsUpdatingProfile(false);
             getCurrentLudoData(ludo_id);
             if (stage == 1) {
                 if(currentUserId == starter_id) {

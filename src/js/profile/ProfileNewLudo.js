@@ -44,7 +44,7 @@ export default class ProfileNewLudo extends React.Component {
     render() {
         return (
             <div className="profile-element">
-                <div className="profile-element__title">New Ludo</div>
+                <div className="profile-element__title">等待他人加入的Ludo</div>
                 {
                     this.props.profileWillLudoData.map( (data, index) => {
                         return (

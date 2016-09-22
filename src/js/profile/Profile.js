@@ -49,10 +49,10 @@ export default class Profile extends React.Component {
                         <ProfileHistory {...this.props} />
                     </div>
                     <div className="grid-item--half">
-                        <ProfilePrize />
+                        <ProfileStatistic {...this.props} />
                     </div>
                     <div className="grid-item--half">
-                        <ProfileStatistic />
+                        <ProfilePrize {...this.props} />
                     </div>
                 </Masonry>
             </div>

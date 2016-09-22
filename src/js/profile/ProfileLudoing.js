@@ -44,7 +44,7 @@ export default class ProfileLudoing extends React.Component {
     render() {
         return (
             <div className="profile-element">
-                <div className="profile-element__title">Ludoing</div>
+                <div className="profile-element__title">正在進行的Ludo</div>
                 {
                     this.props.profileLudoingData.map( (data, index) => {
                         return (
