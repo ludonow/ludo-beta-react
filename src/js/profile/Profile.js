@@ -19,6 +19,10 @@ const masonryOptions = {
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            activeKey: []
+        };
+        this.handleActiveClick = this.handleActiveClick.bind(this);
     }
 
     componentWillMount() {
@@ -30,32 +34,127 @@ export default class Profile extends React.Component {
         this.props.handleIsOpeningProfile(false);
     }
 
+    handleActiveClick(event) {
+        const { activeKey } = this.state;
+        const toggleId = Number(event.target.id);
+        const index = activeKey.indexOf(toggleId);
+        if (toggleId == 6) {
+            if (index == -1) { // index is not in the array
+                this.setState({activeKey: [1,2,3,4,5,6]});
+            } else {
+                this.setState({activeKey: []});
+            }
+        } else {
+            if (index == -1) { // index is not in the array
+                this.setState({activeKey: activeKey.concat([toggleId])});
+            } else {
+                activeKey.splice(index, 1);
+                this.setState({activeKey: activeKey});
+            }
+        }
+    }
+
     render() {
+        const { userProfileData } = this.props;
+        const { activeKey } = this.state;
         return ( 
             <div className="main-container">
                 <Masonry
                     className="grid"
                     options={masonryOptions}>
                     <div className="grid-item--half">
-                        <ProfileContent {...this.props} />
+                        <div className="profile-content">
+                            <div className="profile-content-information">
+                                <div className="profile-content-information-avatar">
+                                    <img className="profile-content-information-avatar__photo" src={userProfileData.photo} />
+                                </div>
+                                <div className="profile-content-information-tag">
+                                    <div className="profile-content-information-tag__element">{userProfileData.name}</div>
+                                    <div className="profile-content-information-tag__element">生日</div>
+                                    <div className="profile-content-information-tag__element">語言</div>
+                                    <div className="profile-content-information-tag__element">習慣</div>
+                                </div>
+                            </div>
+                            <div className="profile-content-detail">
+                                <div className="profile-content-detail__element" id="1" onClick={this.handleActiveClick} >
+                                    等待他人加入的Ludo
+                                </div>
+                                <div className="profile-content-detail__element" id="2" onClick={this.handleActiveClick} >
+                                    進行中的Ludo
+                                </div>
+                                <div className="profile-content-detail__element" id="3" onClick={this.handleActiveClick} >
+                                    之前玩過的Ludo
+                                </div>
+                                <div className="profile-content-detail__element" id="4" onClick={this.handleActiveClick} >
+                                    統計資料
+                                </div>
+                                <div className="profile-content-detail__element" id="5" onClick={this.handleActiveClick} >
+                                    成就
+                                </div>
+                                <div className="profile-content-detail__element--last" id="6" onClick={this.handleActiveClick} >
+                                    {activeKey.indexOf(6) != -1 ? `關閉全部` : `顯示全部`}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="grid-item--half">
-                        <ProfileNewLudo {...this.props} />
-                    </div>
-                    <div className="grid-item--half">
-                        <ProfileLudoing {...this.props} />
-                    </div>
-                    <div className="grid-item--half">
-                        <ProfileHistory {...this.props} />
-                    </div>
-                    <div className="grid-item--half">
-                        <ProfileStatistic {...this.props} />
-                    </div>
-                    <div className="grid-item--half">
-                        <ProfilePrize {...this.props} />
-                    </div>
+                    {
+                        activeKey.indexOf(1) != -1 ?
+                        <div className="grid-item--half">
+                            <ProfileNewLudo {...this.props} />
+                        </div>
+                        :null
+                    }
+                    {
+                        activeKey.indexOf(2) != -1 ? 
+                        <div className="grid-item--half">
+                           <ProfileLudoing {...this.props} />
+                       </div>
+                        :null
+                    }
+                    {
+                        activeKey.indexOf(3) != -1 ? 
+                        <div className="grid-item--half">
+                            <ProfileHistory {...this.props} />
+                        </div>
+                        :null
+                    }
+                    {
+                        activeKey.indexOf(4) != -1 ? 
+                        <div className="grid-item--half">
+                            <ProfileStatistic {...this.props} />
+                        </div>
+                        :null
+                    }
+                    {
+                        activeKey.indexOf(5) != -1 ? 
+                        <div className="grid-item--half">
+                            <ProfilePrize {...this.props} />
+                        </div>
+                        :null
+                    }
                 </Masonry>
             </div>
+                    // {
+                    //     activeKey.indexOf(6) != -1 ? 
+                    //     <div>
+                    //         <div className="grid-item--half">
+                    //             <ProfileNewLudo {...this.props} />
+                    //         </div>
+                    //         <div className="grid-item--half">
+                    //             <ProfileLudoing {...this.props} />
+                    //         </div>
+                    //         <div className="grid-item--half">
+                    //             <ProfileHistory {...this.props} />
+                    //         </div>
+                    //         <div className="grid-item--half">
+                    //             <ProfileStatistic {...this.props} />
+                    //         </div>
+                    //         <div className="grid-item--half">
+                    //             <ProfilePrize {...this.props} />
+                    //         </div>
+                    //     </div>
+                    //     :null
+                    // }
         );
     }
 }

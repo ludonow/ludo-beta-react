@@ -4,56 +4,9 @@ import axios from '../axios-config';
 export default class ProfileContent extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = { 
-        //     radarData: {
-        //         datasets: [
-        //             {
-        //                 data: [1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7],
-        //                 fillColor: "rgba(220,220,220,0.2)",
-        //                 label: "有參與的Ludo",
-        //                 pointColor: "rgba(220,220,220,1)",
-        //                 pointHighlightFill: "#fff",
-        //                 pointHighlightStroke: "rgba(220,220,220,1)",
-        //                 pointStrokeColor: "#fff",
-        //                 strokeColor: "rgba(220,220,220,1)"
-        //             }
-        //         ],
-        //         labels: ["生活作息", "閱讀", "運動", "教科書", "新技能", "不可被提起", "其它"]
-        //     },
-        //     willLudoIndex: 0,
-        //     ludoingIndex: 1,
-        //     didLudoIndex: 2,
-        //     totalCategoryNumber: 7,
-        //     isRadarChartDataLatest: false
-        // };
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     // console.log('ProfileContent componentWillReceiveProps userProfileData', this.props.userProfileData);  // debug
-    //     const { isLoggedIn, shouldProfileUpdate, userProfileData } = this.props;
-    //     if(isLoggedIn && userProfileData.ludo_file && !this.state.isRadarChartDataLatest) {
-    //         const { willLudoIndex, ludoingIndex, didLudoIndex, totalCategoryNumber } = this.state;
-    //         // const { data } =  this.state.radarData.datasets[willLudoIndex];
-    //         const { ludo_file } = userProfileData;
-    //         const willLudoArray = [];
-    //         for (let i = 1; i <= totalCategoryNumber; i++) {
-    //             willLudoArray.push(ludo_file[i].total_ludo)
-    //         }
-    //         this.setState({
-    //             radarData: {
-    //                 datasets: [
-    //                     Object.assign(this.state.radarData.datasets[willLudoIndex], {
-    //                         data: willLudoArray
-    //                     })
-    //                 ]
-    //             },
-    //             isRadarChartDataLatest: true
-    //         });
-    //     }
-    // }
-
     render() {
-        // const { radarData } = this.state;
         const { userProfileData } = this.props;
         return (
             <div className="profile-content">

@@ -9,7 +9,7 @@ export default class ProfileStatistic extends React.Component {
             radarData: {
                 datasets: [
                     {
-                        data: [1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7],
+                        data: [0, 0, 0, 0, 0, 0, 0],
                         fillColor: "rgba(220,220,220,0.2)",
                         label: "有參與的Ludo",
                         pointColor: "rgba(220,220,220,1)",
