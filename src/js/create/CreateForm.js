@@ -12,12 +12,14 @@ import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
 
+const iconArray = [lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
+
 export default class CreateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             ludoCreateForm: {
-                category_id: 1,
+                category_id: 0,
                 marbles: 0,
                 duration: 3,
                 checkpoint: [3],
@@ -47,40 +49,14 @@ export default class CreateForm extends React.Component {
         this.handleTagsChange = this.handleTagsChange.bind(this);
     }
 
-    handleCategoryChange(category) {
-        let category_id = 0;
-        switch (category) {
-            case 'lifestyle':
-                category_id = 1;
-                break;
-            case 'read':
-                category_id = 2;
-                break;
-            case 'exercise':
-                category_id = 3;
-                break;
-            case 'study':
-                category_id = 4;
-                break;
-            case 'new skill':
-                category_id = 5;
-                break;
-            case 'unmentionalbles':
-                category_id = 6;
-                break;
-            case 'others':
-            default:
-                category_id = 7;
-                break;
-        };
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                category_id
-            })
-        );
+    handleCategoryChange(selectedCategory) {
+        const { category } = this.state;
+        const index = category.indexOf(selectedCategory);
         this.setState({
-            isCategorySelected: true
+            isCategorySelected: true,
+            ludoCreateForm: Object.assign(this.state.ludoCreateForm, {
+                category_id: index
+            })
         });
     }
 
@@ -181,22 +157,7 @@ export default class CreateForm extends React.Component {
     handleIconChange() {
         const { ludoCreateForm } = this.state;
         const { category_id } = ludoCreateForm;
-        switch (category_id) {
-            case 1:
-                return lifestyleIcon;
-            case 2:
-                return readIcon;
-            case 3:
-                return exerciseIcon;
-            case 4:
-                return studyIcon;
-            case 5:
-                return newSkillIcon;
-            case 6:
-                return unmentionablesIcon;
-            case 7:
-                return othersIcon;
-        }
+        return iconArray[category_id];
     }
 
     handleIntroductionChange(event) {

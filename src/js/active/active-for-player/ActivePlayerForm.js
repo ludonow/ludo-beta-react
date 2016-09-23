@@ -13,6 +13,8 @@ import newSkillIcon from '../../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../../images/category_icon/unmentionables.png';
 import othersIcon from '../../../images/category_icon/others.svg';
 
+const iconArray = [lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
+
 import uploadIcon from '../../../images/active/upload-icon.png';
 
 export default class ActivePlayerForm extends React.Component {
@@ -46,43 +48,13 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     getCategory(category_id) {
-        switch (category_id) {
-            case 1:
-                return `lifestyle`;
-            case 2:
-                return `read`;
-            case 3:
-                return `exercise`;
-            case 4:
-                return `study`;
-            case 5:
-                return `newSkill`;
-            case 6:
-                return `unmentionables`;
-            case 7:
-            default:
-                return `others`;
-        };
+        // const category = ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
+        const category = ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
+        return category[category_id];
     }
 
     getCategoryIcon(category_id) {
-        switch (category_id) {
-            case 1:
-                return lifestyleIcon;
-            case 2:
-                return readIcon;
-            case 3:
-                return exerciseIcon;
-            case 4:
-                return studyIcon;
-            case 5:
-                return newSkillIcon;
-            case 6:
-                return unmentionablesIcon;
-            case 7:
-            default:
-                return othersIcon;
-        }
+        return iconArray[category_id];
     }
 
     handleDayPickerClass(value) {
