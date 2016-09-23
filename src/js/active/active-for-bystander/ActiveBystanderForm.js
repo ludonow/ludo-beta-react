@@ -152,26 +152,32 @@ export default class ActiveBystanderForm extends React.Component {
                             <img className="category-icon" src={this.getCategoryIcon(category_id)} />
                         </div>
                         <div className="top-right-container">
-                            <div className="category-container">
-                                <span className="category-label">Category:</span>
-                                <span className="category-value">
+                            <div className="text-field-container">
+                                <span className="text-field-label">種類:</span>
+                                <span className="text-field-value">
                                     {this.getCategory(category_id)}
                                 </span>
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {title}
+                            <div className="text-field-container">
+                                <span className="text-field-label">標題:</span>
+                                <span className="text-field-value">
+                                    {title}
+                                </span>
                             </div>
-                            <div className="ludo-detail-information-field__text">
-                                {tags}
+                            <div className="text-field-container">
+                                <span className="text-field-label">#標籤:</span>
+                                <span className="text-field-value">
+                                    {tags}
+                                </span>
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="marbles-label">Marbles:<span className="marbles-label--number">{marbles}</span></div>
+                        <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
                             <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
                         </div>
-                        <div className="duration-label">Duration:</div>
+                        <div className="text-label">持續期間:</div>
                         <div className="report-time-line-container">
                             <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
                                 max={duration} min={1} value={checkpoint} range={checkpoint.length}

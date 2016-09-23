@@ -104,6 +104,7 @@ export default class OpenedStarterForm extends React.Component {
                     this.setState({
                         isSubmitted: true
                     });
+                    this.props.getBasicUserData();
                     this.props.handleShouldProfileUpdate(true);
                     console.log('response data', response.data);
                     console.log('after quit axios delete');
@@ -191,16 +192,14 @@ export default class OpenedStarterForm extends React.Component {
                     <div className="ludo-detail-information-bottom-container">
                         <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
                         <div className="ludo-detail-information-slider--marbles">
-                            <RcSlider value={marbles} max={currentFormValue.maxMarbles} disabled={true} />
+                            <RcSlider max={maxMarbles} value={marbles} disabled={true} />
                         </div>
                         <div className="text-label">持續期間:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider--duration">
-                            <RcSlider 
-                                max={maxDuration} value={currentFormValue.duration} disabled={true}
-                            />
+                            <RcSlider max={maxDuration} value={duration} disabled={true} />
                         </div>
                         <div className="text-label">介紹:</div>
                         <div className="text-field-container">
@@ -214,7 +213,6 @@ export default class OpenedStarterForm extends React.Component {
                     </div>
                 </form>
             </div>
-            // <div className="ludo-detail-information-field__text ludo-detail-information-field__text--introduction">
         );
     }
 };

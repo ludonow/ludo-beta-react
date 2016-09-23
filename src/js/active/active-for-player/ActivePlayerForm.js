@@ -20,6 +20,7 @@ export default class ActivePlayerForm extends React.Component {
         super(props);
         this.state = {
             files: [],
+            imageLocation: '',
             isImageLightBoxOpen: false,
             isImageUploaded: false,
             isReportTextBlank: true,
@@ -95,12 +96,6 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     handleImageEnlarge() {
-        const { state } = this;
-        // this.setState(
-        //     Object.assign(state, {
-        //         isImageLightBoxOpen: true
-        //     })
-        // );
         this.setState({
             isImageLightBoxOpen: true
         });
@@ -118,9 +113,6 @@ export default class ActivePlayerForm extends React.Component {
                 isReportTextBlank: true
             });
         }
-        // console.log('this.state: ', this.state);
-        // console.log('this.state.reportText: ', this.state.reportText);
-        // console.log('this.state.isReportTextBlank: ', this.state.isReportTextBlank);
     }
 
     handleSubmit(event) {
@@ -136,7 +128,7 @@ export default class ActivePlayerForm extends React.Component {
                 'ludo_id': ludoId,
                 'player': whoIsUser,
                 'content': this.state.reportText,
-                'img_location': ''
+                'image_location': this.state.imageLocation
             };
             console.log('ludoTextReportPost', ludoReportPost);
             console.log('before post report');
@@ -148,7 +140,7 @@ export default class ActivePlayerForm extends React.Component {
                     console.log('Report response.data: ', response.data);
                 } else {
                     console.log('Report else message from server: ', response.data.message);
-                    console.log('Report else body from server: ', response.data.ludo_id);
+                    console.log('Report else error from server: ', response.data.err);
                 }
             })
             .catch(error => {
@@ -160,21 +152,24 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     onDrop(files) {
-        const { state } = this;
         this.setState({
             files,
             isImageUploaded: true
         });
         const { ludoId }= this.props.params;
         const imgPost = new FormData();
-        imgPost.append('file_stream', files[0]);
-        // console.log('imgPost file_stream', imgPost.get('file_stream'));
+        imgPost.append('file', files[0]);
+        // console.log('imgPost file', imgPost.get('file'));
         console.log('before post image');
         axios.post('/apis/report-image', imgPost)
         .then(response => {
             if (response.data.status == '200') {
-                window.alert(`image upload success!`);
-                console.log('image upload response.data: ', response.data);
+                // window.alert(`image upload success!`);
+                // console.log('image upload response.data: ', response.data);
+                this.setState({
+                    imageLocation: response.data.location
+                });
+                // TODO: shouldComponentUpdate false when successfully upload an image
             } else {
                 console.log('image upload message from server: ', response.data.message);
                 console.log('image upload error from server: ', response.data.err);
@@ -186,12 +181,9 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     closeLightbox() {
-        const { state } = this;
-        this.setState(
-            Object.assign(state, {
-                isImageLightBoxOpen: false
-            })
-        );
+        this.setState({
+            isImageLightBoxOpen: false
+        });
     }
 
     // moveNext() {
