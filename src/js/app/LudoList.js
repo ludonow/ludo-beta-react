@@ -74,18 +74,14 @@ export default class LudoList extends React.Component {
             getCurrentLudoData(ludo_id);
             if (stage == 1) {
                 if(currentUserId == starter_id) {
-                    console.log('opened-for-starter starter_id', starter_id);
                     browserHistory.push(`/opened-for-starter/${ludo_id}`);
                 } else {
-                    console.log('opened-for-bystander starter_id',starter_id);
                     browserHistory.push(`/opened-for-bystander/${ludo_id}`);
                 }
             } else {
                 if(currentUserId == starter_id || currentUserId == player_id) {
-                    console.log('Active player');
                     browserHistory.push(`/active-for-player/${ludo_id}`);
                 } else {
-                    console.log('Active bystander');
                     browserHistory.push(`/active-for-bystander/${ludo_id}`);
                 }
             }

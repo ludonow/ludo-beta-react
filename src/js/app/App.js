@@ -19,7 +19,7 @@ export default class App extends React.Component {
                 title: ''
             },
             currentLudoId: '',
-            currentLudoReportData: {},
+            currentLudoReportData: [],
             currentUserId: '',
             isLoggedIn: false,
             isOpeningProfilePage: false,
@@ -70,8 +70,7 @@ export default class App extends React.Component {
 
         const { currentLudoId, isOpeningActivePage, shouldReportUpdate } = this.state;
         if (currentLudoId && isOpeningActivePage && shouldReportUpdate) {
-            console.log('app componentDidUpdate getReportOfCurrentLudo');
-            this.getReportOfCurrentLudo();
+            this.getReportOfCurrentLudo(currentLudoId);
             this.handleShouldReportUpdate(false);
         }
     }
@@ -96,7 +95,7 @@ export default class App extends React.Component {
     }
 
     getCurrentLudoData(ludo_id) {
-        // console.log('app before getCurrentLudoData');  // debug
+        // console.log('app before getCurrentLudoData -- ludo_id: ', ludo_id);  // debug
         axios.get(`/apis/ludo/${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
@@ -203,14 +202,13 @@ export default class App extends React.Component {
     }
 
     getReportOfCurrentLudo(ludo_id) {
-        console.log('app before getReportOfCurrentLudo');  // debug
+        // console.log('app before getReportOfCurrentLudo -- ludo_id: ', ludo_id);  // debug
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
-                console.log('app getReportOfCurrentLudo response data', response.data);
-                // this.setState({
-                //     currentLudoReportData: response.data.ludoList.Items
-                // });
+                this.setState({
+                    currentLudoReportData: response.data.reportList
+                });
             } else {
                 console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
                 console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);
@@ -250,10 +248,10 @@ export default class App extends React.Component {
     }
 
     updateCurrentFormValue(ludoForm) {
+        // console.log('app updateCurrentFormValue');   // debug
         this.setState({
             currentFormValue: ludoForm
         });
-        console.log('app updateCurrentFormValue');
     }
 
     render() {

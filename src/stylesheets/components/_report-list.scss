@@ -1,20 +1,23 @@
+.report-list {
+    width: 50%;
+    margin: 0 10px;
+}
+
 .report-list-container {
-    @extend %flex;
-    width: 45%;
-    @extend %as_tall_as_parent;
-    background-color: white;
+    display: inline-flex;
+    width: 50%;
 }
     .player-container {
-        width: 50%;
-        margin: 5px 15px 0 15px;
+        @extend %as_wide_as_parent;
+        margin: 0 10px 0 10px;
     }
         .player-photo-container {
             @extend %flex;
             align-items: center;
             justify-content: center;
-            height: 70px;
             border-style: solid;
             border-width: 1px;
+            padding: 5px 0;
 
             .player-photo-container__photo {
                 width: 60px;
@@ -27,27 +30,32 @@
 
         .player-report-container {
             @extend %relative;
-            height: 345px;
-            // border-style: solid;
-            // border-width: 1px;
-            .report-image {
-                height: 200px;
+            margin: 20px 0;
+            background-color: white;
+            .report-content-container {
+                @extend %flex;
+                align-items: center;
+                justify-content: center;
+                max-width: 100%;
                 border-style: solid;
                 border-width: 1px;
+                padding: 5px;
             }
-            .report-text {
-                height: 70px;
-                border-style: solid;
-                border-width: 1px;
+            .report-content {
+                max-width: 100%;
+            }
+            .report-content--image {
+            }
+            .report-content--text {
+                padding: 10px;
             }
         }
             .player-report-comment-box-container {
-                @extend %absolute;
+                @extend %relative;
                 @extend %bottom;
-                @extend %as_wide_as_parent;
-                height: 70px;
-                // border-style: solid;
-                // border-width: 1px;
+                width: 99.3%;
+                border-style: solid;
+                border-width: 1px;
 
                 .comment-form {
                 }
@@ -67,8 +75,6 @@
                             height: 40px;
                             margin: 5px;
                             .comment__avatar {
-                                // @extend %as_wide_as_parent;
-                                // @extend %as_tall_as_parent;
                                 width: 80%;
                                 height: 80%;
                             }
@@ -76,5 +82,6 @@
                         .comment__message {
                             width: 80%;
                             margin: 5px;
+                            font-size: 14px;
                         }
             }

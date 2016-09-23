@@ -1,5 +1,6 @@
 .ludo-detail-information-container {
     @extend .ludo-create-information-container;
+    height: 78%;
     
     &::-webkit-scrollbar {
         width: 8px;

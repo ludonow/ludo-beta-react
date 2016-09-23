@@ -108,7 +108,12 @@ export default class ActivePlayerForm extends React.Component {
             .then(response => {
                 if (response.data.status == '200') {
                     this.props.handleShouldProfileUpdate(true);
-                    window.alert(`Report done!`);
+                    this.props.handleShouldReportUpdate(true);
+                    this.setState({
+                        isImageUploaded: false,
+                        reportText: null
+                    });
+                    // window.alert(`Report done!`);
                     console.log('Report response.data: ', response.data);
                 } else {
                     console.log('Report else message from server: ', response.data.message);
@@ -185,13 +190,15 @@ export default class ActivePlayerForm extends React.Component {
             if (i <= duration) {
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
+                            type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />, <br key="br" /> 
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
+                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
+                            type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />
                     );
@@ -199,13 +206,15 @@ export default class ActivePlayerForm extends React.Component {
             } else {
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
+                        <input className={`ludo-detail-information-day-picker__button`} 
+                            type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />, <br key="br" /> 
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
+                        <input className={`ludo-detail-information-day-picker__button`} 
+                            type="button" value={i} key={`button-${i}`}
                             disabled={true}
                         />
                     );
@@ -214,7 +223,7 @@ export default class ActivePlayerForm extends React.Component {
 
         }
         return (
-            <div className="form">
+            <div className="form--report">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
@@ -308,7 +317,9 @@ export default class ActivePlayerForm extends React.Component {
                     : null
                 }
             </div>
-
+        );
+    }
+};
                     // {
                     //     files.length > 0 ? 
                     //         <div className="upload-instruction">
@@ -319,6 +330,3 @@ export default class ActivePlayerForm extends React.Component {
                     //         </div>
                     //     : null
                     // }
-        );
-    }
-};

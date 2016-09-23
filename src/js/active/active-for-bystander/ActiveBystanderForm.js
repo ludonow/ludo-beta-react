@@ -115,7 +115,7 @@ export default class ActiveBystanderForm extends React.Component {
         const { category_id, checkpoint, duration, marbles, tags, title } = currentFormValue;
 
         return (
-            <div className="form form--bystander">
+            <div className="form--report">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
