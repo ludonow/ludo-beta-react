@@ -19,9 +19,11 @@ export default class App extends React.Component {
                 title: ''
             },
             currentLudoId: '',
+            currentLudoReportData: {},
             currentUserId: '',
             isLoggedIn: false,
-            isOpeningProfile: false,
+            isOpeningProfilePage: false,
+            isOpeningActivePage: false,
             shouldProfileUpdate: false,
             ludoList: [],
             profileWillLudoData: [],
@@ -37,7 +39,8 @@ export default class App extends React.Component {
         this.getProfileWillLudoData = this.getProfileWillLudoData.bind(this);
         this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
-        this.handleIsOpeningProfile = this.handleIsOpeningProfile.bind(this);
+        this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
+        this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
@@ -49,20 +52,22 @@ export default class App extends React.Component {
 
     componentDidUpdate() {
         // console.log('app componentDidUpdate state', this.state);  // debug
-        const { 
-            currentUserId,
-            isOpeningProfile, isLoggedIn, shouldProfileUpdate 
-        } = this.state;
+        const { currentUserId, isOpeningProfilePage, isLoggedIn, shouldProfileUpdate } = this.state;
         /* 
          * Update profile data after the user did some ludo action and is going to open profile page 
          */
-        if (currentUserId && isLoggedIn && isOpeningProfile && shouldProfileUpdate) { 
+        if (currentUserId && isLoggedIn && isOpeningProfilePage && shouldProfileUpdate) { 
             // console.log('app componentDidUpdate shouldProfileUpdate');   // debug
             this.getProfileData();
             this.getProfileWillLudoData(currentUserId);
             this.getProfileLudoingData(currentUserId);
             // this.getProfileDidLudoData(currentUserId);
             this.handleShouldProfileUpdate(false);
+        }
+
+        const { currentLudoId, isOpeningActivePage } = this.state;
+        if (currentLudoId && isOpeningActivePage) {
+            console.log('app componentDidUpdate getReportOfCurrentLudo');
         }
     }
 
@@ -101,21 +106,6 @@ export default class App extends React.Component {
         .catch(error => {
             console.log('app getCurrentLudoData error', error);
         });
-
-        /* example data */
-        // this.setState(
-        //     Object.assign(this.state, {
-        //         currentFormValue: {
-        //             category_id: 3,
-        //             checkpoint: [1,2,3],
-        //             duration: 3,
-        //             introduction: 'jog 30 min',
-        //             marbles: 5,
-        //             tags: '#jog #exercise',
-        //             title: 'Jog Everyday'
-        //         }
-        //     })
-        // );
     }
 
     getLatestLudoList() {
@@ -134,17 +124,6 @@ export default class App extends React.Component {
         .catch(error => {
             console.log('app getLatestLudoList error', error);
         });
-
-        /* example data */
-        // config.get('data/LudoData.json')
-        // .then(response => {
-        //     this.setState({
-        //         ludoList: response.data
-        //     });
-        // })
-        // .catch(error => {
-        //     console.log('ludo list error', error);
-        // });
     }
 
     getProfileData() {
@@ -183,7 +162,7 @@ export default class App extends React.Component {
     }
 
     getProfileLudoingData(user_id) {
-        // console.log('app getProfileLudoingData');  // debug
+        // console.log('app before getProfileLudoingData');  // debug
         axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
         .then(response => {
             if(response.data.status === '200') {
@@ -201,7 +180,7 @@ export default class App extends React.Component {
     }
 
     getProfileDidLudoData(user_id) {
-        // console.log('app getProfileDidLudoData');  // debug
+        // console.log('app before getProfileDidLudoData');  // debug
         axios.get(`apis/ludo?stage=3&user_id=${user_id}`)
         .then(response => {
             if(response.data.status === '200') {
@@ -210,10 +189,30 @@ export default class App extends React.Component {
                 });
             } else {
                 console.log('app getProfileDidLudoData else message from server: ', response.data.message);
+                console.log('app getProfileDidLudoData else error from server: ', response.data.err);
             }
         })
         .catch(error => {
             console.log('app getProfileDidLudoData error', error);
+        });
+    }
+
+    getReportOfCurrentLudo(ludo_id) {
+        console.log('app before getReportOfCurrentLudo');  // debug
+        axios.get(`/apis/report?ludo_id=${ludo_id}`)
+        .then(response => {
+            if(response.data.status === '200') {
+                console.log('app getReportOfCurrentLudo response data', response.data);
+                // this.setState({
+                //     currentLudoReportData: response.data.ludoList.Items
+                // });
+            } else {
+                console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
+                console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);
+            }
+        })
+        .catch(error => {
+            console.log(error);
         });
     }
 
@@ -224,10 +223,10 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsOpeningProfile(boolean) {
-        // console.log('app handleIsOpeningProfile', boolean);  // debug
+    handleIsOpeningProfilePage(boolean) {
+        // console.log('app handleIsOpeningProfilePage', boolean);  // debug
         this.setState({
-            isOpeningProfile: boolean
+            isOpeningProfilePage: boolean
         });
     }
 
@@ -239,39 +238,49 @@ export default class App extends React.Component {
     }
 
     render() {
-        const isProfile = this.props.routes[1].path === "profile";
-        const { 
-            currentFormValue, currentLudoId, currentUserId, isLoggedIn, isOpeningProfile, ludoList,
-            profileWillLudoData, profileLudoingData, profileDidLudoData, shouldProfileUpdate, userBasicData,  userProfileData
-        } = this.state;
         return (
             <div>
-                <Header isProfile={isProfile} userBasicData={userBasicData}/>
-                <Sidebar currentUserId={currentUserId} />
+                <Header isProfile={this.state.isOpeningProfilePage} userBasicData={this.state.userBasicData}/>
+                <Sidebar currentUserId={this.state.currentUserId} />
                 {
-                    React.cloneElement(this.props.children, {
-                        currentFormValue,
-                        currentUserId,
-                        isOpeningProfile,
-                        isLoggedIn,
-                        ludoList,
-                        profileWillLudoData,
-                        profileLudoingData,
-                        profileDidLudoData,
-                        shouldProfileUpdate,
-                        userBasicData,
-                        userProfileData,
-                        getBasicUserData: this.getBasicUserData,
-                        getCurrentLudoData: this.getCurrentLudoData,
-                        getLatestLudoList: this.getLatestLudoList,
-                        getProfileData: this.getProfileData,
-                        getProfileWillLudoData: this.getProfileWillLudoData,
-                        getProfileLudoingData: this.getProfileLudoingData,
-                        getProfileDidLudoData: this.getProfileDidLudoData,
-                        handleIsOpeningProfile: this.handleIsOpeningProfile,
-                        handleShouldProfileUpdate: this.handleShouldProfileUpdate,
-                        updateCurrentFormValue: this.updateCurrentFormValue
-                    })
+                    React.cloneElement(this.props.children,
+                        Object.assign(this.state, {
+                            getBasicUserData: this.getBasicUserData,
+                            getCurrentLudoData: this.getCurrentLudoData,
+                            getLatestLudoList: this.getLatestLudoList,
+                            getProfileData: this.getProfileData,
+                            getProfileWillLudoData: this.getProfileWillLudoData,
+                            getProfileLudoingData: this.getProfileLudoingData,
+                            getProfileDidLudoData: this.getProfileDidLudoData,
+                            handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
+                            handleShouldProfileUpdate: this.handleShouldProfileUpdate,
+                            updateCurrentFormValue: this.updateCurrentFormValue
+                        })
+
+                        // {
+                        //     currentFormValue,
+                        //     currentUserId,
+                        //     isOpeningProfilePage,
+                        //     isLoggedIn,
+                        //     ludoList,
+                        //     profileWillLudoData,
+                        //     profileLudoingData,
+                        //     profileDidLudoData,
+                        //     shouldProfileUpdate,
+                        //     userBasicData,
+                        //     userProfileData,
+                        //     getBasicUserData: this.getBasicUserData,
+                        //     getCurrentLudoData: this.getCurrentLudoData,
+                        //     getLatestLudoList: this.getLatestLudoList,
+                        //     getProfileData: this.getProfileData,
+                        //     getProfileWillLudoData: this.getProfileWillLudoData,
+                        //     getProfileLudoingData: this.getProfileLudoingData,
+                        //     getProfileDidLudoData: this.getProfileDidLudoData,
+                        //     handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
+                        //     handleShouldProfileUpdate: this.handleShouldProfileUpdate,
+                        //     updateCurrentFormValue: this.updateCurrentFormValue
+                        // }
+                    )
                 }
             </div>
         );

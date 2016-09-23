@@ -11,8 +11,10 @@ import studyIcon from '../../images/category_icon/study.svg';
 import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
-
+const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 import marbleIcon from '../../images/marble.png';
+
+const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new skill', ' unmentionalbles', ' others'];
 
 const masonryOptions = {
     itemSelector: ".grid-item",
@@ -32,8 +34,7 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardStage(stage) {
-        const ludo_stage = Number(stage); 
-        if (ludo_stage == 1) {
+        if (stage == 1) {
             return `card-bottom__stage--opened`;
         } else {
             return `card-bottom__stage--closed`;
@@ -41,91 +42,19 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardBackClass(category_id) {
-        const id = Number(category_id); 
-        switch (category_id) {
-            case 1:
-                return `lifestyle`;
-            case 2:
-                return `read`;
-            case 3:
-                return `exercise`;
-            case 4:
-                return `study`;
-            case 5:
-                return `new_skill`;
-            case 6:
-                return `unmentionables`;
-            case 7:
-                return `others`;
-            default:
-                return `lifestyle`;
-        }
+        return categoryClassArray[category_id];
     }
 
     handleCardBottomGoClass(category_id) {
-        const id = Number(category_id); 
-        switch (category_id) {
-            case 1:
-                return `lifestyle`;
-            case 2:
-                return `read`;
-            case 3:
-                return `exercise`;
-            case 4:
-                return `study`;
-            case 5:
-                return `new_skill`;
-            case 6:
-                return `unmentionables`;
-            case 7:
-                return `others`;
-            default:
-                return `lifestyle`;
-        }
+        return categoryClassArray[category_id];
     }
 
     handleCardFrontTopClass(category_id) {
-        const id = Number(category_id); 
-        switch (category_id) {
-            case 1:
-                return ` lifestyle`;
-            case 2:
-                return ` read`;
-            case 3:
-                return ` exercise`;
-            case 4:
-                return ` study`;
-            case 5:
-                return ` new_skill`;
-            case 6:
-                return ` unmentionables`;
-            case 7:
-                return ` others`;
-            default:
-                return ` lifestyle`;
-        }
+        return categoryClassArray[category_id]; 
     }
 
     handleCategoryIcon(category_id) {
-        const id = Number(category_id); 
-        switch (category_id) {
-            case 1:
-                return lifestyleIcon;
-            case 2:
-                return readIcon;
-            case 3:
-                return exerciseIcon;
-            case 4:
-                return studyIcon;
-            case 5:
-                return newSkillIcon;
-            case 6:
-                return unmentionablesIcon;
-            case 7:
-                return othersIcon;
-            default:
-                return lifestyleIcon;
-        }
+        return iconArray[category_id];
     }
 
     handleCardLink(event) {

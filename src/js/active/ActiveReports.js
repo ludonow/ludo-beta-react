@@ -5,34 +5,6 @@ import Textarea from 'react-textarea-autosize';
 export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
-        this.getLudoReportInformation = this.getLudoReportInformation.bind(this);
-    }
-
-    componentDidMount() {
-        this.getLudoReportInformation();
-    }
-
-    getLudoReportInformation() {
-        // axios.get('/apis/ludo?stage=1')
-        //     .then(response => {
-        //         this.setState({
-        //             rawCardContent: response.data.ludoList.Items
-        //         });
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
-
-        /* example data */
-        // this.serverRequest = axios.get('data/LudoData.json')
-        //     .then(response => {
-        //         this.setState({
-        //             rawCardContent: response.data
-        //         });
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
     }
 
     render() {

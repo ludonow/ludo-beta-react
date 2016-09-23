@@ -13,7 +13,7 @@ import newSkillIcon from '../../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../../images/category_icon/unmentionables.png';
 import othersIcon from '../../../images/category_icon/others.svg';
 
-const iconArray = [lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
+const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
 import uploadIcon from '../../../images/active/upload-icon.png';
 
@@ -48,8 +48,8 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     getCategory(category_id) {
-        // const category = ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
-        const category = ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
+        // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
+        const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
         return category[category_id];
     }
 

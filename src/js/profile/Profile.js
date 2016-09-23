@@ -26,12 +26,12 @@ export default class Profile extends React.Component {
     }
 
     componentWillMount() {
-        this.props.handleIsOpeningProfile(true);
+        this.props.handleIsOpeningProfilePage(true);
         this.props.handleShouldProfileUpdate(true);
     }
 
     componentWillUnmount() {
-        this.props.handleIsOpeningProfile(false);
+        this.props.handleIsOpeningProfilePage(false);
     }
 
     handleActiveClick(event) {

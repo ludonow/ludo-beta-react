@@ -9,8 +9,10 @@ import studyIcon from '../../images/category_icon/study.svg';
 import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
-
+const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 import marbleIcon from '../../images/marble.png';
+
+const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new skill', ' unmentionalbles', ' others'];
 
 const masonryOptions = {
     itemSelector: ".form-item",
@@ -40,66 +42,19 @@ export default class LudoList extends React.Component {
     }
 
     handleCardBackClass(category_id) {
-        switch (category_id) {
-            case 1:
-                return `lifestyle`;
-            case 2:
-                return `read`;
-            case 3:
-                return `exercise`;
-            case 4:
-                return `study`;
-            case 5:
-                return `new_skill`;
-            case 6:
-                return `unmentionables`;
-            case 7:
-                return `others`;
-            default:
-                return `lifestyle`;
-        }
+        return categoryClassArray[category_id];
     }
 
     handleCardBottomGoClass(category_id) {
-        switch (category_id) {
-            case 1:
-                return `lifestyle`;
-            case 2:
-                return `read`;
-            case 3:
-                return `exercise`;
-            case 4:
-                return `study`;
-            case 5:
-                return `new_skill`;
-            case 6:
-                return `unmentionables`;
-            case 7:
-                return `others`;
-            default:
-                return `lifestyle`;
-        }
+        return categoryClassArray[category_id];
     }
 
     handleCardFrontTopClass(category_id) {
-        switch (category_id) {
-            case 1:
-                return `lifestyle`;
-            case 2:
-                return `read`;
-            case 3:
-                return `exercise`;
-            case 4:
-                return `study`;
-            case 5:
-                return `new_skill`;
-            case 6:
-                return `unmentionables`;
-            case 7:
-                return `others`;
-            default:
-                return `lifestyle`;
-        }
+        return categoryClassArray[category_id];
+    }
+
+    handleCategoryIcon(category_id) {
+        return iconArray[category_id];
     }
 
     handleCardLink(event) {
@@ -134,27 +89,6 @@ export default class LudoList extends React.Component {
                     browserHistory.push(`/active-for-bystander/${ludo_id}`);
                 }
             }
-        }
-    }
-
-    handleCategoryIcon(category_id) {
-        switch (category_id) {
-            case 1:
-                return lifestyleIcon;
-            case 2:
-                return readIcon;
-            case 3:
-                return exerciseIcon;
-            case 4:
-                return studyIcon;
-            case 5:
-                return newSkillIcon;
-            case 6:
-                return unmentionablesIcon;
-            case 7:
-                return othersIcon;
-            default:
-                return lifestyleIcon;
         }
     }
 
