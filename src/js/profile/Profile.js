@@ -77,19 +77,16 @@ export default class Profile extends React.Component {
                             </div>
                             <div className="profile-content-detail">
                                 <div className="profile-content-detail__element" id="1" onClick={this.handleActiveClick} >
-                                    等待他人加入的Ludo
+                                    等待加入
                                 </div>
                                 <div className="profile-content-detail__element" id="2" onClick={this.handleActiveClick} >
-                                    進行中的Ludo
+                                    正在進行
                                 </div>
                                 <div className="profile-content-detail__element" id="3" onClick={this.handleActiveClick} >
-                                    之前玩過的Ludo
+                                    之前參與
                                 </div>
                                 <div className="profile-content-detail__element" id="4" onClick={this.handleActiveClick} >
                                     統計資料
-                                </div>
-                                <div className="profile-content-detail__element" id="5" onClick={this.handleActiveClick} >
-                                    成就
                                 </div>
                                 <div className="profile-content-detail__element--last" id="6" onClick={this.handleActiveClick} >
                                     {activeKey.indexOf(6) != -1 ? `關閉全部` : `顯示全部`}
@@ -125,36 +122,19 @@ export default class Profile extends React.Component {
                         </div>
                         :null
                     }
-                    {
-                        activeKey.indexOf(5) != -1 ? 
-                        <div className="grid-item--half">
-                            <ProfilePrize {...this.props} />
-                        </div>
-                        :null
-                    }
                 </Masonry>
             </div>
-                    // {
-                    //     activeKey.indexOf(6) != -1 ? 
-                    //     <div>
-                    //         <div className="grid-item--half">
-                    //             <ProfileNewLudo {...this.props} />
-                    //         </div>
-                    //         <div className="grid-item--half">
-                    //             <ProfileLudoing {...this.props} />
-                    //         </div>
-                    //         <div className="grid-item--half">
-                    //             <ProfileHistory {...this.props} />
-                    //         </div>
-                    //         <div className="grid-item--half">
-                    //             <ProfileStatistic {...this.props} />
-                    //         </div>
-                    //         <div className="grid-item--half">
-                    //             <ProfilePrize {...this.props} />
-                    //         </div>
-                    //     </div>
-                    //     :null
-                    // }
         );
     }
 }
+                                // <div className="profile-content-detail__element" id="5" onClick={this.handleActiveClick} >
+                                //     成就
+                                // </div>
+
+                    // {
+                    //     activeKey.indexOf(5) != -1 ? 
+                    //     <div className="grid-item--half">
+                    //         <ProfilePrize {...this.props} />
+                    //     </div>
+                    //     :null
+                    // }

@@ -9,7 +9,7 @@ export default class ProfileHistory extends React.Component {
     render() {
         return (
             <div className="profile-element">
-                <div className="profile-element__title">之前參與的Ludo</div>
+                <div className="profile-element__title">之前參與過</div>
                 {
                     this.props.profileDidLudoData.map( (data, index) => {
                         let condition_color = '';

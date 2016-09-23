@@ -7,6 +7,15 @@ export default class ActiveReports extends React.Component {
         super(props);
     }
 
+    componentWillMount() {
+        this.props.handleIsOpeningActivePage(true);
+        this.props.handleShouldReportUpdate(true);
+    }
+
+    componentWillUnmount() {
+        this.props.handleIsOpeningActivePage(false);
+    }
+
     render() {
         return (
             <div className="report-list-container">
