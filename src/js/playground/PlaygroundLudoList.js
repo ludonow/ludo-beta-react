@@ -14,7 +14,7 @@ import othersIcon from '../../images/category_icon/others.svg';
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 import marbleIcon from '../../images/marble.png';
 
-const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new skill', ' unmentionalbles', ' others'];
+const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new skill', ' unmentionables', ' others'];
 
 const masonryOptions = {
     itemSelector: ".grid-item",

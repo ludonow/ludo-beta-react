@@ -55,16 +55,21 @@ export default class App extends React.Component {
 
     componentDidUpdate() {
         // console.log('app componentDidUpdate state', this.state);  // debug
-        const { currentUserId, isOpeningProfilePage, isLoggedIn, shouldProfileUpdate } = this.state;
-        /* 
-         * Update profile data after the user did some ludo action and is going to open profile page 
-         */
-        if (currentUserId && isLoggedIn && isOpeningProfilePage && shouldProfileUpdate) { 
-            // console.log('app componentDidUpdate shouldProfileUpdate');   // debug
-            this.getProfileData();
-            this.getProfileWillLudoData(currentUserId);
-            this.getProfileLudoingData(currentUserId);
-            // this.getProfileDidLudoData(currentUserId);
+        const { currentUserId, isLoggedIn, isOpeningProfilePage, shouldProfileUpdate } = this.state;
+        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
+            console.log('app componentDidUpdate shouldProfileUpdate true');  // debug
+            this.getLatestLudoList();
+            /* 
+             * Update profile data after the user did some ludo action and is going to open profile page 
+             */
+            if (isOpeningProfilePage) {
+                console.log('app componentDidUpdate update profile');   // debug
+                this.getProfileData();
+                this.getProfileWillLudoData(currentUserId);
+                this.getProfileLudoingData(currentUserId);
+                // this.getProfileDidLudoData(currentUserId);
+                this.handleShouldProfileUpdate(false);
+            }
             this.handleShouldProfileUpdate(false);
         }
 
@@ -113,7 +118,7 @@ export default class App extends React.Component {
     }
 
     getLatestLudoList() {
-        // console.log('app before getLatestLudoList');  // debug
+        console.log('app before getLatestLudoList');  // debug
         axios.get('/apis/ludo')
         .then(response => {
             if(response.data.status === '200') {
@@ -131,7 +136,7 @@ export default class App extends React.Component {
     }
 
     getProfileData() {
-        // console.log('app before getProfileData');  // debug
+        console.log('app before getProfileData');  // debug
         axios.get('/apis/profile')
         .then(response => {
             if(response.data.status === '200') {

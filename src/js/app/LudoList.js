@@ -12,7 +12,7 @@ import othersIcon from '../../images/category_icon/others.svg';
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 import marbleIcon from '../../images/marble.png';
 
-const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new skill', ' unmentionalbles', ' others'];
+const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new skill', ' unmentionables', ' others'];
 
 const masonryOptions = {
     itemSelector: ".form-item",
@@ -122,11 +122,11 @@ export default class LudoList extends React.Component {
 
     render() {
         const { isLastestCardFlip } = this.state;
-        const { currentFormValue, isgettingLatestData, ludoList } = this.props;
+        const { currentFormValue, shouldProfileUpdate, ludoList } = this.props;
         return (
                 <Masonry options={masonryOptions}>
                     {
-                        isgettingLatestData ?
+                        shouldProfileUpdate ?
                             <div className={`form-item`} key={`new-card`}>
                                 <div 
                                     className={`form-card card-front ${isLastestCardFlip ? "" : "card-flip"}`}

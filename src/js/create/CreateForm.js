@@ -12,7 +12,7 @@ import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
 
-const iconArray = [lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
+const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
 export default class CreateForm extends React.Component {
     constructor(props) {
@@ -27,7 +27,7 @@ export default class CreateForm extends React.Component {
                 introduction: '',
                 tags: ''
             },
-            // category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            // category: [lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             currentHoverValue: 3,
             isCategorySelected: false,
@@ -51,7 +51,7 @@ export default class CreateForm extends React.Component {
 
     handleCategoryChange(selectedCategory) {
         const { category } = this.state;
-        const index = category.indexOf(selectedCategory);
+        const index = category.indexOf(selectedCategory) + 1;
         this.setState({
             isCategorySelected: true,
             ludoCreateForm: Object.assign(this.state.ludoCreateForm, {
