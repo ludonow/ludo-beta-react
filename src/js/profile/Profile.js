@@ -20,7 +20,7 @@ export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeKey: []
+            activeKey: [2]
         };
         this.handleActiveClick = this.handleActiveClick.bind(this);
     }

@@ -45,6 +45,7 @@
                 max-width: 100%;
             }
             .report-content--image {
+                @extend %clickable;
             }
             .report-content--text {
                 padding: 10px;

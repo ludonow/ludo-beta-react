@@ -1,14 +1,19 @@
 import React from 'react';
 import axios from '../axios-config';
+import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            enlargeImageLocation: '',
+            isImageLightBoxOpen: false,
             starterReportList: [],
             playerReportList: []
         };
+        this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        this.closeLightbox = this.closeLightbox.bind(this);
     }
 
     componentWillMount() {
@@ -25,7 +30,7 @@ export default class ActiveReports extends React.Component {
          * classify report data by starter or player
          */
         if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length) {
-            console.log('ActiveReports shouldReportUpdate');
+            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate');   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
                 starterReportList: null,
@@ -45,9 +50,36 @@ export default class ActiveReports extends React.Component {
         }
     }
 
+    handleImageEnlarge(event) {
+        // console.log('ActiveReports handleImageEnlarge image location', event.currentTarget.src);  // debug
+        this.setState({
+            enlargeImageLocation: event.currentTarget.src,
+            isImageLightBoxOpen: true
+        });
+    }
+
+    closeLightbox() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
+    }
+
     render() {
         return (
             <div className="report-list">
+                {
+                    this.state.isImageLightBoxOpen ? 
+                        <Lightbox 
+                            className="lighbox-target"
+                            mainSrc={this.state.enlargeImageLocation}
+                            // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
+                            // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
+                            onCloseRequest={this.closeLightbox}
+                            // onMovePrevRequest={this.movePrev}
+                            // onMoveNextRequest={this.moveNext}
+                        />
+                    : null
+                }
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
@@ -62,7 +94,8 @@ export default class ActiveReports extends React.Component {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
                                                     <img className="report-content report-content--image" 
-                                                        src={reportObject.image_location} 
+                                                        src={reportObject.image_location}
+                                                        onClick={this.handleImageEnlarge}
                                                     />
                                                 </div>
                                             : null
@@ -76,7 +109,11 @@ export default class ActiveReports extends React.Component {
                                                 </div>
                                             : null
                                         }
-                                        <CommentBox {...this.props} />
+                                        <CommentBox 
+                                            oldComments={reportObject.comments}
+                                            report_id={reportObject.report_id} 
+                                            {...this.props} 
+                                        />
                                     </div>
                                 );
                             })
@@ -97,7 +134,8 @@ export default class ActiveReports extends React.Component {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
                                                     <img className="report-content report-content--image" 
-                                                        src={reportObject.image_location} 
+                                                        src={reportObject.image_location}
+                                                        onClick={this.handleImageEnlarge}
                                                     />
                                                 </div>
                                             : null
@@ -111,7 +149,11 @@ export default class ActiveReports extends React.Component {
                                                 </div>
                                             : null
                                         }
-                                        <CommentBox {...this.props} />
+                                        <CommentBox 
+                                            oldComments={reportObject.comments}
+                                            report_id={reportObject.report_id} 
+                                            {...this.props} 
+                                        />
                                     </div>
                                 );
                             })
@@ -127,27 +169,44 @@ class CommentBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            isAfterPost: false,
+            newCommentList: []
         };
-        this.updateMessageList = this.updateMessageList.bind(this);
+        this.updateNewCommentList = this.updateNewCommentList.bind(this);
+        this.updateNewCommentListAfterPost = this.updateNewCommentListAfterPost.bind(this);
     }
 
-    updateMessageList(message) {
-        const { list } = this.state;
-        list.push(message);
-        this.setState(
-            Object.assign(this.state, {
-                list
-            })
-        )
+    updateNewCommentList(commentContent) {
+        const { newCommentList } = this.state;
+        const commentObject = {};
+        commentObject.content = commentContent
+        newCommentList.push(commentObject);
+        this.setState({
+            newCommentList
+        });
+    }
+
+    updateNewCommentListAfterPost(updatedCommentList) {
+        this.setState({
+            isAfterPost: true,
+            newCommentList: updatedCommentList
+        });
     }
 
     render() {
-        const { list } = this.state; 
+        const { isAfterPost, newCommentList } = this.state; 
         return (
             <div className="player-report-comment-box-container">
-                <CommentList list={list} {...this.props} />
-                <CommentForm updateMessageList={this.updateMessageList} {...this.props} />
+                <CommentList
+                    newCommentList={newCommentList}
+                    isAfterPost={isAfterPost}
+                    {...this.props} 
+                />
+                <CommentForm 
+                    updateNewCommentList={this.updateNewCommentList}
+                    updateNewCommentListAfterPost={this.updateNewCommentListAfterPost}
+                    {...this.props} 
+                />
             </div>
         );
     }
@@ -157,48 +216,45 @@ class CommentForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: null
+            commentContent: null
         };
-        this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     }
 
-    handleMessageSubmit(event) {
+    handleCommentSubmit(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
             event.preventDefault();
-            const { state } = this;
-            this.setState(
-                Object.assign(state, {
-                    message: event.target.value
-                })
-            );
-            this.props.updateMessageList(state.message);
+            const commentContent = event.target.value;
+            this.setState({
+                commentContent
+            });
+            this.props.updateNewCommentList(commentContent);
 
-            // const commentPost = {
-            //     'type': 'report',
-            //     'report_id': ,
-            //     'content': state.message
-            // };
-            // axios.post('/apis/comment', commentPost)
-            // .then(response => {
-            //     if(response.data.status == '200') {
-            //         console.log('Successfully comment!');
-            //         console.log('response', response);
-            //     } else {
-            //         console.log('get after comment message post message from server: ', response.data.message);
-            //     }
-            // })
-            // .catch(error => {
-            //     console.log('get after comment message post error', error);
-            //     console.log('message from server: ', response.data.message);
-            // })
+            const commentPost = {
+                'type': 'report',
+                'report_id': this.props.report_id,
+                'content': commentContent
+            };
+            // console.log('CommentForm handleCommentSubmit commentPost', commentPost);   //debug
+            axios.post('/apis/comment', commentPost)
+            .then(response => {
+                if(response.data.status == '200') {
+                    // console.log('CommentForm updateNewCommentListAfterPost');   // debug
+                    this.props.updateNewCommentListAfterPost(response.data.ludo.Attributes.comments);
+                } else {
+                    console.log('CommentForm post message from server: ', response.data.message);
+                    console.log('CommentForm post error from server: ', response.data.err);
+                }
+            })
+            .catch(error => {
+                console.log('CommentForm post error', error);
+            });
 
             /* clear the text area of comment form */
             event.target.value = null;
-            this.setState(
-                Object.assign(state, {
-                    message: null
-                })
-            );
+            this.setState({
+                commentContent: null
+            });
         }
     }
 
@@ -207,10 +263,12 @@ class CommentForm extends React.Component {
             <div className="comment-container">
                 <div className="comment-avatar-container">
                     <img className="comment__avatar" 
-                        src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
+                        src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
+                    />
                 </div>
                 <Textarea className="comment__message"
-                    minRows={2} onKeyDown={this.handleMessageSubmit} placeholder="留言..."/>
+                    minRows={2} onKeyDown={this.handleCommentSubmit} placeholder="留言..."
+                />
             </div>
         );
     }
@@ -225,14 +283,31 @@ class CommentList extends React.Component {
         return (
             <div className="comment-list">
                 {
-                    this.props.list.map( (value, index) => {
+                    this.props.oldComments && !this.props.isAfterPost? 
+                    this.props.oldComments.map( (commentObject, index) => {
                         return (
-                            <div className="comment-container" key={`message-${index}`}>
+                            <div className="comment-container" key={`comment-${index}`}>
                                 <div className="comment-avatar-container">
                                     <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
                                 </div>
                                 <div className="comment__message">
-                                    {value}
+                                    {commentObject.content}
+                                </div>
+                            </div>
+                        )
+                    })
+                    : null
+                }
+                {
+                    this.props.newCommentList.map( (commentObject, index) => {
+                        console.log();
+                        return (
+                            <div className="comment-container" key={`new-comment-${index}`}>
+                                <div className="comment-avatar-container">
+                                    <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
+                                </div>
+                                <div className="comment__message">
+                                    {commentObject.content}
                                 </div>
                             </div>
                         )
@@ -242,3 +317,19 @@ class CommentList extends React.Component {
         );
     }
 };
+                // {
+                //     this.props.oldComments ? 
+                //     this.props.oldComments.map( (commentObject, index) => {
+                //         return (
+                //             <div className="comment-container" key={`comment-${index}`}>
+                //                 <div className="comment-avatar-container">
+                //                     <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
+                //                 </div>
+                //                 <div className="comment__message">
+                //                     {commentObject.content}
+                //                 </div>
+                //             </div>
+                //         );
+                //     })
+                //     : null
+                // }

@@ -74,7 +74,6 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     handleReportTextChange(event) {
-        const { state } = this;
         if (event.target.value) {
             this.setState({
                 reportText: event.target.value,
@@ -102,26 +101,25 @@ export default class ActivePlayerForm extends React.Component {
                 'content': this.state.reportText,
                 'image_location': this.state.imageLocation
             };
-            console.log('ludoTextReportPost', ludoReportPost);
-            console.log('before post report');
+            // console.log('ludoTextReportPost', ludoReportPost);
+            console.log('ActivePlayerForm before report post');
             axios.post('apis/report', ludoReportPost)
             .then(response => {
-                if (response.data.status == '200') {
+                if (response.data.status === '200') {
                     this.props.handleShouldProfileUpdate(true);
                     this.props.handleShouldReportUpdate(true);
                     this.setState({
                         isImageUploaded: false,
-                        reportText: null
+                        reportText: ''
                     });
-                    // window.alert(`Report done!`);
-                    console.log('Report response.data: ', response.data);
+                    console.log('ActivePlayerForm Report after report post response.data: ', response.data);
                 } else {
-                    console.log('Report else message from server: ', response.data.message);
-                    console.log('Report else error from server: ', response.data.err);
+                    console.log('ActivePlayerForm Report else message from server: ', response.data.message);
+                    console.log('ActivePlayerForm Report else error from server: ', response.data.err);
                 }
             })
             .catch(error => {
-                console.log('Report error', error);
+                console.log('ActivePlayerForm Report error', error);
             });
         } else {
             console.log('not sure to report');
@@ -283,6 +281,7 @@ export default class ActivePlayerForm extends React.Component {
                                 placeholder="在此輸入要回報的文字"
                                 rows="6"
                                 maxLength="140"
+                                value={isReportTextBlank ? '' : this.state.reportText}
                                 onChange={this.handleReportTextChange}
                             />
                         </div>

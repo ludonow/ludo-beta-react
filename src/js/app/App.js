@@ -68,7 +68,6 @@ export default class App extends React.Component {
                 this.getProfileWillLudoData(currentUserId);
                 this.getProfileLudoingData(currentUserId);
                 // this.getProfileDidLudoData(currentUserId);
-                this.handleShouldProfileUpdate(false);
             }
             this.handleShouldProfileUpdate(false);
         }
@@ -207,13 +206,14 @@ export default class App extends React.Component {
     }
 
     getReportOfCurrentLudo(ludo_id) {
-        // console.log('app before getReportOfCurrentLudo -- ludo_id: ', ludo_id);  // debug
+        console.log('app before getReportOfCurrentLudo -- ludo_id: ', ludo_id);  // debug
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
                 this.setState({
                     currentLudoReportData: response.data.reportList
                 });
+                console.log('app after getReportOfCurrentLudo');  // debug
             } else {
                 console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
                 console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);
