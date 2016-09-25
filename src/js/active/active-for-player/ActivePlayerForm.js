@@ -222,7 +222,7 @@ export default class ActivePlayerForm extends React.Component {
         }
         return (
             <div className="form--report">
-                <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
+                <form onSubmit={this.handleSubmit} className="ludo-detail-information-container report-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
                             <img className="category-icon" src={this.getCategoryIcon(category_id)} />

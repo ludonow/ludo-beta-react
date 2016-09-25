@@ -149,13 +149,15 @@ export default class ActiveBystanderForm extends React.Component {
                         </div>
                         <div className="text-label">持續期間:</div>
                         <div className="report-time-line-container">
+                            <div className="report-time-line">
                             <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
                                 max={duration} min={1} value={checkpoint} range={checkpoint.length}
                                 marks={timeLineMarks}
                             />
+                            </div>
                         </div>
-                        <button className="ludo-detail-information-submit-button" type="submit">
-                            Follow
+                        <button className="ludo-detail-information-submit-button" type="submit" disabled={true}>
+                            追蹤
                         </button>
                     </div>
                 </form>
