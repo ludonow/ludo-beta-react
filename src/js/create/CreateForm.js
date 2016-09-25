@@ -1,8 +1,8 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
+import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
-import axios from '../axios-config';
-import { browserHistory } from 'react-router';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -33,6 +33,7 @@ export default class CreateForm extends React.Component {
             isCategorySelected: false,
             isDurationSelected: false,
             isMarblesSelected: false,
+            isSuccesfullyCreateLudo: false,
             maxDuration: 14,
             maxMarbles: 50
         };
@@ -61,8 +62,7 @@ export default class CreateForm extends React.Component {
     }
 
     handleDayPickerClass(value) {
-        const { ludoCreateForm, currentHoverValue, isDurationSelected } = this.state;
-        const { checkpoint } = ludoCreateForm;
+        const { checkpoint } = this.state.ludoCreateForm;
         const index = checkpoint.indexOf(value);
 
         if (index != -1) {
@@ -73,27 +73,23 @@ export default class CreateForm extends React.Component {
     }
 
     handleDayPickerClick(event) {
-        if (!this.state.isDurationSelected) { // initial
+        if (!this.state.isDurationSelected) { /* the user has not selected the duration */
             this.setState({
-                isDurationSelected: true
-            });
-            const { ludoCreateForm } = this.state;
-            this.setState(
-                Object.assign(ludoCreateForm, {
+                isDurationSelected: true,
+                ludoCreateForm: Object.assign(this.state.ludoCreateForm, {
                     duration: Number(event.target.value)
                 })
-            );
-        } else { // finish duration setting
+            });
+        } else { /* the user has selected the duration */
             const { ludoCreateForm } = this.state;
             let { checkpoint } = ludoCreateForm;
             const checkPointNumber = Number(event.target.value);
             const index = checkpoint.indexOf(checkPointNumber);
-            if (index === -1) { // element not in array
+            if (index === -1) { /* selected day is not in array */
                 checkpoint.push(checkPointNumber);
-            } else { // element is in array
+            } else { /* selected day is in array */
                 checkpoint.splice(index, 1);
             };
-            checkpoint = checkpoint.sort((a,b) => { return a - b });
             this.setState(
                 Object.assign(ludoCreateForm, {
                     checkpoint
@@ -106,78 +102,68 @@ export default class CreateForm extends React.Component {
         if (!this.state.isDurationSelected) {
             const { ludoCreateForm } = this.state;
             if (Number(event.target.value) >= 4) {
-                this.setState(
-                    Object.assign(ludoCreateForm, {
+                this.setState({
+                    currentHoverValue: Number(event.target.value),
+                    ludoCreateForm: Object.assign(ludoCreateForm, {
                         duration: Number(event.target.value),
                         checkpoint: [Number(event.target.value)]
                     })
-                );
-                this.setState({
-                    currentHoverValue: Number(event.target.value)
                 });
             } else {
-                this.setState(
-                    Object.assign(ludoCreateForm, {
+                this.setState({
+                    currentHoverValue: 3,
+                    ludoCreateForm: Object.assign(ludoCreateForm, {
                         duration: 3,
                         checkpoint: [3]
                     })
-                );
-                this.setState({
-                    currentHoverValue: 3
                 });
             }
         }
     }
 
-    handleDurationValue(value) {
+    handleDurationValue(currentSliderValue) {
         const { ludoCreateForm } = this.state;
-        if (value >= 4) {
-            this.setState(
-                Object.assign(ludoCreateForm, {
-                    duration: value,
-                    checkpoint: [value]
-                })
-            );
+        this.setState({
+            isDurationSelected: false
+        });
+        if (currentSliderValue >= 4) {
             this.setState({
-                currentHoverValue: value
+                currentHoverValue: currentSliderValue,
+                ludoCreateForm: Object.assign(ludoCreateForm, {
+                    duration: currentSliderValue,
+                    checkpoint: [currentSliderValue]
+                })
             });
         } else {
-            this.setState(
-                Object.assign(ludoCreateForm, {
+            this.setState({
+                currentHoverValue: 3,
+                ludoCreateForm: Object.assign(ludoCreateForm, {
                     duration: 3,
                     checkpoint: [3]
                 })
-            );
-            this.setState({
-                currentHoverValue: 3
             });
         }
     }
 
     handleIconChange() {
-        const { ludoCreateForm } = this.state;
-        const { category_id } = ludoCreateForm;
+        const { category_id } = this.state.ludoCreateForm;
         return iconArray[category_id];
     }
 
     handleIntroductionChange(event) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
+        this.setState({
+            ludoCreateForm: Object.assign(this.state.ludoCreateForm, {
                 introduction: event.target.value
             })
-        );
+        });
     }
 
     handleMarblesChange(marbles) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
+        this.setState({
+            isMarblesSelected: true,
+            ludoCreateForm: Object.assign(this.state.ludoCreateForm, {
                 marbles
             })
-        );
-        this.setState({
-            isMarblesSelected: true
         });
     }
 
@@ -189,31 +175,38 @@ export default class CreateForm extends React.Component {
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
             .then(response => {
-                if (response.data.status == '200') {
+                if (response.data.status === '200') {
+                    this.setState({
+                        isSuccesfullyCreateLudo: true
+                    });
                     const { ludo_id } = response.data;
+                    /* get ludo information after create ludo post */
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then(response => {
-                        if (response.data.status == '200') {
+                        if (response.data.status === '200') {
                             const { getBasicUserData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
                             getBasicUserData();
                             handleShouldProfileUpdate(true);
                             updateCurrentFormValue(response.data.ludo);
                             browserHistory.push(`/opened-for-starter/${ludo_id}`);
                         } else {
+                            window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
                             console.log('get after create post message from server: ', response.data.message);
+                            console.log('get after create post error from server: ', response.data.err);
                         }
                     })
                     .catch(error => {
+                        window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                         console.log('get after create post error', error);
-                        console.log('message from server: ', response.data.message);
                     });
                 } else {
+                    window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.log('create post message from server: ', response.data.message);
                 }
             })
             .catch(error => {
+                window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.log('create post error', error);
-                console.log('create post message from server: ', response.data.message);
             });
             
         } else if (!isCategorySelected) {
@@ -250,7 +243,7 @@ export default class CreateForm extends React.Component {
     }
 
     render() {
-        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration } = this.state;
+        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxMarbles } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= currentHoverValue) {
@@ -341,21 +334,32 @@ export default class CreateForm extends React.Component {
                     </div>
                     <div className="ludo-create-information-bottom-container">
                         <div className="text-label">
-                            彈珠數:<span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
+                            {
+                                this.state.isMarblesSelected ? 
+                                    <div>
+                                        你選擇的彈珠數為:
+                                        <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
+                                    </div>
+                                : `選擇彈珠數` 
+                            }
                         </div>
                         <div className="ludo-create-information-slider--marbles">
-                            <RcSlider max={50} min={1} 
+                            <RcSlider max={maxMarbles} min={1} 
                                 value={ludoCreateForm.marbles}
                                 onChange={this.handleMarblesChange}
                             />
                         </div>
-                        <div className="text-label">持續期間:</div>
+                        <div className="text-label">
+                            {
+                                isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
+                            }
+                        </div>
                         <div className="ludo-create-information-day-picker">
                             {dayPickerButtons}
                             <div className="ludo-create-information-slider--duration">
                                 <RcSlider 
                                     max={maxDuration} min={3} 
-                                    defaultValue={3} value={ludoCreateForm.duration}
+                                    defaultValue={ludoCreateForm.duration} value={ludoCreateForm.duration}
                                     onChange={this.handleDurationValue}
                                 />
                             </div>
@@ -370,7 +374,11 @@ export default class CreateForm extends React.Component {
                                 maxLength="140"
                             />
                         </div>
-                        <button className="ludo-create-information-submit-button" type="submit">
+                        <button 
+                            className="ludo-create-information-submit-button" 
+                            type="submit" 
+                            disabled={this.state.isSuccesfullyCreateLudo}
+                        >
                             開始
                         </button>
                     </div>

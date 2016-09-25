@@ -1,7 +1,7 @@
 .ludo-detail-information-container {
     @extend .ludo-create-information-container;
     height: 78%;
-    
+
     &::-webkit-scrollbar {
         width: 8px;
     }
@@ -42,9 +42,9 @@
     //     border-width: 1px;
     //     border-color: $gray_text-field;
     // }
-    .ludo-detail-information-field__text--introduction {
-        height: 100px;
-    }
+    // .ludo-detail-information-field__text--introduction {
+    //     height: 100px;
+    // }
 
 .ludo-detail-information-top-container {
     @extend %flex;
@@ -123,7 +123,6 @@
 }
 
 .ludo-detail-information-day-picker {
-    margin-bottom: 10px;
 }
     .ludo-detail-information-day-picker__button {
         width: 50px;
@@ -150,7 +149,6 @@
 
 .ludo-detail-information-slider--duration {
     margin-top: 12px;
-    margin-bottom: 15px;
     // overwrite react-component slider
     .rc-slider-step {
         height: 2px;
@@ -169,7 +167,7 @@
     @extend .ludo-button;
     width: 80px;
     height: 30px;
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 16px;
     color: $black;
     background-color: $orange_button;

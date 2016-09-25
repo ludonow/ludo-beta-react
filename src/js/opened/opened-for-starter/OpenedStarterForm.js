@@ -17,7 +17,7 @@ export default class OpenedStarterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSubmitted: false,
+            isLudoDeleted: false,
             maxDuration: 14,
             maxMarbles: 50
         };
@@ -27,11 +27,7 @@ export default class OpenedStarterForm extends React.Component {
 
     componentDidMount() {
         const { ludoId }= this.props.params;
-        const { getCurrentLudoData } = this.props;
-        getCurrentLudoData(ludoId);
-        this.setState({
-            isSubmitted: false
-        });
+        this.props.getCurrentLudoData(ludoId);
     }
 
     getCategory(category_id) {
@@ -56,47 +52,48 @@ export default class OpenedStarterForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { isSubmitted } = this.state;
         // TODO: Use notification confirming delete ludo 
         const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
-        if (!isSubmitted && isSureToDelete) {
+        if (!this.state.isLudoDeleted && isSureToDelete) {
             const { currentFormValue, params } = this.props;
             const { ludoId } = params;
-            console.log(`/apis/ludo/${ludoId}`);
+            // console.log(`/apis/ludo/${ludoId}`);   // debug
             const body = {
                 'marbles': currentFormValue.marbles
             };
-            console.log('body', body);
-            console.log('before quit axios delete');
+            // console.log('ludo delete body', body);   // debug
+            // console.log('before quit axios delete');   // debug
             axios.delete(`/apis/ludo/${ludoId}`, body)
             .then(response => {
                 if(response.data.status == '200') {
                     this.setState({
-                        isSubmitted: true
+                        isLudoDeleted: true
                     });
                     this.props.getBasicUserData();
                     this.props.handleShouldProfileUpdate(true);
-                    console.log('response data', response.data);
-                    console.log('after quit axios delete');
+                    // console.log('response data', response.data);   // debug
+                    // console.log('after quit axios delete');   // debug
                     browserHistory.push(`/playground`);
                 } else {
-                    console.log('message from server: ', response.data.message);
+                    window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.log('OpenedStarterForm delete else message from server: ', response.data.message);
+                    console.log('OpenedStarterForm delete else error from server: ', response.data.err);
                 }
             })
             .catch(error => {
-                console.log('error', error);
-                console.log('error message from server: ', response.data.message);
+                window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                console.log('OpenedStarterForm delete error', error);
             });
         } else {
-            console.log('error in state isSubmitted');
+            console.log('OpendStarterForm error in state isLudoDeleted');
             this.setState({
-                isSubmitted: true
+                isLudoDeleted: true
             });
         }
     }
 
     render() {
-        const { isSubmitted, maxDuration, maxMarbles } = this.state;
+        const { maxDuration, maxMarbles } = this.state;
         const { currentFormValue } = this.props; 
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
@@ -177,7 +174,11 @@ export default class OpenedStarterForm extends React.Component {
                                 {introduction}
                             </div>
                         </div>
-                        <button className="ludo-detail-information-submit-button" type="submit" disabled={isSubmitted}>
+                        <button 
+                            className="ludo-detail-information-submit-button" 
+                            type="submit" 
+                            disabled={this.state.isLudoDeleted}
+                        >
                             刪除
                         </button>
                     </div>
