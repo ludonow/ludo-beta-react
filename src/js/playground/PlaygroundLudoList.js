@@ -33,6 +33,14 @@ export default class PlaygroundLudoList extends React.Component {
         this.showFront = this.showFront.bind(this);
     }
 
+    componentWillMount() {
+        this.props.handleIsOpeningLudoListPage(true);
+    }
+
+    componentWillUnmount() {
+        this.props.handleIsOpeningLudoListPage(false);
+    }
+
     handleCardStage(stage) {
         if (stage == 1) {
             return `card-bottom__stage--opened`;

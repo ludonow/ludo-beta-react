@@ -33,6 +33,14 @@ export default class LudoList extends React.Component {
         this.showTheOtherFace = this.showTheOtherFace.bind(this);
     }
 
+    componentWillMount() {
+        this.props.handleIsOpeningLudoListPage(true);
+    }
+
+    componentWillUnmount() {
+        this.props.handleIsOpeningLudoListPage(false);
+    }
+
     handleCardStage(stage) {
         if (stage == 1) {
             return `card-bottom__stage--opened`;

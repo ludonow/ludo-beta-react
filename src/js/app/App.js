@@ -22,8 +22,9 @@ export default class App extends React.Component {
             currentLudoReportData: [],
             currentUserId: '',
             isLoggedIn: false,
-            isOpeningProfilePage: false,
             isOpeningActivePage: false,
+            isOpeningLudoListPage: false,
+            isOpeningProfilePage: false,
             shouldProfileUpdate: false,
             shouldReportUpdate: false,
             ludoList: [],
@@ -42,6 +43,7 @@ export default class App extends React.Component {
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
+        this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
@@ -49,27 +51,32 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
+        // console.log('app componentDidMount handleShouldProfileUpdate');  // debug
+        this.handleShouldProfileUpdate(true);
+        // console.log('app componentDidMount getBasicUserData');  // debug
         this.getBasicUserData();
-        this.getLatestLudoList();
     }
 
     componentDidUpdate() {
         // console.log('app componentDidUpdate state', this.state);  // debug
-        const { currentUserId, isLoggedIn, isOpeningProfilePage, shouldProfileUpdate } = this.state;
+        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, shouldProfileUpdate } = this.state;
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
-            console.log('app componentDidUpdate shouldProfileUpdate true');  // debug
-            this.getLatestLudoList();
+            // console.log('app componentDidUpdate shouldProfileUpdate true');  // debug
+            if (isOpeningLudoListPage) {
+                // console.log('app componentDidUpdate getLatestLudoList');  // debug
+                this.getLatestLudoList();
+            }
             /* 
              * Update profile data after the user did some ludo action and is going to open profile page 
              */
             if (isOpeningProfilePage) {
-                console.log('app componentDidUpdate update profile');   // debug
+                // console.log('app componentDidUpdate update profile');   // debug
                 this.getProfileData();
                 this.getProfileWillLudoData(currentUserId);
                 this.getProfileLudoingData(currentUserId);
                 // this.getProfileDidLudoData(currentUserId);
+                this.handleShouldProfileUpdate(false);
             }
-            this.handleShouldProfileUpdate(false);
         }
 
         const { currentLudoId, isOpeningActivePage, shouldReportUpdate } = this.state;
@@ -117,13 +124,12 @@ export default class App extends React.Component {
     }
 
     getLatestLudoList() {
-        console.log('app before getLatestLudoList');  // debug
+        // console.log('app getLatestLudoList before get');  // debug
         axios.get('/apis/ludo')
         .then(response => {
             if(response.data.status === '200') {
                 this.setState({
-                    ludoList: response.data.ludoList.Items,
-                    shouldProfileUpdate: false
+                    ludoList: response.data.ludoList.Items
                 });
             } else {
                 console.log('app getLatestLudoList else message from server: ', response.data.message);
@@ -135,7 +141,7 @@ export default class App extends React.Component {
     }
 
     getProfileData() {
-        console.log('app before getProfileData');  // debug
+        // console.log('app before getProfileData');  // debug
         axios.get('/apis/profile')
         .then(response => {
             if(response.data.status === '200') {
@@ -231,6 +237,13 @@ export default class App extends React.Component {
         });
     }
 
+    handleIsOpeningLudoListPage(boolean) {
+        // console.log('app handleIsOpeningLudoListPage', boolean);  // debug
+        this.setState({
+            isOpeningLudoListPage: boolean
+        });
+    }
+
     handleIsOpeningProfilePage(boolean) {
         // console.log('app handleIsOpeningProfilePage', boolean);  // debug
         this.setState({
@@ -276,6 +289,7 @@ export default class App extends React.Component {
                             getProfileDidLudoData: this.getProfileDidLudoData,
                             getReportOfCurrentLudo: this.getReportOfCurrentLudo,
                             handleIsOpeningActivePage: this.handleIsOpeningActivePage,
+                            handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                             handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
                             handleShouldProfileUpdate: this.handleShouldProfileUpdate,
                             handleShouldReportUpdate: this.handleShouldReportUpdate,

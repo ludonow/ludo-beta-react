@@ -27,7 +27,6 @@ export default class Profile extends React.Component {
 
     componentWillMount() {
         this.props.handleIsOpeningProfilePage(true);
-        this.props.handleShouldProfileUpdate(true);
     }
 
     componentWillUnmount() {
