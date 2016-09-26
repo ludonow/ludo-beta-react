@@ -1,7 +1,7 @@
 import React from 'react';
 import Masonry from 'react-masonry-component';
-// import axios from 'axios';
-import config from '../axios-config';
+// import axios from '../axios-config';
+import config from '../axios-fakedata-config';
 
 const masonryOptions = {
     itemSelector: ".grid-item--friend",

@@ -25,6 +25,8 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
     }
 }
     .right-sidebar-item {
+        @extend %clickable;
+        @extend %relative;
         @extend %as_wide_as_parent;
         height: $right-sidebar-item_height;
         border-color: white;
@@ -35,6 +37,17 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
             @extend %margin_center_x;
             @extend %background_img_setting;
         }
+        .right-sidebar-item__instruction {
+            @extend %absolute;
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            @extend %as_wide_as_parent;
+            @extend %as_tall_as_parent;
+            color: white;
+            background-color: rgba(0,0,0,0.6);
+        }
+
     .color-sidebar1 {
         background-color: $sidebar-color-1;
         .playground-icon {

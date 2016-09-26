@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 var axiosInstance = axios.create({
-  baseURL: 'http://api.ludonow.com',
+  baseURL: 'http://localhost:8080/',
   withCredentials: 'true'
 });
 
