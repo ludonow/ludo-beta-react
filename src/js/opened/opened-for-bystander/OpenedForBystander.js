@@ -10,7 +10,7 @@ export default class OpenedForBystander extends React.Component {
 
     render() {
         return (
-            <div className="main-container">
+            <div className="form-and-list">
                 <OpenedBystanderForm {...this.props} />
                 <div className="form-ludo-list-container">
                     <LudoList {...this.props} />

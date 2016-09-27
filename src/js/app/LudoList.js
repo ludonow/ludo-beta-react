@@ -16,7 +16,7 @@ const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' stu
 
 const masonryOptions = {
     itemSelector: ".form-item",
-    columnWidth: 230,
+    columnWidth: 214,
     fitWidth: true
 };
 
@@ -132,43 +132,48 @@ export default class LudoList extends React.Component {
         const { isLastestCardFlip } = this.state;
         const { currentFormValue, shouldProfileUpdate, ludoList } = this.props;
         return (
-                <Masonry options={masonryOptions}>
-                    {
-                        shouldProfileUpdate ?
-                            <div className={`form-item`} key={`new-card`}>
+            <Masonry options={masonryOptions}>
+                {
+                    ludoList.map( (data, index) => {
+                        const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
+                        const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
+                        return (
+                            <div className={`form-item`} key={`card-${index}`}>
                                 <div 
-                                    className={`form-card card-front ${isLastestCardFlip ? "" : "card-flip"}`}
-                                    onClick={this.showTheOtherFace}
+                                    className={`form-card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
+                                    id={index}
+                                    onClick={buttonClickHandler}
                                 >
-                                    <div className={`card-top ${this.handleCardFrontTopClass(currentFormValue.category_id)}`}>
-                                        <div className="title">{currentFormValue.title}</div>
-                                        <div className="duration">{currentFormValue.duration} days</div>
+                                    <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
+                                        <div className="title">{data.title}</div>
+                                        <div className="duration">{data.duration} days</div>
                                         <div className="card-marble">
                                             <img src={marbleIcon} className="card-marble__icon" />
-                                            <span className="card-marble__number">{currentFormValue.marbles}</span>
+                                            <span className="card-marble__number">{data.marbles}</span>
                                         </div>
                                     </div>
                                     <div className="card-bottom">
-                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(currentFormValue.category_id)} />
-                                        <div className={`card-bottom__stage ${this.handleCardStage(currentFormValue.stage)}`} />
+                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
+                                        <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
                                     </div>
                                 </div>
                                 <div 
-                                    className={`form-card card-back ${isLastestCardFlip ? "card-flip" : ""} ${this.handleCardBackClass(currentFormValue.category_id)}`}
-                                    onClick={this.showTheOtherFace}
+                                    className={`form-card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                                    id={index}
+                                    onClick={buttonClickHandler}
                                 >
-                                    <div className={this.handleCardBackClass(currentFormValue.category_id)}>
+                                    <div className={this.handleCardBackClass(data.category_id)}>
                                         <div className="card-introduction">
-                                            {String(currentFormValue.introduction).substring(0, 20) + ' ...'}
+                                            {String(data.introduction).substring(0, 20) + ' ...'}
                                         </div>
                                         <div className="card-hashtags">
-                                            {currentFormValue.tags}
+                                            {data.tags}
                                         </div>
                                     </div>
-                                    <div className={`card-bottom ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}>
-                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}>
-                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(currentFormValue.category_id)}`}
-                                                onClick={this.handleCardLink} id={`go`}
+                                    <div className={`card-bottom ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
+                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}
+                                                onClick={this.handleCardLink} id={`go-${index}`}
                                             >
                                                 go
                                             </div>
@@ -176,60 +181,10 @@ export default class LudoList extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        : null
-                    }
-                    {
-                        ludoList.map( (data, index) => {
-                            const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
-                            const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
-                            return (
-                                <div className={`form-item`} key={`card-${index}`}>
-                                    <div 
-                                        className={`form-card card-front ${isThisCardFlipped ? "" : "card-flip"}`}
-                                        id={index}
-                                        onClick={buttonClickHandler}
-                                    >
-                                        <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
-                                            <div className="title">{data.title}</div>
-                                            <div className="duration">{data.duration} days</div>
-                                            <div className="card-marble">
-                                                <img src={marbleIcon} className="card-marble__icon" />
-                                                <span className="card-marble__number">{data.marbles}</span>
-                                            </div>
-                                        </div>
-                                        <div className="card-bottom">
-                                            <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
-                                            <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
-                                        </div>
-                                    </div>
-                                    <div 
-                                        className={`form-card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
-                                        id={index}
-                                        onClick={buttonClickHandler}
-                                    >
-                                        <div className={this.handleCardBackClass(data.category_id)}>
-                                            <div className="card-introduction">
-                                                {String(data.introduction).substring(0, 20) + ' ...'}
-                                            </div>
-                                            <div className="card-hashtags">
-                                                {data.tags}
-                                            </div>
-                                        </div>
-                                        <div className={`card-bottom ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                            <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                                <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}
-                                                    onClick={this.handleCardLink} id={`go-${index}`}
-                                                >
-                                                    go
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </Masonry>
+                        )
+                    })
+                }
+            </Masonry>
         );
     }
 };

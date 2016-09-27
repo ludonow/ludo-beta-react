@@ -5,10 +5,10 @@
     // width: calc(100% - #{$g_right-sidebar_width});
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
-    margin-top: 70px;
+    margin-top: 77px;
     // padding-top: 14px;
-    // display: flex;
-    // justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .main-container.hoveringSidebar {
@@ -17,7 +17,7 @@
     right: $g_right-sidebar_width/2;
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
-    margin-top: 70px;
+    margin-top: 77px;
     // display: flex;
     // justify-content: center;
 }

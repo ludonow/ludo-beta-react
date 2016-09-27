@@ -297,93 +297,91 @@ export default class CreateForm extends React.Component {
             }
         }
         return (
-            <div className="form">
-                <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
-                    <div className="ludo-create-information-top-container">
-                        <div className="category-icon-container">
-                            <img className="category-icon" src={this.handleIconChange()} />
-                        </div>
-                        <div className="top-right-container">
-                            <div className="dropdown-list-container">
-                                <span className="category-label">種類:</span>
-                                <DropdownList 
-                                    className="dropdown-list"
-                                    data={category}
-                                    onChange={this.handleCategoryChange}
-                                    // defaultValue={'select a category'}
-                                    defaultValue={'選擇一個種類'}
-                                />
-                            </div>
-                            <div className="text-field-container">
-                                <span className="text-field-label">標題:</span>
-                                <input className="text-field" type="text"
-                                    // placeholder="Title"
-                                    placeholder="輸入想要的標題"
-                                    onChange={this.handleTitleChange}
-                                />
-                            </div>
-                            <div className="text-field-container">
-                                <span className="text-field-label">#標籤:</span>
-                                <input className="text-field" type="text"
-                                    // placeholder="#hashtag"
-                                    placeholder="輸入想要的#標籤"
-                                    onChange={this.handleTagsChange}
-                                />
-                            </div>
-                        </div>
+            <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
+                <div className="ludo-create-information-top-container">
+                    <div className="category-icon-container">
+                        <img className="category-icon" src={this.handleIconChange()} />
                     </div>
-                    <div className="ludo-create-information-bottom-container">
-                        <div className="text-label">
-                            {
-                                this.state.isMarblesSelected ? 
-                                    <div>
-                                        你選擇的彈珠數為:
-                                        <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
-                                    </div>
-                                : `選擇彈珠數` 
-                            }
-                        </div>
-                        <div className="ludo-create-information-slider--marbles">
-                            <RcSlider max={maxMarbles} min={1} 
-                                value={ludoCreateForm.marbles}
-                                onChange={this.handleMarblesChange}
+                    <div className="top-right-container">
+                        <div className="dropdown-list-container">
+                            <span className="category-label">種類:</span>
+                            <DropdownList 
+                                className="dropdown-list"
+                                data={category}
+                                onChange={this.handleCategoryChange}
+                                // defaultValue={'select a category'}
+                                defaultValue={'選擇一個種類'}
                             />
                         </div>
-                        <div className="text-label">
-                            {
-                                isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
-                            }
-                        </div>
-                        <div className="ludo-create-information-day-picker">
-                            {dayPickerButtons}
-                            <div className="ludo-create-information-slider--duration">
-                                <RcSlider 
-                                    max={maxDuration} min={3} 
-                                    defaultValue={ludoCreateForm.duration} value={ludoCreateForm.duration}
-                                    onChange={this.handleDurationValue}
-                                />
-                            </div>
-                        </div>
-                        <div className="text-label">介紹:</div>
                         <div className="text-field-container">
-                            <textarea 
-                                className="text-field--introduction" 
-                                // placeholder="Introduction" 
-                                placeholder="詳細的說明(最多140字)"
-                                onChange={this.handleIntroductionChange}
-                                maxLength="140"
+                            <span className="text-field-label">標題:</span>
+                            <input className="text-field" type="text"
+                                // placeholder="Title"
+                                placeholder="輸入想要的標題"
+                                onChange={this.handleTitleChange}
                             />
                         </div>
-                        <button 
-                            className="ludo-create-information-submit-button" 
-                            type="submit" 
-                            disabled={this.state.isSuccesfullyCreateLudo}
-                        >
-                            開始
-                        </button>
+                        <div className="text-field-container">
+                            <span className="text-field-label">#標籤:</span>
+                            <input className="text-field" type="text"
+                                // placeholder="#hashtag"
+                                placeholder="輸入想要的#標籤"
+                                onChange={this.handleTagsChange}
+                            />
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div className="ludo-create-information-bottom-container">
+                    <div className="text-label">
+                        {
+                            this.state.isMarblesSelected ? 
+                                <div>
+                                    你選擇的彈珠數為:
+                                    <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
+                                </div>
+                            : `選擇彈珠數` 
+                        }
+                    </div>
+                    <div className="ludo-create-information-slider--marbles">
+                        <RcSlider max={maxMarbles} min={1} 
+                            value={ludoCreateForm.marbles}
+                            onChange={this.handleMarblesChange}
+                        />
+                    </div>
+                    <div className="text-label">
+                        {
+                            isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
+                        }
+                    </div>
+                    <div className="ludo-create-information-day-picker">
+                        {dayPickerButtons}
+                        <div className="ludo-create-information-slider--duration">
+                            <RcSlider 
+                                max={maxDuration} min={3} 
+                                defaultValue={ludoCreateForm.duration} value={ludoCreateForm.duration}
+                                onChange={this.handleDurationValue}
+                            />
+                        </div>
+                    </div>
+                    <div className="text-label">介紹:</div>
+                    <div className="text-field-container">
+                        <textarea 
+                            className="text-field--introduction" 
+                            // placeholder="Introduction" 
+                            placeholder="詳細的說明(最多140字)"
+                            onChange={this.handleIntroductionChange}
+                            maxLength="140"
+                        />
+                    </div>
+                    <button 
+                        className="ludo-create-information-submit-button" 
+                        type="submit" 
+                        disabled={this.state.isSuccesfullyCreateLudo}
+                    >
+                        開始
+                    </button>
+                </div>
+            </form>
         );
     }
 };

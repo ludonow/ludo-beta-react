@@ -7,7 +7,7 @@ $grid-item_width: 200px;
 $grid-item_total-width: $grid-item_width + 2*$grid-item_padding;
 $detail_equal_to_columns_of_grid_item: 3;
 $grid-item--ludo-detail-information_width: $grid-item_width * $detail_equal_to_columns_of_grid_item + $grid-item_padding * 2 * ($detail_equal_to_columns_of_grid_item - 1);
-$grid-item--half_width: 550px;
+$grid-item--profile_width: 520px;
 $grid-item--friend_width: 170px;
 
 // color
@@ -47,8 +47,8 @@ $new_skill-text-color: #fdcaad;
         height: 1000px;
         padding-top: $grid-item_padding;
     }
-    .grid-item--half {
-        width: $grid-item--half_width;
+    .grid-item--profile {
+        width: $grid-item--profile_width;
         padding: $grid-item_padding;
     }
     .grid-item--friend {
@@ -142,8 +142,8 @@ $new_skill-text-color: #fdcaad;
         word-wrap: break-word;
         @extend %absolute;
         top: 5px;
-        left: 5px; 
-        width: 200px;
+        left: 5px;
+        width: 204px;
         @extend %text_center;
         font-size: 14px;
         backface-visibility: hidden;

@@ -10,7 +10,7 @@ export default class ActiveForBystander extends React.Component {
 
     render() {
         return (
-            <div className="main-container">
+            <div className="form-and-report">
                 <ActiveBystanderForm  {...this.props} />
                 <ActiveReports {...this.props} />
             </div>

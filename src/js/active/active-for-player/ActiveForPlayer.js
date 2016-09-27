@@ -10,7 +10,7 @@ export default class ActiveForPlayer extends React.Component {
 
     render() {
         return (
-            <div className="main-container">
+            <div className="form-and-report">
                 <ActivePlayerForm  {...this.props} />
                 <ActiveReports {...this.props} />
             </div>

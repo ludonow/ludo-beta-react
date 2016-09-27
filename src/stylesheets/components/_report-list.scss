@@ -1,5 +1,5 @@
 .report-list {
-    width: 50%;
+    width: $grid-item_total-width*2;
     margin: 0 10px;
 }
 
@@ -9,7 +9,7 @@
 }
     .player-container {
         @extend %as_wide_as_parent;
-        margin: 0 10px 0 10px;
+        margin: 0 7px;
     }
         .player-photo-container {
             @extend %flex;

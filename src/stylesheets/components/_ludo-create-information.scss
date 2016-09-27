@@ -11,10 +11,9 @@ $orange_button: rgba(248, 182, 45, 1);
     height: 80%;
     overflow-y: auto;
     @extend .card;
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: 35px;
+    padding-left: 35px;
     padding-top: 30px;
-    padding-bottom: 15px;
     @extend %text_center;
 
     &::-webkit-scrollbar {

@@ -214,7 +214,7 @@ export default class App extends React.Component {
     }
 
     getReportOfCurrentLudo(ludo_id) {
-        console.log('app before getReportOfCurrentLudo -- ludo_id: ', ludo_id);  // debug
+        // console.log('app before getReportOfCurrentLudo -- ludo_id: ', ludo_id);  // debug
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
@@ -233,7 +233,7 @@ export default class App extends React.Component {
     }
 
     handleIsHoveringSidebar(boolean) {
-        console.log('app handleIsHoveringSidebar', boolean);  // debug
+        // console.log('app handleIsHoveringSidebar', boolean);  // debug
         this.setState({
             isHoveringSidebar: boolean
         });
