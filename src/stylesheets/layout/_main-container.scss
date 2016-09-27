@@ -1,9 +1,23 @@
 .main-container {
-    @extend %absolute;
-    @extend %header_height_offset;
+    @extend %relative;
+    // @extend %header_height_offset;
     // right: $g_right-sidebar_width;
-    width: calc(100% - #{$g_right-sidebar_width});
-    padding-top: 14px;
-    display: flex;
-    justify-content: center;
+    // width: calc(100% - #{$g_right-sidebar_width});
+    width: $grid-item_total-width*5;
+    @extend %margin_center_x;
+    margin-top: 70px;
+    // padding-top: 14px;
+    // display: flex;
+    // justify-content: center;
+}
+
+.main-container.hoveringSidebar {
+    @extend %relative;
+    // @extend %header_height_offset;
+    right: $g_right-sidebar_width/2;
+    width: $grid-item_total-width*5;
+    @extend %margin_center_x;
+    margin-top: 70px;
+    // display: flex;
+    // justify-content: center;
 }

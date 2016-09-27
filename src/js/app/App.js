@@ -21,6 +21,7 @@ export default class App extends React.Component {
             currentLudoId: '',
             currentLudoReportData: [],
             currentUserId: '',
+            isHoveringSidebar: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
             isOpeningLudoListPage: false,
@@ -42,6 +43,7 @@ export default class App extends React.Component {
         this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
+        this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
@@ -74,7 +76,7 @@ export default class App extends React.Component {
                 this.getProfileData();
                 this.getProfileWillLudoData(currentUserId);
                 this.getProfileLudoingData(currentUserId);
-                // this.getProfileDidLudoData(currentUserId);
+                this.getProfileDidLudoData(currentUserId);
                 this.handleShouldProfileUpdate(false);
             }
         }
@@ -230,6 +232,13 @@ export default class App extends React.Component {
         });
     }
 
+    handleIsHoveringSidebar(boolean) {
+        console.log('app handleIsHoveringSidebar', boolean);  // debug
+        this.setState({
+            isHoveringSidebar: boolean
+        });
+    }
+
     handleIsOpeningActivePage(boolean) {
         // console.log('app handleIsOpeningActivePage', boolean);  // debug
         this.setState({
@@ -273,10 +282,15 @@ export default class App extends React.Component {
     }
 
     render() {
+        const { isHoveringSidebar } = this.state;
         return (
             <div>
                 <Header isProfile={this.state.isOpeningProfilePage} userBasicData={this.state.userBasicData}/>
-                <Sidebar currentUserId={this.state.currentUserId} />
+                <Sidebar currentUserId={this.state.currentUserId} 
+                    handleIsHoveringSidebar={this.handleIsHoveringSidebar} 
+                    isHoveringSidebar={isHoveringSidebar}
+                />
+                <div className={isHoveringSidebar ? `main-container hoveringSidebar` : `main-container`}>
                 {
                     React.cloneElement(this.props.children,
                         Object.assign(this.state, {
@@ -288,6 +302,7 @@ export default class App extends React.Component {
                             getProfileLudoingData: this.getProfileLudoingData,
                             getProfileDidLudoData: this.getProfileDidLudoData,
                             getReportOfCurrentLudo: this.getReportOfCurrentLudo,
+                            handleIsHoveringSidebar: this.handleIsHoveringSidebar,
                             handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                             handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                             handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
@@ -297,6 +312,7 @@ export default class App extends React.Component {
                         })
                     )
                 }
+                </div>
             </div>
         );
     }

@@ -18,7 +18,7 @@ const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' stu
 
 const masonryOptions = {
     itemSelector: ".grid-item",
-    columnWidth: 210,
+    columnWidth: 214,
     fitWidth: true
 };
 

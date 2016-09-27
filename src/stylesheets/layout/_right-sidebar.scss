@@ -11,6 +11,40 @@ $sidebar-color-4: rgba(215, 131, 255, 1);
 $sidebar-color-5: rgba(118, 214, 255, 1);
 $sidebar-color-6: rgba(115, 250, 121, 1);
 
+.right-sidebar-hover-area {
+    @extend %fixed;
+    @extend %header_height_offset;
+    @extend %right;
+    width: $g_right-sidebar_width/3;
+    @include md-max {
+        height: $right-sidebar_height_md_max;
+    }
+    @include md-min {
+        height: $right-sidebar_height_md_min;
+    }
+}
+// .right-sidebar-hover-area.hovering {
+//     width: $g_right-sidebar_width*3;
+// }
+
+
+.right-sidebar-arrow-container {
+    @extend %as_tall_as_parent;
+    @extend %flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    .arrow {
+        @extend %as_wide_as_parent;
+        @extend %flex;
+        align-items: center;
+        justify-content: center;
+        height: 33px;
+        @extend %round_border;
+        background-color: rgba(0,0,0,0.5);
+    }
+}
+
 .right-sidebar {
     @extend %fixed;
     @extend %header_height_offset;
