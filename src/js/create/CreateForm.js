@@ -37,10 +37,9 @@ export default class CreateForm extends React.Component {
             isMarblesSelected: false,
             isSuccesfullyCreateLudo: false,
             maxDuration: 14,
+            maxLengthOfIntroduction: 140,
             maxMarbles: 50,
-            suggestions: ["Banana", "Mango", "Pear", "Apricot"],
-            // tags: [{id: 1, text: "Apples"}]
-            // tags: []
+            suggestions: ["Banana", "Mango", "Pear", "Apricot"]
         };
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
@@ -165,6 +164,15 @@ export default class CreateForm extends React.Component {
                 introduction: event.target.value
             })
         });
+        if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
+            this.setState({
+                maxLengthOfIntroduction: 140
+            });
+        } else {
+            this.setState({
+                maxLengthOfIntroduction: 140*3
+            });
+        }
     }
 
     handleMarblesChange(marbles) {
@@ -289,7 +297,7 @@ export default class CreateForm extends React.Component {
     // }
 
     render() {
-        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxMarbles } = this.state;
+        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
         const { tags, suggestions } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
@@ -410,9 +418,9 @@ export default class CreateForm extends React.Component {
                         <textarea 
                             className="text-field--introduction" 
                             // placeholder="Introduction" 
-                            placeholder="詳細的說明(最多140字)"
+                            placeholder={`詳細的說明(中文最多140字)`}
                             onChange={this.handleIntroductionChange}
-                            maxLength="140"
+                            maxLength={maxLengthOfIntroduction}
                         />
                         <div className="text-field--hashtag">
                             <TagsInput
