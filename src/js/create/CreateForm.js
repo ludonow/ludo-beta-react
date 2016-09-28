@@ -3,6 +3,8 @@ import { browserHistory } from 'react-router';
 import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
+// import { WithContext as ReactTags } from 'react-tag-input';
+import TagsInput from 'react-tagsinput';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -25,7 +27,7 @@ export default class CreateForm extends React.Component {
                 checkpoint: [3],
                 title: '',
                 introduction: '',
-                tags: ''
+                tags: []
             },
             // category: [lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
@@ -35,7 +37,10 @@ export default class CreateForm extends React.Component {
             isMarblesSelected: false,
             isSuccesfullyCreateLudo: false,
             maxDuration: 14,
-            maxMarbles: 50
+            maxMarbles: 50,
+            suggestions: ["Banana", "Mango", "Pear", "Apricot"],
+            // tags: [{id: 1, text: "Apples"}]
+            // tags: []
         };
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
@@ -48,6 +53,10 @@ export default class CreateForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
+
+        // this.handleDelete = this.handleDelete.bind(this);
+        // this.handleAddition = this.handleAddition.bind(this);
+        // this.handleDrag = this.handleDrag.bind(this);
     }
 
     handleCategoryChange(selectedCategory) {
@@ -233,17 +242,55 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleTagsChange(event) {
+    handleTitleMaxLength() {
+        const { title } = this.state.ludoCreateForm;
+        let length = 0;
+        if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
+            length = 19;
+        } else {
+            length = 60;
+        }
+        return length;
+    }
+
+    handleTagsChange(tags) {
         const { ludoCreateForm } = this.state;
         this.setState(
             Object.assign(ludoCreateForm, {
-                tags: event.target.value
+                tags
             })
         );
     }
 
+    // handleDelete(i) {
+    //     let tags = this.state.tags;
+    //     tags.splice(i, 1);
+    //     this.setState({tags: tags});
+    // }
+
+    // handleAddition(tag) {
+    //     let tags = this.state.tags;
+    //     tags.push({
+    //         id: tags.length + 1,
+    //         text: tag
+    //     });
+    //     this.setState({tags: tags});
+    // }
+
+    // handleDrag(tag, currPos, newPos) {
+    //     let tags = this.state.tags;
+
+    //     // mutate array
+    //     tags.splice(currPos, 1);
+    //     tags.splice(newPos, 0, tag);
+
+    //     // re-render
+    //     this.setState({ tags: tags });
+    // }
+
     render() {
         const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxMarbles } = this.state;
+        const { tags, suggestions } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= currentHoverValue) {
@@ -318,6 +365,7 @@ export default class CreateForm extends React.Component {
                             <input className="text-field" type="text"
                                 // placeholder="Title"
                                 placeholder="輸入想要的標題"
+                                maxLength={this.handleTitleMaxLength()}
                                 onChange={this.handleTitleChange}
                             />
                         </div>
@@ -358,14 +406,7 @@ export default class CreateForm extends React.Component {
                         </div>
                     </div>
                     <div className="text-label">介紹:</div>
-                    <div className="text-field-container">
-                        <input className="text-field text-field--hashtag" type="text"
-                            // placeholder="#hashtag"
-                            placeholder="輸入想要的#標籤"
-                            onChange={this.handleTagsChange}
-                        />
-                    </div>
-                    <div className="text-field-container">
+                    <div className="text-field-container text-field-container--introduction">
                         <textarea 
                             className="text-field--introduction" 
                             // placeholder="Introduction" 
@@ -373,6 +414,13 @@ export default class CreateForm extends React.Component {
                             onChange={this.handleIntroductionChange}
                             maxLength="140"
                         />
+                        <div className="text-field--hashtag">
+                            <TagsInput
+                                value={ludoCreateForm.tags} 
+                                onChange={this.handleTagsChange}
+                                inputProps={{maxLength: 30, placeholder:"#標籤"}}
+                            />
+                        </div>
                     </div>
                     <button 
                         className="ludo-create-information-submit-button" 
@@ -386,3 +434,18 @@ export default class CreateForm extends React.Component {
         );
     }
 };
+                            // <ReactTags 
+                            //     tags={tags}
+                            //     suggestions={suggestions}
+                            //     handleDelete={this.handleDelete}
+                            //     handleAddition={this.handleAddition}
+                            //     handleDrag={this.handleDrag}
+                            //     placeholder="輸入#標籤"
+                            // />
+
+
+                        // <textarea className="text-field--hashtag" type="text"
+                        //     // placeholder="#hashtag"
+                        //     placeholder="#標籤"
+                        //     onChange={this.handleTagsChange}
+                        // />

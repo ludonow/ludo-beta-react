@@ -106,21 +106,6 @@ $orange_button: rgba(248, 182, 45, 1);
                 @extend %text_center;
             }
         }
-        /* overwrite text-field css width */
-        input.text-field--hashtag {
-            @extend %as_wide_as_parent;
-        }
-        .text-field--introduction {
-            @extend %as_wide_as_parent;
-            height: 75px;
-            resize: none;
-            border: none;
-            background-color: $gray_text-field;
-            &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-                @extend %text_center;
-                line-height: 75px;
-            }
-        }
     }
 
     .label-and-slider {
@@ -225,17 +210,32 @@ $orange_button: rgba(248, 182, 45, 1);
     }
 }
 
-.ludo-create-information-field {
-    @extend %relative;
-    text-align: left;
-    height: 30px;
-}
+    /* introduction field and hashtag field */
+    .text-field-container--introduction {
+        @extend %relative;
+        flex-direction: column;
+        margin-bottom: 8px;
+        /* overwrite textarea default css */
+        textarea {
+            resize: none;
+            border: none;
+            padding: 0;
+        }
+        .text-field--introduction {
+            @extend %as_wide_as_parent;
+            height: 14px*5;
+            background-color: $gray_text-field;
+            &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                @extend %text_center;
+                line-height: 14px*5;
+            }
+        }
+    }
 
 .ludo-create-information-submit-button {
     @extend .ludo-button;
     width: 80px;
     height: 30px;
-    margin-top: 10px;
     font-size: 16px;
     color: $black;
     background-color: $orange_button;
