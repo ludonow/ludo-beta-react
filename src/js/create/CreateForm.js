@@ -321,33 +321,27 @@ export default class CreateForm extends React.Component {
                                 onChange={this.handleTitleChange}
                             />
                         </div>
-                        <div className="text-field-container">
-                            <span className="text-field-label">#標籤:</span>
-                            <input className="text-field" type="text"
-                                // placeholder="#hashtag"
-                                placeholder="輸入想要的#標籤"
-                                onChange={this.handleTagsChange}
-                            />
+                        <div className="label-and-slider">
+                            <div className="text-label">
+                                {
+                                    this.state.isMarblesSelected ? 
+                                        <div>
+                                            彈珠數:
+                                            <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
+                                        </div>
+                                    : `選擇彈珠數` 
+                                }
+                            </div>
+                            <div className="ludo-create-information-slider--marbles">
+                                <RcSlider max={maxMarbles} min={1} 
+                                    value={ludoCreateForm.marbles}
+                                    onChange={this.handleMarblesChange}
+                                />
+                            </div>
                         </div>
-                    </div>
+                        </div>
                 </div>
                 <div className="ludo-create-information-bottom-container">
-                    <div className="text-label">
-                        {
-                            this.state.isMarblesSelected ? 
-                                <div>
-                                    你選擇的彈珠數為:
-                                    <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
-                                </div>
-                            : `選擇彈珠數` 
-                        }
-                    </div>
-                    <div className="ludo-create-information-slider--marbles">
-                        <RcSlider max={maxMarbles} min={1} 
-                            value={ludoCreateForm.marbles}
-                            onChange={this.handleMarblesChange}
-                        />
-                    </div>
                     <div className="text-label">
                         {
                             isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
@@ -364,6 +358,13 @@ export default class CreateForm extends React.Component {
                         </div>
                     </div>
                     <div className="text-label">介紹:</div>
+                    <div className="text-field-container">
+                        <input className="text-field text-field--hashtag" type="text"
+                            // placeholder="#hashtag"
+                            placeholder="輸入想要的#標籤"
+                            onChange={this.handleTagsChange}
+                        />
+                    </div>
                     <div className="text-field-container">
                         <textarea 
                             className="text-field--introduction" 
