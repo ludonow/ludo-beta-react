@@ -27,14 +27,14 @@
             @extend %flex;
             align-items: center;
             height: 30px;
-            margin-bottom: 10px;
+            margin: 10px 0;
             font-size: 16px;
         }
             .text-field-label {
-                width: 30%;
+                width: 20%;
             }
             .text-field-value {
-                width: 70%;
+                width: 80%;
                 height: 30px;
                 line-height: 30px;
                 border: solid 1px $gray_text-field;
@@ -52,30 +52,6 @@
         @extend %as_wide_as_parent;
         height: 80px;
         background-color: $gray_text-field;
-    }
-}
-
-.ludo-detail-information-slider--marbles {
-    // overwrite react-component slider
-    .rc-slider-step {
-        height: 6px;
-        margin-top: 10px;
-    }
-    .rc-slider-track {
-        height: 6px;
-        background-color: $orange_button;
-    }
-    .rc-slider-dot {
-        width: 15px;
-        height: 15px;
-        background-image: url("../images/marble.png");
-        @extend %background_img_setting;
-    }
-    .rc-slider-handle {
-        width: 15px;
-        height: 15px;
-        background-image: url("../images/marble.png");
-        @extend %background_img_setting;
     }
 }
 

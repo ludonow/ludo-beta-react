@@ -108,48 +108,6 @@ $orange_button: rgba(248, 182, 45, 1);
         }
     }
 
-    .label-and-slider {
-        @extend %as_wide_as_parent;
-        display: inline-flex;
-        /* marble slider label */
-        // .rc-slider {
-        //     margin-bottom: 16px;
-        // }
-        .text-label {
-            width: 25%;
-            text-align: left;
-            margin-bottom: 5px;
-            font-size: 12px;
-        }
-        .text-label--marble-number {
-            margin-left: 12px;
-        }
-    }
-        .ludo-create-information-slider--marbles {
-            width: 75%;
-            /* overwrite react-component slider */
-            .rc-slider-step {
-                height: 6px;
-                margin-top: 10px;
-            }
-            .rc-slider-track {
-                height: 6px;
-                background-color: $orange_button;
-            }
-            .rc-slider-dot {
-                width: 15px;
-                height: 15px;
-                background-image: url("../images/marble.png");
-                @extend %background_img_setting;
-            }
-            .rc-slider-handle {
-                width: 15px;
-                height: 15px;
-                background-image: url("../images/marble.png");
-                @extend %background_img_setting;
-            }
-        }
-
 .ludo-create-information-bottom-container {
     @extend %relative;
     margin-top: 20px;

@@ -10,7 +10,7 @@
     background-color: $gray_text-field;
     padding: 5px;
 
-    span:not(.react-tagsinput-tag) {
+    .react-tagsinput-span, span:not(.react-tagsinput-tag) {
         @extend %flex;
         flex-direction: row;
         align-items: center;

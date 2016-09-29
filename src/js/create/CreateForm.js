@@ -395,7 +395,7 @@ export default class CreateForm extends React.Component {
                                 />
                             </div>
                         </div>
-                        </div>
+                    </div>
                 </div>
                 <div className="ludo-create-information-bottom-container">
                     <div className="text-label">
