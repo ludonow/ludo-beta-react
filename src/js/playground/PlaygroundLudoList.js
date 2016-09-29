@@ -18,7 +18,8 @@ const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' stu
 
 const masonryOptions = {
     itemSelector: ".grid-item",
-    columnWidth: 214,
+    // columnWidth: 214,
+    columnWidth: 220,
     fitWidth: true
 };
 
@@ -149,10 +150,24 @@ export default class PlaygroundLudoList extends React.Component {
                                 >
                                     <div className={this.handleCardBackClass(data.category_id)}>
                                         <div className="card-introduction">
-                                            {String(data.introduction).substring(0, 20) + ' ...'}
+                                            {
+                                                String(data.introduction).length > 20 ?
+                                                String(data.introduction).substring(0, 20) + ' ...'
+                                                : String(data.introduction)
+                                            }
                                         </div>
                                         <div className="card-hashtags">
-                                            {data.tags}
+                                            {
+                                                data.tags.length ?
+                                                    data.tags.map( (tagString, tagIndex) => {
+                                                        return (
+                                                            <span className="react-tagsinput-tag--card" key={`tag-${tagIndex}`}>
+                                                                {tagString}
+                                                            </span>
+                                                        );
+                                                    })
+                                                : null
+                                            }
                                         </div>
                                     </div>
                                     <div className="card-bottom">

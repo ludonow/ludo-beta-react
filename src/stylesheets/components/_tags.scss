@@ -51,6 +51,16 @@ span.react-tagsinput-tag {
     font-weight: 400;
 }
 
+.react-tagsinput-tag--card {
+    display: inline-flex;
+    margin: 2px;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    background-color: rgba(0,0,0,0.6);
+}
+
 .react-tagsinput-remove {
     cursor: pointer;
     margin-left: 5px;

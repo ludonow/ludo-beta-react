@@ -426,7 +426,7 @@ export default class CreateForm extends React.Component {
                             <TagsInput
                                 value={ludoCreateForm.tags} 
                                 onChange={this.handleTagsChange}
-                                inputProps={{maxLength: 30, placeholder:"#標籤"}}
+                                inputProps={{maxLength: 30, placeholder:"標籤"}}
                             />
                         </div>
                     </div>

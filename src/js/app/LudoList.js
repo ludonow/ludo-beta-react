@@ -16,7 +16,7 @@ const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' stu
 
 const masonryOptions = {
     itemSelector: ".form-item",
-    columnWidth: 214,
+    columnWidth: 220,
     fitWidth: true
 };
 
@@ -158,16 +158,30 @@ export default class LudoList extends React.Component {
                                     </div>
                                 </div>
                                 <div 
-                                    className={`form-card card-back ${isThisCardFlipped ? "card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                                    className={`form-card card-back card-back--form-list${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
                                     <div className={this.handleCardBackClass(data.category_id)}>
                                         <div className="card-introduction">
-                                            {String(data.introduction).substring(0, 20) + ' ...'}
+                                            {
+                                                String(data.introduction).length > 20 ?
+                                                String(data.introduction).substring(0, 20) + ' ...'
+                                                : String(data.introduction)
+                                            }
                                         </div>
                                         <div className="card-hashtags">
-                                            {data.tags}
+                                            {
+                                                data.tags.length ?
+                                                    data.tags.map( (tagString, tagIndex) => {
+                                                        return (
+                                                            <span className="react-tagsinput-tag--card" key={`tag-${tagIndex}`}>
+                                                                {tagString}
+                                                            </span>
+                                                        );
+                                                    })
+                                                : null
+                                            }
                                         </div>
                                     </div>
                                     <div className={`card-bottom ${this.handleCardBottomGoClass(data.category_id)}`}>

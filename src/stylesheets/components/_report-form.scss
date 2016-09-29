@@ -61,9 +61,53 @@
 }
 
 .report-form-bottom-container--player {
-    height: 325px;
-    .introduction-container--player, .time-line-container--player {
-        height: 200px;
+    display: flex;
+    flex-direction: row;
+    // height: 325px;
+    height: 290px;
+    margin-bottom: 0;
+    .introduction-and-upload {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+    }
+    .label-and-introduction--player {
+        @extend %as_wide_as_parent;
+        height: 60px;
+        margin-bottom: 28px;
+    }
+    .introduction-and-tags--player {
+        @extend %flex;
+        flex-direction: column;
+        // align-items: center;
+        // justify-content: center;
+        @extend %as_wide_as_parent;
+        @extend %as_tall_as_parent;
+        overflow: auto;
+        background-color: $gray_text-field;
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background-color: $g_background_gray; 
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        }
+        .introduction--player {
+            // @extend %flex;
+            // align-items: center;
+            // justify-content: center;
+            @extend %as_wide_as_parent;
+            @extend %as_tall_as_parent;
+            // height: 14px*13.35;
+            padding: 5px 0;
+            background-color: $gray_text-field;
+        }
+    }
+    .time-line-container--player {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
     overflow-x: hidden;
     overflow-y: auto;
@@ -82,43 +126,19 @@
 .upload-container {
     @extend %relative;
     @extend %flex;
-    flex-direction: row;
-    margin-top: 10px;
+    flex-direction: column;
+    // margin-top: 10px;
     // background-color: rgb(240, 240, 240);
     // background-color: $black;
-    background-color: black;
+    // background-color: black;
 }
-    .upload-text-container {
-        width: 98.5%;
-        margin: 0;
-        border: none;
-        background-color: rgb(240, 240, 240);
-        &::-webkit-input-placeholder {
-            @extend %text_center;
-            line-height: 85px;
-        }
-    }
-    /* overwrite default style */
-    textarea.upload-text-container {
-        resize: none;
-        font-family: "Exo" , "Microsoft JhengHei";
-    }
 
     .upload-picture-button-container {
-        @extend %flex;
-        // align-self: flex-start;
-        align-self: center;
-        justify-content: center;
-        background-color: $black;
+        // @extend %as_tall_as_parent;
+        // height: 40px;
+        @extend %text_center;
+        background-color: black;
     }
-
-        // .upload-hint-text {
-        //     @extend %flex;
-        //     align-items: center;
-        //     justify-content: center;
-        //     width: 80%;
-        //     @extend %margin_center_x;
-        // }
 
         .upload-picture-button {
             @extend %clickable;
@@ -127,14 +147,50 @@
             @extend %flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 40px;
+            // width: 50px;
+            width: 100%;
+            height: 30px;
 
             .upload-picture-button__icon {
                 width: 35px;
-                height: 35px;
+                height: 28px;
             }
         }
+
+    .upload-content-and-tags {
+        // @extend %flex;
+        // flex-direction: column;
+    }
+    .upload-text-container {
+        width: 98.5%;
+        margin: 0;
+        border: none;
+        background-color: rgb(240, 240, 240);
+        &::-webkit-input-placeholder {
+            @extend %text_center;
+            line-height: 100px;
+        }
+    }
+    /* overwrite default style */
+    textarea.upload-text-container {
+        resize: none;
+        font-family: "Exo" , "Microsoft JhengHei";
+    }
+    .upload-report-tags-container {
+        @extend %flex;
+        background-color: rgb(240, 240, 240);
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+            height: 4px;
+        }
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background-color: $g_background_gray; 
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        }
+    }
 
 .report-time-line-container {
     @extend %as_wide_as_parent;

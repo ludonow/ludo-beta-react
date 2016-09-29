@@ -15,16 +15,14 @@
             @extend %flex;
             align-items: center;
             justify-content: center;
-            border-style: solid;
-            border-width: 1px;
             padding: 5px 0;
+            background-color: white;
 
             .player-photo-container__photo {
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
-                border-style: solid;
-                border-width: 1px;
+                background-color: gray;
             }
         }
 

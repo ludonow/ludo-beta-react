@@ -1,10 +1,11 @@
 // padding
 $card_padding: 15px;
 $grid-item_padding: 7px;
+// $grid-item_padding: 10px;
 
 // dimension
 $grid-item_width: 200px;
-$grid-item_total-width: $grid-item_width + 2*$grid-item_padding;
+$grid-item_total-width: $grid-item_width + 2*10px;
 $detail_equal_to_columns_of_grid_item: 3;
 $grid-item--ludo-detail-information_width: $grid-item_width * $detail_equal_to_columns_of_grid_item + $grid-item_padding * 2 * ($detail_equal_to_columns_of_grid_item - 1);
 $grid-item--profile_width: 520px;
@@ -21,6 +22,7 @@ $exercise-color: #81ea9f;
 $study-color: #ff6d55;
 $new_skill-color: #f2f297;
 $unmentionables-color: #7f297d;
+
 $others-color: #f95ab1;
 
 $lifestyle-triangle-color: #dcf5fc;
@@ -39,7 +41,7 @@ $new_skill-text-color: #fdcaad;
 }
     .grid-item {
         width: $grid-item_width;
-        padding: 5px $grid-item_padding;
+        padding: 7px 10px;
     }
     .grid-item--ludo-detail-information {
         width: $grid-item--ludo-detail-information_width;
@@ -82,19 +84,41 @@ $new_skill-text-color: #fdcaad;
         transition-timing-function: linear;
 
         .card-top {
-            padding-top: 70px;
+            // height: 180px;
+            height: 100px;
+            padding: 90px 0;
             @extend %text_center;
-
+            font-size: 15px;
+            
             .title {
                 height: 20px;
-                margin-bottom: 29px;
-                font-size: 20px;
+                // margin-bottom: 60px;
+                margin-bottom: 20px;
+                padding: 0 30px;
             }
             .duration {
-                margin-bottom: 16px;
-                font-size: 20px;
+                // margin-bottom: 60px;
+                margin-bottom: 15px;
             }
         }
+
+        .card-marble {
+            @extend %relative;
+            @extend %flex;
+            justify-content: center;
+            align-items: center;
+            // padding-bottom: 40px;
+        }
+            .card-marble__icon {
+                width: 25px;
+                height: 25px;
+            }
+            .card-marble__number {
+                @extend %absolute;
+                font-size: 12px;
+                color: white;
+            }
+
         .card-bottom {
             @extend %flex;
             align-items: center;
@@ -119,31 +143,14 @@ $new_skill-text-color: #fdcaad;
             .card-bottom__stage--closed {
                 border-color: transparent transparent $red_active transparent;
             }
-
-        .card-marble {
-            @extend %relative;
-            @extend %flex;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 40px;
-        }
-            .card-marble__icon {
-                width: 25px;
-                height: 25px;
-            }
-            .card-marble__number {
-                @extend %absolute;
-                font-size: 12px;
-                color: white;
-            }
     }
 
     .card-back {
         word-wrap: break-word;
         @extend %absolute;
-        top: 5px;
-        left: 5px;
-        width: 204px;
+        left: 9px;
+        top: 7px;
+        width: 200px;
         @extend %text_center;
         font-size: 14px;
         backface-visibility: hidden;
@@ -155,15 +162,33 @@ $new_skill-text-color: #fdcaad;
             @extend %flex;
             justify-content: center;
             align-items: center;
-            height: 90px;
-            padding-top: 80px;
+            height: 120px;
+            // margin-bottom: 20px;
+            // padding-top: 80px;
             padding-right: 30px;
             padding-left: 30px;
             line-height: 1.3;
         }
         .card-hashtags {
-            height: 20px;
+            // height: 111px;
+            height: 91px;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 20px;
             padding-bottom: 40px;
+            margin-bottom: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            /* scroll bar */
+            &::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                background-color: $g_background_gray; 
+                -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5); 
+            }
         }
         .card-bottom {
             @extend %flex;
@@ -184,6 +209,9 @@ $new_skill-text-color: #fdcaad;
                 bottom: 5px;
                 color: red;
             }
+    }
+    .card-back--form-list {
+        width: 204px;
     }
 
 // card flip animation

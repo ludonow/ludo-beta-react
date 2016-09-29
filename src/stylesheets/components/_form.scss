@@ -27,7 +27,8 @@ $g_form-height: 535px;
     .form-item {
         display: inline-flex;
         width: $grid-item_total-width;
-        height: 270px;
+        // height: 270px;
+        height: 330px;
         padding-bottom: 10px;
     }
         .form-card {

@@ -1,9 +1,10 @@
 import React from 'react';
+import axios from '../../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
-import axios from '../../axios-config';
+import TagsInput from 'react-tagsinput';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';
@@ -28,6 +29,7 @@ export default class ActivePlayerForm extends React.Component {
             isReportTextBlank: true,
             maxDuration: 14,
             maxMarbles: 50,
+            reportTags: [],
             reportText: '',
             timeLineMarks: {},
             uploadImageIndex: 0
@@ -36,6 +38,7 @@ export default class ActivePlayerForm extends React.Component {
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTagsChange = this.handleTagsChange.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         // this.moveNext = this.moveNext.bind(this);
@@ -156,6 +159,12 @@ export default class ActivePlayerForm extends React.Component {
         } else {
             console.log('not sure to report');
         }
+    }
+
+    handleTagsChange(reportTags) {
+        this.setState({
+            reportTags
+        });
     }
 
     onDrop(files) {
@@ -282,27 +291,60 @@ export default class ActivePlayerForm extends React.Component {
                         </div>
                     </div>
                     <div className="report-form-bottom-container report-form-bottom-container--player">
-                        <div className="introduction-container introduction-container--player">
-                            <div className="text-label">介紹:</div>
-                            <div className="introduction-and-tags">
-                                <div className="introduction">
-                                    {introduction}
+                        <div className="introduction-and-upload">
+                            <div className="label-and-introduction--player">
+                                <div className="text-label">介紹:</div>
+                                <div className="introduction-and-tags--player">
+                                    <div className="introduction">
+                                        {introduction}
+                                    </div>
+                                    <div className="text-field--hashtag">
+                                        <div className="react-tagsinput">
+                                            <span className="react-tagsinput-span">
+                                                {
+                                                    this.props.currentFormValue.tags.length ?
+                                                    this.props.currentFormValue.tags.map((tagString, index) => {
+                                                        return (
+                                                            <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                                {tagString}
+                                                            </span>
+                                                        );
+                                                    })
+                                                    : null
+                                                }
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="text-field--hashtag">
-                                    <div className="react-tagsinput">
-                                        <span className="react-tagsinput-span">
-                                            {
-                                                this.props.currentFormValue.tags.length ?
-                                                this.props.currentFormValue.tags.map((tagString, index) => {
-                                                    return (
-                                                        <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                            {tagString}
-                                                        </span>
-                                                    );
-                                                })
-                                                : null
-                                            }
-                                        </span>
+                            </div>
+                            <div className="upload-container">
+                                <div className="upload-picture-button-container">
+                                    <DropZone 
+                                        className="upload-picture-button"
+                                        maxSize={2000000}
+                                        onDrop={this.onDrop}
+                                        onClick={this.onDrop}
+                                        accept={"image/png", "image/pjepg", "image/jpeg"}
+                                    >
+                                        <img className="upload-picture-button__icon" src={uploadIcon}/>
+                                    </DropZone>
+                                </div>
+                                <div className="upload-content-and-tags">
+                                    <textarea 
+                                        className="upload-text-container"
+                                        // placeholder="Report here"
+                                        placeholder="輸入要回報的內容，140字為限"
+                                        rows="6"
+                                        maxLength="140"
+                                        value={isReportTextBlank ? '' : this.state.reportText}
+                                        onChange={this.handleReportTextChange}
+                                    />
+                                    <div className="upload-report-tags-container">
+                                        <TagsInput
+                                            value={this.state.reportTags} 
+                                            onChange={this.handleTagsChange}
+                                            inputProps={{maxLength: 30, placeholder:"標籤"}}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -318,28 +360,7 @@ export default class ActivePlayerForm extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="upload-container">
-                            <textarea 
-                                className="upload-text-container"
-                                // placeholder="Report here"
-                                placeholder="輸入要回報的內容，140字為限(#tag不在此限)"
-                                rows="6"
-                                maxLength="140"
-                                value={isReportTextBlank ? '' : this.state.reportText}
-                                onChange={this.handleReportTextChange}
-                            />
-                            <div className="upload-picture-button-container">
-                                <DropZone 
-                                    className="upload-picture-button"
-                                    maxSize={2000000}
-                                    onDrop={this.onDrop}
-                                    onClick={this.onDrop}
-                                    accept={"image/png", "image/pjepg", "image/jpeg"}
-                                >
-                                    <img className="upload-picture-button__icon" src={uploadIcon}/>
-                                </DropZone>
-                            </div>
-                        </div>
+                    </div>
                         {
                             isImageUploaded ?
                                 <div className="upload-preview">
@@ -350,12 +371,11 @@ export default class ActivePlayerForm extends React.Component {
                                 </div>
                             : null
                         }
-                        <button className="report-submit-button" type="submit" 
+                        <button className="report-submit-button report-submit-button--report" type="submit" 
                             disabled={(isReportTextBlank && !isImageUploaded)}
                         >
                             回報
                         </button>
-                    </div>
                 </form>
                 {
                     isImageLightBoxOpen ? 
