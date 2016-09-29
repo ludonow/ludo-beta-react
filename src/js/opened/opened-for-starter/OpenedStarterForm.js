@@ -176,9 +176,26 @@ export default class OpenedStarterForm extends React.Component {
                             <RcSlider max={maxDuration} value={duration} disabled={true} />
                         </div>
                         <div className="text-label">介紹:</div>
-                        <div className="text-field-container">
+                        <div className="text-field-container text-field-container--introduction">
                             <div className="text-field__introduction">
                                 {introduction}
+                            </div>
+                            <div className="text-field--hashtag">
+                                <div className="react-tagsinput">
+                                    <span className="react-tagsinput-span">
+                                        {
+                                            this.props.currentFormValue.tags.length ?
+                                            this.props.currentFormValue.tags.map((tagString, index) => {
+                                                return (
+                                                    <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                        {tagString}
+                                                    </span>
+                                                );
+                                            })
+                                            : null
+                                        }
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <button 
@@ -194,24 +211,3 @@ export default class OpenedStarterForm extends React.Component {
         );
     }
 };
-                            // <div className="text-field--hashtag">
-                            //     <div className="react-tagsinput">
-                            //         <span className="react-tagsinput-span">
-                            //             {
-                            //                 this.props.currentFormValue.tags
-                            //                 this.props.currentFormValue.tags.map((tagString, index) => {
-                            //                     return (
-                            //                         <span className="react-tagsinput-tag" key={`tag-${index}`}>{tagString}</span>
-                            //                     );
-                            //                 })
-                            //             }
-                            //         </span>
-                            //     </div>
-                            // </div>
-                            
-                            // <div className="text-field-container">
-                            //     <span className="text-field-label">#標籤:</span>
-                            //     <span className="text-field-value">
-                            //         {tags}
-                            //     </span>
-                            // </div>

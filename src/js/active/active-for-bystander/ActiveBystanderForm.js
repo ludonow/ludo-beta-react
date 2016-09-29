@@ -112,7 +112,7 @@ export default class ActiveBystanderForm extends React.Component {
     render() {
         const { maxMarbles, timeLineMarks } = this.state;
         const { currentFormValue } = this.props;
-        const { category_id, checkpoint, duration, marbles, tags, title } = currentFormValue;
+        const { category_id, checkpoint, duration, introduction, marbles, tags, title } = currentFormValue;
 
         return (
             <div className="form--report">
@@ -134,32 +134,57 @@ export default class ActiveBystanderForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
-                            <div className="text-field-container">
-                                <span className="text-field-label">#標籤:</span>
-                                <span className="text-field-value">
-                                    {tags}
-                                </span>
+                            <div className="label-and-slider">
+                                <div className="text-label">
+                                    彈珠數:<span className="text-label--marble-number">{marbles}</span>
+                                </div>
+                                <div className="ludo-detail-information-slider--marbles">
+                                    <RcSlider max={maxMarbles} value={marbles} disabled={true} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="ludo-detail-information-bottom-container">
-                        <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
-                        <div className="ludo-detail-information-slider--marbles">
-                            <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
-                        </div>
-                        <div className="text-label">持續期間:</div>
-                        <div className="report-time-line-container">
-                            <div className="report-time-line">
-                            <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
-                                max={duration} min={1} value={checkpoint} range={checkpoint.length}
-                                marks={timeLineMarks}
-                            />
+                    <div className="report-form-bottom-container">
+                        <div className="introduction-container">
+                            <div className="text-label">介紹:</div>
+                            <div className="introduction-and-tags">
+                                <div className="introduction">
+                                    {introduction}
+                                </div>
+                                <div className="text-field--hashtag">
+                                    <div className="react-tagsinput">
+                                        <span className="react-tagsinput-span">
+                                            {
+                                                this.props.currentFormValue.tags.length ?
+                                                this.props.currentFormValue.tags.map((tagString, index) => {
+                                                    return (
+                                                        <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                            {tagString}
+                                                        </span>
+                                                    );
+                                                })
+                                                : null
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <button className="ludo-detail-information-submit-button" type="submit" disabled={true}>
-                            追蹤
-                        </button>
+                        <div className="time-line-container">
+                            <div className="text-label">持續期間:</div>
+                            <div className="report-time-line-container">
+                                <div className="report-time-line">
+                                <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
+                                    max={duration} min={1} value={checkpoint} range={checkpoint.length}
+                                    marks={timeLineMarks}
+                                />
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <button className="ludo-detail-information-submit-button" type="submit" disabled={true}>
+                        追蹤
+                    </button>
                 </form>
             </div>
         );

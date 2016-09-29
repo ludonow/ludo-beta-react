@@ -6,19 +6,12 @@ $g_form-height: 535px;
     display: inline-flex;
     margin-top: 5px;
 }
-.form-and-report {
-    @extend .form-and-list;
-}
 
 .form {
     width: $g_form-width;
     height: $g_form-height;
 }
-.form--report {
-    width: $g_form-width;
-    height: $g_form-height;
-    @extend %flex;
-}
+
 .form--bystander {
     @extend %relative;
     width: 50%;

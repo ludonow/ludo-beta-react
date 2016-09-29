@@ -1,54 +1,124 @@
+.form-and-report {
+    display: inline-flex;
+    margin-top: 5px;
+}
+
+.form--report {
+    width: $g_form-width;
+    height: $g_form-height;
+    margin-right: 15px;
+}
+
 .report-information-container {
+    overflow: hidden;
     &::-webkit-scrollbar {
         width: 8px;
     }
-     
-    /* Track */
-    // &::-webkit-scrollbar-track {
-    //     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    //     -webkit-border-radius: 10px;
-    //     border-radius: 10px;
-    // }
-     
     /* Handle */
     &::-webkit-scrollbar-thumb {
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        // background: rgba(255,0,0,0.8);
         background-color: $g_background_gray; 
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
     }
-    // &::-webkit-scrollbar-thumb:window-inactive {
-    //     background: rgba(255,0,0,0.4); 
-    // }
+}
 
-    // &::-webkit-scrollbar {
-    //     display: none;
-    // }
+.report-form-bottom-container {
+    @extend .ludo-detail-information-bottom-container;
+    margin-bottom: 20px;
+    width: 100%;
+    .introduction-container, .time-line-container {
+        /* TODO: Find usage of inline-table */
+        // display: inline-table;
+        display: inline-flex;
+        flex-direction: column;
+        width: 50%;
+        height: 266px;
+    }
+    .text-label {
+        @extend %flex;
+        flex-direction: column;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+    .introduction-and-tags {
+        @extend %flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        @extend %as_wide_as_parent;
+        background-color: $gray_text-field;
+
+        .introduction {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            @extend %as_wide_as_parent;
+            height: 14px*13.35;
+            background-color: $gray_text-field;
+        }
+    }
+}
+
+.report-form-bottom-container--player {
+    height: 325px;
+    .introduction-container--player, .time-line-container--player {
+        height: 200px;
+    }
+    overflow-x: hidden;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background-color: $g_background_gray; 
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    }
 }
 
 .upload-container {
     @extend %relative;
-    margin-top: 20px;
+    @extend %flex;
+    flex-direction: row;
+    margin-top: 10px;
+    // background-color: rgb(240, 240, 240);
+    // background-color: $black;
+    background-color: black;
 }
-
-    .upload-picture-button-container {
-        @extend %as_wide_as_parent;
-        display: inline-flex;
-        border-color: #85888d;
-        border-style: solid;
-        border-width: 1px;
-        border-bottom: none;
+    .upload-text-container {
+        width: 98.5%;
+        margin: 0;
+        border: none;
         background-color: rgb(240, 240, 240);
+        &::-webkit-input-placeholder {
+            @extend %text_center;
+            line-height: 85px;
+        }
+    }
+    /* overwrite default style */
+    textarea.upload-text-container {
+        resize: none;
+        font-family: "Exo" , "Microsoft JhengHei";
     }
 
-        .upload-hint-text {
-            @extend %flex;
-            align-items: center;
-            justify-content: center;
-            width: 80%;
-            @extend %margin_center_x;
-        }
+    .upload-picture-button-container {
+        @extend %flex;
+        // align-self: flex-start;
+        align-self: center;
+        justify-content: center;
+        background-color: $black;
+    }
+
+        // .upload-hint-text {
+        //     @extend %flex;
+        //     align-items: center;
+        //     justify-content: center;
+        //     width: 80%;
+        //     @extend %margin_center_x;
+        // }
 
         .upload-picture-button {
             @extend %clickable;
@@ -59,11 +129,6 @@
             justify-content: center;
             width: 50px;
             height: 40px;
-            border-style: solid;
-            border-width: 1px;
-            border-color: #85888d;
-            border-top: none;
-            border-right: none;
 
             .upload-picture-button__icon {
                 width: 35px;
@@ -71,58 +136,24 @@
             }
         }
 
-    .upload-text-container {
-        width: 99.2%;
-        margin: 0;
-        border-color: #85888d;
-        border-top: none;
-        background-color: rgb(240, 240, 240);
-        &::-webkit-input-placeholder {
-            @extend %text_center;
-            line-height: 85px;
-        }
-    }
-    // overwrite default style
-    textarea.upload-text-container {
-        resize: none;
-        font-family: "Exo" , "Microsoft JhengHei";
-    }
-
 .report-time-line-container {
     @extend %as_wide_as_parent;
     overflow-y: auto;
-    height: 200px;
+    height: calc(100% - 14px - 5px);
     @extend %flex;
     justify-content: center;
-    margin-bottom: 20px;
-    padding: 5px;
+    padding: 10px 0;
 
     &::-webkit-scrollbar {
         width: 8px;
-    }
-     
-    /* Track */
-    // &::-webkit-scrollbar-track {
-    //     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    //     -webkit-border-radius: 10px;
-    //     border-radius: 10px;
-    // }
-     
+    }  
     /* Handle */
     &::-webkit-scrollbar-thumb {
         -webkit-border-radius: 10px;
         border-radius: 10px;
-        // background: rgba(255,0,0,0.8);
         background-color: $g_background_gray; 
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
     }
-    // &::-webkit-scrollbar-thumb:window-inactive {
-    //     background: rgba(255,0,0,0.4); 
-    // }
-
-    // &::-webkit-scrollbar {
-    //     display: none;
-    // }
 }
     .report-time-line {
         height: 350px;
@@ -167,24 +198,6 @@
     .time-line.rc-slider-disabled {
         background-color: $black;
     }
-
-.report-submit-button {
-    @extend .ludo-button;
-    width: 80px;
-    height: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px; 
-    font-size: 16px;
-    font-family: "Exo" , "Microsoft JhengHei";
-    color: $black;
-    background-color: $orange_button;
-
-    &:disabled {
-        @extend %unclickable;
-        background-color: $gray_text-field;
-        border: none;
-    }
-}
 
 .upload-preview {
     @extend %flex;

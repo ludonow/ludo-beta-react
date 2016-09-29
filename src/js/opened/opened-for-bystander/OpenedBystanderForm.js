@@ -166,19 +166,17 @@ export default class OpenedBystanderForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
-                            <div className="text-field-container">
-                                <span className="text-field-label">#標籤:</span>
-                                <span className="text-field-value">
-                                    {tags}
-                                </span>
+                            <div className="label-and-slider">
+                                <div className="text-label">
+                                    彈珠數:<span className="text-label--marble-number">{marbles}</span>
+                                </div>
+                                <div className="ludo-detail-information-slider--marbles">
+                                    <RcSlider max={maxMarbles} value={marbles} disabled={true} />
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
-                        <div className="ludo-detail-information-slider--marbles">
-                            <RcSlider max={maxMarbles} value={marbles} disabled={true} />
-                        </div>
                         <div className="text-label">持續期間:</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
@@ -187,9 +185,26 @@ export default class OpenedBystanderForm extends React.Component {
                             <RcSlider max={maxDuration} value={duration} disabled={true} />
                         </div>
                         <div className="text-label">介紹:</div>
-                        <div className="text-field-container">
+                        <div className="text-field-container text-field-container--introduction">
                             <div className="text-field__introduction">
                                 {introduction}
+                            </div>
+                            <div className="text-field--hashtag">
+                                <div className="react-tagsinput">
+                                    <span className="react-tagsinput-span">
+                                        {
+                                            this.props.currentFormValue.tags.length ?
+                                            this.props.currentFormValue.tags.map((tagString, index) => {
+                                                return (
+                                                    <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                        {tagString}
+                                                    </span>
+                                                );
+                                            })
+                                            : null
+                                        }
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <button 

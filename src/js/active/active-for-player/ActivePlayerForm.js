@@ -29,6 +29,7 @@ export default class ActivePlayerForm extends React.Component {
             maxDuration: 14,
             maxMarbles: 50,
             reportText: '',
+            timeLineMarks: {},
             uploadImageIndex: 0
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
@@ -47,6 +48,12 @@ export default class ActivePlayerForm extends React.Component {
         getCurrentLudoData(ludoId);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(this.props.currentFormValue.ludo_id != nextProps.currentFormValue.ludo_id) {
+            this.getTimeLineMarks(nextProps);
+        }
+    }
+
     getCategory(category_id) {
         // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
         const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
@@ -55,6 +62,31 @@ export default class ActivePlayerForm extends React.Component {
 
     getCategoryIcon(category_id) {
         return iconArray[category_id];
+    }
+
+    getTimeLineMarks(nextProps) {
+        const { state } = this;
+        const { currentFormValue } = nextProps;
+        const { checkpoint, duration } = currentFormValue;
+
+        const { timeLineMarks } = state;
+        const durationTimeMarks = {};
+        for (let i = 1; i <= duration; i++) {
+            if (checkpoint.indexOf(i) != -1) {
+                durationTimeMarks[i] = {
+                    style: {
+                        color: 'white'
+                    },
+                    label: i
+                };
+            } else {
+                durationTimeMarks[i] = i;
+            }
+            
+        }
+        this.setState({
+            timeLineMarks: durationTimeMarks
+        });
     }
 
     handleDayPickerClass(value) {
@@ -180,46 +212,45 @@ export default class ActivePlayerForm extends React.Component {
     // }
 
     render() {
-        const { ludoDetailInformation, category, files, isReportTextBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, maxMarbles, uploadImageIndex } = this.state;
+        const { ludoDetailInformation, category, files, isReportTextBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, maxMarbles, timeLineMarks, uploadImageIndex } = this.state;
         const { currentFormValue } = this.props;
-        const { category_id, duration, reportText, marbles, tags, title } = currentFormValue;
+        const { category_id, checkpoint, duration, introduction, reportText, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
-        for(let i = 1; i <= maxDuration; i++) {
-            if (i <= duration) {
-                if(i == 7) {
-                    dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
-                            type="button" value={i} key={`button-${i}`}
-                            disabled={true}
-                        />, <br key="br" /> 
-                    );
-                } else {
-                    dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
-                            type="button" value={i} key={`button-${i}`}
-                            disabled={true}
-                        />
-                    );
-                }
-            } else {
-                if(i == 7) {
-                    dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} 
-                            type="button" value={i} key={`button-${i}`}
-                            disabled={true}
-                        />, <br key="br" /> 
-                    );
-                } else {
-                    dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} 
-                            type="button" value={i} key={`button-${i}`}
-                            disabled={true}
-                        />
-                    );
-                }
-            }
-
-        }
+        // for(let i = 1; i <= maxDuration; i++) {
+        //     if (i <= duration) {
+        //         if(i == 7) {
+        //             dayPickerButtons.push(
+        //                 <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
+        //                     type="button" value={i} key={`button-${i}`}
+        //                     disabled={true}
+        //                 />, <br key="br" /> 
+        //             );
+        //         } else {
+        //             dayPickerButtons.push(
+        //                 <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
+        //                     type="button" value={i} key={`button-${i}`}
+        //                     disabled={true}
+        //                 />
+        //             );
+        //         }
+        //     } else {
+        //         if(i == 7) {
+        //             dayPickerButtons.push(
+        //                 <input className={`ludo-detail-information-day-picker__button`} 
+        //                     type="button" value={i} key={`button-${i}`}
+        //                     disabled={true}
+        //                 />, <br key="br" /> 
+        //             );
+        //         } else {
+        //             dayPickerButtons.push(
+        //                 <input className={`ludo-detail-information-day-picker__button`} 
+        //                     type="button" value={i} key={`button-${i}`}
+        //                     disabled={true}
+        //                 />
+        //             );
+        //         }
+        //     }
+        // }
         return (
             <div className="form--report">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container report-information-container">
@@ -240,31 +271,64 @@ export default class ActivePlayerForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
-                            <div className="text-field-container">
-                                <span className="text-field-label">#標籤:</span>
-                                <span className="text-field-value">
-                                    {tags}
-                                </span>
+                            <div className="label-and-slider">
+                                <div className="text-label">
+                                    彈珠數:<span className="text-label--marble-number">{marbles}</span>
+                                </div>
+                                <div className="ludo-detail-information-slider--marbles">
+                                    <RcSlider max={maxMarbles} value={marbles} disabled={true} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="ludo-detail-information-bottom-container">
-                        <div className="text-label">彈珠數:<span className="text-label--marble-number">{marbles}</span></div>
-                        <div className="ludo-detail-information-slider--marbles">
-                            <RcSlider max={maxMarbles} value={currentFormValue.marbles} disabled={true} />
+                    <div className="report-form-bottom-container report-form-bottom-container--player">
+                        <div className="introduction-container introduction-container--player">
+                            <div className="text-label">介紹:</div>
+                            <div className="introduction-and-tags">
+                                <div className="introduction">
+                                    {introduction}
+                                </div>
+                                <div className="text-field--hashtag">
+                                    <div className="react-tagsinput">
+                                        <span className="react-tagsinput-span">
+                                            {
+                                                this.props.currentFormValue.tags.length ?
+                                                this.props.currentFormValue.tags.map((tagString, index) => {
+                                                    return (
+                                                        <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                            {tagString}
+                                                        </span>
+                                                    );
+                                                })
+                                                : null
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="text-label">持續期間:</div>
-                        <div className="ludo-detail-information-day-picker">
-                            {dayPickerButtons}
-                        </div>
-                        <div className="ludo-detail-information-slider--duration">
-                            <RcSlider 
-                                max={maxDuration} value={currentFormValue.duration} disabled={true}
-                            />
+                        <div className="time-line-container time-line-container--player">
+                            <div className="text-label">持續期間:</div>
+                            <div className="report-time-line-container">
+                                <div className="report-time-line">
+                                <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
+                                    max={duration} min={1} value={checkpoint} range={checkpoint.length}
+                                    marks={timeLineMarks}
+                                />
+                                </div>
+                            </div>
                         </div>
                         <div className="upload-container">
+                            <textarea 
+                                className="upload-text-container"
+                                // placeholder="Report here"
+                                placeholder="輸入要回報的內容，140字為限(#tag不在此限)"
+                                rows="6"
+                                maxLength="140"
+                                value={isReportTextBlank ? '' : this.state.reportText}
+                                onChange={this.handleReportTextChange}
+                            />
                             <div className="upload-picture-button-container">
-                                <span className="upload-hint-text">140字為限(#tag不在此限)</span>
                                 <DropZone 
                                     className="upload-picture-button"
                                     maxSize={2000000}
@@ -275,15 +339,6 @@ export default class ActivePlayerForm extends React.Component {
                                     <img className="upload-picture-button__icon" src={uploadIcon}/>
                                 </DropZone>
                             </div>
-                            <textarea 
-                                className="upload-text-container"
-                                // placeholder="Report here"
-                                placeholder="在此輸入要回報的文字"
-                                rows="6"
-                                maxLength="140"
-                                value={isReportTextBlank ? '' : this.state.reportText}
-                                onChange={this.handleReportTextChange}
-                            />
                         </div>
                         {
                             isImageUploaded ?
@@ -329,3 +384,16 @@ export default class ActivePlayerForm extends React.Component {
                     //         </div>
                     //     : null
                     // }
+
+                            // <div className="upload-picture-button-container">
+                            //     <span className="upload-hint-text">140字為限(#tag不在此限)</span>
+                            //     <DropZone 
+                            //         className="upload-picture-button"
+                            //         maxSize={2000000}
+                            //         onDrop={this.onDrop}
+                            //         onClick={this.onDrop}
+                            //         accept={"image/png", "image/pjepg", "image/jpeg"}
+                            //     >
+                            //         <img className="upload-picture-button__icon" src={uploadIcon}/>
+                            //     </DropZone>
+                            // </div>
