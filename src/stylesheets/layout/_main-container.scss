@@ -1,23 +1,23 @@
 .main-container {
     @extend %relative;
-    // @extend %header_height_offset;
-    // right: $g_right-sidebar_width;
-    // width: calc(100% - #{$g_right-sidebar_width});
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
     margin-top: 77px;
-    // padding-top: 14px;
     display: flex;
     justify-content: center;
+
+    transition-duration: 0.35s;
+    transition-timing-function: ease-in-out;
 }
 
 .main-container.hoveringSidebar {
     @extend %relative;
-    // @extend %header_height_offset;
-    right: $g_right-sidebar_width/2;
+    // right: $g_right-sidebar_width/2;
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
     margin-top: 77px;
-    // display: flex;
-    // justify-content: center;
+
+    transform: translate(-($g_right-sidebar_width)/2);
+    transition-duration: 0.35s;
+    transition-timing-function: ease-in-out;
 }
