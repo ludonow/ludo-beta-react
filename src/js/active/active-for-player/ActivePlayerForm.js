@@ -26,6 +26,7 @@ export default class ActivePlayerForm extends React.Component {
             imageLocation: '',
             isImageLightBoxOpen: false,
             isImageUploaded: false,
+            isReportButtonClickable: false,
             isReportTextBlank: true,
             maxDuration: 14,
             maxMarbles: 50,
@@ -36,6 +37,7 @@ export default class ActivePlayerForm extends React.Component {
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
@@ -108,6 +110,15 @@ export default class ActivePlayerForm extends React.Component {
         });
     }
 
+    handleImageRemove(event) {
+        event.preventDefault();
+        // const imageIndex = Number(event.currentTarget.value);  // For multiple picture upload
+        this.setState({
+            files: [],
+            isImageUploaded: false
+        });
+    }
+
     handleReportTextChange(event) {
         if (event.target.value) {
             this.setState({
@@ -123,7 +134,10 @@ export default class ActivePlayerForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // TODO: Use notification confirming report 
+        // TODO: Use notification confirming report
+        this.setState({
+            isReportButtonClickable: false
+        });
         const isSureToReport = window.confirm(`Are you sure to report?`);
         if (isSureToReport) {
             const { ludoId }= this.props.params;
@@ -149,15 +163,25 @@ export default class ActivePlayerForm extends React.Component {
                     });
                     console.log('ActivePlayerForm Report after report post response.data: ', response.data);
                 } else {
+                    window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
                     console.log('ActivePlayerForm Report else message from server: ', response.data.message);
                     console.log('ActivePlayerForm Report else error from server: ', response.data.err);
+                    this.setState({
+                        isReportButtonClickable: true
+                    });
                 }
             })
             .catch(error => {
+                window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
                 console.log('ActivePlayerForm Report error', error);
+                this.setState({
+                    isReportButtonClickable: true
+                });
             });
         } else {
-            console.log('not sure to report');
+            this.setState({
+                isReportButtonClickable: true
+            });
         }
     }
 
@@ -168,32 +192,40 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     onDrop(files) {
-        this.setState({
-            files,
-            isImageUploaded: true
-        });
-        const { ludoId }= this.props.params;
-        const imgPost = new FormData();
-        imgPost.append('file', files[0]);
-        // console.log('imgPost file', imgPost.get('file'));
-        console.log('before post image');
-        axios.post('/apis/report-image', imgPost)
-        .then(response => {
-            if (response.data.status == '200') {
-                // window.alert(`image upload success!`);
-                // console.log('image upload response.data: ', response.data);
-                this.setState({
-                    imageLocation: response.data.location
-                });
-                // TODO: shouldComponentUpdate false when successfully upload an image
-            } else {
-                console.log('image upload message from server: ', response.data.message);
-                console.log('image upload error from server: ', response.data.err);
-            }
-        })
-        .catch(error => {
-            console.log('image upload error', error);
-        });
+        console.log('onDrop files', files);
+        if (files.length == 1) {
+            this.setState({
+                files,
+                isImageUploaded: true
+            });
+            const { ludoId }= this.props.params;
+            const imgPost = new FormData();
+            imgPost.append('file', files[0]);
+            // console.log('imgPost file', imgPost.get('file'));
+            console.log('before post image');
+            axios.post('/apis/report-image', imgPost)
+            .then(response => {
+                if (response.data.status == '200') {
+                    // window.alert(`image upload success!`);
+                    // console.log('image upload response.data: ', response.data);
+                    this.setState({
+                        imageLocation: response.data.location
+                    });
+                    // TODO: shouldComponentUpdate false when successfully upload an image
+                } else {
+                    console.log('image upload message from server: ', response.data.message);
+                    console.log('image upload error from server: ', response.data.err);
+                }
+            })
+            .catch(error => {
+                console.log('image upload error', error);
+            });
+        } else if (files.length > 1) {
+            this.setState({
+                files: []
+            });
+            window.alert('一次只能上傳一張圖片');
+        }
     }
 
     closeLightbox() {
@@ -221,45 +253,13 @@ export default class ActivePlayerForm extends React.Component {
     // }
 
     render() {
-        const { ludoDetailInformation, category, files, isReportTextBlank, isImageLightBoxOpen, isImageUploaded, maxDuration, maxMarbles, timeLineMarks, uploadImageIndex } = this.state;
+        const { ludoDetailInformation, category, files, 
+            isImageLightBoxOpen, isImageUploaded, isReportButtonClickable, isReportTextBlank, 
+            maxDuration, maxMarbles, timeLineMarks, uploadImageIndex 
+        } = this.state;
         const { currentFormValue } = this.props;
         const { category_id, checkpoint, duration, introduction, reportText, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
-        // for(let i = 1; i <= maxDuration; i++) {
-        //     if (i <= duration) {
-        //         if(i == 7) {
-        //             dayPickerButtons.push(
-        //                 <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
-        //                     type="button" value={i} key={`button-${i}`}
-        //                     disabled={true}
-        //                 />, <br key="br" /> 
-        //             );
-        //         } else {
-        //             dayPickerButtons.push(
-        //                 <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} 
-        //                     type="button" value={i} key={`button-${i}`}
-        //                     disabled={true}
-        //                 />
-        //             );
-        //         }
-        //     } else {
-        //         if(i == 7) {
-        //             dayPickerButtons.push(
-        //                 <input className={`ludo-detail-information-day-picker__button`} 
-        //                     type="button" value={i} key={`button-${i}`}
-        //                     disabled={true}
-        //                 />, <br key="br" /> 
-        //             );
-        //         } else {
-        //             dayPickerButtons.push(
-        //                 <input className={`ludo-detail-information-day-picker__button`} 
-        //                     type="button" value={i} key={`button-${i}`}
-        //                     disabled={true}
-        //                 />
-        //             );
-        //         }
-        //     }
-        // }
         return (
             <div className="form--report">
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container report-information-container">
@@ -291,7 +291,7 @@ export default class ActivePlayerForm extends React.Component {
                         </div>
                     </div>
                     <div className="report-form-bottom-container report-form-bottom-container--player">
-                        <div className="introduction-and-upload">
+                        <div className="introduction-and-duration">
                             <div className="label-and-introduction--player">
                                 <div className="text-label">介紹:</div>
                                 <div className="introduction-and-tags--player">
@@ -302,8 +302,8 @@ export default class ActivePlayerForm extends React.Component {
                                         <div className="react-tagsinput">
                                             <span className="react-tagsinput-span">
                                                 {
-                                                    this.props.currentFormValue.tags.length ?
-                                                    this.props.currentFormValue.tags.map((tagString, index) => {
+                                                    tags.length ?
+                                                    tags.map((tagString, index) => {
                                                         return (
                                                             <span className="react-tagsinput-tag" key={`tag-${index}`}>
                                                                 {tagString}
@@ -317,6 +317,18 @@ export default class ActivePlayerForm extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="time-line-container--player">
+                                <div className="text-label">持續期間:</div>
+                                <div className="report-time-line-container">
+                                    <div className="report-time-line">
+                                    <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
+                                        max={duration} min={1} value={checkpoint} range={checkpoint.length}
+                                        marks={timeLineMarks}
+                                    />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <div className="upload-container">
                                 <div className="upload-picture-button-container">
                                     <DropZone 
@@ -339,6 +351,28 @@ export default class ActivePlayerForm extends React.Component {
                                         value={isReportTextBlank ? '' : this.state.reportText}
                                         onChange={this.handleReportTextChange}
                                     />
+                                    {
+                                        isImageUploaded ?
+                                            <div className="upload-preview">
+                                                {/* <span className="upload-preview__text">正要上傳的圖片: </span> */}
+                                                <div className="upload-preview__image-container">
+                                                    <img className="upload-preview__image" 
+                                                        src={files[uploadImageIndex].preview}
+                                                        onClick={this.handleImageEnlarge}
+                                                    />
+                                                    <div className="upload-preview-instruction-container">
+                                                        <button 
+                                                            className="upload-preview-instruction__remove"
+                                                            onClick={this.handleImageRemove} 
+                                                            value="0"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        : null
+                                    }
                                     <div className="upload-report-tags-container">
                                         <TagsInput
                                             value={this.state.reportTags} 
@@ -348,31 +382,9 @@ export default class ActivePlayerForm extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="time-line-container time-line-container--player">
-                            <div className="text-label">持續期間:</div>
-                            <div className="report-time-line-container">
-                                <div className="report-time-line">
-                                <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
-                                    max={duration} min={1} value={checkpoint} range={checkpoint.length}
-                                    marks={timeLineMarks}
-                                />
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                        {
-                            isImageUploaded ?
-                                <div className="upload-preview">
-                                    <span className="upload-preview__text">正要上傳的圖片: </span>
-                                    <img className="upload-preview__image" src={files[uploadImageIndex].preview}
-                                        onClick={this.handleImageEnlarge}
-                                    />
-                                </div>
-                            : null
-                        }
                         <button className="report-submit-button report-submit-button--report" type="submit" 
-                            disabled={(isReportTextBlank && !isImageUploaded)}
+                            disabled={isReportTextBlank && !isImageUploaded && !isReportButtonClickable}
                         >
                             回報
                         </button>

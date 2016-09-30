@@ -2,8 +2,10 @@
     @extend .ludo-button;
     width: 80px;
     height: 30px;
+    margin: 0 5px;
     font-size: 16px;
-    color: $black;
+    // color: $black;
+    color: white;
     background-color: $orange_button;
     font-family: "Exo" , "Microsoft JhengHei";
 
@@ -16,6 +18,17 @@
 
 .ludo-detail-information-submit-button {
     @extend .ludo-create-information-submit-button;
+}
+
+.ludo-modify-information-submit-button {
+    @extend .ludo-create-information-submit-button;
+    font-weight: 600;
+    // background-color: red;
+}
+
+.ludo-modify-information-submit-button--cancel {
+    @extend .ludo-modify-information-submit-button;
+    // background-color: green;
 }
 
 .report-submit-button {

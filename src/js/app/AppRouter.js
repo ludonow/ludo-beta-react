@@ -8,6 +8,7 @@ import App from './App';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
 import Login from './Login';
+import LudoEdit from '../ludo-edit/LudoEdit';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
@@ -41,10 +42,11 @@ export default class AppRouter extends React.Component {
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
                     <Route path="friend" component={Friend}></Route>
                     <Route path="login" component={Login}></Route>
-                    <Route path="opened-for-starter/:ludoId" component={OpenedForStarter}></Route>
+                    <Route path="ludo-edit/:ludo_id" component={LudoEdit} onEnter={isLoggedIn}></Route>
+                    <Route path="opened-for-starter/:ludoId" component={OpenedForStarter} onEnter={isLoggedIn}></Route>
                     <Route path="opened-for-bystander/:ludoId" component={OpenedForBystander}></Route>
                     <Route path="playground" component={Playground}></Route>
-                    <Route path="profile/:userId" component={Profile} onEnter={isLoggedIn}></Route>
+                    <Route path="profile/:userId" component={Profile}></Route>
                 </Route>
             </Router>
         );

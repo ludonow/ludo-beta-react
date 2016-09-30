@@ -17,17 +17,31 @@ export default class OpenedStarterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLudoDeleted: false,
+            isDeleteButtonClickable: false,
             maxDuration: 14,
             maxMarbles: 50
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         const { ludoId }= this.props.params;
         this.props.getCurrentLudoData(ludoId);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { currentFormValue } = this.props;
+        if (currentFormValue.title && !this.state.isDeleteButtonClickable) {
+            if (nextProps.currentFormValue.starter_id == this.props.currentUserId) {
+                this.setState({
+                    isDeleteButtonClickable: true
+                })
+            } else {
+                browserHistory.push(`/opened-for-bystander/${currentFormValue.ludo_id}`);
+            }
+        }
     }
 
     getCategory(category_id) {
@@ -50,25 +64,27 @@ export default class OpenedStarterForm extends React.Component {
         }
     }
 
+    handleEdit(event) {
+        event.preventDefault();
+        browserHistory.push(`/ludo-edit/${this.props.currentFormValue.ludo_id}`);
+    }
+
     handleSubmit(event) {
         event.preventDefault();
+        this.setState({
+            isDeleteButtonClickable: false
+        });
         // TODO: Use notification confirming delete ludo 
         const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
-        if (!this.state.isLudoDeleted && isSureToDelete) {
+        if (isSureToDelete) {
             const { currentFormValue, params } = this.props;
             const { ludoId } = params;
             // console.log(`/apis/ludo/${ludoId}`);   // debug
-            const body = {
-                'marbles': currentFormValue.marbles
-            };
-            // console.log('ludo delete body', body);   // debug
             // console.log('before quit axios delete');   // debug
-            axios.delete(`/apis/ludo/${ludoId}`, body)
+            axios.delete(`/apis/ludo/${ludoId}`)
             .then(response => {
                 if(response.data.status == '200') {
-                    this.setState({
-                        isLudoDeleted: true
-                    });
+                    
                     this.props.getBasicUserData();
                     this.props.handleShouldProfileUpdate(true);
                     // console.log('response data', response.data);   // debug
@@ -78,16 +94,22 @@ export default class OpenedStarterForm extends React.Component {
                     window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.log('OpenedStarterForm delete else message from server: ', response.data.message);
                     console.log('OpenedStarterForm delete else error from server: ', response.data.err);
+                    this.setState({
+                        isDeleteButtonClickable: true
+                    });
                 }
             })
             .catch(error => {
                 window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.log('OpenedStarterForm delete error', error);
+                this.setState({
+                    isDeleteButtonClickable: true
+                });
             });
         } else {
-            console.log('OpendStarterForm error in state isLudoDeleted');
+            console.log('OpendStarterForm error in state isDeleteButtonClickable');
             this.setState({
-                isLudoDeleted: true
+                isDeleteButtonClickable: true
             });
         }
     }
@@ -201,9 +223,16 @@ export default class OpenedStarterForm extends React.Component {
                         <button 
                             className="ludo-detail-information-submit-button" 
                             type="submit" 
-                            disabled={this.state.isLudoDeleted}
+                            disabled={!this.state.isDeleteButtonClickable}
                         >
                             刪除
+                        </button>
+                        <button 
+                            className="ludo-detail-information-submit-button" 
+                            onClick={this.handleEdit}
+                            disabled={!this.state.isDeleteButtonClickable}
+                        >
+                            修改
                         </button>
                     </div>
                 </form>

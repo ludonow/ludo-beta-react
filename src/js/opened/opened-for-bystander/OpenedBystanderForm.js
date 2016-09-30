@@ -18,7 +18,7 @@ export default class OpenedBystanderForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLudoStageUpdated: false,
+            isJoinButtonClickable: false,
             maxDuration: 14,
             maxMarbles: 50
         };
@@ -40,6 +40,19 @@ export default class OpenedBystanderForm extends React.Component {
         const { ludoId }= this.props.params;
         this.props.getCurrentLudoData(ludoId);
         // this._notificationSystem = this.refs.notificationSystem;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { currentFormValue } = this.props;
+        if (currentFormValue.title && !this.state.isJoinButtonClickable) {
+            if (nextProps.currentFormValue.starter_id != this.props.currentUserId) {
+                this.setState({
+                    isJoinButtonClickable: true
+                })
+            } else {
+                browserHistory.push(`/opened-for-starter/${currentFormValue.ludo_id}`);
+            }
+        }
     }
 
     getCategory(category_id) {
@@ -65,11 +78,14 @@ export default class OpenedBystanderForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         // TODO: Use notification confirming join
+        this.setState({
+            isJoinButtonClickable: false
+        });
         const isSureToJoin = window.confirm(`Are you sure to join?`);
-        if (!this.state.isLudoStageUpdated && isSureToJoin) {
+        if (!this.state.isJoinButtonClickable && isSureToJoin) {
             const { currentFormValue, params } = this.props;
             const { ludoId } = params;
-            console.log(`/apis/ludo/${ludoId}`);
+            // console.log(`/apis/ludo/${ludoId}`);   // debug
             const joinLudoPutbody = {
                 'type': 'match',
                 'duration': currentFormValue.duration,
@@ -82,9 +98,6 @@ export default class OpenedBystanderForm extends React.Component {
             .then(response => {
                 if(response.data.status == '200') {
                     // TODO: Confirm joining Ludo
-                    this.setState({
-                        isLudoStageUpdated: true
-                    });
                     this.props.getBasicUserData();
                     this.props.handleShouldProfileUpdate(true);
                     // console.log('response data', response.data);   // debug
@@ -94,23 +107,29 @@ export default class OpenedBystanderForm extends React.Component {
                     window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.log('OpenedBystanderForm join else message from server: ', response.data.message);
                     console.log('OpenedBystanderForm join else error from server: ', response.data.err);
+                    this.setState({
+                        isJoinButtonClickable: true
+                    });
                 }
             })
             .catch(error => {
                 window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.log('OpenedBystanderForm join put error', error);
+                this.setState({
+                    isJoinButtonClickable: true
+                });
             });
         } else {
             window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-            console.log('OpenedBystanderForm error in state isLudoStageUpdated');
+            console.log('OpenedBystanderForm error in state isJoinButtonClickable');
             this.setState({
-                isLudoStageUpdated: true
+                isJoinButtonClickable: true
             });
         }
     }
 
     render() {
-        const { isLudoStageUpdated, maxDuration, maxMarbles } = this.state;
+        const { isJoinButtonClickable, maxDuration, maxMarbles } = this.state;
         const { currentFormValue } = this.props;
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
@@ -210,7 +229,7 @@ export default class OpenedBystanderForm extends React.Component {
                         <button 
                             className="ludo-detail-information-submit-button" 
                             type="submit" 
-                            disabled={isLudoStageUpdated}
+                            disabled={!isJoinButtonClickable}
                         >
                             加入
                         </button>

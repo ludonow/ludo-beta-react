@@ -63,52 +63,10 @@
 .report-form-bottom-container--player {
     display: flex;
     flex-direction: row;
-    // height: 325px;
     height: 290px;
-    margin-bottom: 0;
-    .introduction-and-upload {
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-    }
-    .label-and-introduction--player {
-        @extend %as_wide_as_parent;
-        height: 60px;
-        margin-bottom: 28px;
-    }
-    .introduction-and-tags--player {
-        @extend %flex;
-        flex-direction: column;
-        // align-items: center;
-        // justify-content: center;
-        @extend %as_wide_as_parent;
-        @extend %as_tall_as_parent;
-        overflow: auto;
-        background-color: $gray_text-field;
-        &::-webkit-scrollbar {
-            width: 4px;
-        }
-        /* Handle */
-        &::-webkit-scrollbar-thumb {
-            background-color: $g_background_gray; 
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-        }
-        .introduction--player {
-            // @extend %flex;
-            // align-items: center;
-            // justify-content: center;
-            @extend %as_wide_as_parent;
-            @extend %as_tall_as_parent;
-            // height: 14px*13.35;
-            padding: 5px 0;
-            background-color: $gray_text-field;
-        }
-    }
-    .time-line-container--player {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
+    margin-top: 15px;
+    margin-bottom: 5px;
+
     overflow-x: hidden;
     overflow-y: auto;
     &::-webkit-scrollbar {
@@ -121,81 +79,44 @@
         background-color: $g_background_gray; 
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
     }
-}
 
-.upload-container {
-    @extend %relative;
-    @extend %flex;
-    flex-direction: column;
-    // margin-top: 10px;
-    // background-color: rgb(240, 240, 240);
-    // background-color: $black;
-    // background-color: black;
-}
-
-    .upload-picture-button-container {
-        // @extend %as_tall_as_parent;
-        // height: 40px;
-        @extend %text_center;
-        background-color: black;
+    .introduction-and-duration {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
     }
-
-        .upload-picture-button {
-            @extend %clickable;
-            @extend %relative;
-            @extend %right;
-            @extend %flex;
-            align-items: center;
-            justify-content: center;
-            // width: 50px;
-            width: 100%;
-            height: 30px;
-
-            .upload-picture-button__icon {
-                width: 35px;
-                height: 28px;
-            }
-        }
-
-    .upload-content-and-tags {
-        // @extend %flex;
-        // flex-direction: column;
+    .label-and-introduction--player {
+        @extend %as_wide_as_parent;
+        height: 100px;
     }
-    .upload-text-container {
-        width: 98.5%;
-        margin: 0;
-        border: none;
-        background-color: rgb(240, 240, 240);
-        &::-webkit-input-placeholder {
-            @extend %text_center;
-            line-height: 100px;
-        }
-    }
-    /* overwrite default style */
-    textarea.upload-text-container {
-        resize: none;
-        font-family: "Exo" , "Microsoft JhengHei";
-    }
-    .upload-report-tags-container {
-        @extend %flex;
-        background-color: rgb(240, 240, 240);
-        overflow-x: scroll;
+    .introduction-and-tags--player {
+        overflow: auto;
+        background-color: $gray_text-field;
         &::-webkit-scrollbar {
-            height: 4px;
+            width: 4px;
         }
         /* Handle */
         &::-webkit-scrollbar-thumb {
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
             background-color: $g_background_gray; 
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
         }
+        .introduction--player {
+            @extend %as_wide_as_parent;
+            @extend %as_tall_as_parent;
+            padding: 5px 0;
+            background-color: $gray_text-field;
+        }
     }
+    .time-line-container--player {
+        @extend %as_wide_as_parent;
+        height: 165px;
+    }
+}
 
 .report-time-line-container {
     @extend %as_wide_as_parent;
     overflow-y: auto;
-    height: calc(100% - 14px - 5px);
+    height: calc(100% - 14px);
     @extend %flex;
     justify-content: center;
     padding: 10px 0;
@@ -255,23 +176,134 @@
         background-color: $black;
     }
 
-.upload-preview {
-    @extend %flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5px 0;
+.upload-container {
+    @extend %relative;
+    // @extend %flex;
+    // flex-direction: column;
+    // @extend %as_wide_as_parent;
+    width: 50%;
+    margin-left: 5px;
 }
-    .upload-preview__text {
-        margin-right: 10px;
+
+    .upload-picture-button-container {
+        @extend %text_center;
+        background-color: black;
     }
-    .upload-preview__image {
-        @extend %clickable;
-        max-width: 200px;
-        max-height: 200px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: $black;
+
+        .upload-picture-button {
+            @extend %clickable;
+            @extend %relative;
+            @extend %right;
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 30px;
+
+            .upload-picture-button__icon {
+                width: 35px;
+                height: 28px;
+            }
+        }
+
+    .upload-content-and-tags {
+        @extend %as_wide_as_parent;
     }
+        .upload-text-container {
+            // width: 98.5%;
+            @extend %as_wide_as_parent;
+            height: 95px;
+            border: none;
+            background-color: rgb(240, 240, 240);
+            &::-webkit-input-placeholder {
+                @extend %text_center;
+                line-height: 95px;
+            }
+            &::-webkit-scrollbar {
+                width: 8px;
+            }  
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+                background-color: $g_background_gray; 
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+            }
+        }
+        /* overwrite default style */
+        textarea.upload-text-container {
+            resize: none;
+            font-family: "Exo" , "Microsoft JhengHei";
+            margin-bottom: -2px;
+            padding: 0;
+        }
+
+        .upload-preview {
+            // @extend %flex;
+            // justify-content: center;
+            // align-items: center;
+            background-color: $gray_text-field;
+            border-top: dashed 1px white;
+        }
+            // .upload-preview__text {
+            //     margin-right: 10px;
+            // }
+            .upload-preview__image-container {
+                @extend %relative;
+                width: 100px;
+                height: 100px;
+
+                .upload-preview__image {
+                    cursor: zoom-in;
+                    width: 100px;
+                    height: 100px;
+                }
+                
+                &:hover .upload-preview__image {
+                    opacity: 1;
+                }
+
+                &:hover .upload-preview-instruction__remove {
+                    opacity: 1;
+                    color: white;
+                    background-color: rgba(0,0,0,0.3);
+                }
+
+                .upload-preview-instruction__remove {
+                    @extend %clickable;
+                    // width: 100%;
+                    // height: 100%;
+                    @extend %absolute;
+                    @extend %top;
+                    @extend %right;
+                    border: none;
+                    color: transparent;
+                    background-color: transparent;
+                    // opacity: 0;
+                    // &:hover {
+                    //     opacity: 1;
+                    //     color: white;
+                    //     background-color: rgba(0,0,0,0.3);
+                    // }
+                }
+            }
+
+        .upload-report-tags-container {
+            @extend %flex;
+            border-top: dashed 1px white;
+            background-color: rgb(240, 240, 240);
+            overflow-x: scroll;
+            &::-webkit-scrollbar {
+                height: 4px;
+            }
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+                background-color: $g_background_gray; 
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+            }
+        }
 
 .upload-instruction {
     @extend %flex;

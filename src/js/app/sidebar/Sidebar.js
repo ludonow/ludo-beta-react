@@ -47,18 +47,12 @@ export default class Sidebar extends React.Component {
     handleSidebarMouseLeave(event) {
         if(this.props.isHoveringSidebar) {
             this.props.handleIsHoveringSidebar(false);
-            // this.setState({
-            //     isHoverSidebar: false
-            // });
         }
     }
 
     handleSidebarMouseOver(event) {
         if(!this.props.isHoveringSidebar) {
             this.props.handleIsHoveringSidebar(true);
-            // this.setState({
-            //     isHoverSidebar: true
-            // });
         }
     }
 
@@ -70,9 +64,7 @@ export default class Sidebar extends React.Component {
                 onMouseLeave={this.handleSidebarMouseLeave}
                 onMouseOver={this.handleSidebarMouseOver}
             >
-                {
-                    this.props.isHoveringSidebar ?
-                    <div className="right-sidebar">
+                    <div className={`right-sidebar${this.props.isHoveringSidebar ? ` sidebar-flip` : ``}`}>
                         <div className="right-sidebar-item color-sidebar1" id="0" 
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
@@ -164,13 +156,11 @@ export default class Sidebar extends React.Component {
                             </Link>
                         </div>
                     </div>
-                    : 
-                    <div className="right-sidebar-arrow-container">
+                    <div className={`right-sidebar-arrow-container${this.props.isHoveringSidebar ? `` : ` sidebar-flip`}`}>
                         <div className="arrow">
                             ◄
                         </div>
                     </div>
-                }
             </div>
         );
     }

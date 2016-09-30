@@ -117,7 +117,8 @@ export default class App extends React.Component {
                     currentLudoId: ludo_id
                 });
             } else {
-                console.log('app else message from server: ', response.data.message);
+                console.log('app getCurrentLudoData else message from server: ', response.data.message);
+                console.log('app getCurrentLudoData else error from server: ', response.data.err);
             }
         })
         .catch(error => {
@@ -221,7 +222,7 @@ export default class App extends React.Component {
                 this.setState({
                     currentLudoReportData: response.data.reportList
                 });
-                console.log('app after getReportOfCurrentLudo');  // debug
+                // console.log('app after getReportOfCurrentLudo');  // debug
             } else {
                 console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
                 console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);

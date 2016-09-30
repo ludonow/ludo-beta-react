@@ -1,6 +1,6 @@
 // dimension
-$right-sidebar_height_md_min: 100% - $g_header_height_md_min;
-$right-sidebar_height_md_max: calc(100% - 70px);
+$right-sidebar_height_md_min: calc(100% - #{$g_header_height_md_min});
+$right-sidebar_height_md_max: calc(100% - #{$g_header_height_md_max});
 $right-sidebar-item_height: 100%/6;
 
 // color
@@ -23,10 +23,10 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
         height: $right-sidebar_height_md_min;
     }
 }
-// .right-sidebar-hover-area.hovering {
-//     width: $g_right-sidebar_width*3;
-// }
 
+div.sidebar-flip {
+    transform: rotateY(0deg);
+}
 
 .right-sidebar-arrow-container {
     @extend %as_tall_as_parent;
@@ -34,6 +34,11 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
     align-items: center;
     justify-content: center;
     color: white;
+
+    transform: translate(34px + 5px,0);
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+
     .arrow {
         @extend %as_wide_as_parent;
         @extend %flex;
@@ -57,6 +62,10 @@ $sidebar-color-6: rgba(115, 250, 121, 1);
     @include md-min {
         height: $right-sidebar_height_md_min;
     }
+
+    transform: translate($g_right-sidebar_width + 5px,0);
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
 }
     .right-sidebar-item {
         @extend %clickable;
