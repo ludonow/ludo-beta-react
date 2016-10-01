@@ -36,12 +36,12 @@ export default class PlaygroundLudoList extends React.Component {
 
     componentWillMount() {
         this.props.handleIsOpeningLudoListPage(true);
-        this.props.handleShouldUpdateLudoList(true);
+        this.props.handleShouldLudoListUpdate(true);
     }
 
     componentWillUnmount() {
         this.props.handleIsOpeningLudoListPage(false);
-        this.props.handleShouldUpdateLudoList(false);
+        this.props.handleShouldLudoListUpdate(false);
     }
 
     handleCardStage(stage) {

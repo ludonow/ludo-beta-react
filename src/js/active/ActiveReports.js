@@ -41,7 +41,7 @@ export default class ActiveReports extends React.Component {
                 playerReportList: null
             });
             nextProps.currentLudoReportData.map((reportObject) => {
-                if (reportObject.user_id == nextProps.currentFormValue.starter_id) {  // starter's report
+                if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {  // starter's report
                     starterReportList.push(reportObject);
                 } else {
                     playerReportList.push(reportObject);
@@ -69,6 +69,7 @@ export default class ActiveReports extends React.Component {
 
     handleReportEditClick(event) {
         event.preventDefault();
+        console.log('ActiveReports handleReportEditClick');   // debug
         this.setState({
             isEditingReport: true
         });
@@ -76,6 +77,7 @@ export default class ActiveReports extends React.Component {
 
     handleReportEditText() {
         event.preventDefault();
+        console.log('ActiveReports handleReportEditText');   // debug
         this.setState({
             isEditingReport: false
         });
@@ -125,7 +127,6 @@ export default class ActiveReports extends React.Component {
                             this.state.starterReportList.map( (reportObject, index) => {
                                 return (
                                     <div className="player-report-container" key={`starter-report-${index}`}>
-                                        <button>編輯</button>
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
@@ -137,12 +138,26 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         {
-                                            reportObject.content ? 
-                                                <div className="report-content-container">
-                                                    <div className="report-content report-content--text">
-                                                        {reportObject.content}
+                                            reportObject.content ?
+                                                !isEditingReport ? 
+                                                    <div className="report-content-container">
+                                                        <button
+                                                            onClick={this.handleReportEditClick}
+                                                            disabled={!isEditReportButtonClickable}
+                                                        >
+                                                            編輯
+                                                        </button>
+                                                        <div className="report-content report-content__text">
+                                                            {reportObject.content}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                :
+                                                    <Textarea 
+                                                        className="report-content__text-edit"
+                                                        minRows={2}
+                                                        onKeyDown={this.handleReportEditText}
+                                                        placeholder={reportObject.content}
+                                                    />
                                             : null
                                         }
                                         <CommentBox 

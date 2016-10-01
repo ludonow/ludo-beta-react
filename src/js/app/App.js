@@ -27,7 +27,7 @@ export default class App extends React.Component {
             isOpeningActivePage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
-            shouldUpdateLudoList: false,
+            shouldLudoListUpdate: false,
             shouldProfileUpdate: false,
             shouldReportUpdate: false,
             ludoList: [],
@@ -50,7 +50,7 @@ export default class App extends React.Component {
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
-        this.handleShouldUpdateLudoList = this.handleShouldUpdateLudoList.bind(this);
+        this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
@@ -66,12 +66,12 @@ export default class App extends React.Component {
     componentDidUpdate() {
         // console.log('app componentDidUpdate state', this.state);  // debug
         const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, 
-            shouldUpdateLudoList, shouldProfileUpdate } = this.state;
+            shouldLudoListUpdate, shouldProfileUpdate } = this.state;
             // console.log('app componentDidUpdate shouldProfileUpdate true');  // debug
-        if (isOpeningLudoListPage && shouldUpdateLudoList) {
+        if (isOpeningLudoListPage && shouldLudoListUpdate) {
             // console.log('app componentDidUpdate getLatestLudoList');  // debug
             this.getLatestLudoList();
-            this.handleShouldUpdateLudoList(false);
+            this.handleShouldLudoListUpdate(false);
         }
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
             /* 
@@ -87,9 +87,10 @@ export default class App extends React.Component {
             }
         }
 
-        const { currentLudoId, isOpeningActivePage, shouldReportUpdate } = this.state;
-        if (currentLudoId && isOpeningActivePage && shouldReportUpdate) {
-            this.getReportOfCurrentLudo(currentLudoId);
+        const { isOpeningActivePage, shouldReportUpdate } = this.state;
+        if (isOpeningActivePage && shouldReportUpdate) {
+            // console.log('app componentDidUpdate getReportOfCurrentLudo');   // debug
+            this.getReportOfCurrentLudo(this.props.params.ludo_id);
             this.handleShouldReportUpdate(false);
         }
     }
@@ -131,7 +132,7 @@ export default class App extends React.Component {
     }
 
     getCurrentLudoData(ludo_id) {
-        // console.log('app before getCurrentLudoData');  // debug
+        console.log('app before getCurrentLudoData');  // debug
         axios.get(`/apis/ludo/${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
@@ -288,10 +289,10 @@ export default class App extends React.Component {
         });
     }
 
-    handleShouldUpdateLudoList(boolean) {
-        // console.log('app handleShouldUpdateLudoList', boolean);  // debug
+    handleShouldLudoListUpdate(boolean) {
+        // console.log('app handleShouldLudoListUpdate', boolean);  // debug
         this.setState({
-            shouldUpdateLudoList: boolean
+            shouldLudoListUpdate: boolean
         });
     }
 
@@ -344,7 +345,7 @@ export default class App extends React.Component {
                             handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                             handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                             handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
-                            handleShouldUpdateLudoList: this.handleShouldUpdateLudoList,
+                            handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,
                             handleShouldProfileUpdate: this.handleShouldProfileUpdate,
                             handleShouldReportUpdate: this.handleShouldReportUpdate,
                             updateCurrentFormValue: this.updateCurrentFormValue

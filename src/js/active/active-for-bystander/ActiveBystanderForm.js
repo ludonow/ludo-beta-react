@@ -29,10 +29,6 @@ export default class ActiveBystanderForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // componentDidMount() {
-    //     console.log('ActiveBystanderForm componentDidMount');   // debug
-    // }
-
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
         if (router_currentFormValue && !this.state.isFollowButtonClickable) {

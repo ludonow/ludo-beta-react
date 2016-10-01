@@ -50,12 +50,6 @@ export default class ActivePlayerForm extends React.Component {
         // this.movePrev = this.movePrev.bind(this);
     }
 
-    // componentDidMount() {
-    //     console.log('ActivePlayerForm componentDidMount');   // debug
-    //     const { ludo_id }= this.props.params;
-    //     this.props.getCurrentLudoData(ludo_id);
-    // }
-
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
         if (router_currentFormValue && !this.state.isReportButtonClickable) {
@@ -144,12 +138,13 @@ export default class ActivePlayerForm extends React.Component {
         });
         const isSureToReport = window.confirm(`Are you sure to report?`);
         if (isSureToReport) {
-            const { ludoId }= this.props.params;
-            const { currentFormValue, currentUserId } = this.props;
+            const { ludo_id }= this.props.params;
+            const { currentUserId } = this.props;
+            const currentFormValue = this.props.router_currentFormValue;
             let whoIsUser = '';
             (currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
             const ludoReportPost = {
-                'ludo_id': ludoId,
+                'ludo_id': ludo_id,
                 'player': whoIsUser,
                 'content': this.state.reportText,
                 'image_location': this.state.imageLocation

@@ -8,6 +8,16 @@ export default class ActiveForPlayer extends React.Component {
         super(props);
     }
 
+    componentWillMount() {
+        // console.log('ActiveForPlayer componentWillMount');   // debug
+        this.props.handleIsOpeningActivePage(true);
+    }
+
+    componentWillUnmount() {
+        // console.log('ActiveForPlayer componentWillUnmount');   // debug
+        this.props.handleIsOpeningActivePage(false);
+    }
+
     render() {
         return (
             <div className="form-and-report">
