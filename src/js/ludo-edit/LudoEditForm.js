@@ -40,24 +40,17 @@ export default class LudoEditForm extends React.Component {
             maxMarbles: 50,
             suggestions: ["Banana", "Mango", "Pear", "Apricot"]
         };
+        this.handleCancelClick = this.handleCancelClick.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
         this.handleDayPickerMouseOver = this.handleDayPickerMouseOver.bind(this);
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleDurationValue = this.handleDurationValue.bind(this);
-        this.handleIconChange = this.handleIconChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
     }
-
-    // componentDidMount() {
-    //     if (!this.props.currentFormValue.ludo_id) {
-    //         const { ludo_id }= this.props.params;
-    //         this.props.getCurrentLudoData(ludo_id);
-    //     }
-    // }
 
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
@@ -79,35 +72,6 @@ export default class LudoEditForm extends React.Component {
                 })
             })
         }
-        // const { currentAuth, currentFormValue } = nextProps;
-        // if (currentAuth && currentFormValue.ludo_id) {
-        //     // console.log('LudoEditForm componentWillReceiveProps currentFormValue.ludo_id', currentFormValue.ludo_id);   // debug
-        //     const { category_id, checkpoint, duration, introduction, marbles, stage, tags, title } = currentFormValue;
-        //     if (!this.state.isModifyButtonClickable) {
-        //         // console.log('LudoEditForm componentWillReceiveProps redirect currentAuth', currentAuth);   // debug
-        //         if (currentAuth == 1) {
-        //             this.setState({
-        //                 isModifyButtonClickable: true,
-        //                 ludoEditForm: Object.assign(this.state.ludoEditForm, {
-        //                     category_id,
-        //                     checkpoint,
-        //                     duration,
-        //                     introduction,
-        //                     marbles,
-        //                     stage,
-        //                     tags,
-        //                     title
-        //                 })
-        //             })
-        //         } else if (currentAuth == 2 || currentAuth == 0) {
-        //             browserHistory.push(`/opened-for-bystander/${currentFormValue.ludo_id}`);
-        //         } else if (currentAuth == 3 || currentAuth == 4) {
-        //             browserHistory.push(`/active-for-player/${currentFormValue.ludo_id}`);
-        //         } else if (currentAuth == 5) {
-        //             browserHistory.push(`/active-for-bystander/${currentFormValue.ludo_id}`);
-        //         }  
-        //     }
-        // }
     }
 
     componentWillUnmount() {
@@ -120,7 +84,7 @@ export default class LudoEditForm extends React.Component {
         // const isSureNotToModify = window.confirm(`Are you sure to cancel the modification?`);
         const isSureNotToModify = window.confirm(`確定取消變更？`);
         if (isSureNotToModify) {
-            browserHistory.push(`/opened-for-starter/${ludo_id}`);
+            browserHistory.push(`/ludo/${this.props.params.ludo_id}`);
         }
     }
 
@@ -208,11 +172,6 @@ export default class LudoEditForm extends React.Component {
         }
     }
 
-    handleIconChange() {
-        const { category_id } = this.state.ludoEditForm;
-        return iconArray[category_id];
-    }
-
     handleIntroductionChange(event) {
         this.setState({
             ludoEditForm: Object.assign(this.state.ludoEditForm, {
@@ -250,16 +209,15 @@ export default class LudoEditForm extends React.Component {
         const modifyLudoPutBody = Object.assign(ludoEditForm, {
             'type': 'modify'
         });
-        console.log('modifyLudoPutBody', modifyLudoPutBody);
+        // console.log('modifyLudoPutBody', modifyLudoPutBody);   // debug
         // const isSureToModify = window.confirm(`Are you sure to modify this ludo?`);
         const isSureToModify = window.confirm(`確定要修改Ludo內容？`);
         if (isSureToModify) {
-            const { currentFormValue } = this.props;
-            const { ludo_id } = currentFormValue;
+            const { ludo_id } = this.props.params;
             axios.put(`/apis/ludo/${ludo_id}`, modifyLudoPutBody)
             .then(response => {
                 if (response.data.status === '200') {
-                    browserHistory.push(`/opened-for-starter/${ludo_id}`);
+                    browserHistory.push(`/ludo/${ludo_id}`);
                 } else {
                     this.setState({
                         isModifyButtonClickable: true

@@ -28,12 +28,6 @@ export default class OpenedStarterForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // componentDidMount() {
-        // console.log('OpenedStarterForm componentDidMount');   // debug
-        // const { ludo_id }= this.props.params;
-        // this.props.getCurrentLudoData(ludo_id);
-    // }
-
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
         if (router_currentFormValue && !this.state.isDeleteButtonClickable) {
@@ -41,40 +35,12 @@ export default class OpenedStarterForm extends React.Component {
                 isDeleteButtonClickable: true
             })
         }
-    //     const { currentAuth, currentFormValue } = nextProps;
-    //     if (currentAuth && currentFormValue.ludo_id) {
-    //         // console.log('OpenedStarterForm componentWillReceiveProps currentFormValue.ludo_id', currentFormValue.ludo_id);  // debug
-    //         if (!this.state.isDeleteButtonClickable) {
-    //             // console.log('OpenedStarterForm componentWillReceiveProps redirect currentAuth', currentAuth);   // debug
-    //             if (currentAuth == 1) {
-    //                 this.setState({
-    //                     isDeleteButtonClickable: true
-    //                 })
-    //             } else if (currentAuth == 2 || currentAuth == 0) {
-    //                 browserHistory.push(`/opened-for-bystander/${currentFormValue.ludo_id}`);
-    //             } else if (currentAuth == 3 || currentAuth == 4) {
-    //                 browserHistory.push(`/active-for-player/${currentFormValue.ludo_id}`);
-    //             } else if (currentAuth == 5) {
-    //                 browserHistory.push(`/active-for-bystander/${currentFormValue.ludo_id}`);
-    //             }  
-    //         }
-    //     }
     }
 
     componentWillUnmount() {
         // console.log('OpenedStarterForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
-
-    // getCategory(category_id) {
-    //     // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
-    //     const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
-    //     return category[category_id];
-    // }
-
-    // getCategoryIcon(category_id) {
-    //     return iconArray[category_id];
-    // }
 
     handleDayPickerClass(value) {
         const { checkpoint } = this.props.currentFormValue;

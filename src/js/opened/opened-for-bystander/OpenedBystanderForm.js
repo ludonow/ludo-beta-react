@@ -39,9 +39,6 @@ export default class OpenedBystanderForm extends React.Component {
     // }
 
     // componentDidMount() {
-        // console.log('OpenedBystanderForm componentDidMount');   // debug
-        // const { ludo_id }= this.props.params;
-        // this.props.getCurrentLudoData(ludo_id);
         // this._notificationSystem = this.refs.notificationSystem;
     // }
 
@@ -52,40 +49,12 @@ export default class OpenedBystanderForm extends React.Component {
                 isJoinButtonClickable: true
             })
         }
-    //     const { currentAuth, currentFormValue } = nextProps;
-    //     if (currentAuth && currentFormValue.ludo_id) {
-    //         // console.log('OpenedBystanderForm componentWillReceiveProps currentFormValue.ludo_id', currentFormValue.ludo_id);   // debug
-    //         if (!this.state.isJoinButtonClickable) {
-    //             // console.log('OpenedBystanderForm componentWillReceiveProps redirect currentAuth', currentAuth);   // debug
-    //             if (currentAuth == 1) {
-    //                 browserHistory.push(`/opened-for-starter/${currentFormValue.ludo_id}`);
-    //             } else if (currentAuth == 2 || currentAuth == 0) {
-    //                 this.setState({
-    //                     isJoinButtonClickable: true
-    //                 })
-    //             } else if (currentAuth == 3 || currentAuth == 4) {
-    //                 browserHistory.push(`/active-for-player/${currentFormValue.ludo_id}`);
-    //             } else if (currentAuth == 5) {
-    //                 browserHistory.push(`/active-for-bystander/${currentFormValue.ludo_id}`);
-    //             } 
-    //         }
-    //     }
     }
 
     componentWillUnmount() {
         // console.log('OpenedBystanderForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
-
-    // getCategory(category_id) {
-    //     // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
-    //     const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
-    //     return category[category_id];
-    // }
-
-    // getCategoryIcon(category_id) {
-    //     return iconArray[category_id];
-    // }
 
     handleDayPickerClass(value) {
         const { checkpoint } = this.props.currentFormValue;
