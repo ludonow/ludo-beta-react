@@ -47,7 +47,6 @@ const ludoRedirect = (nextState, replace, callback) => {
             // console.log('router_ludoPageIndex', router_ludoPageIndex);   // debug
             router_currentFormValue = response.data.ludo;
             // console.log('router_currentFormValue', router_currentFormValue);   // debug
-            /* TODO: warning.js react router type cannot be null */
             callback();
         } else {
             // console.log('AppRouter ludoRedirect getCurrentLudoData else response from server: ', response);
@@ -62,6 +61,8 @@ const ludoRedirect = (nextState, replace, callback) => {
     });
 };
 
+
+/* TODO: find out usage of getComponent callback */
 export default class AppRouter extends React.Component {
     render() {
         return (
@@ -71,11 +72,13 @@ export default class AppRouter extends React.Component {
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
                     <Route path="friend" component={Friend}></Route>
                     <Route path="login" component={Login}></Route>
-                    <Route path="ludo/:ludo_id" getComponents={(nextState, cb) => {
-                        cb(null, {children: ludoPageArray[router_ludoPageIndex], router_currentFormValue: router_currentFormValue})
+                    <Route path="ludo/:ludo_id" getComponent={(nextState, cb) => {
+                        const Component = ludoPageArray[router_ludoPageIndex];
+                        cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
                     }} onEnter={ludoRedirect}></Route>
-                    <Route path="ludo-edit/:ludo_id" getComponents={(nextState, cb) => {
-                        cb(null, {children: ludoPageArrayForEdit[router_ludoPageIndex], router_currentFormValue: router_currentFormValue})
+                    <Route path="ludo-edit/:ludo_id" getComponent={(nextState, cb) => {
+                        const Component = ludoPageArrayForEdit[router_ludoPageIndex];
+                        cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
                     }} onEnter={ludoRedirect}></Route>
                     <Route path="playground" component={Playground}></Route>
                     <Route path="profile/:userId" component={Profile}></Route>

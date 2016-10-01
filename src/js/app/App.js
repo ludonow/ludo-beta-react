@@ -318,8 +318,7 @@ export default class App extends React.Component {
 
     render() {
         const { isHoveringSidebar } = this.state;
-        let { router_currentFormValue } = this.props;
-        router_currentFormValue = (router_currentFormValue ?  router_currentFormValue.type : router_currentFormValue);
+        const { router_currentFormValue } = this.props;
         return (
             <div>
                 <Header isProfile={this.state.isOpeningProfilePage} userBasicData={this.state.userBasicData}/>
@@ -331,7 +330,7 @@ export default class App extends React.Component {
                 {
                     React.cloneElement(this.props.children,
                         Object.assign(this.state, {
-                            router_currentFormValue: router_currentFormValue,
+                            router_currentFormValue,
                             clearCurrentFormValue: this.clearCurrentFormValue,
                             getBasicUserData: this.getBasicUserData,
                             getCurrentLudoData: this.getCurrentLudoData,
