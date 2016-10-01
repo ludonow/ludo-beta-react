@@ -92,6 +92,7 @@
     .introduction-and-tags--player {
         overflow: auto;
         background-color: $gray_text-field;
+        height: 80px;
         &::-webkit-scrollbar {
             width: 4px;
         }

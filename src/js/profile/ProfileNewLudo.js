@@ -16,13 +16,9 @@ export default class ProfileNewLudo extends React.Component {
         super(props);
     }
 
-    handleCategoryIcon(category_id) {
-        return iconArray[category_id];
-    }
-
     handleIconClick(event) {
         const ludo_id = event.currentTarget.id;
-        browserHistory.push(`/opened-for-starter/${ludo_id}`);
+        browserHistory.push(`/ludo/${ludo_id}`);
     }
 
     render() {
@@ -37,7 +33,7 @@ export default class ProfileNewLudo extends React.Component {
                                 id={data.ludo_id}
                                 onClick={this.handleIconClick}
                             >
-                                <img className="profile-ludo__icon" src={this.handleCategoryIcon(data.category_id)} />
+                                <img className="profile-ludo__icon" src={iconArray[data.category_id]} />
                             </div>
                         )
                     })

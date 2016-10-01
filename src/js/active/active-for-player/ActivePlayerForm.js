@@ -62,6 +62,7 @@ export default class ActivePlayerForm extends React.Component {
             this.setState({
                 isReportButtonClickable: true
             });
+            // console.log('componentWillReceiveProps getTimeLineMarks');   // debug
             this.getTimeLineMarks(nextProps);
         }
     }
@@ -74,7 +75,7 @@ export default class ActivePlayerForm extends React.Component {
     getTimeLineMarks(nextProps) {
         // console.log('ActivePlayerForm getTimeLineMarks nextProps', nextProps);   // debug
         const { state } = this;
-        const { currentFormValue } = nextProps;
+        const currentFormValue = nextProps.router_currentFormValue;
         const { checkpoint, duration } = currentFormValue;
 
         const { timeLineMarks } = state;

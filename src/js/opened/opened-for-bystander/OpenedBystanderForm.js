@@ -221,7 +221,7 @@ export default class OpenedBystanderForm extends React.Component {
                         <button 
                             className="ludo-detail-information-submit-button" 
                             type="submit" 
-                            disabled={!isJoinButtonClickable}
+                            disabled={!isJoinButtonClickable || !this.props.isLoggedIn}
                         >
                             加入
                         </button>

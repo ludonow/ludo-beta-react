@@ -39,6 +39,7 @@ export default class ActiveBystanderForm extends React.Component {
             this.setState({
                 isFollowButtonClickable: true
             });
+            // console.log('componentWillReceiveProps getTimeLineMarks');   // debug
             this.getTimeLineMarks(nextProps);
         }
     }
@@ -50,7 +51,7 @@ export default class ActiveBystanderForm extends React.Component {
 
     getTimeLineMarks(nextProps) {
         const { state } = this;
-        const { currentFormValue } = nextProps;
+        const currentFormValue = nextProps.router_currentFormValue;
         const { checkpoint, duration } = currentFormValue;
 
         const { timeLineMarks } = state;
