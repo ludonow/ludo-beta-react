@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import axios from '../../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
@@ -54,8 +55,17 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.currentFormValue.ludo_id != nextProps.currentFormValue.ludo_id) {
-            this.getTimeLineMarks(nextProps);
+        const { currentFormValue } = this.props;
+        if(currentFormValue.title && !this.state.isReportButtonClickable) {
+            if (nextProps.currentFormValue.starter_id == this.props.currentUserId 
+                || nextProps.currentFormValue.player_id == this.props.currentUserId) {
+                this.getTimeLineMarks(this.props);
+                this.setState({
+                    isReportButtonClickable: true
+                });
+            } else {
+                browserHistory.push(`/active-for-bystander/${currentFormValue.ludo_id}`);
+            }
         }
     }
 
@@ -70,6 +80,7 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     getTimeLineMarks(nextProps) {
+        console.log('ActivePlayerForm getTimeLineMarks nextProps', nextProps);
         const { state } = this;
         const { currentFormValue } = nextProps;
         const { checkpoint, duration } = currentFormValue;

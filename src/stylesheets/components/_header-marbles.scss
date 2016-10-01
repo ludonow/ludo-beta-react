@@ -7,11 +7,11 @@
     @extend %as_tall_as_parent;
 }
     .header-marbles__icon {
-        height: 40px;
-        padding-top: 3px;
+        width: 45px;
+        height: 45px;
     }
     .header-marbles__number {
-        margin: 0 5px;
+        margin: 0 1px;
         padding-top: 2px;
         font-family: Exo, "Microsoft JhengHei";
         font-size: 18px;

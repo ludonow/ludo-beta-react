@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import axios from '../../axios-config';
 import RcSlider from 'rc-slider';
 
@@ -16,6 +17,7 @@ export default class ActiveBystanderForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isFollowButtonClickable: false,
             maxDuration: 14,
             maxMarbles: 50,
             timeLineMarks: {}
@@ -32,8 +34,17 @@ export default class ActiveBystanderForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.currentFormValue.ludo_id != nextProps.currentFormValue.ludo_id) {
-            this.getTimeLineMarks(nextProps);
+        const { currentFormValue } = this.props;
+        if(currentFormValue.title && !this.state.isReportButtonClickable) {
+            if (nextProps.currentFormValue.starter_id == this.props.currentUserId 
+                || nextProps.currentFormValue.player_id == this.props.currentUserId) {
+                browserHistory.push(`/active-for-player/${currentFormValue.ludo_id}`);
+            } else {
+                this.getTimeLineMarks(this.props);
+                this.setState({
+                    isFollowButtonClickable: true
+                });
+            }
         }
     }
 
@@ -85,6 +96,9 @@ export default class ActiveBystanderForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         this.props.handleShouldProfileUpdate(true);
+        this.setState({
+            isFollowButtonClickable: false
+        });
         // const isSureToFollow = window.confirm(`Are you sure to follow?`);
         // const { currentFormValue, params } = this.props;
         // const { ludoId } = params;
