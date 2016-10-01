@@ -35,10 +35,12 @@ export default class LudoList extends React.Component {
 
     componentWillMount() {
         this.props.handleIsOpeningLudoListPage(true);
+        this.props.handleShouldUpdateLudoList(true);
     }
 
     componentWillUnmount() {
         this.props.handleIsOpeningLudoListPage(false);
+        this.props.handleShouldUpdateLudoList(false);
     }
 
     handleCardStage(stage) {
@@ -66,34 +68,28 @@ export default class LudoList extends React.Component {
     }
 
     handleCardLink(event) {
-        const indexString = event.currentTarget.id.slice(3);
-        if (indexString == '') {  // the latest create card
-            const { currentFormValue } = this.props;
-            const { ludo_id } = currentFormValue; 
-            browserHistory.push(`/opened-for-starter/${ludo_id}`);
-            return;
-        } else {
-            const cardIndex = Number(indexString);
-            const specificCardData = this.props.ludoList[cardIndex];
-            const { stage, player_id, starter_id } = specificCardData;
-            const { currentUserId, getCurrentLudoData } = this.props;
-            const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
-            const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
-            getCurrentLudoData(ludo_id);
-            if (stage == 1) {
-                if(currentUserId == starter_id) {
-                    browserHistory.push(`/opened-for-starter/${ludo_id}`);
-                } else {
-                    browserHistory.push(`/opened-for-bystander/${ludo_id}`);
-                }
-            } else {
-                if(currentUserId == starter_id || currentUserId == player_id) {
-                    browserHistory.push(`/active-for-player/${ludo_id}`);
-                } else {
-                    browserHistory.push(`/active-for-bystander/${ludo_id}`);
-                }
-            }
-        }
+        const cardIndex = Number(event.currentTarget.id.slice(3));
+        const { ludo_id } = this.props.ludoList[cardIndex];
+        browserHistory.push(`/ludo/${ludo_id}`);
+        // const specificCardData = this.props.ludoList[cardIndex];
+        // const { stage, player_id, starter_id } = specificCardData;
+        // const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
+        // const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        // const { currentUserId, getCurrentLudoData } = this.props;
+        // getCurrentLudoData(ludo_id);
+        // if (stage == 1) {
+        //     if(currentUserId == starter_id) {
+        //         browserHistory.push(`/opened-for-starter/${ludo_id}`);
+        //     } else {
+        //         browserHistory.push(`/opened-for-bystander/${ludo_id}`);
+        //     }
+        // } else {
+        //     if(currentUserId == starter_id || currentUserId == player_id) {
+        //         browserHistory.push(`/active-for-player/${ludo_id}`);
+        //     } else {
+        //         browserHistory.push(`/active-for-bystander/${ludo_id}`);
+        //     }
+        // }
     }
 
     showBack(event) {

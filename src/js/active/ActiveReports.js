@@ -8,11 +8,15 @@ export default class ActiveReports extends React.Component {
         super(props);
         this.state = {
             enlargeImageLocation: '',
+            isEditingReport: false,
+            isEditReportButtonClickable: false,
             isImageLightBoxOpen: false,
             starterReportList: [],
             playerReportList: []
         };
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        this.handleReportEditClick = this.handleReportEditClick.bind(this);
+        this.handleReportEditText = this.handleReportEditText.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
     }
 
@@ -44,9 +48,14 @@ export default class ActiveReports extends React.Component {
                 }
                 this.setState({
                     starterReportList,
-                    playerReportList
+                    playerReportList,
                 });
             });
+            if (!this.state.isEditReportButtonClickable) {
+                this.setState({
+                    isEditReportButtonClickable: true
+                });
+            }
         }
     }
 
@@ -58,6 +67,31 @@ export default class ActiveReports extends React.Component {
         });
     }
 
+    handleReportEditClick(event) {
+        event.preventDefault();
+        this.setState({
+            isEditingReport: true
+        });
+    }
+
+    handleReportEditText() {
+        event.preventDefault();
+        this.setState({
+            isEditingReport: false
+        });
+        // axios.put(``)
+        // .then( response => {
+        //     if(response.status === '200') {
+        //         console.log('成功編輯');
+        //     } else {
+        //         window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+        //     }
+        // })
+        // .catch( error => {
+        //     window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+        // })
+    }
+
     closeLightbox() {
         this.setState({
             isImageLightBoxOpen: false
@@ -65,6 +99,7 @@ export default class ActiveReports extends React.Component {
     }
 
     render() {
+        const { isEditingReport, isEditReportButtonClickable } = this.state;
         return (
             <div className="report-list">
                 {
@@ -90,6 +125,7 @@ export default class ActiveReports extends React.Component {
                             this.state.starterReportList.map( (reportObject, index) => {
                                 return (
                                     <div className="player-report-container" key={`starter-report-${index}`}>
+                                        <button>編輯</button>
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
@@ -133,7 +169,7 @@ export default class ActiveReports extends React.Component {
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
-                                                    <img className="report-content report-content--image" 
+                                                    <img className="report-content report-content__image" 
                                                         src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
                                                     />
@@ -141,12 +177,26 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         {
-                                            reportObject.content ? 
-                                                <div className="report-content-container">
-                                                    <div className="report-content report-content--text">
-                                                        {reportObject.content}
+                                            reportObject.content ?
+                                                !isEditingReport ? 
+                                                    <div className="report-content-container">
+                                                        <button
+                                                            onClick={this.handleReportEditClick}
+                                                            disabled={!isEditReportButtonClickable}
+                                                        >
+                                                            編輯
+                                                        </button>
+                                                        <div className="report-content report-content__text">
+                                                            {reportObject.content}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                :
+                                                    <Textarea 
+                                                        className="report-content__text-edit"
+                                                        minRows={2}
+                                                        onKeyDown={this.handleReportEditText}
+                                                        placeholder={reportObject.content}
+                                                    />
                                             : null
                                         }
                                         <CommentBox 

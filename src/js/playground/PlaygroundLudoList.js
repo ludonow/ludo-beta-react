@@ -36,10 +36,12 @@ export default class PlaygroundLudoList extends React.Component {
 
     componentWillMount() {
         this.props.handleIsOpeningLudoListPage(true);
+        this.props.handleShouldUpdateLudoList(true);
     }
 
     componentWillUnmount() {
         this.props.handleIsOpeningLudoListPage(false);
+        this.props.handleShouldUpdateLudoList(false);
     }
 
     handleCardStage(stage) {
@@ -68,25 +70,27 @@ export default class PlaygroundLudoList extends React.Component {
 
     handleCardLink(event) {
         const cardIndex = Number(event.currentTarget.id.slice(3));
-        const specificCardData = this.props.ludoList[cardIndex];
-        const { stage, player_id, starter_id } = specificCardData;
-        const { currentUserId, getCurrentLudoData } = this.props;
-        const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
-        const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
-        getCurrentLudoData(ludo_id);
-        if (stage == 1) {
-            if(currentUserId == starter_id) {
-                browserHistory.push(`/opened-for-starter/${ludo_id}`);
-            } else {
-                browserHistory.push(`/opened-for-bystander/${ludo_id}`);
-            }
-        } else {
-            if(currentUserId == starter_id || currentUserId == player_id) {
-                browserHistory.push(`/active-for-player/${ludo_id}`);
-            } else {
-                browserHistory.push(`/active-for-bystander/${ludo_id}`);
-            }
-        }
+        const { ludo_id } = this.props.ludoList[cardIndex];
+        browserHistory.push(`/ludo/${ludo_id}`);
+        // const specificCardData = this.props.ludoList[cardIndex];
+        // const { stage, player_id, starter_id } = specificCardData;
+        // const { category_id, checkpoint, duration, introduction, ludo_id, marbles, tags, title } = specificCardData;
+        // const ludoForm = { category_id, checkpoint, duration, introduction, marbles, tags, title };
+        // const { currentUserId, currentAuth, getCurrentLudoData } = this.props;
+        // getCurrentLudoData(ludo_id);
+        // if (stage == 1) {
+        //     if(currentUserId == starter_id) {
+        //         browserHistory.push(`/opened-for-starter/${ludo_id}`);
+        //     } else {
+        //         browserHistory.push(`/opened-for-bystander/${ludo_id}`);
+        //     }
+        // } else if (stage == 2) {
+        //     if(currentUserId == starter_id || currentUserId == player_id) {
+        //         browserHistory.push(`/active-for-player/${ludo_id}`);
+        //     } else {
+        //         browserHistory.push(`/active-for-bystander/${ludo_id}`);
+        //     }
+        // }
     }
 
     showBack(event) {

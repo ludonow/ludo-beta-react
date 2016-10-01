@@ -18,6 +18,8 @@ export default class OpenedBystanderForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            // category: ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            category: ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             isJoinButtonClickable: false,
             maxDuration: 14,
             maxMarbles: 50
@@ -36,34 +38,54 @@ export default class OpenedBystanderForm extends React.Component {
     //     });
     // }
 
-    componentDidMount() {
-        const { ludoId }= this.props.params;
-        this.props.getCurrentLudoData(ludoId);
+    // componentDidMount() {
+        // console.log('OpenedBystanderForm componentDidMount');   // debug
+        // const { ludo_id }= this.props.params;
+        // this.props.getCurrentLudoData(ludo_id);
         // this._notificationSystem = this.refs.notificationSystem;
-    }
+    // }
 
     componentWillReceiveProps(nextProps) {
-        const { currentFormValue } = this.props;
-        if (currentFormValue.title && !this.state.isJoinButtonClickable) {
-            if (nextProps.currentFormValue.starter_id != this.props.currentUserId) {
-                this.setState({
-                    isJoinButtonClickable: true
-                })
-            } else {
-                browserHistory.push(`/opened-for-starter/${currentFormValue.ludo_id}`);
-            }
+        const { router_currentFormValue } = nextProps;
+        if (router_currentFormValue && !this.state.isJoinButtonClickable) {
+            this.setState({
+                isJoinButtonClickable: true
+            })
         }
+    //     const { currentAuth, currentFormValue } = nextProps;
+    //     if (currentAuth && currentFormValue.ludo_id) {
+    //         // console.log('OpenedBystanderForm componentWillReceiveProps currentFormValue.ludo_id', currentFormValue.ludo_id);   // debug
+    //         if (!this.state.isJoinButtonClickable) {
+    //             // console.log('OpenedBystanderForm componentWillReceiveProps redirect currentAuth', currentAuth);   // debug
+    //             if (currentAuth == 1) {
+    //                 browserHistory.push(`/opened-for-starter/${currentFormValue.ludo_id}`);
+    //             } else if (currentAuth == 2 || currentAuth == 0) {
+    //                 this.setState({
+    //                     isJoinButtonClickable: true
+    //                 })
+    //             } else if (currentAuth == 3 || currentAuth == 4) {
+    //                 browserHistory.push(`/active-for-player/${currentFormValue.ludo_id}`);
+    //             } else if (currentAuth == 5) {
+    //                 browserHistory.push(`/active-for-bystander/${currentFormValue.ludo_id}`);
+    //             } 
+    //         }
+    //     }
     }
 
-    getCategory(category_id) {
-        // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
-        const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
-        return category[category_id];
+    componentWillUnmount() {
+        // console.log('OpenedBystanderForm componentWillUnmount');   // debug
+        this.props.clearCurrentFormValue();
     }
 
-    getCategoryIcon(category_id) {
-        return iconArray[category_id];
-    }
+    // getCategory(category_id) {
+    //     // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
+    //     const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
+    //     return category[category_id];
+    // }
+
+    // getCategoryIcon(category_id) {
+    //     return iconArray[category_id];
+    // }
 
     handleDayPickerClass(value) {
         const { checkpoint } = this.props.currentFormValue;
@@ -129,8 +151,9 @@ export default class OpenedBystanderForm extends React.Component {
     }
 
     render() {
-        const { isJoinButtonClickable, maxDuration, maxMarbles } = this.state;
-        const { currentFormValue } = this.props;
+        // const { currentFormValue } = this.props;
+        const currentFormValue = this.props.router_currentFormValue;
+        const { category, isJoinButtonClickable, maxDuration, maxMarbles } = this.state;
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
@@ -170,13 +193,13 @@ export default class OpenedBystanderForm extends React.Component {
                 <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img className="category-icon" src={this.getCategoryIcon(category_id)} />
+                            <img className="category-icon" src={iconArray[category_id]} />
                         </div>
                         <div className="top-right-container">
                             <div className="text-field-container">
                                 <span className="text-field-label">種類:</span>
                                 <span className="text-field-value">
-                                    {this.getCategory(category_id)}
+                                    {category[category_id]}
                                 </span>
                             </div>
                             <div className="text-field-container">

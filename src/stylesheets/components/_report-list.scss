@@ -41,11 +41,16 @@
             .report-content {
                 max-width: 100%;
             }
-            .report-content--image {
-                @extend %clickable;
+            .report-content__image {
+                    cursor: zoom-in;
             }
-            .report-content--text {
+            .report-content__text {
                 padding: 10px;
+            }
+            .report-content__text-edit {
+                width: 97%;
+                // border: none;
+                resize: none;
             }
         }
             .player-report-comment-box-container {

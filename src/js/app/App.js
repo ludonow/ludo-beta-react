@@ -18,6 +18,7 @@ export default class App extends React.Component {
                 tags: '',
                 title: ''
             },
+            currentAuth: null,
             currentLudoId: '',
             currentLudoReportData: [],
             currentUserId: '',
@@ -26,6 +27,7 @@ export default class App extends React.Component {
             isOpeningActivePage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
+            shouldUpdateLudoList: false,
             shouldProfileUpdate: false,
             shouldReportUpdate: false,
             ludoList: [],
@@ -35,6 +37,7 @@ export default class App extends React.Component {
             userBasicData: {},
             userProfileData: {}
         };
+        this.clearCurrentFormValue = this.clearCurrentFormValue.bind(this);
         this.getBasicUserData = this.getBasicUserData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getLatestLudoList = this.getLatestLudoList.bind(this);
@@ -47,6 +50,7 @@ export default class App extends React.Component {
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleShouldUpdateLudoList = this.handleShouldUpdateLudoList.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
@@ -61,13 +65,15 @@ export default class App extends React.Component {
 
     componentDidUpdate() {
         // console.log('app componentDidUpdate state', this.state);  // debug
-        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, shouldProfileUpdate } = this.state;
-        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
+        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, 
+            shouldUpdateLudoList, shouldProfileUpdate } = this.state;
             // console.log('app componentDidUpdate shouldProfileUpdate true');  // debug
-            if (isOpeningLudoListPage) {
-                // console.log('app componentDidUpdate getLatestLudoList');  // debug
-                this.getLatestLudoList();
-            }
+        if (isOpeningLudoListPage && shouldUpdateLudoList) {
+            // console.log('app componentDidUpdate getLatestLudoList');  // debug
+            this.getLatestLudoList();
+            this.handleShouldUpdateLudoList(false);
+        }
+        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
             /* 
              * Update profile data after the user did some ludo action and is going to open profile page 
              */
@@ -86,6 +92,23 @@ export default class App extends React.Component {
             this.getReportOfCurrentLudo(currentLudoId);
             this.handleShouldReportUpdate(false);
         }
+    }
+
+    clearCurrentFormValue() {
+        // console.log('app clearCurrentFormValue');   // debug
+        // console.log('-------------------------');   // debug
+        this.setState({
+            currentAuth: null,
+            currentFormValue: {
+                category_id: 0,
+                checkpoint: [],
+                duration: 0,
+                introduction: '',
+                marbles: 0,
+                tags: [],
+                title: ''
+            }
+        });
     }
 
     getBasicUserData() {
@@ -108,15 +131,18 @@ export default class App extends React.Component {
     }
 
     getCurrentLudoData(ludo_id) {
-        // console.log('app before getCurrentLudoData -- ludo_id: ', ludo_id);  // debug
+        // console.log('app before getCurrentLudoData');  // debug
         axios.get(`/apis/ludo/${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
+                // console.log('app getCurrentLudoData -- response: ', response);  // debug
                 this.setState({
+                    currentAuth: response.data.auth,
                     currentFormValue: response.data.ludo,
                     currentLudoId: ludo_id
                 });
             } else {
+                // console.log('app getCurrentLudoData else response from server: ', response);
                 console.log('app getCurrentLudoData else message from server: ', response.data.message);
                 console.log('app getCurrentLudoData else error from server: ', response.data.err);
             }
@@ -136,6 +162,7 @@ export default class App extends React.Component {
                 });
             } else {
                 console.log('app getLatestLudoList else message from server: ', response.data.message);
+                console.log('app getLatestLudoList else error from server: ', response.data.err);
             }
         })
         .catch(error => {
@@ -261,6 +288,13 @@ export default class App extends React.Component {
         });
     }
 
+    handleShouldUpdateLudoList(boolean) {
+        // console.log('app handleShouldUpdateLudoList', boolean);  // debug
+        this.setState({
+            shouldUpdateLudoList: boolean
+        });
+    }
+
     handleShouldProfileUpdate(boolean) {
         // console.log('app handleShouldProfileUpdate', boolean);  // debug
         this.setState({
@@ -284,6 +318,8 @@ export default class App extends React.Component {
 
     render() {
         const { isHoveringSidebar } = this.state;
+        let { router_currentFormValue } = this.props;
+        router_currentFormValue = (router_currentFormValue ?  router_currentFormValue.type : router_currentFormValue);
         return (
             <div>
                 <Header isProfile={this.state.isOpeningProfilePage} userBasicData={this.state.userBasicData}/>
@@ -295,6 +331,8 @@ export default class App extends React.Component {
                 {
                     React.cloneElement(this.props.children,
                         Object.assign(this.state, {
+                            router_currentFormValue: router_currentFormValue,
+                            clearCurrentFormValue: this.clearCurrentFormValue,
                             getBasicUserData: this.getBasicUserData,
                             getCurrentLudoData: this.getCurrentLudoData,
                             getLatestLudoList: this.getLatestLudoList,
@@ -307,6 +345,7 @@ export default class App extends React.Component {
                             handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                             handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                             handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
+                            handleShouldUpdateLudoList: this.handleShouldUpdateLudoList,
                             handleShouldProfileUpdate: this.handleShouldProfileUpdate,
                             handleShouldReportUpdate: this.handleShouldReportUpdate,
                             updateCurrentFormValue: this.updateCurrentFormValue

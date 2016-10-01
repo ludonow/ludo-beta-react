@@ -33,7 +33,6 @@ export default class LudoEditForm extends React.Component {
             // category: [lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             currentHoverValue: 3,
-            hasGotData: false,
             isDurationSelected: true,
             isModifyButtonClickable: false,
             maxDuration: 14,
@@ -53,44 +52,67 @@ export default class LudoEditForm extends React.Component {
         this.handleTagsChange = this.handleTagsChange.bind(this);
     }
 
-    componentDidMount() {
-        const { ludo_id }= this.props.params;
-        this.props.getCurrentLudoData(ludo_id);
-    }
+    // componentDidMount() {
+    //     if (!this.props.currentFormValue.ludo_id) {
+    //         const { ludo_id }= this.props.params;
+    //         this.props.getCurrentLudoData(ludo_id);
+    //     }
+    // }
 
     componentWillReceiveProps(nextProps) {
-        const { currentFormValue } = this.props;
-        const { category_id, checkpoint, duration, introduction, marbles, stage, tags, title } = currentFormValue;
-        if(currentFormValue.title && !this.state.hasGotData && !this.state.isModifyButtonClickable) {
-            if (nextProps.currentFormValue.starter_id == this.props.currentUserId) {
-                this.setState({
-                    ludoEditForm: Object.assign(this.state.ludoEditForm, {
-                        category_id,
-                        checkpoint,
-                        duration,
-                        introduction,
-                        marbles,
-                        stage,
-                        tags,
-                        title
-                    }),
-                    hasGotData: true,
-                    isModifyButtonClickable: true
-                });
-            } else {
-                browserHistory.push(`/opened-for-bystander/${currentFormValue.ludo_id}`);
-            }
+        const { router_currentFormValue } = nextProps;
+        // console.log('LudoEditForm componentWillReceiveProps nextProps', nextProps);   // debug
+        if (router_currentFormValue && !this.state.isModifyButtonClickable) {
+            const { category_id, checkpoint, duration, introduction, marbles, stage, tags, title } = router_currentFormValue;
+            // console.log('LudoEditForm componentWillReceiveProps isModifyButtonClickable router_currentFormValue', router_currentFormValue);   // debug
+            this.setState({
+                isModifyButtonClickable: true,
+                ludoEditForm: Object.assign(this.state.ludoEditForm, {
+                    category_id,
+                    checkpoint,
+                    duration,
+                    introduction,
+                    marbles,
+                    stage,
+                    tags,
+                    title
+                })
+            })
         }
+        // const { currentAuth, currentFormValue } = nextProps;
+        // if (currentAuth && currentFormValue.ludo_id) {
+        //     // console.log('LudoEditForm componentWillReceiveProps currentFormValue.ludo_id', currentFormValue.ludo_id);   // debug
+        //     const { category_id, checkpoint, duration, introduction, marbles, stage, tags, title } = currentFormValue;
+        //     if (!this.state.isModifyButtonClickable) {
+        //         // console.log('LudoEditForm componentWillReceiveProps redirect currentAuth', currentAuth);   // debug
+        //         if (currentAuth == 1) {
+        //             this.setState({
+        //                 isModifyButtonClickable: true,
+        //                 ludoEditForm: Object.assign(this.state.ludoEditForm, {
+        //                     category_id,
+        //                     checkpoint,
+        //                     duration,
+        //                     introduction,
+        //                     marbles,
+        //                     stage,
+        //                     tags,
+        //                     title
+        //                 })
+        //             })
+        //         } else if (currentAuth == 2 || currentAuth == 0) {
+        //             browserHistory.push(`/opened-for-bystander/${currentFormValue.ludo_id}`);
+        //         } else if (currentAuth == 3 || currentAuth == 4) {
+        //             browserHistory.push(`/active-for-player/${currentFormValue.ludo_id}`);
+        //         } else if (currentAuth == 5) {
+        //             browserHistory.push(`/active-for-bystander/${currentFormValue.ludo_id}`);
+        //         }  
+        //     }
+        // }
     }
 
-    getCategory(category_id) {
-        // const category = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'];
-        const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'];
-        return category[category_id];
-    }
-
-    getCategoryIcon(category_id) {
-        return iconArray[category_id];
+    componentWillUnmount() {
+        // console.log('LudoEditForm componentWillUnmount');   // debug
+        this.props.clearCurrentFormValue();
     }
 
     handleCancelClick(event) {
@@ -311,11 +333,13 @@ export default class LudoEditForm extends React.Component {
     // }
 
     render() {
-        const { currentFormValue } = this.props; 
+        // const { currentFormValue } = this.props;
+        const currentFormValue = this.props.router_currentFormValue;
+        const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const { category, currentHoverValue, ludoEditForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
-            if (i <= currentFormValue.duration) {
+            if (i <= duration) {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
@@ -323,7 +347,7 @@ export default class LudoEditForm extends React.Component {
                             onMouseOver={this.handleDayPickerMouseOver} 
                             disabled={
                                 (i < 3 && !isDurationSelected)
-                                || (i >= currentFormValue.duration && isDurationSelected)
+                                || (i >= duration && isDurationSelected)
                             }
                         />, <br key="br" /> 
                     );
@@ -334,7 +358,7 @@ export default class LudoEditForm extends React.Component {
                             onMouseOver={this.handleDayPickerMouseOver} 
                             disabled={
                                 (i < 3 && !isDurationSelected)
-                                || (i >= currentFormValue.duration && isDurationSelected)
+                                || (i >= duration && isDurationSelected)
                             }
                         />
                     );
@@ -347,7 +371,7 @@ export default class LudoEditForm extends React.Component {
                             onMouseOver={this.handleDayPickerMouseOver} 
                             disabled={
                                 (i < 3 && !isDurationSelected)
-                                || (i >= currentFormValue.duration && isDurationSelected)
+                                || (i >= duration && isDurationSelected)
                             }
                         />, <br key="br" /> 
                     );
@@ -358,7 +382,7 @@ export default class LudoEditForm extends React.Component {
                             onMouseOver={this.handleDayPickerMouseOver} 
                             disabled={
                                 (i < 3 && !isDurationSelected)
-                                || (i >= currentFormValue.duration && isDurationSelected)
+                                || (i >= duration && isDurationSelected)
                             }
                         />
                     );
@@ -369,13 +393,13 @@ export default class LudoEditForm extends React.Component {
             <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
                 <div className="ludo-detail-information-top-container">
                     <div className="category-icon-container">
-                        <img className="category-icon" src={this.getCategoryIcon(currentFormValue.category_id)} />
+                        <img className="category-icon" src={iconArray[category_id]} />
                     </div>
                     <div className="top-right-container">
                         <div className="text-field-container">
                             <span className="text-field-label">種類:</span>
                             <span className="text-field-value">
-                                {this.getCategory(currentFormValue.category_id)}
+                                {category[category_id]}
                             </span>
                         </div>
                         <div className="text-field-container">
