@@ -157,8 +157,8 @@ export default class ActiveBystanderForm extends React.Component {
                                     <div className="react-tagsinput">
                                         <span className="react-tagsinput-span">
                                             {
-                                                this.props.currentFormValue.tags.length ?
-                                                this.props.currentFormValue.tags.map((tagString, index) => {
+                                                tags.length ?
+                                                tags.map((tagString, index) => {
                                                     return (
                                                         <span className="react-tagsinput-tag" key={`tag-${index}`}>
                                                             {tagString}
