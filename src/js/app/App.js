@@ -250,7 +250,7 @@ export default class App extends React.Component {
                 this.setState({
                     currentLudoReportData: response.data.reportList
                 });
-                // console.log('app after getReportOfCurrentLudo');  // debug
+                // console.log('app after getReportOfCurrentLudo response', response);  // debug
             } else {
                 console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
                 console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);

@@ -37,19 +37,29 @@ export default class ActiveReports extends React.Component {
             // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate');   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
-                starterReportList: null,
-                playerReportList: null
+                starterReportList: [],
+                playerReportList: []
             });
-            nextProps.currentLudoReportData.map((reportObject) => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {  // starter's report
-                    starterReportList.push(reportObject);
+            // console.log('ActiveReports componentWillReceiveProps nextProps.currentLudoReportData', nextProps.currentLudoReportData);   // debug
+            const newStarterReportList = nextProps.currentLudoReportData.filter(reportObject => {
+                if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {
+                    return true;
                 } else {
-                    playerReportList.push(reportObject);
+                    return false;
                 }
-                this.setState({
-                    starterReportList,
-                    playerReportList,
-                });
+            });
+            // console.log('ActiveReports componentWillReceiveProps this.state.starterReportList', this.state.starterReportList);   // debug 
+            const newPlayerReportList = nextProps.currentLudoReportData.filter( (reportObject) => {
+                if (reportObject.user_id == nextProps.router_currentFormValue.player_id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            // console.log('ActiveReports componentWillReceiveProps this.state.playerReportList', this.state.playerReportList);   // debug
+            this.setState({
+                starterReportList: newStarterReportList,
+                playerReportList: newPlayerReportList
             });
             if (!this.state.isEditReportButtonClickable) {
                 this.setState({
@@ -81,7 +91,12 @@ export default class ActiveReports extends React.Component {
         this.setState({
             isEditingReport: false
         });
-        // axios.put(``)
+        const reportPutBody = {
+            'content': '',
+            'image_location': ''
+        };
+        console.log('ActiveReports handleReportEditText reportPutBody', reportPutBody);   // debug
+        // axios.put(`/apis/report/${report_id}`)
         // .then( response => {
         //     if(response.status === '200') {
         //         console.log('成功編輯');
@@ -130,7 +145,7 @@ export default class ActiveReports extends React.Component {
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
-                                                    <img className="report-content report-content--image" 
+                                                    <img className="report-content report-content__image" 
                                                         src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
                                                     />
