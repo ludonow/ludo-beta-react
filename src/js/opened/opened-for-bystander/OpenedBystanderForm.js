@@ -18,6 +18,8 @@ export default class OpenedBystanderForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            alreadyJoinNewLudo: false,
+            alreadyJoinFormValue: {},
             // category: ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             isJoinButtonClickable: false,
@@ -68,36 +70,43 @@ export default class OpenedBystanderForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // TODO: Use notification confirming join
+        /* TODO: Use notification confirming join */
         this.setState({
             isJoinButtonClickable: false
         });
         const isSureToJoin = window.confirm(`Are you sure to join?`);
-        if (!this.state.isJoinButtonClickable && isSureToJoin) {
-            const { currentFormValue, params } = this.props;
-            const { ludoId } = params;
-            // console.log(`/apis/ludo/${ludoId}`);   // debug
+        if (isSureToJoin) {
+            const { ludo_id } = this.props.params;
+            const currentFormValue = this.props.router_currentFormValue;
+            // console.log(`/apis/ludo/${ludo_id}`);   // debug
             const joinLudoPutbody = {
-                'type': 'match',
                 'duration': currentFormValue.duration,
                 'marbles': currentFormValue.marbles,
-                'stage': currentFormValue.stage
+                'stage': currentFormValue.stage,
+                'type': 'match'
             };
-            // console.log('joinLudoPutbody', joinLudoPutbody);   // debug
+            console.log('joinLudoPutbody', joinLudoPutbody);   // debug
             // console.log('before join axios put');   // debug
-            axios.put(`/apis/ludo/${ludoId}`, joinLudoPutbody)
+            axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
             .then(response => {
                 if(response.data.status == '200') {
-                    // TODO: Confirm joining Ludo
+                    this.setState({
+                        isJoinButtonClickable: false
+                    });
                     this.props.getBasicUserData();
                     this.props.handleShouldProfileUpdate(true);
-                    // console.log('response data', response.data);   // debug
-                    // console.log('after join axios put');   // debug
-                    browserHistory.push(`/active-for-player/${ludoId}`);
+                    // console.log('after join axios put response', response);   // debug
+                    /* TODO: Figure out how to use same url redirect to other component */
+                    browserHistory.push(`/ludo-edit/${ludo_id}`);
+                } else if(response.data.message == 'Your heart is out.') {
+                    window.alert('你的愛心數用完囉！');
+                    this.setState({
+                        isJoinButtonClickable: false
+                    });
                 } else {
                     window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.log('OpenedBystanderForm join else response from server: ', response);
                     console.log('OpenedBystanderForm join else message from server: ', response.data.message);
-                    console.log('OpenedBystanderForm join else error from server: ', response.data.err);
                     this.setState({
                         isJoinButtonClickable: true
                     });
@@ -120,9 +129,8 @@ export default class OpenedBystanderForm extends React.Component {
     }
 
     render() {
-        // const { currentFormValue } = this.props;
-        const currentFormValue = this.props.router_currentFormValue;
-        const { category, isJoinButtonClickable, maxDuration, maxMarbles } = this.state;
+        const { alreadyJoinNewLudo, alreadyJoinFormValue, category, isJoinButtonClickable, maxDuration, maxMarbles } = this.state;
+        const currentFormValue = alreadyJoinNewLudo ? alreadyJoinFormValue: this.props.router_currentFormValue;
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {

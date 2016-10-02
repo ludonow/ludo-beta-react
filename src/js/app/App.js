@@ -22,6 +22,7 @@ export default class App extends React.Component {
             currentLudoId: '',
             currentLudoReportData: [],
             currentUserId: '',
+            hasGotNewReport: false,
             isHoveringSidebar: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
@@ -46,6 +47,7 @@ export default class App extends React.Component {
         this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
+        this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
         this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
@@ -247,10 +249,12 @@ export default class App extends React.Component {
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
+                console.log('app after getReportOfCurrentLudo before setState');  // debug
                 this.setState({
                     currentLudoReportData: response.data.reportList
                 });
-                // console.log('app after getReportOfCurrentLudo response', response);  // debug
+                console.log('app after getReportOfCurrentLudo response', response);  // debug
+                this.handleHasGotNewReport(false);
             } else {
                 console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
                 console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);
@@ -258,6 +262,13 @@ export default class App extends React.Component {
         })
         .catch(error => {
             console.log(error);
+        });
+    }
+
+    handleHasGotNewReport(boolean) {
+        console.log('app handleHasGotNewReport', boolean);  // debug
+        this.setState({
+            hasGotNewReport: boolean
         });
     }
 
@@ -304,7 +315,7 @@ export default class App extends React.Component {
     }
 
     handleShouldReportUpdate(boolean) {
-        // console.log('app handleShouldReportUpdate', boolean);  // debug
+        console.log('app handleShouldReportUpdate', boolean);  // debug
         this.setState({
             shouldReportUpdate: boolean
         });
@@ -341,6 +352,7 @@ export default class App extends React.Component {
                             getProfileLudoingData: this.getProfileLudoingData,
                             getProfileDidLudoData: this.getProfileDidLudoData,
                             getReportOfCurrentLudo: this.getReportOfCurrentLudo,
+                            handleHasGotNewReport: this.handleHasGotNewReport,
                             handleIsHoveringSidebar: this.handleIsHoveringSidebar,
                             handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                             handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,

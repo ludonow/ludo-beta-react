@@ -11,12 +11,14 @@ export default class ActiveReports extends React.Component {
             isEditingReport: false,
             isEditReportButtonClickable: false,
             isImageLightBoxOpen: false,
+            playerReportList: [],
             starterReportList: [],
-            playerReportList: []
+            reportTextContent: ''
         };
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleReportEditClick = this.handleReportEditClick.bind(this);
         this.handleReportEditText = this.handleReportEditText.bind(this);
+        this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
     }
 
@@ -33,8 +35,9 @@ export default class ActiveReports extends React.Component {
         /* 
          * classify report data by starter or player
          */
-        if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length) {
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate');   // debug
+        if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length || !this.props.hasGotNewReport) {
+            console.log('ActiveReports componentWillReceiveProps shouldReportUpdate this', this.props);   // debug
+            console.log('ActiveReports componentWillReceiveProps shouldReportUpdate next', nextProps);   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
                 starterReportList: [],
@@ -66,6 +69,7 @@ export default class ActiveReports extends React.Component {
                     isEditReportButtonClickable: true
                 });
             }
+            this.props.handleHasGotNewReport(true);
         }
     }
 
@@ -79,34 +83,61 @@ export default class ActiveReports extends React.Component {
 
     handleReportEditClick(event) {
         event.preventDefault();
-        console.log('ActiveReports handleReportEditClick');   // debug
+        // console.log('ActiveReports handleReportEditClick');   // debug
         this.setState({
             isEditingReport: true
         });
     }
 
-    handleReportEditText() {
-        event.preventDefault();
-        console.log('ActiveReports handleReportEditText');   // debug
+    handleReportEditText(event) {
+        if (event.keyCode == 13 && !event.shiftKey) {
+            event.preventDefault();
+            // console.log('ActiveReports handleReportEditText');   // debug
+            const reportPutBody = {
+                content: this.state.reportTextContent,
+                image_location: ''
+            };
+            const SPIndex = (event.currentTarget.id).slice(0, 1);
+            const arrayIndex = Number(event.currentTarget.id.slice(2));
+            let report_id = null;
+            if (SPIndex == 's') {
+                console.log('s');
+                reportPutBody.content = this.state.reportTextContent;
+                report_id = this.state.starterReportList[arrayIndex].report_id;
+            } else if (SPIndex == 'p') {
+                console.log('p');
+                reportPutBody.content = this.state.reportTextContent;
+                report_id = this.state.playerReportList[arrayIndex].report_id;
+            }
+            console.log('ActiveReports handleReportEditText reportPutBody', reportPutBody);   // debug
+            if (report_id) {
+                console.log('report_id', report_id);
+                axios.put(`/apis/report/${report_id}`, reportPutBody)
+                .then( response => {
+                    if(response.data.status === '200') {
+                        console.log('成功編輯');
+                        this.props.handleShouldReportUpdate(true);
+                    } else {
+                        console.log('ActiveReports handleReportEditText report put else response from server: ', response);
+                        window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+                    }
+                })
+                .catch( error => {
+                    console.log('ActiveReports handleReportEditText report put error', error);
+                    window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+                });
+            }
+            this.setState({
+                isEditingReport: false
+            });
+        }
+    }
+
+    handleReportTextChange(event) {
         this.setState({
-            isEditingReport: false
+            reportTextContent: event.currentTarget.value
         });
-        const reportPutBody = {
-            'content': '',
-            'image_location': ''
-        };
-        console.log('ActiveReports handleReportEditText reportPutBody', reportPutBody);   // debug
-        // axios.put(`/apis/report/${report_id}`)
-        // .then( response => {
-        //     if(response.status === '200') {
-        //         console.log('成功編輯');
-        //     } else {
-        //         window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-        //     }
-        // })
-        // .catch( error => {
-        //     window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-        // })
+        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
     }
 
     closeLightbox() {
@@ -170,8 +201,10 @@ export default class ActiveReports extends React.Component {
                                                     <Textarea 
                                                         className="report-content__text-edit"
                                                         minRows={2}
+                                                        onChange={this.handleReportTextChange}
                                                         onKeyDown={this.handleReportEditText}
-                                                        placeholder={reportObject.content}
+                                                        defaultValue={reportObject.content}
+                                                        id={`s-${index}`}
                                                     />
                                             : null
                                         }
@@ -224,8 +257,10 @@ export default class ActiveReports extends React.Component {
                                                     <Textarea 
                                                         className="report-content__text-edit"
                                                         minRows={2}
+                                                        onChange={this.handleReportTextChange}
                                                         onKeyDown={this.handleReportEditText}
-                                                        placeholder={reportObject.content}
+                                                        defaultValue={reportObject.content}
+                                                        id={`p-${index}`}
                                                     />
                                             : null
                                         }
@@ -380,7 +415,7 @@ class CommentList extends React.Component {
                 }
                 {
                     this.props.newCommentList.map( (commentObject, index) => {
-                        console.log();
+                        // console.log('newCommentList');   // debug
                         return (
                             <div className="comment-container" key={`new-comment-${index}`}>
                                 <div className="comment-avatar-container">

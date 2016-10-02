@@ -39,12 +39,12 @@ let router_currentFormValue = {};
 
 const ludoRedirect = (nextState, replace, callback) => {
     const { ludo_id }= nextState.params;
-    // console.log('ludoRedirect before get single ludo -- ludo_id', ludo_id);  // debug
+    console.log('ludoRedirect before get single ludo -- ludo_id', ludo_id);  // debug
     axios.get(`/apis/ludo/${ludo_id}`)
     .then(response => {
         if(response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
-            // console.log('router_ludoPageIndex', router_ludoPageIndex);   // debug
+            console.log('router_ludoPageIndex', router_ludoPageIndex);   // debug
             router_currentFormValue = response.data.ludo;
             // console.log('router_currentFormValue', router_currentFormValue);   // debug
             callback();
@@ -68,6 +68,8 @@ const ludoEditRedirect = (nextState, replace, callback) => {
     .then(response => {
         if(response.data.status === '200') {
             if(response.data.auth != 1) {
+                /* TODO: Figure out how to use same url redirect to other component */
+                callback();
                 browserHistory.push(`/ludo/${ludo_id}`);
             } else {
                 router_ludoPageIndex = response.data.auth;
@@ -106,9 +108,8 @@ export default class AppRouter extends React.Component {
                     }} onEnter={ludoRedirect}></Route>
                     <Route path="ludo-edit/:ludo_id" getComponent={(nextState, cb) => {
                         const Component = ludoPageArrayForEdit[router_ludoPageIndex];
-                        console.log('router_ludoPageIndex', router_ludoPageIndex);
                         cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
-                    }} onEnter={isLoggedIn, ludoEditRedirect}></Route>
+                    }} onEnter={isLoggedIn, ludoEditRedirect} OnLeave={ludoRedirect}></Route>
                     <Route path="playground" component={Playground}></Route>
                     <Route path="profile/:userId" component={Profile}></Route>
                 </Route>

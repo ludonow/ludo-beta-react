@@ -205,7 +205,7 @@ export default class CreateForm extends React.Component {
                             getBasicUserData();
                             handleShouldProfileUpdate(true);
                             updateCurrentFormValue(response.data.ludo);
-                            browserHistory.push(`/opened-for-starter/${ludo_id}`);
+                            browserHistory.push(`/ludo/${ludo_id}`);
                         } else {
                             window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
                             console.log('get after create post message from server: ', response.data.message);
