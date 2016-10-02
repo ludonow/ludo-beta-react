@@ -39,12 +39,12 @@ let router_currentFormValue = {};
 
 const ludoRedirect = (nextState, replace, callback) => {
     const { ludo_id }= nextState.params;
-    console.log('ludoRedirect before get single ludo -- ludo_id', ludo_id);  // debug
+    // console.log('ludoRedirect before get single ludo -- ludo_id', ludo_id);  // debug
     axios.get(`/apis/ludo/${ludo_id}`)
     .then(response => {
         if(response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
-            console.log('router_ludoPageIndex', router_ludoPageIndex);   // debug
+            // console.log('router_ludoPageIndex', router_ludoPageIndex);   // debug
             router_currentFormValue = response.data.ludo;
             // console.log('router_currentFormValue', router_currentFormValue);   // debug
             callback();

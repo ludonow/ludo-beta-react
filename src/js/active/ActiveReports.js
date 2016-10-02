@@ -32,12 +32,14 @@ export default class ActiveReports extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        // console.log('ActiveReports componentWillReceiveProps', nextProps.hasGotNewReport);  // debug
         /* 
          * classify report data by starter or player
          */
-        if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length || !this.props.hasGotNewReport) {
-            console.log('ActiveReports componentWillReceiveProps shouldReportUpdate this', this.props);   // debug
-            console.log('ActiveReports componentWillReceiveProps shouldReportUpdate next', nextProps);   // debug
+        // if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length || !this.props.hasGotNewReport) {
+        if(nextProps.hasGotNewReport) {
+            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate this', this.props);   // debug
+            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate next', nextProps);   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
                 starterReportList: [],
@@ -69,7 +71,7 @@ export default class ActiveReports extends React.Component {
                     isEditReportButtonClickable: true
                 });
             }
-            this.props.handleHasGotNewReport(true);
+            this.props.handleHasGotNewReport(false);
         }
     }
 
@@ -109,7 +111,7 @@ export default class ActiveReports extends React.Component {
                 reportPutBody.content = this.state.reportTextContent;
                 report_id = this.state.playerReportList[arrayIndex].report_id;
             }
-            console.log('ActiveReports handleReportEditText reportPutBody', reportPutBody);   // debug
+            // console.log('ActiveReports handleReportEditText reportPutBody', reportPutBody);   // debug
             if (report_id) {
                 console.log('report_id', report_id);
                 axios.put(`/apis/report/${report_id}`, reportPutBody)

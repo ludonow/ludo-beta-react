@@ -249,12 +249,12 @@ export default class App extends React.Component {
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
         .then(response => {
             if(response.data.status === '200') {
-                console.log('app after getReportOfCurrentLudo before setState');  // debug
+                // console.log('app after getReportOfCurrentLudo before setState');  // debug
                 this.setState({
-                    currentLudoReportData: response.data.reportList
+                    currentLudoReportData: response.data.reportList,
+                    hasGotNewReport: true
                 });
-                console.log('app after getReportOfCurrentLudo response', response);  // debug
-                this.handleHasGotNewReport(false);
+                // console.log('app after getReportOfCurrentLudo response', response);  // debug
             } else {
                 console.log('app getReportOfCurrentLudo else message from server: ', response.data.message);
                 console.log('app getReportOfCurrentLudo else error from server: ', response.data.err);
@@ -266,7 +266,7 @@ export default class App extends React.Component {
     }
 
     handleHasGotNewReport(boolean) {
-        console.log('app handleHasGotNewReport', boolean);  // debug
+        // console.log('app handleHasGotNewReport', boolean);  // debug
         this.setState({
             hasGotNewReport: boolean
         });
@@ -315,7 +315,7 @@ export default class App extends React.Component {
     }
 
     handleShouldReportUpdate(boolean) {
-        console.log('app handleShouldReportUpdate', boolean);  // debug
+        // console.log('app handleShouldReportUpdate', boolean);  // debug
         this.setState({
             shouldReportUpdate: boolean
         });
