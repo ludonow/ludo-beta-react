@@ -3,21 +3,37 @@
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
     margin-top: 77px;
-    display: flex;
-    justify-content: center;
-
-    transition-duration: 0.35s;
-    transition-timing-function: ease-in-out;
+    
+    -webkit-animation: slide-back 0.35s forwards;
+    animation: slide-back 0.35s forwards;
 }
 
 .main-container.hoveringSidebar {
     @extend %relative;
-    // right: $g_right-sidebar_width/2;
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
     margin-top: 77px;
 
-    transform: translate(-($g_right-sidebar_width)/2, 0px);
-    transition-duration: 0.35s;
-    transition-timing-function: ease-in-out;
+    -webkit-animation: slide 0.35s forwards;
+    animation: slide 0.35s forwards;
+}
+
+@-webkit-keyframes slide {
+    from {right: 0;}
+    to {right: $g_right-sidebar_width/2;}
+}
+
+@keyframes slide {
+    from {right: 0;}
+    to {right: $g_right-sidebar_width/2;}
+}
+
+@-webkit-keyframes slide-back {
+    from {right: $g_right-sidebar_width/2;}
+    to {right: 0;}
+}
+
+@keyframes slide-back {
+    from {right: $g_right-sidebar_width/2;}
+    to {right: 0;}
 }
