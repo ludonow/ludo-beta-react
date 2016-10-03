@@ -44,7 +44,6 @@ export default class Friend extends React.Component {
     }
 
     render() {
-        this.addClass();
         return (
             <Masonry
                 className="grid"

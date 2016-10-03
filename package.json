@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -p --progress",
+    "build": "webpack --progress",
     "dev": "webpack-dev-server --progress --content-base build"
   },
   "repository": {
@@ -23,7 +23,6 @@
     "chart.js": "^2.3.0-rc.1",
     "imports-loader": "^0.6.5",
     "masonry-layout": "^4.1.0",
-    "material-ui": "^0.15.4",
     "rc-progress": "^2.0.1",
     "rc-slider": "^4.0.1",
     "react": "^15.2.0",
