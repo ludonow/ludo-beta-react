@@ -59,7 +59,7 @@ export default class OpenedBystanderForm extends React.Component {
     }
 
     handleDayPickerClass(value) {
-        const { checkpoint } = this.props.currentFormValue;
+        const { checkpoint } = this.props.router_currentFormValue;
         const index = checkpoint.indexOf(value);
         if (index != -1) {
             return ` ludo-detail-information-day-picker__button--checkpoint`;
