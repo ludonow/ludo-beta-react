@@ -40,14 +40,12 @@ export default class ActiveReports extends React.Component {
             whoIsUser: '',
             isPopOverOpen: false
         };
-        // this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
-        this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
         this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
         this.handleEditTextReportClick = this.handleEditTextReportClick.bind(this);
         this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
-        this.handleReportTextChange = this.handleReportTextChange.bind(this);
+        this.handleReportDelete = this.handleReportDelete.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.onDrop = this.onDrop.bind(this);
     }
@@ -122,7 +120,7 @@ export default class ActiveReports extends React.Component {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
 
-    handleTouchTap = (event) => {
+    handleIconButtonTouchTap = (event) => {
         // This prevents ghost click.
         event.preventDefault();
         const { whoIsUser } = this.state;
@@ -135,15 +133,10 @@ export default class ActiveReports extends React.Component {
             // console.log('isEditingWhichPlayerReportIndex', isEditingWhichPlayerReportIndex);   // debug
             this.setState({isEditingWhichPlayerReportIndex});
         }
+        console.log('anchorEl', event.currentTarget);
         this.setState({
             isPopOverOpen: true,
             anchorEl: event.currentTarget
-        });
-    };
-
-    handleRequestClose = () => {
-        this.setState({
-            isPopOverOpen: false,
         });
     };
 
@@ -155,19 +148,25 @@ export default class ActiveReports extends React.Component {
         });
     };
 
-    handleReportTextChange = (event) => {
-        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
-        this.setState({reportTextContent: event.currentTarget.value});
-    };
-
-    handleImageRemove(event) {
+    handleImageRemove = (event) => {
         event.preventDefault();
         // const imageIndex = Number(event.currentTarget.value);  // For multiple picture upload
         this.setState({
             files: [],
             isImageUploaded: false
         });
-    }
+    };
+
+    handleReportTextChange = (event) => {
+        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
+        this.setState({reportTextContent: event.currentTarget.value});
+    };
+
+    handleRequestClose = () => {
+        this.setState({
+            isPopOverOpen: false
+        });
+    };
 
     handleEditImageReportClick(event) {
         event.preventDefault();
@@ -219,7 +218,7 @@ export default class ActiveReports extends React.Component {
         event.preventDefault();
         // console.log('ActiveReports handleImageReportModifyConfirmClick');   // debug
         const reportPutBody = {
-            content: '測試新增文字',
+            content: '',
             image_location: this.state.image_location
         };
         const SPIndex = (event.currentTarget.id).slice(0, 1);
@@ -236,7 +235,7 @@ export default class ActiveReports extends React.Component {
             reportPutBody.content = this.state.playerReportList[arrayIndex].content;
             report_id = this.state.playerReportList[arrayIndex].report_id;
         }
-        // console.log('reportPutBody', reportPutBody);   // debug
+        console.log('reportPutBody', reportPutBody);   // debug
         if (report_id) {
             // console.log('report_id', report_id);   // debug
             axios.put(`/apis/report/${report_id}`, reportPutBody)
@@ -358,6 +357,50 @@ export default class ActiveReports extends React.Component {
         }
     }
 
+    handleReportDelete(event) {
+        const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
+        if(isSureToDelelteReport) {
+            // console.log('target', event.currentTarget);   // debug
+            // console.log('id', event.currentTarget.id);   // debug
+            const SPIndex = (event.currentTarget.id).slice(0, 1);
+            const arrayIndex = Number(event.currentTarget.id.slice(-1));
+            // console.log('SPIndex', SPIndex);   // debug
+            // console.log('arrayIndex', arrayIndex);   // debug
+            // console.log('report', this.state.playerReportList[arrayIndex]);   // debug
+            let report_id = null;
+            if (SPIndex == 's') {
+                // console.log('s');
+                // reportPutBody.content = this.state.reportTextContent;
+                report_id = this.state.starterReportList[arrayIndex].report_id;
+            } else if (SPIndex == 'p') {
+                // console.log('p');
+                // reportPutBody.content = this.state.reportTextContent;
+                report_id = this.state.playerReportList[arrayIndex].report_id;
+            }
+            console.log('SPIndex + arrayIndex', SPIndex + arrayIndex);   // debug
+            this.setState({
+                isPopOverOpen: false
+            });
+            if(report_id) {
+                axios.delete(`apis/report/${report_id}`)
+                .then(response => {
+                    if(response.data.status === '200'){
+                        // console.log('成功刪除回報');   // debug
+                        this.props.handleShouldReportUpdate(true);
+                    } else {
+                        window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
+                        console.log(' handleReportDelete else response: ', response);
+                        console.log(' handleReportDelete else message: ', response.data.message);
+                    }
+                })
+                .catch(error => {
+                    window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
+                    console.log(' handleReportDelete error: ', error);
+                });
+            }
+        }
+    }
+
     closeLightbox() {
         this.setState({
             isImageLightBoxOpen: false
@@ -402,7 +445,7 @@ export default class ActiveReports extends React.Component {
     render() {
         const { files, 
             isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, 
-            isEditingImageReport, isEditingTextReport, isEditingImageReportIndex, isEditingTextReportIndex, 
+            isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex, 
             isEditReportButtonClickable, isImageUploaded, starterReportList, playerReportList, whoIsUser 
         } = this.state;
         return (
@@ -423,8 +466,11 @@ export default class ActiveReports extends React.Component {
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
-                            <div className="player-photo-container__photo">
-                            </div>
+                            {
+                                whoIsUser == 'starter' && this.props.userBasicData.photo?
+                                <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
+                                : <div className="player-photo-container__photo"/>
+                            }
                         </div>
                         {
                             this.state.starterReportList.map( (reportObject, index) => {
@@ -435,37 +481,42 @@ export default class ActiveReports extends React.Component {
                                             <div>
                                                 <IconButton 
                                                     id={`starter-report-edit-${index}`}
-                                                    onTouchTap={this.handleTouchTap}
+                                                    onTouchTap={this.handleIconButtonTouchTap}
                                                     tooltip="編輯"
                                                 >
                                                     <ModeEdit />
                                                 </IconButton>
-                                                <Popover
-                                                    open={this.state.isPopOverOpen}
-                                                    anchorEl={this.state.anchorEl}
-                                                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                    onRequestClose={this.handleRequestClose}
-                                                >
-                                                    {
+                                                {
                                                         starterReportList[isEditingWhichStarterReportIndex] ? 
-                                                        <Menu>
-                                                            <MenuItem 
-                                                                disabled={!starterReportList[isEditingWhichStarterReportIndex].content}
-                                                                id={`starter-text-edit-${isEditingWhichStarterReportIndex}`}
-                                                                onTouchTap={this.handleEditTextReportClick}
-                                                                primaryText="編輯文字回報" 
-                                                            />
-                                                            <MenuItem 
-                                                                disabled={!starterReportList[isEditingWhichStarterReportIndex].image_location}
-                                                                id={`starter-image-edit-${isEditingWhichStarterReportIndex}`}
-                                                                onTouchTap={this.handleEditImageReportClick}
-                                                                primaryText="編輯圖片回報" 
-                                                            />
-                                                        </Menu>
+                                                        <Popover
+                                                            open={this.state.isPopOverOpen}
+                                                            anchorEl={this.state.anchorEl}
+                                                            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                            onRequestClose={this.handleRequestClose}
+                                                        >
+                                                            <Menu>
+                                                                <MenuItem 
+                                                                    disabled={!starterReportList[isEditingWhichStarterReportIndex].content}
+                                                                    id={`starter-text-edit-${isEditingWhichStarterReportIndex}`}
+                                                                    onTouchTap={this.handleEditTextReportClick}
+                                                                    primaryText="編輯文字回報" 
+                                                                />
+                                                                <MenuItem 
+                                                                    disabled={!starterReportList[isEditingWhichStarterReportIndex].image_location}
+                                                                    id={`starter-image-edit-${isEditingWhichStarterReportIndex}`}
+                                                                    onTouchTap={this.handleEditImageReportClick}
+                                                                    primaryText="編輯圖片回報" 
+                                                                />
+                                                                <MenuItem
+                                                                    id={`starter-report-delete-${isEditingWhichStarterReportIndex}`}
+                                                                    onTouchTap={this.handleReportDelete}
+                                                                    primaryText="刪除此回報"
+                                                                />
+                                                            </Menu>
+                                                        </Popover>
                                                         : null
                                                     }
-                                                </Popover>
                                             </div>
                                             : null
                                         }
@@ -562,8 +613,11 @@ export default class ActiveReports extends React.Component {
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
-                            <div className="player-photo-container__photo">
-                            </div>
+                            {
+                                whoIsUser == 'player' && this.props.userBasicData.photo ?
+                                <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
+                                : <div className="player-photo-container__photo" />
+                            }
                         </div>
                         {
                             this.state.playerReportList.map( (reportObject, index) => {
@@ -574,20 +628,20 @@ export default class ActiveReports extends React.Component {
                                             <div>
                                                 <IconButton 
                                                     id={`player-report-edit-${index}`}
-                                                    onTouchTap={this.handleTouchTap}
+                                                    onTouchTap={this.handleIconButtonTouchTap}
                                                     tooltip="編輯"
                                                 >
                                                     <ModeEdit />
                                                 </IconButton>
-                                                <Popover
-                                                    open={this.state.isPopOverOpen}
-                                                    anchorEl={this.state.anchorEl}
-                                                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                    onRequestClose={this.handleRequestClose}
-                                                >
-                                                    {
-                                                        playerReportList[isEditingWhichPlayerReportIndex] ? 
+                                                {
+                                                    playerReportList[isEditingWhichPlayerReportIndex] ? 
+                                                    <Popover
+                                                        open={this.state.isPopOverOpen}
+                                                        anchorEl={this.state.anchorEl}
+                                                        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                        onRequestClose={this.handleRequestClose}
+                                                    >
                                                         <Menu>
                                                             <MenuItem 
                                                                 disabled={!playerReportList[isEditingWhichPlayerReportIndex].content}
@@ -601,10 +655,15 @@ export default class ActiveReports extends React.Component {
                                                                 onTouchTap={this.handleEditImageReportClick}
                                                                 primaryText="編輯圖片回報" 
                                                             />
+                                                            <MenuItem
+                                                                id={`player-report-delete-${isEditingWhichPlayerReportIndex}`}
+                                                                onTouchTap={this.handleReportDelete}
+                                                                primaryText="刪除此回報"
+                                                            />
                                                         </Menu>
-                                                        : null
-                                                    }
-                                                </Popover>
+                                                    </Popover>
+                                                    : null
+                                                }
                                             </div>
                                             : null
                                         }
