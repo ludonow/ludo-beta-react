@@ -1,10 +1,22 @@
 import React from 'react';
 import axios from '../axios-config';
+
+import IconButton from 'material-ui/IconButton';
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
 import uploadIcon from '../../images/active/upload-icon.png';
+
+injectTapEventPlugin();
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
@@ -13,6 +25,8 @@ export default class ActiveReports extends React.Component {
             enlargeImageLocation: '',
             files: [],
             imageLocation: '',
+            isEditingWhichPlayerReportIndex: '',
+            isEditingWhichStarterReportIndex: '',
             isEditingImageReportIndex: [],
             isEditingTextReportIndex: [],
             isEditReportButtonClickable: false,
@@ -21,9 +35,10 @@ export default class ActiveReports extends React.Component {
             reportTextContent: '',
             playerReportList: [],
             starterReportList: [],
-            whoIsUser: ''
+            whoIsUser: '',
+            isPopOverOpen: false
         };
-        this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        // this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleImageReportEditClick = this.handleImageReportEditClick.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
@@ -101,7 +116,36 @@ export default class ActiveReports extends React.Component {
         }
     }
 
-    handleImageEnlarge(event) {
+    getChildContext() {
+        return { muiTheme: getMuiTheme(baseTheme) };
+    }
+
+    handleTouchTap = (event) => {
+        // This prevents ghost click.
+        event.preventDefault();
+        const { whoIsUser } = this.state;
+        if (whoIsUser == 'starter') {
+            const isEditingWhichStarterReportIndex = (event.currentTarget.id).slice(-1);
+            // console.log('isEditingWhichStarterReportIndex', isEditingWhichStarterReportIndex);   // debug
+            this.setState({isEditingWhichStarterReportIndex});
+        } else if (whoIsUser == 'player') {
+            const isEditingWhichPlayerReportIndex = (event.currentTarget.id).slice(-1);
+            // console.log('isEditingWhichPlayerReportIndex', isEditingWhichPlayerReportIndex);   // debug
+            this.setState({isEditingWhichPlayerReportIndex});
+        }
+        this.setState({
+            isPopOverOpen: true,
+            anchorEl: event.currentTarget
+        });
+    };
+
+    handleRequestClose = () => {
+        this.setState({
+            isPopOverOpen: false,
+        });
+    };
+
+    handleImageEnlarge = (event) => {
         // console.log('ActiveReports handleImageEnlarge image location', event.currentTarget.src);  // debug
         this.setState({
             enlargeImageLocation: event.currentTarget.src,
@@ -120,7 +164,7 @@ export default class ActiveReports extends React.Component {
 
     handleImageReportEditClick(event) {
         event.preventDefault();
-        // console.log('ActiveReports handleImageReportEditClick');   // debug
+        console.log('ActiveReports handleImageReportEditClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
@@ -131,7 +175,8 @@ export default class ActiveReports extends React.Component {
         }
         // console.log('ActiveReports handleTextReportEditClick isEditingImageReportIndex', isEditingImageReportIndex);
         this.setState({
-            isEditingImageReportIndex
+            isEditingImageReportIndex,
+            isPopOverOpen: false
         });
     }
 
@@ -208,19 +253,20 @@ export default class ActiveReports extends React.Component {
 
     handleTextReportEditClick(event) {
         event.preventDefault();
-        // console.log('ActiveReports handleTextReportEditClick id', event.currentTarget.id);   // debug
+        console.log('ActiveReports handleTextReportEditClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingTextReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
+        // console.log('ActiveReports handleTextReportEditClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        // console.log('ActiveReports handleTextReportEditClick isInEditingArray', isInEditingArray);   // debug
         const SPIndex = (event.currentTarget.id).slice(0, 1);
         if(!isInEditingArray) {
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         }
-        // console.log('ActiveReports handleTextReportEditClick isEditingTextReportIndex', isEditingTextReportIndex);
+        // console.log('ActiveReports handleTextReportEditClick isEditingTextReportIndex', isEditingTextReportIndex);   // debug
         this.setState({
-            isEditingTextReportIndex
+            isEditingTextReportIndex,
+            isPopOverOpen: false
         });
     }
 
@@ -329,7 +375,8 @@ export default class ActiveReports extends React.Component {
 
     render() {
         const { files, 
-            isEditingImageReportIndex, isEditingTextReportIndex, isEditReportButtonClickable, isImageUploaded, whoIsUser 
+            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, isEditingImageReportIndex, isEditingTextReportIndex, 
+            isEditReportButtonClickable, isImageUploaded, starterReportList, playerReportList, whoIsUser 
         } = this.state;
         return (
             <div className="report-list">
@@ -356,6 +403,45 @@ export default class ActiveReports extends React.Component {
                             this.state.starterReportList.map( (reportObject, index) => {
                                 return (
                                     <div className="player-report-container" key={`starter-report-${index}`}>
+                                        {
+                                            whoIsUser == 'starter' ?
+                                            <div>
+                                                <IconButton 
+                                                    id={`starter-report-edit-${index}`}
+                                                    onTouchTap={this.handleTouchTap}
+                                                    tooltip="編輯"
+                                                >
+                                                    <ModeEdit />
+                                                </IconButton>
+                                                <Popover
+                                                    open={this.state.isPopOverOpen}
+                                                    anchorEl={this.state.anchorEl}
+                                                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                    onRequestClose={this.handleRequestClose}
+                                                >
+                                                    {
+                                                        starterReportList[isEditingWhichStarterReportIndex] ? 
+                                                        <Menu>
+                                                            <MenuItem 
+                                                                disabled={!starterReportList[isEditingWhichStarterReportIndex].content}
+                                                                id={`starter-text-edit-${isEditingWhichStarterReportIndex}`}
+                                                                onTouchTap={this.handleTextReportEditClick}
+                                                                primaryText="編輯文字回報" 
+                                                            />
+                                                            <MenuItem 
+                                                                disabled={!starterReportList[isEditingWhichStarterReportIndex].image_location}
+                                                                id={`starter-image-edit-${isEditingWhichStarterReportIndex}`}
+                                                                onTouchTap={this.handleImageReportEditClick}
+                                                                primaryText="編輯圖片回報" 
+                                                            />
+                                                        </Menu>
+                                                        : null
+                                                    }
+                                                </Popover>
+                                            </div>
+                                            : null
+                                        }
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
@@ -411,16 +497,7 @@ export default class ActiveReports extends React.Component {
                                                                 : null
                                                             }
                                                         </div>
-                                                        :
-                                                            whoIsUser == 'starter' ?
-                                                            <button
-                                                                disabled={!isEditReportButtonClickable}
-                                                                id={`starter-image-edit-button-${index}`}
-                                                                onClick={this.handleImageReportEditClick}
-                                                            >
-                                                                圖片編輯
-                                                            </button>
-                                                            : null
+                                                        : null
                                                     }
                                                 </div>
                                             : null
@@ -438,17 +515,6 @@ export default class ActiveReports extends React.Component {
                                                 />
                                                 :
                                                 <div className="report-content-container">
-                                                    {
-                                                        whoIsUser == 'starter' ?
-                                                        <button
-                                                            disabled={!isEditReportButtonClickable}
-                                                            id={`starter-text-edit-button-${index}`}
-                                                            onClick={this.handleTextReportEditClick}
-                                                        >
-                                                            文字編輯
-                                                        </button>
-                                                        : null
-                                                    }
                                                     <div className="report-content report-content__text">
                                                         {reportObject.content}
                                                     </div>
@@ -476,6 +542,45 @@ export default class ActiveReports extends React.Component {
                             this.state.playerReportList.map( (reportObject, index) => {
                                 return (
                                     <div className="player-report-container" key={`player-report-${index}`}>
+                                        {
+                                            whoIsUser == 'player' ?
+                                            <div>
+                                                <IconButton 
+                                                    id={`player-report-edit-${index}`}
+                                                    onTouchTap={this.handleTouchTap}
+                                                    tooltip="編輯"
+                                                >
+                                                    <ModeEdit />
+                                                </IconButton>
+                                                <Popover
+                                                    open={this.state.isPopOverOpen}
+                                                    anchorEl={this.state.anchorEl}
+                                                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                    onRequestClose={this.handleRequestClose}
+                                                >
+                                                    {
+                                                        playerReportList[isEditingWhichPlayerReportIndex] ? 
+                                                        <Menu>
+                                                            <MenuItem 
+                                                                disabled={!playerReportList[isEditingWhichPlayerReportIndex].content}
+                                                                id={`player-text-edit-${isEditingWhichPlayerReportIndex}`}
+                                                                onTouchTap={this.handleTextReportEditClick}
+                                                                primaryText="編輯文字回報" 
+                                                            />
+                                                            <MenuItem 
+                                                                disabled={!playerReportList[isEditingWhichPlayerReportIndex].image_location}
+                                                                id={`player-image-edit-${isEditingWhichPlayerReportIndex}`}
+                                                                onTouchTap={this.handleImageReportEditClick}
+                                                                primaryText="編輯圖片回報" 
+                                                            />
+                                                        </Menu>
+                                                        : null
+                                                    }
+                                                </Popover>
+                                            </div>
+                                            : null
+                                        }
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
@@ -531,16 +636,7 @@ export default class ActiveReports extends React.Component {
                                                                 : null
                                                             }
                                                         </div>
-                                                        :
-                                                            whoIsUser == 'player' ?
-                                                            <button
-                                                                disabled={!isEditReportButtonClickable}
-                                                                id={`player-image-edit-button-${index}`}
-                                                                onClick={this.handleImageReportEditClick}
-                                                            >
-                                                                圖片編輯
-                                                            </button>
-                                                            : null
+                                                        : null
                                                     }
                                                 </div>
                                             : null
@@ -558,17 +654,6 @@ export default class ActiveReports extends React.Component {
                                                 />
                                                 :
                                                 <div className="report-content-container">
-                                                    {
-                                                        whoIsUser == 'player' ?
-                                                        <button
-                                                            disabled={!isEditReportButtonClickable}
-                                                            id={`player-text-edit-button-${index}`}
-                                                            onClick={this.handleTextReportEditClick}
-                                                        >
-                                                            文字編輯
-                                                        </button>
-                                                        : null
-                                                    }
                                                     <div className="report-content report-content__text">
                                                         {reportObject.content}
                                                     </div>
@@ -589,6 +674,10 @@ export default class ActiveReports extends React.Component {
             </div>
         );
     }
+};
+
+ActiveReports.childContextTypes = {
+    muiTheme: React.PropTypes.object.isRequired,
 };
 
 class CommentBox extends React.Component {

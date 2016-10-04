@@ -28,7 +28,7 @@ const common = {
         loaders: [
             {
                 test: /\.js?$/,
-                loaders: [ 'react-hot', 'babel?presets[]=es2015,presets[]=react' ],
+                loaders: [ 'react-hot', 'babel?presets[]=es2015,presets[]=react,presets[]=stage-0' ],
                 include: PATHS.src,
                 exclude: /node_modules/
             },
