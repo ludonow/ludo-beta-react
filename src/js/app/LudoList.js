@@ -111,7 +111,7 @@ export default class LudoList extends React.Component {
         return (
             <Masonry options={masonryOptions}>
                 {
-                    ludoList.map( (data, index) => {
+                    ludoList.map( (singleLudoObject, index) => {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
@@ -121,36 +121,37 @@ export default class LudoList extends React.Component {
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
-                                    <div className={`card-top ${this.handleCardFrontTopClass(data.category_id)}`}>
-                                        <div className="title">{data.title}</div>
-                                        <div className="duration">{data.duration} days</div>
+                                    <div className={`card-top ${this.handleCardFrontTopClass(singleLudoObject.category_id)}`}>
+                                        <div className="title">{singleLudoObject.title}</div>
+                                        <div className="duration">{singleLudoObject.duration} days</div>
                                         <div className="card-marble">
                                             <img src={marbleIcon} className="card-marble__icon" />
-                                            <span className="card-marble__number">{data.marbles}</span>
+                                            <span className="card-marble__number">{singleLudoObject.marbles}</span>
                                         </div>
                                     </div>
                                     <div className="card-bottom">
-                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(data.category_id)} />
-                                        <div className={`card-bottom__stage ${this.handleCardStage(data.stage)}`} />
+                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(singleLudoObject.category_id)} />
+                                        <div className={`card-bottom__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
                                     </div>
                                 </div>
                                 <div 
-                                    className={`form-card card-back card-back--form-list${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(data.category_id)}`}
+                                    className={`form-card card-back card-back--form-list${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
-                                    <div className={this.handleCardBackClass(data.category_id)}>
+                                    <div className={this.handleCardBackClass(singleLudoObject.category_id)}>
                                         <div className="card-introduction">
                                             {
-                                                String(data.introduction).length > 20 ?
-                                                String(data.introduction).substring(0, 20) + ' ...'
-                                                : String(data.introduction)
+                                                String(singleLudoObject.introduction).length > 20 ?
+                                                String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+                                                : String(singleLudoObject.introduction)
                                             }
                                         </div>
                                         <div className="card-hashtags">
                                             {
-                                                data.tags.length ?
-                                                    data.tags.map( (tagString, tagIndex) => {
+                                                // TODO: Use presentational component and proptypes to receive ludolist data
+                                                Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
+                                                    singleLudoObject.tags.map( (tagString, tagIndex) => {
                                                         return (
                                                             <span className="react-tagsinput-tag--card" key={`tag-${tagIndex}`}>
                                                                 {tagString}
@@ -161,9 +162,9 @@ export default class LudoList extends React.Component {
                                             }
                                         </div>
                                     </div>
-                                    <div className={`card-bottom ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(data.category_id)}`}>
-                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(data.category_id)}`}
+                                    <div className={`card-bottom ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}>
+                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}>
+                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}
                                                 onClick={this.handleCardLink} id={`go-${index}`}
                                             >
                                                 go
