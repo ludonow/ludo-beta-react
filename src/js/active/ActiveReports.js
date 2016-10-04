@@ -42,10 +42,10 @@ export default class ActiveReports extends React.Component {
         };
         // this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleImageRemove = this.handleImageRemove.bind(this);
-        this.handleImageReportEditClick = this.handleImageReportEditClick.bind(this);
+        this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
         this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
-        this.handleTextReportEditClick = this.handleTextReportEditClick.bind(this);
+        this.handleEditTextReportClick = this.handleEditTextReportClick.bind(this);
         this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
@@ -169,21 +169,22 @@ export default class ActiveReports extends React.Component {
         });
     }
 
-    handleImageReportEditClick(event) {
+    handleEditImageReportClick(event) {
         event.preventDefault();
         /* 
-         *  put user click target into image-editing array 
+         *  clear the image-editing array and put user click target into image-editing array
          */
-        console.log('ActiveReports handleImageReportEditClick id', event.currentTarget.id);   // debug
+        // console.log('ActiveReports handleEditImageReportClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
         if(!isInEditingArray) {
+            isEditingImageReportIndex.splice(0, isEditingImageReportIndex.length);
             isEditingImageReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         }
-        // console.log('ActiveReports handleTextReportEditClick isEditingImageReportIndex', isEditingImageReportIndex);
+        // console.log('ActiveReports handleEditImageReportClick isEditingImageReportIndex', isEditingImageReportIndex);
         this.setState({
             isEditingImageReport: true,
             isEditingImageReportIndex,
@@ -218,7 +219,7 @@ export default class ActiveReports extends React.Component {
         event.preventDefault();
         // console.log('ActiveReports handleImageReportModifyConfirmClick');   // debug
         const reportPutBody = {
-            content: '',
+            content: '測試新增文字',
             image_location: this.state.image_location
         };
         const SPIndex = (event.currentTarget.id).slice(0, 1);
@@ -242,14 +243,17 @@ export default class ActiveReports extends React.Component {
             .then( response => {
                 if(response.data.status === '200') {
                     // console.log('成功編輯');   // debug
-                    const { isEditingImageReportIndex } = this.state;
-                    const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(SPIndex + arrayIndex);
-                    const isInEditingArray = (indexAtWhatPositionInArray != -1);
-                    isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
+                    /*
+                     * remove the specific element in image-edit array
+                     */
+                    // const { isEditingImageReportIndex } = this.state;
+                    // const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(SPIndex + arrayIndex);
+                    // const isInEditingArray = (indexAtWhatPositionInArray != -1);
+                    // isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
                     this.setState({
                         files: [],
                         image_location: '',
-                        isEditingImageReportIndex,
+                        isEditingImageReportIndex: [],
                         isImageUploaded: false,
                         reportTextContent: '',
                     });
@@ -266,23 +270,23 @@ export default class ActiveReports extends React.Component {
         }
     }
 
-    handleTextReportEditClick(event) {
+    handleEditTextReportClick(event) {
         event.preventDefault();
         /* 
          *  put user click target into text-editing array
          */
-        // console.log('ActiveReports handleTextReportEditClick id', event.currentTarget.id);   // debug
+        // console.log('ActiveReports handleEditTextReportClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingTextReport, isEditingTextReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-        // console.log('ActiveReports handleTextReportEditClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
+        // console.log('ActiveReports handleEditTextReportClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
         if(!isInEditingArray) {
             isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         } 
-        // console.log('ActiveReports handleTextReportEditClick isEditingTextReportIndex', isEditingTextReportIndex);   // debug
+        // console.log('ActiveReports handleEditTextReportClick isEditingTextReportIndex', isEditingTextReportIndex);   // debug
         this.setState({
             isEditingTextReport: true,
             isEditingTextReportIndex,
@@ -337,10 +341,10 @@ export default class ActiveReports extends React.Component {
              * transfer the text report to the original display instead of textarea by taking the element out of editing text array
              */
             const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-            // console.log('ActiveReports handleTextReportEditClick reportIndex', reportIndex);   // debug
+            // console.log('ActiveReports handleEditTextReportClick reportIndex', reportIndex);   // debug
             const { isEditingTextReport, isEditingTextReportIndex } = this.state;
             const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-            // console.log('ActiveReports handleTextReportEditClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
+            // console.log('ActiveReports handleEditTextReportClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
             const isInEditingArray = (indexAtWhatPositionInArray != -1);
             if(isInEditingArray) {
                 isEditingTextReportIndex.splice(indexAtWhatPositionInArray, 1);
@@ -449,13 +453,13 @@ export default class ActiveReports extends React.Component {
                                                             <MenuItem 
                                                                 disabled={!starterReportList[isEditingWhichStarterReportIndex].content}
                                                                 id={`starter-text-edit-${isEditingWhichStarterReportIndex}`}
-                                                                onTouchTap={this.handleTextReportEditClick}
+                                                                onTouchTap={this.handleEditTextReportClick}
                                                                 primaryText="編輯文字回報" 
                                                             />
                                                             <MenuItem 
                                                                 disabled={!starterReportList[isEditingWhichStarterReportIndex].image_location}
                                                                 id={`starter-image-edit-${isEditingWhichStarterReportIndex}`}
-                                                                onTouchTap={this.handleImageReportEditClick}
+                                                                onTouchTap={this.handleEditImageReportClick}
                                                                 primaryText="編輯圖片回報" 
                                                             />
                                                         </Menu>
@@ -588,13 +592,13 @@ export default class ActiveReports extends React.Component {
                                                             <MenuItem 
                                                                 disabled={!playerReportList[isEditingWhichPlayerReportIndex].content}
                                                                 id={`player-text-edit-${isEditingWhichPlayerReportIndex}`}
-                                                                onTouchTap={this.handleTextReportEditClick}
+                                                                onTouchTap={this.handleEditTextReportClick}
                                                                 primaryText="編輯文字回報" 
                                                             />
                                                             <MenuItem 
                                                                 disabled={!playerReportList[isEditingWhichPlayerReportIndex].image_location}
                                                                 id={`player-image-edit-${isEditingWhichPlayerReportIndex}`}
-                                                                onTouchTap={this.handleImageReportEditClick}
+                                                                onTouchTap={this.handleEditImageReportClick}
                                                                 primaryText="編輯圖片回報" 
                                                             />
                                                         </Menu>
