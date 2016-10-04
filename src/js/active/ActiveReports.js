@@ -27,7 +27,9 @@ export default class ActiveReports extends React.Component {
             imageLocation: '',
             isEditingWhichPlayerReportIndex: '',
             isEditingWhichStarterReportIndex: '',
+            isEditingImageReport: false,
             isEditingImageReportIndex: [],
+            isEditingTextReport: false,
             isEditingTextReportIndex: [],
             isEditReportButtonClickable: false,
             isImageLightBoxOpen: false,
@@ -44,7 +46,7 @@ export default class ActiveReports extends React.Component {
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
         this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
         this.handleTextReportEditClick = this.handleTextReportEditClick.bind(this);
-        this.handleReportEditText = this.handleReportEditText.bind(this);
+        this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.onDrop = this.onDrop.bind(this);
@@ -151,7 +153,12 @@ export default class ActiveReports extends React.Component {
             enlargeImageLocation: event.currentTarget.src,
             isImageLightBoxOpen: true
         });
-    }
+    };
+
+    handleReportTextChange = (event) => {
+        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
+        this.setState({reportTextContent: event.currentTarget.value});
+    };
 
     handleImageRemove(event) {
         event.preventDefault();
@@ -164,9 +171,12 @@ export default class ActiveReports extends React.Component {
 
     handleImageReportEditClick(event) {
         event.preventDefault();
+        /* 
+         *  put user click target into image-editing array 
+         */
         console.log('ActiveReports handleImageReportEditClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
-        const { isEditingImageReportIndex } = this.state;
+        const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
@@ -175,6 +185,7 @@ export default class ActiveReports extends React.Component {
         }
         // console.log('ActiveReports handleTextReportEditClick isEditingImageReportIndex', isEditingImageReportIndex);
         this.setState({
+            isEditingImageReport: true,
             isEditingImageReportIndex,
             isPopOverOpen: false
         });
@@ -182,16 +193,20 @@ export default class ActiveReports extends React.Component {
 
     handleImageReportEditCancelClick(event) {
         event.preventDefault();
+        /* 
+         *  drop the user click target out of image-editing array 
+         */
         // console.log('ActiveReports handleImageReportEditCancelClick');   // debug
         const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
         // console.log('ActiveReports handleImageReportEditCancelClick reportIndex', reportIndex);   // debug
-        const { isEditingImageReportIndex } = this.state;
+        const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         // console.log('ActiveReports handleImageReportEditCancelClick isInEditingArray', isInEditingArray);   // debug
         if(isInEditingArray) {
             isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
             this.setState({
+                isEditingImageReport: false,
                 isEditingImageReportIndex
             });
         } else {
@@ -240,12 +255,12 @@ export default class ActiveReports extends React.Component {
                     });
                     this.props.handleShouldReportUpdate(true);
                 } else {
-                    console.log('ActiveReports handleReportEditText report put else response from server: ', response);
+                    console.log('ActiveReports handleImageReportModifyConfirmClick report put else response from server: ', response);
                     window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                 }
             })
             .catch( error => {
-                console.log('ActiveReports handleReportEditText report put error', error);
+                console.log('ActiveReports handleImageReportModifyConfirmClick report put error', error);
                 window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
             });
         }
@@ -253,83 +268,90 @@ export default class ActiveReports extends React.Component {
 
     handleTextReportEditClick(event) {
         event.preventDefault();
-        console.log('ActiveReports handleTextReportEditClick id', event.currentTarget.id);   // debug
+        /* 
+         *  put user click target into text-editing array
+         */
+        // console.log('ActiveReports handleTextReportEditClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
-        const { isEditingTextReportIndex } = this.state;
+        const { isEditingTextReport, isEditingTextReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
         // console.log('ActiveReports handleTextReportEditClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
         if(!isInEditingArray) {
+            isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
-        }
+        } 
         // console.log('ActiveReports handleTextReportEditClick isEditingTextReportIndex', isEditingTextReportIndex);   // debug
         this.setState({
+            isEditingTextReport: true,
             isEditingTextReportIndex,
             isPopOverOpen: false
         });
     }
 
-    handleReportEditText(event) {
+    handleFinishReportEditText(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
             event.preventDefault();
-            // console.log('ActiveReports handleReportEditText');   // debug
-            const reportPutBody = {
-                content: this.state.reportTextContent,
-                image_location: ''
-            };
-            const SPIndex = (event.currentTarget.id).slice(0, 1);
-            const arrayIndex = Number(event.currentTarget.id.slice(-1));
-            let report_id = null;
-            if (SPIndex == 's') {
-                // console.log('s');
-                // reportPutBody.content = this.state.reportTextContent;
-                report_id = this.state.starterReportList[arrayIndex].report_id;
-            } else if (SPIndex == 'p') {
-                // console.log('p');
-                // reportPutBody.content = this.state.reportTextContent;
-                report_id = this.state.playerReportList[arrayIndex].report_id;
+            // console.log('ActiveReports handleFinishReportEditText');   // debug
+            /* 
+             * send put request to server to modify text report content 
+             */
+            if(this.state.reportTextContent) {
+                const reportPutBody = {
+                    content: this.state.reportTextContent,
+                    image_location: ''
+                };
+                const SPIndex = (event.currentTarget.id).slice(0, 1);
+                const arrayIndex = Number(event.currentTarget.id.slice(-1));
+                let report_id = null;
+                if (SPIndex == 's') {
+                    // console.log('s');
+                    // reportPutBody.content = this.state.reportTextContent;
+                    report_id = this.state.starterReportList[arrayIndex].report_id;
+                } else if (SPIndex == 'p') {
+                    // console.log('p');
+                    // reportPutBody.content = this.state.reportTextContent;
+                    report_id = this.state.playerReportList[arrayIndex].report_id;
+                }
+                console.log('ActiveReports handleFinishReportEditText reportPutBody', reportPutBody);   // debug
+                if (report_id) {
+                    // console.log('report_id', report_id);
+                    axios.put(`/apis/report/${report_id}`, reportPutBody)
+                    .then( response => {
+                        if(response.data.status === '200') {
+                            // console.log('成功編輯');
+                            this.props.handleShouldReportUpdate(true);
+                        } else {
+                            console.log('ActiveReports handleFinishReportEditText report put else response from server: ', response);
+                            window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+                        }
+                    })
+                    .catch( error => {
+                        console.log('ActiveReports handleFinishReportEditText report put error', error);
+                        window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+                    });
+                }
             }
-            // console.log('ActiveReports handleReportEditText reportPutBody', reportPutBody);   // debug
-            if (report_id) {
-                // console.log('report_id', report_id);
-                axios.put(`/apis/report/${report_id}`, reportPutBody)
-                .then( response => {
-                    if(response.data.status === '200') {
-                        // console.log('成功編輯');
-                        this.props.handleShouldReportUpdate(true);
-                    } else {
-                        console.log('ActiveReports handleReportEditText report put else response from server: ', response);
-                        window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-                    }
-                })
-                .catch( error => {
-                    console.log('ActiveReports handleReportEditText report put error', error);
-                    window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-                });
-            }
+            /* 
+             * transfer the text report to the original display instead of textarea by taking the element out of editing text array
+             */
             const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
             // console.log('ActiveReports handleTextReportEditClick reportIndex', reportIndex);   // debug
-            const { isEditingTextReportIndex } = this.state;
+            const { isEditingTextReport, isEditingTextReportIndex } = this.state;
             const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
+            // console.log('ActiveReports handleTextReportEditClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
             const isInEditingArray = (indexAtWhatPositionInArray != -1);
-            // console.log('ActiveReports handleTextReportEditClick isInEditingArray', isInEditingArray);   // debug
             if(isInEditingArray) {
                 isEditingTextReportIndex.splice(indexAtWhatPositionInArray, 1);
                 this.setState({
-                    isEditingTextReportIndex
+                    isEditingTextReportIndex,
+                    isEditingTextReport: false
                 });
             } else {
-                console.log('report edit index error');
+                console.log('text report edit index isInEditingArray error');
             }
         }
-    }
-
-    handleReportTextChange(event) {
-        this.setState({
-            reportTextContent: event.currentTarget.value
-        });
-        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
     }
 
     closeLightbox() {
@@ -375,7 +397,8 @@ export default class ActiveReports extends React.Component {
 
     render() {
         const { files, 
-            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, isEditingImageReportIndex, isEditingTextReportIndex, 
+            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, 
+            isEditingImageReport, isEditingTextReport, isEditingImageReportIndex, isEditingTextReportIndex, 
             isEditReportButtonClickable, isImageUploaded, starterReportList, playerReportList, whoIsUser 
         } = this.state;
         return (
@@ -450,7 +473,7 @@ export default class ActiveReports extends React.Component {
                                                         onClick={this.handleImageEnlarge}
                                                     />
                                                     {
-                                                        isEditingImageReportIndex.indexOf(`s${index}`) != -1 ?
+                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ? 
                                                         <div>
                                                             <button
                                                                 disabled={!isEditReportButtonClickable}
@@ -504,14 +527,14 @@ export default class ActiveReports extends React.Component {
                                         }
                                         {
                                             reportObject.content ?
-                                                isEditingTextReportIndex.indexOf(`s${index}`) != -1 ? 
+                                                isEditingTextReport && isEditingTextReportIndex.indexOf(`s${index}`) != -1 ?
                                                 <Textarea 
                                                     className="report-content__text-edit"
                                                     defaultValue={reportObject.content}
                                                     id={`s-${index}`}
                                                     minRows={2}
                                                     onChange={this.handleReportTextChange}
-                                                    onKeyDown={this.handleReportEditText}
+                                                    onKeyDown={this.handleFinishReportEditText}
                                                 />
                                                 :
                                                 <div className="report-content-container">
@@ -589,7 +612,7 @@ export default class ActiveReports extends React.Component {
                                                         onClick={this.handleImageEnlarge}
                                                     />
                                                     {
-                                                        isEditingImageReportIndex.indexOf(`p${index}`) != -1 ?
+                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ? 
                                                         <div>
                                                             <button
                                                                 disabled={!isEditReportButtonClickable}
@@ -643,12 +666,12 @@ export default class ActiveReports extends React.Component {
                                         }
                                         {
                                             reportObject.content ?
-                                                isEditingTextReportIndex.indexOf(`p${index}`) != -1 ?
+                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ? 
                                                 <Textarea 
                                                     className="report-content__text-edit"
                                                     minRows={2}
                                                     onChange={this.handleReportTextChange}
-                                                    onKeyDown={this.handleReportEditText}
+                                                    onKeyDown={this.handleFinishReportEditText}
                                                     defaultValue={reportObject.content}
                                                     id={`p-${index}`}
                                                 />
