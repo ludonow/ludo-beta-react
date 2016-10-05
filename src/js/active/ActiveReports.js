@@ -14,6 +14,8 @@ import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
+import CommentBox from './CommentBox';
+
 import uploadIcon from '../../images/active/upload-icon.png';
 
 injectTapEventPlugin();
@@ -38,7 +40,7 @@ export default class ActiveReports extends React.Component {
             playerReportList: [],
             starterReportList: [],
             whoIsUser: '',
-            isPopOverOpen: false
+            isReportPopOverOpen: false
         };
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
@@ -80,6 +82,7 @@ export default class ActiveReports extends React.Component {
             }
             // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate this', this.props);   // debug
             // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate next', nextProps);   // debug
+            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate whoIsUser', whoIsUser);   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
                 starterReportList: [],
@@ -120,8 +123,8 @@ export default class ActiveReports extends React.Component {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
 
-    handleIconButtonTouchTap = (event) => {
-        // This prevents ghost click.
+    handleReportIconButtonTouchTap = (event) => {
+        /* This prevents ghost click. */
         event.preventDefault();
         const { whoIsUser } = this.state;
         if (whoIsUser == 'starter') {
@@ -133,10 +136,10 @@ export default class ActiveReports extends React.Component {
             // console.log('isEditingWhichPlayerReportIndex', isEditingWhichPlayerReportIndex);   // debug
             this.setState({isEditingWhichPlayerReportIndex});
         }
-        console.log('anchorEl', event.currentTarget);
+        // console.log('anchorEl id', event.currentTarget.id);   // debug
         this.setState({
-            isPopOverOpen: true,
-            anchorEl: event.currentTarget
+            anchorEl: event.currentTarget,
+            isReportPopOverOpen: true
         });
     };
 
@@ -164,7 +167,7 @@ export default class ActiveReports extends React.Component {
 
     handleRequestClose = () => {
         this.setState({
-            isPopOverOpen: false
+            isReportPopOverOpen: false
         });
     };
 
@@ -187,7 +190,7 @@ export default class ActiveReports extends React.Component {
         this.setState({
             isEditingImageReport: true,
             isEditingImageReportIndex,
-            isPopOverOpen: false
+            isReportPopOverOpen: false
         });
     }
 
@@ -289,7 +292,7 @@ export default class ActiveReports extends React.Component {
         this.setState({
             isEditingTextReport: true,
             isEditingTextReportIndex,
-            isPopOverOpen: false
+            isReportPopOverOpen: false
         });
     }
 
@@ -379,7 +382,7 @@ export default class ActiveReports extends React.Component {
             }
             console.log('SPIndex + arrayIndex', SPIndex + arrayIndex);   // debug
             this.setState({
-                isPopOverOpen: false
+                isReportPopOverOpen: false
             });
             if(report_id) {
                 axios.delete(`apis/report/${report_id}`)
@@ -481,7 +484,7 @@ export default class ActiveReports extends React.Component {
                                             <div>
                                                 <IconButton 
                                                     id={`starter-report-edit-${index}`}
-                                                    onTouchTap={this.handleIconButtonTouchTap}
+                                                    onTouchTap={this.handleReportIconButtonTouchTap}
                                                     tooltip="編輯"
                                                 >
                                                     <ModeEdit />
@@ -489,7 +492,7 @@ export default class ActiveReports extends React.Component {
                                                 {
                                                         starterReportList[isEditingWhichStarterReportIndex] ? 
                                                         <Popover
-                                                            open={this.state.isPopOverOpen}
+                                                            open={this.state.isReportPopOverOpen}
                                                             anchorEl={this.state.anchorEl}
                                                             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                                                             targetOrigin={{horizontal: 'left', vertical: 'top'}}
@@ -600,8 +603,9 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         <CommentBox 
-                                            oldComments={reportObject.comments}
+                                            oldCommentList={reportObject.comments}
                                             report_id={reportObject.report_id} 
+                                            whoIsUser={whoIsUser}
                                             {...this.props} 
                                         />
                                     </div>
@@ -628,7 +632,7 @@ export default class ActiveReports extends React.Component {
                                             <div>
                                                 <IconButton 
                                                     id={`player-report-edit-${index}`}
-                                                    onTouchTap={this.handleIconButtonTouchTap}
+                                                    onTouchTap={this.handleReportIconButtonTouchTap}
                                                     tooltip="編輯"
                                                 >
                                                     <ModeEdit />
@@ -636,7 +640,7 @@ export default class ActiveReports extends React.Component {
                                                 {
                                                     playerReportList[isEditingWhichPlayerReportIndex] ? 
                                                     <Popover
-                                                        open={this.state.isPopOverOpen}
+                                                        open={this.state.isReportPopOverOpen}
                                                         anchorEl={this.state.anchorEl}
                                                         anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                                                         targetOrigin={{horizontal: 'left', vertical: 'top'}}
@@ -747,8 +751,9 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         <CommentBox 
-                                            oldComments={reportObject.comments}
+                                            oldCommentList={reportObject.comments}
                                             report_id={reportObject.report_id} 
+                                            whoIsUser={whoIsUser}
                                             {...this.props} 
                                         />
                                     </div>
@@ -765,172 +770,3 @@ export default class ActiveReports extends React.Component {
 ActiveReports.childContextTypes = {
     muiTheme: React.PropTypes.object.isRequired,
 };
-
-class CommentBox extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAfterPost: false,
-            newCommentList: []
-        };
-        this.updateNewCommentList = this.updateNewCommentList.bind(this);
-        this.updateNewCommentListAfterPost = this.updateNewCommentListAfterPost.bind(this);
-    }
-
-    updateNewCommentList(commentContent) {
-        const { newCommentList } = this.state;
-        const commentObject = {};
-        commentObject.content = commentContent
-        newCommentList.push(commentObject);
-        this.setState({
-            newCommentList
-        });
-    }
-
-    updateNewCommentListAfterPost(updatedCommentList) {
-        this.setState({
-            isAfterPost: true,
-            newCommentList: updatedCommentList
-        });
-    }
-
-    render() {
-        const { isAfterPost, newCommentList } = this.state; 
-        return (
-            <div className="player-report-comment-box-container">
-                <CommentList
-                    newCommentList={newCommentList}
-                    isAfterPost={isAfterPost}
-                    {...this.props} 
-                />
-                <CommentForm 
-                    updateNewCommentList={this.updateNewCommentList}
-                    updateNewCommentListAfterPost={this.updateNewCommentListAfterPost}
-                    {...this.props} 
-                />
-            </div>
-        );
-    }
-};
-
-class CommentForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            commentContent: null
-        };
-        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
-    }
-
-    handleCommentSubmit(event) {
-        if (event.keyCode == 13 && !event.shiftKey) {
-            event.preventDefault();
-            const commentContent = event.target.value;
-            this.setState({
-                commentContent
-            });
-            this.props.updateNewCommentList(commentContent);
-
-            const commentPost = {
-                'type': 'report',
-                'report_id': this.props.report_id,
-                'content': commentContent
-            };
-            // console.log('CommentForm handleCommentSubmit commentPost', commentPost);   //debug
-            axios.post('/apis/comment', commentPost)
-            .then(response => {
-                if(response.data.status == '200') {
-                    // console.log('CommentForm updateNewCommentListAfterPost');   // debug
-                    this.props.updateNewCommentListAfterPost(response.data.ludo.Attributes.comments);
-                } else {
-                    console.log('CommentForm post message from server: ', response.data.message);
-                    console.log('CommentForm post error from server: ', response.data.err);
-                }
-            })
-            .catch(error => {
-                console.log('CommentForm post error', error);
-            });
-
-            /* clear the text area of comment form */
-            event.target.value = null;
-            this.setState({
-                commentContent: null
-            });
-        }
-    }
-
-    render() {
-        return (
-            <div className="comment-container">
-                <div className="comment-avatar-container">
-                    <img className="comment__avatar" 
-                        src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
-                    />
-                </div>
-                <Textarea className="comment__message"
-                    minRows={2} onKeyDown={this.handleCommentSubmit} placeholder="留言..."
-                />
-            </div>
-        );
-    }
-}
-
-class CommentList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <div className="comment-list">
-                {
-                    this.props.oldComments && !this.props.isAfterPost? 
-                    this.props.oldComments.map( (commentObject, index) => {
-                        return (
-                            <div className="comment-container" key={`comment-${index}`}>
-                                <div className="comment-avatar-container">
-                                    <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
-                                </div>
-                                <div className="comment__message">
-                                    {commentObject.content}
-                                </div>
-                            </div>
-                        )
-                    })
-                    : null
-                }
-                {
-                    this.props.newCommentList.map( (commentObject, index) => {
-                        // console.log('newCommentList');   // debug
-                        return (
-                            <div className="comment-container" key={`new-comment-${index}`}>
-                                <div className="comment-avatar-container">
-                                    <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
-                                </div>
-                                <div className="comment__message">
-                                    {commentObject.content}
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-            </div>
-        );
-    }
-};
-                // {
-                //     this.props.oldComments ? 
-                //     this.props.oldComments.map( (commentObject, index) => {
-                //         return (
-                //             <div className="comment-container" key={`comment-${index}`}>
-                //                 <div className="comment-avatar-container">
-                //                     <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
-                //                 </div>
-                //                 <div className="comment__message">
-                //                     {commentObject.content}
-                //                 </div>
-                //             </div>
-                //         );
-                //     })
-                //     : null
-                // }
