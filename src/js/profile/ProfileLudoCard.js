@@ -3,12 +3,12 @@ import React, { Component, PropTypes } from 'react';
 import ProfileCategoryTabs from './ProfileCategoryTabs';
 import ProfileLudoList from './ProfileLudoList';
 
-export default class ProfileHistory extends React.Component {
+export default class ProfileLudoCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             currentWatchingCategory: 0,
-            filteredProfileNewLudoData: [],
+            filteredProfileLudoingData: [],
             isComponentUpdated: true,
             prevSelectedCategoryArrayLength: 0
         };
@@ -16,14 +16,14 @@ export default class ProfileHistory extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         const { prevSelectedCategoryArrayLength } = this.state;
-        if (!prevState.isComponentUpdated && prevSelectedCategoryArrayLength != prevState.filteredProfileNewLudoData.length) {
+        if (!prevState.isComponentUpdated && prevSelectedCategoryArrayLength != prevState.filteredProfileLudoingData.length) {
             this.props.forceMasonryUpdate();
         }
     }   
 
     componentWillUpdate(nextProps, nextState) {
-        const { filteredProfileNewLudoData } = this.state;
-        const prevSelectedCategoryArrayLength = filteredProfileNewLudoData.length;
+        const { filteredProfileLudoingData } = this.state;
+        const prevSelectedCategoryArrayLength = filteredProfileLudoingData.length;
         if (!nextState.isComponentUpdated) {
             this.setState({
                 prevSelectedCategoryArrayLength,
@@ -34,7 +34,7 @@ export default class ProfileHistory extends React.Component {
 
     handleCurrentWatchingCategory = (event) => {
         const currentWatchingCategory = Number(event.currentTarget.id) + 1;
-        const filteredProfileNewLudoData = this.props.profileDidLudoData.filter((SingleLudoObject) => {
+        const filteredProfileLudoingData = this.props.profileLudoData.filter((SingleLudoObject) => {
             if (SingleLudoObject.category_id == currentWatchingCategory) {
                 return true;
             } else {
@@ -43,7 +43,7 @@ export default class ProfileHistory extends React.Component {
         });
         this.setState({
             currentWatchingCategory,
-            filteredProfileNewLudoData,
+            filteredProfileLudoingData,
             isComponentUpdated: false
         });
     }
@@ -51,25 +51,25 @@ export default class ProfileHistory extends React.Component {
     render() {
         return (
             <div className="profile-card">
-                <div className="profile-card__title">{'之前參與過'}</div>
+                <div className="profile-card__title">{'正在進行中'}</div>
                 <ProfileCategoryTabs onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
-                    profileLudoData={this.props.profileDidLudoData}
+                    profileLudoData={this.props.profileLudoData}
                 />
-                <ProfileLudoList profileLudoData={this.state.filteredProfileNewLudoData}/>
+                <ProfileLudoList profileLudoData={this.state.filteredProfileLudoingData}/>
             </div>
         );
     }
 }
 
-ProfileHistory.defaultProps = {
-    profileDidLudoData: [{
+ProfileLudoCard.defaultProps = {
+    profileLudoData: [{
         category_id: 0
     }]
 };
 
-ProfileHistory.propTypes = {
+ProfileLudoCard.propTypes = {
     forceMasonryUpdate: PropTypes.func.isRequired,
-    profileDidLudoData: PropTypes.arrayOf(PropTypes.shape({
+    profileLudoData: PropTypes.arrayOf(PropTypes.shape({
         category_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         title: PropTypes.string
     })).isRequired

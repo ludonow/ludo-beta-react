@@ -58,6 +58,10 @@
 %clickable { cursor: pointer; }
 %unclickable { cursor: not-allowed; }
 
+.hidden {
+    display: none;
+}
+
 .ludo-button {
     @extend %clickable;
     border-right: none;

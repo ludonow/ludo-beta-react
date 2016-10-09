@@ -111,7 +111,7 @@ export default class AppRouter extends React.Component {
                         cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
                     }} onEnter={isLoggedIn, ludoEditRedirect} OnLeave={ludoRedirect}></Route>
                     <Route path="playground" component={Playground}></Route>
-                    <Route path="profile/:userId" component={Profile}></Route>
+                    <Route path="profile/:userId" component={Profile} onEnter={isLoggedIn}></Route>
                 </Route>
             </Router>
         );
