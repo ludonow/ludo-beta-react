@@ -2,10 +2,11 @@ import React from 'react';
 import axios from '../axios-config';
 
 import IconButton from 'material-ui/IconButton';
-import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
-import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import Popover from 'material-ui/Popover';
+
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -15,6 +16,7 @@ import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
 import CommentBox from './CommentBox';
+import DenounceBox from '../app/DenounceBox';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
@@ -24,9 +26,11 @@ export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentTargetId: '',
             enlargeImageLocation: '',
             files: [],
             imageLocation: '',
+            isDenouncing: false,
             isEditingWhichPlayerReportIndex: '',
             isEditingWhichStarterReportIndex: '',
             isEditingImageReport: false,
@@ -48,6 +52,7 @@ export default class ActiveReports extends React.Component {
         this.handleEditTextReportClick = this.handleEditTextReportClick.bind(this);
         this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
         this.handleReportDelete = this.handleReportDelete.bind(this);
+        this.handleReportDenounce = this.handleReportDenounce.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.onDrop = this.onDrop.bind(this);
     }
@@ -62,11 +67,9 @@ export default class ActiveReports extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('ActiveReports componentWillReceiveProps', nextProps.hasGotNewReport);  // debug
         /* 
          * classify report data by starter or player
          */
-        // if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length || !this.props.hasGotNewReport) {
         if(nextProps.hasGotNewReport) {
             const { currentUserId } = this.props;
             let whoIsUser = '';
@@ -80,16 +83,12 @@ export default class ActiveReports extends React.Component {
                     whoIsUser = 'bystander';
                 }
             }
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate this', this.props);   // debug
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate next', nextProps);   // debug
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate whoIsUser', whoIsUser);   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
                 starterReportList: [],
                 playerReportList: [],
                 whoIsUser
             });
-            // console.log('ActiveReports componentWillReceiveProps nextProps.currentLudoReportData', nextProps.currentLudoReportData);   // debug
             const newStarterReportList = nextProps.currentLudoReportData.filter(reportObject => {
                 if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {
                     return true;
@@ -97,7 +96,6 @@ export default class ActiveReports extends React.Component {
                     return false;
                 }
             });
-            // console.log('ActiveReports componentWillReceiveProps this.state.starterReportList', this.state.starterReportList);   // debug 
             const newPlayerReportList = nextProps.currentLudoReportData.filter( (reportObject) => {
                 if (reportObject.user_id == nextProps.router_currentFormValue.player_id) {
                     return true;
@@ -105,7 +103,6 @@ export default class ActiveReports extends React.Component {
                     return false;
                 }
             });
-            // console.log('ActiveReports componentWillReceiveProps this.state.playerReportList', this.state.playerReportList);   // debug
             this.setState({
                 starterReportList: newStarterReportList,
                 playerReportList: newPlayerReportList
@@ -129,14 +126,11 @@ export default class ActiveReports extends React.Component {
         const { whoIsUser } = this.state;
         if (whoIsUser == 'starter') {
             const isEditingWhichStarterReportIndex = (event.currentTarget.id).slice(-1);
-            // console.log('isEditingWhichStarterReportIndex', isEditingWhichStarterReportIndex);   // debug
             this.setState({isEditingWhichStarterReportIndex});
         } else if (whoIsUser == 'player') {
             const isEditingWhichPlayerReportIndex = (event.currentTarget.id).slice(-1);
-            // console.log('isEditingWhichPlayerReportIndex', isEditingWhichPlayerReportIndex);   // debug
             this.setState({isEditingWhichPlayerReportIndex});
         }
-        // console.log('anchorEl id', event.currentTarget.id);   // debug
         this.setState({
             anchorEl: event.currentTarget,
             isReportPopOverOpen: true
@@ -144,7 +138,6 @@ export default class ActiveReports extends React.Component {
     };
 
     handleImageEnlarge = (event) => {
-        // console.log('ActiveReports handleImageEnlarge image location', event.currentTarget.src);  // debug
         this.setState({
             enlargeImageLocation: event.currentTarget.src,
             isImageLightBoxOpen: true
@@ -161,12 +154,12 @@ export default class ActiveReports extends React.Component {
     };
 
     handleReportTextChange = (event) => {
-        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
         this.setState({reportTextContent: event.currentTarget.value});
     };
 
     handleRequestClose = () => {
         this.setState({
+            isDenouncing: false,
             isReportPopOverOpen: false
         });
     };
@@ -176,7 +169,6 @@ export default class ActiveReports extends React.Component {
         /* 
          *  clear the image-editing array and put user click target into image-editing array
          */
-        // console.log('ActiveReports handleEditImageReportClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
@@ -186,7 +178,6 @@ export default class ActiveReports extends React.Component {
             isEditingImageReportIndex.splice(0, isEditingImageReportIndex.length);
             isEditingImageReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         }
-        // console.log('ActiveReports handleEditImageReportClick isEditingImageReportIndex', isEditingImageReportIndex);
         this.setState({
             isEditingImageReport: true,
             isEditingImageReportIndex,
@@ -199,13 +190,10 @@ export default class ActiveReports extends React.Component {
         /* 
          *  drop the user click target out of image-editing array 
          */
-        // console.log('ActiveReports handleImageReportEditCancelClick');   // debug
         const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-        // console.log('ActiveReports handleImageReportEditCancelClick reportIndex', reportIndex);   // debug
         const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        // console.log('ActiveReports handleImageReportEditCancelClick isInEditingArray', isInEditingArray);   // debug
         if(isInEditingArray) {
             isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
             this.setState({
@@ -213,13 +201,12 @@ export default class ActiveReports extends React.Component {
                 isEditingImageReportIndex
             });
         } else {
-            console.log('report edit index error');
+            console.error('report edit index error');
         }
     }
 
     handleImageReportModifyConfirmClick(event) {
         event.preventDefault();
-        // console.log('ActiveReports handleImageReportModifyConfirmClick');   // debug
         const reportPutBody = {
             content: '',
             image_location: this.state.image_location
@@ -228,23 +215,16 @@ export default class ActiveReports extends React.Component {
         const arrayIndex = Number(event.currentTarget.id.slice(-1));
         let report_id = null;
         if (SPIndex == 's') {
-            // console.log('s');   // debug
-            // reportPutBody.image_location = this.state.image_location;
             reportPutBody.content = this.state.starterReportList[arrayIndex].content;
             report_id = this.state.starterReportList[arrayIndex].report_id;
         } else if (SPIndex == 'p') {
-            // console.log('p');   // debug
-            // reportPutBody.image_location = this.state.image_location;
             reportPutBody.content = this.state.playerReportList[arrayIndex].content;
             report_id = this.state.playerReportList[arrayIndex].report_id;
         }
-        console.log('reportPutBody', reportPutBody);   // debug
         if (report_id) {
-            // console.log('report_id', report_id);   // debug
             axios.put(`/apis/report/${report_id}`, reportPutBody)
             .then( response => {
                 if(response.data.status === '200') {
-                    // console.log('成功編輯');   // debug
                     /*
                      * remove the specific element in image-edit array
                      */
@@ -261,12 +241,12 @@ export default class ActiveReports extends React.Component {
                     });
                     this.props.handleShouldReportUpdate(true);
                 } else {
-                    console.log('ActiveReports handleImageReportModifyConfirmClick report put else response from server: ', response);
+                    console.error('ActiveReports handleImageReportModifyConfirmClick report put else response from server: ', response);
                     window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                 }
             })
             .catch( error => {
-                console.log('ActiveReports handleImageReportModifyConfirmClick report put error', error);
+                console.error('ActiveReports handleImageReportModifyConfirmClick report put error', error);
                 window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
             });
         }
@@ -277,18 +257,15 @@ export default class ActiveReports extends React.Component {
         /* 
          *  put user click target into text-editing array
          */
-        // console.log('ActiveReports handleEditTextReportClick id', event.currentTarget.id);   // debug
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingTextReport, isEditingTextReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-        // console.log('ActiveReports handleEditTextReportClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
         if(!isInEditingArray) {
             isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         } 
-        // console.log('ActiveReports handleEditTextReportClick isEditingTextReportIndex', isEditingTextReportIndex);   // debug
         this.setState({
             isEditingTextReport: true,
             isEditingTextReportIndex,
@@ -299,7 +276,6 @@ export default class ActiveReports extends React.Component {
     handleFinishReportEditText(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
             event.preventDefault();
-            // console.log('ActiveReports handleFinishReportEditText');   // debug
             /* 
              * send put request to server to modify text report content 
              */
@@ -312,29 +288,22 @@ export default class ActiveReports extends React.Component {
                 const arrayIndex = Number(event.currentTarget.id.slice(-1));
                 let report_id = null;
                 if (SPIndex == 's') {
-                    // console.log('s');
-                    // reportPutBody.content = this.state.reportTextContent;
                     report_id = this.state.starterReportList[arrayIndex].report_id;
                 } else if (SPIndex == 'p') {
-                    // console.log('p');
-                    // reportPutBody.content = this.state.reportTextContent;
                     report_id = this.state.playerReportList[arrayIndex].report_id;
                 }
-                console.log('ActiveReports handleFinishReportEditText reportPutBody', reportPutBody);   // debug
                 if (report_id) {
-                    // console.log('report_id', report_id);
                     axios.put(`/apis/report/${report_id}`, reportPutBody)
                     .then( response => {
                         if(response.data.status === '200') {
-                            // console.log('成功編輯');
                             this.props.handleShouldReportUpdate(true);
                         } else {
-                            console.log('ActiveReports handleFinishReportEditText report put else response from server: ', response);
+                            console.error('ActiveReports handleFinishReportEditText report put else response from server: ', response);
                             window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                         }
                     })
                     .catch( error => {
-                        console.log('ActiveReports handleFinishReportEditText report put error', error);
+                        console.error('ActiveReports handleFinishReportEditText report put error', error);
                         window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                     });
                 }
@@ -343,10 +312,8 @@ export default class ActiveReports extends React.Component {
              * transfer the text report to the original display instead of textarea by taking the element out of editing text array
              */
             const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-            // console.log('ActiveReports handleEditTextReportClick reportIndex', reportIndex);   // debug
             const { isEditingTextReport, isEditingTextReportIndex } = this.state;
             const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-            // console.log('ActiveReports handleEditTextReportClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
             const isInEditingArray = (indexAtWhatPositionInArray != -1);
             if(isInEditingArray) {
                 isEditingTextReportIndex.splice(indexAtWhatPositionInArray, 1);
@@ -355,7 +322,7 @@ export default class ActiveReports extends React.Component {
                     isEditingTextReport: false
                 });
             } else {
-                console.log('text report edit index isInEditingArray error');
+                console.error('text report edit index isInEditingArray error');
             }
         }
     }
@@ -363,24 +330,15 @@ export default class ActiveReports extends React.Component {
     handleReportDelete(event) {
         const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
         if(isSureToDelelteReport) {
-            // console.log('target', event.currentTarget);   // debug
-            // console.log('id', event.currentTarget.id);   // debug
-            const SPIndex = (event.currentTarget.id).slice(0, 1);
+            // const SPIndex = (event.currentTarget.id).slice(0, 1);
+            const SPIndex = (this.state.anchorEl.id).slice(0, 1);
             const arrayIndex = Number(event.currentTarget.id.slice(-1));
-            // console.log('SPIndex', SPIndex);   // debug
-            // console.log('arrayIndex', arrayIndex);   // debug
-            // console.log('report', this.state.playerReportList[arrayIndex]);   // debug
             let report_id = null;
             if (SPIndex == 's') {
-                // console.log('s');
-                // reportPutBody.content = this.state.reportTextContent;
                 report_id = this.state.starterReportList[arrayIndex].report_id;
             } else if (SPIndex == 'p') {
-                // console.log('p');
-                // reportPutBody.content = this.state.reportTextContent;
                 report_id = this.state.playerReportList[arrayIndex].report_id;
             }
-            console.log('SPIndex + arrayIndex', SPIndex + arrayIndex);   // debug
             this.setState({
                 isReportPopOverOpen: false
             });
@@ -388,20 +346,35 @@ export default class ActiveReports extends React.Component {
                 axios.delete(`apis/report/${report_id}`)
                 .then(response => {
                     if(response.data.status === '200'){
-                        // console.log('成功刪除回報');   // debug
                         this.props.handleShouldReportUpdate(true);
                     } else {
                         window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                        console.log(' handleReportDelete else response: ', response);
-                        console.log(' handleReportDelete else message: ', response.data.message);
+                        console.error(' handleReportDelete else response: ', response);
+                        console.error(' handleReportDelete else message: ', response.data.message);
                     }
                 })
                 .catch(error => {
                     window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                    console.log(' handleReportDelete error: ', error);
+                    console.error(' handleReportDelete error: ', error);
                 });
             }
         }
+    }
+
+    handleReportDenounce() {
+        const SPIndex = (this.state.anchorEl.id).slice(0, 1);
+        const arrayIndex = Number(event.currentTarget.id.slice(-1));
+        let report_id = null;
+        if (SPIndex === 's') {
+            report_id = this.state.starterReportList[arrayIndex].report_id;
+        } else if (SPIndex === 'p') {
+            report_id = this.state.playerReportList[arrayIndex].report_id;
+        }
+        this.setState({
+            currentTargetId: report_id,
+            isDenouncing: true,
+            isReportPopOverOpen: false
+        });
     }
 
     closeLightbox() {
@@ -411,7 +384,6 @@ export default class ActiveReports extends React.Component {
     }
 
     onDrop(files) {
-        // console.log('ActiveReports onDrop files', files);
         if (files.length == 1) {
             this.setState({
                 files,
@@ -420,22 +392,19 @@ export default class ActiveReports extends React.Component {
             const { ludoId }= this.props.params;
             const imgPost = new FormData();
             imgPost.append('file', files[0]);
-            // console.log('imgPost file', imgPost.get('file'));
-            // console.log('before post image');
             axios.post('/apis/report-image', imgPost)
             .then(response => {
                 if (response.data.status === '200') {
                     this.setState({
                         image_location: response.data.location
                     });
-                    // console.log('上傳圖片成功', this.state.image_location);
                 } else {
-                    console.log('ActiveReports onDrop response from server: ', response);
-                    console.log('ActiveReports onDrop message from server: ', response.data.message);
+                    console.error('ActiveReports onDrop response from server: ', response);
+                    console.error('ActiveReports onDrop message from server: ', response.data.message);
                 }
             })
             .catch(error => {
-                console.log('ActiveReports onDrop error', error);
+                console.error('ActiveReports onDrop error', error);
             });
         } else if (files.length > 1) {
             this.setState({
@@ -466,6 +435,19 @@ export default class ActiveReports extends React.Component {
                         />
                     : null
                 }
+                <Popover
+                    open={this.state.isDenouncing}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                    onRequestClose={this.handleRequestClose}
+                >
+                    <DenounceBox
+                        currentTargetId={this.state.currentTargetId}
+                        denounceType={1}
+                        onRequestClose={this.handleRequestClose}
+                    />
+                </Popover>
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
@@ -515,6 +497,11 @@ export default class ActiveReports extends React.Component {
                                                                     id={`starter-report-delete-${isEditingWhichStarterReportIndex}`}
                                                                     onTouchTap={this.handleReportDelete}
                                                                     primaryText="刪除此回報"
+                                                                />
+                                                                <MenuItem
+                                                                    id={`starter-report-denounce-${isEditingWhichStarterReportIndex}`}
+                                                                    onTouchTap={this.handleReportDenounce}
+                                                                    primaryText="檢舉此回報"
                                                                 />
                                                             </Menu>
                                                         </Popover>
@@ -663,6 +650,11 @@ export default class ActiveReports extends React.Component {
                                                                 id={`player-report-delete-${isEditingWhichPlayerReportIndex}`}
                                                                 onTouchTap={this.handleReportDelete}
                                                                 primaryText="刪除此回報"
+                                                            />
+                                                            <MenuItem
+                                                                id={`player-report-denounce-${isEditingWhichPlayerReportIndex}`}
+                                                                onTouchTap={this.handleReportDenounce}
+                                                                primaryText="檢舉此回報"
                                                             />
                                                         </Menu>
                                                     </Popover>

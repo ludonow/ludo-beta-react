@@ -56,18 +56,15 @@ export default class ActivePlayerForm extends React.Component {
             this.setState({
                 isReportButtonClickable: true
             });
-            // console.log('componentWillReceiveProps getTimeLineMarks');   // debug
             this.getTimeLineMarks(nextProps);
         }
     }
 
     componentWillUnmount() {
-        // console.log('ActivePlayerForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
 
     getTimeLineMarks(nextProps) {
-        // console.log('ActivePlayerForm getTimeLineMarks nextProps', nextProps);   // debug
         const { state } = this;
         const currentFormValue = nextProps.router_currentFormValue;
         const { checkpoint, duration } = currentFormValue;
@@ -149,8 +146,6 @@ export default class ActivePlayerForm extends React.Component {
                 'content': this.state.reportText,
                 'image_location': this.state.imageLocation
             };
-            // console.log('ludoTextReportPost', ludoReportPost);
-            console.log('ActivePlayerForm before report post');
             axios.post('apis/report', ludoReportPost)
             .then(response => {
                 if (response.data.status === '200') {
@@ -160,11 +155,10 @@ export default class ActivePlayerForm extends React.Component {
                         isImageUploaded: false,
                         reportText: ''
                     });
-                    console.log('ActivePlayerForm Report after report post response.data: ', response.data);
                 } else {
                     window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
-                    console.log('ActivePlayerForm Report else message from server: ', response.data.message);
-                    console.log('ActivePlayerForm Report else error from server: ', response.data.err);
+                    console.error('ActivePlayerForm Report else message from server: ', response.data.message);
+                    console.error('ActivePlayerForm Report else error from server: ', response.data.err);
                     this.setState({
                         isReportButtonClickable: true
                     });
@@ -172,7 +166,7 @@ export default class ActivePlayerForm extends React.Component {
             })
             .catch(error => {
                 window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
-                console.log('ActivePlayerForm Report error', error);
+                console.error('ActivePlayerForm Report error', error);
                 this.setState({
                     isReportButtonClickable: true
                 });
@@ -200,24 +194,20 @@ export default class ActivePlayerForm extends React.Component {
             const { ludoId }= this.props.params;
             const imgPost = new FormData();
             imgPost.append('file', files[0]);
-            // console.log('imgPost file', imgPost.get('file'));
-            console.log('before post image');
             axios.post('/apis/report-image', imgPost)
             .then(response => {
                 if (response.data.status == '200') {
-                    // window.alert(`image upload success!`);
-                    // console.log('image upload response.data: ', response.data);
                     this.setState({
                         imageLocation: response.data.location
                     });
                     // TODO: shouldComponentUpdate false when successfully upload an image
                 } else {
-                    console.log('image upload message from server: ', response.data.message);
-                    console.log('image upload error from server: ', response.data.err);
+                    console.error('image upload message from server: ', response.data.message);
+                    console.error('image upload error from server: ', response.data.err);
                 }
             })
             .catch(error => {
-                console.log('image upload error', error);
+                console.error('image upload error', error);
             });
         } else if (files.length > 1) {
             this.setState({
@@ -252,7 +242,6 @@ export default class ActivePlayerForm extends React.Component {
     // }
 
     render() {
-        // const { currentFormValue } = this.props;
         const currentFormValue = this.props.router_currentFormValue;
         const { ludoDetailInformation, category, files, 
             isImageLightBoxOpen, isImageUploaded, isReportButtonClickable, isReportTextBlank, 
@@ -406,26 +395,3 @@ export default class ActivePlayerForm extends React.Component {
         );
     }
 };
-                    // {
-                    //     files.length > 0 ? 
-                    //         <div className="upload-instruction">
-                    //             Ready to upload 
-                    //             <span className="number">{files.length}</span>
-                    //             image
-                    //             {files.length > 1 ? <span>s</span> : null}
-                    //         </div>
-                    //     : null
-                    // }
-
-                            // <div className="upload-picture-button-container">
-                            //     <span className="upload-hint-text">140字為限(#tag不在此限)</span>
-                            //     <DropZone 
-                            //         className="upload-picture-button"
-                            //         maxSize={2000000}
-                            //         onDrop={this.onDrop}
-                            //         onClick={this.onDrop}
-                            //         accept={"image/png", "image/pjepg", "image/jpeg"}
-                            //     >
-                            //         <img className="upload-picture-button__icon" src={uploadIcon}/>
-                            //     </DropZone>
-                            // </div>

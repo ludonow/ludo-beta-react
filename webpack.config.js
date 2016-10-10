@@ -9,8 +9,6 @@ const webpack = require('webpack');
 const PATHS = {
     build: path.resolve(__dirname, 'build'),
     index: path.resolve(__dirname, 'src', 'js', 'app', 'index.js'),
-    // json: path.resolve(__dirname, 'src', 'data'),
-    // jsonbuild: path.resolve(__dirname, 'build', 'data'),
     images: path.resolve(__dirname, 'src', 'images'),
     imagesbuild: path.resolve(__dirname, 'build', 'images'),
     mainscss: path.resolve(__dirname, 'src', 'stylesheets', 'main.scss'),
@@ -94,7 +92,6 @@ switch(process.env.npm_lifecycle_event) {
             },
             parts.clean(PATHS.build),
             parts.copyImages(PATHS.images, PATHS.imagesbuild),
-            // parts.copyJSON(PATHS.json, PATHS.jsonbuild),
             parts.setFreeVariable(
                 'process.env.NODE_ENV',
                 'production'
@@ -115,7 +112,6 @@ switch(process.env.npm_lifecycle_event) {
                 devtool: 'cheap-module-source-map'
             },
             parts.copyImages(PATHS.images, PATHS.imagesbuild),
-            // parts.copyJSON(PATHS.json, PATHS.jsonbuild),
             parts.devServer({
                 // Customize host/port here if needed
                 host: process.env.HOST,
