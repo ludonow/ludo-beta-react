@@ -108,8 +108,7 @@ switch(process.env.npm_lifecycle_event) {
         config = merge(
             common,
             {
-                // devtool: 'eval-source-map'
-                devtool: 'cheap-module-source-map'
+                devtool: 'source-map'
             },
             parts.copyImages(PATHS.images, PATHS.imagesbuild),
             parts.devServer({
