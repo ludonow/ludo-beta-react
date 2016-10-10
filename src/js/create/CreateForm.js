@@ -201,29 +201,29 @@ export default class CreateForm extends React.Component {
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then(response => {
                         if (response.data.status === '200') {
-                            const { getBasicUserData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
-                            getBasicUserData();
+                            const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                            getUserBasicData();
                             handleShouldProfileUpdate(true);
                             updateCurrentFormValue(response.data.ludo);
                             browserHistory.push(`/ludo/${ludo_id}`);
                         } else {
                             window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
-                            console.log('get after create post message from server: ', response.data.message);
-                            console.log('get after create post error from server: ', response.data.err);
+                            console.error('get after create post response from server: ', response);
+                            console.error('get after create post message from server: ', response.data.message);
                         }
                     })
                     .catch(error => {
                         window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                        console.log('get after create post error', error);
+                        console.error('get after create post error', error);
                     });
                 } else {
                     window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.log('create post message from server: ', response.data.message);
+                    console.error('create post message from server: ', response.data.message);
                 }
             })
             .catch(error => {
                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.log('create post error', error);
+                console.error('create post error', error);
             });
             
         } else if (!isCategorySelected) {
