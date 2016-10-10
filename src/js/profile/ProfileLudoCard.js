@@ -51,7 +51,7 @@ export default class ProfileLudoCard extends Component {
     render() {
         return (
             <div className="profile-card">
-                <div className="profile-card__title">{'正在進行中'}</div>
+                <div className="profile-card__title">{this.props.title}</div>
                 <ProfileCategoryTabs onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
                     profileLudoData={this.props.profileLudoData}
                 />

@@ -118,12 +118,14 @@ export default class Profile extends Component {
                     <ProfileLudoCard 
                         forceMasonryUpdate={this.forceMasonryUpdate}
                         profileLudoData={this.props.profileWillLudoData}
+                        title="等待他人加入"
                     />
                 </div>
                 <div className={`grid-item--profile${activeKey.indexOf(2) != -1 ? '' : ' hidden'}`}>
                     <ProfileLudoCard 
                         forceMasonryUpdate={this.forceMasonryUpdate}
                         profileLudoData={this.props.profileLudoingData}
+                        title="正在進行中"
                     />
                 </div>
                 <div className={`grid-item--profile${activeKey.indexOf(3) != -1 ? '' : ' hidden'}`}>
