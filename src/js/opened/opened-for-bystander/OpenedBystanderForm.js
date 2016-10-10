@@ -54,7 +54,6 @@ export default class OpenedBystanderForm extends React.Component {
     }
 
     componentWillUnmount() {
-        // console.log('OpenedBystanderForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
 
@@ -78,24 +77,21 @@ export default class OpenedBystanderForm extends React.Component {
         if (isSureToJoin) {
             const { ludo_id } = this.props.params;
             const currentFormValue = this.props.router_currentFormValue;
-            // console.log(`/apis/ludo/${ludo_id}`);   // debug
             const joinLudoPutbody = {
                 'duration': currentFormValue.duration,
                 'marbles': currentFormValue.marbles,
                 'stage': currentFormValue.stage,
                 'type': 'match'
             };
-            console.log('joinLudoPutbody', joinLudoPutbody);   // debug
-            // console.log('before join axios put');   // debug
             axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
             .then(response => {
                 if(response.data.status == '200') {
                     this.setState({
                         isJoinButtonClickable: false
                     });
-                    this.props.getBasicUserData();
-                    this.props.handleShouldProfileUpdate(true);
-                    // console.log('after join axios put response', response);   // debug
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push(`/ludo-edit/${ludo_id}`);
                 } else if(response.data.message == 'Your heart is out.') {
@@ -105,8 +101,8 @@ export default class OpenedBystanderForm extends React.Component {
                     });
                 } else {
                     window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.log('OpenedBystanderForm join else response from server: ', response);
-                    console.log('OpenedBystanderForm join else message from server: ', response.data.message);
+                    console.error('OpenedBystanderForm join else response from server: ', response);
+                    console.error('OpenedBystanderForm join else message from server: ', response.data.message);
                     this.setState({
                         isJoinButtonClickable: true
                     });
@@ -114,14 +110,14 @@ export default class OpenedBystanderForm extends React.Component {
             })
             .catch(error => {
                 window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.log('OpenedBystanderForm join put error', error);
+                console.error('OpenedBystanderForm join put error', error);
                 this.setState({
                     isJoinButtonClickable: true
                 });
             });
         } else {
             window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-            console.log('OpenedBystanderForm error in state isJoinButtonClickable');
+            console.error('OpenedBystanderForm error in state isJoinButtonClickable');
             this.setState({
                 isJoinButtonClickable: true
             });
