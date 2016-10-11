@@ -435,19 +435,12 @@ export default class ActiveReports extends React.Component {
                         />
                     : null
                 }
-                <Popover
-                    open={this.state.isDenouncing}
-                    anchorEl={this.state.anchorEl}
-                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                <DenounceBox 
+                    currentTargetId={this.state.currentTargetId}
+                    denounceType={1}
                     onRequestClose={this.handleRequestClose}
-                >
-                    <DenounceBox
-                        currentTargetId={this.state.currentTargetId}
-                        denounceType={1}
-                        onRequestClose={this.handleRequestClose}
-                    />
-                </Popover>
+                    open={this.state.isDenouncing}
+                />
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
