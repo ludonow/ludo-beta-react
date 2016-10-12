@@ -5,6 +5,12 @@ import Header from './header/Header';
 import Sidebar from './sidebar/Sidebar';
 import DenounceBox from './DenounceBox';
 
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -54,6 +60,7 @@ export default class App extends React.Component {
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
+        this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
         this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
@@ -117,6 +124,10 @@ export default class App extends React.Component {
                 title: ''
             }
         });
+    }
+
+    getChildContext() {
+        return { muiTheme: getMuiTheme(baseTheme) };
     }
 
     getUserBasicData() {
@@ -260,29 +271,55 @@ export default class App extends React.Component {
         });
     }
 
-    handleDenounceBoxRequestClose(event) {
+    handleDenounceBoxRequestClose() {
         this.setState({
             isDenounceBoxOpen: false
         });
     }
 
-    // handleDenounceComment(event) {
-    //     this.setState({
-    //         currentTargetCommentId
-    //     });
-    // }
+    handleDenounceBoxOpen(currentTargetObject) {
+        const { currentTargetCommentId, currentTargetLudoId, currentTargetReportId } = currentTargetObject;
+        if (currentTargetLudoId) {
+            this.setState({
+                currentTargetLudoId,
+                denounceType: 0,
+                isDenounceBoxOpen: true
+            });
+        } else if (currentTargetReportId && !currentTargetCommentId) {
+            this.setState({
+                currentTargetReportId,
+                denounceType: 1,
+                isDenounceBoxOpen: true
+            });
+        } else if (currentTargetReportId && currentTargetCommentId) {
+            this.setState({
+                currentTargetCommentId,
+                currentTargetReportId,
+                denounceType: 2,
+                isDenounceBoxOpen: true
+            });
+        } else {
+            console.error('handleDenounceBoxOpen id error');
+        }
+    }
 
-    // handleDenounceLudo(event) {
-    //     this.setState({
-    //         currentTargetLudoId
-    //     });
-    // }
+    handleDenounceComment(event) {
+        this.setState({
+            currentTargetCommentId
+        });
+    }
 
-    // handleDenounceReport(event) {
-    //     this.setState({
-    //         currentTargetReportId
-    //     });
-    // }
+    handleDenounceLudo(event) {
+        this.setState({
+            currentTargetLudoId
+        });
+    }
+
+    handleDenounceReport(event) {
+        this.setState({
+            currentTargetReportId
+        });
+    }
 
     handleHasGotNewReport(boolean) {
         this.setState({
@@ -371,6 +408,7 @@ export default class App extends React.Component {
                                 getProfileLudoingData: this.getProfileLudoingData,
                                 getProfileDidLudoData: this.getProfileDidLudoData,
                                 getReportOfCurrentLudo: this.getReportOfCurrentLudo,
+                                handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
                                 handleIsHoveringSidebar: this.handleIsHoveringSidebar,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
@@ -385,15 +423,19 @@ export default class App extends React.Component {
                         )
                     }
                 </div>
+                <DenounceBox
+                    currentTargetCommentId={this.state.currentTargetCommentId}
+                    currentTargetLudoId={this.state.currentTargetLudoId}
+                    currentTargetReportId={this.state.currentTargetReportId}
+                    denounceType={this.state.denounceType}
+                    isDenounceBoxOpen={this.state.isDenounceBoxOpen}
+                    onRequestClose={this.handleDenounceBoxRequestClose}
+                />
             </div>
         );
     }
 }
-                // <DenounceBox
-                //     currentTargetCommentId={this.state.currentTargetCommentId}
-                //     currentTargetLudoId={this.state.currentTargetId}
-                //     currentTargetReportId={this.state.currentTargetReportId}
-                //     denounceType={this.state.denounceType}
-                //     isDenounceBoxOpen={this.state.isDenounceBoxOpen}
-                //     onRequestClose={this.handleDenounceBoxRequestClose}
-                // />
+
+App.childContextTypes = {
+    muiTheme: React.PropTypes.object.isRequired,
+};

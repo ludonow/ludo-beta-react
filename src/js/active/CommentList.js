@@ -262,6 +262,7 @@ export default class CommentList extends React.Component {
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
+                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
                                                 isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
@@ -327,6 +328,7 @@ export default class CommentList extends React.Component {
                                             anchorEl={this.state.anchorEl}
                                             commentId={commentObject.comment_id}
                                             handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
+                                            handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
                                             handleRequestClose={this.handleRequestClose}
                                             index={index}
                                             isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
@@ -342,30 +344,3 @@ export default class CommentList extends React.Component {
         );
     }
 };
-                                            // <div>
-                                            //     <IconButton 
-                                            //         id={`new-comment-edit-button-${index}`}
-                                            //         onTouchTap={this.handleCommentIconButtonTouchTap}
-                                            //         tooltip="編輯或刪除"
-                                            //     >
-                                            //         <ModeEdit />
-                                            //     </IconButton>
-                                            //     <Popover
-                                            //         open={this.state.isPopOverOfEditOpen}
-                                            //         anchorEl={this.state.anchorEl}
-                                            //         anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                            //         targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                            //         onRequestClose={this.handleRequestClose}
-                                            //     >
-                                            //         <Menu>
-                                            //             <MenuItem 
-                                            //                 onTouchTap={this.handleEditTextReportClick}
-                                            //                 primaryText="編輯" 
-                                            //             />
-                                            //             <MenuItem
-                                            //                 onTouchTap={this.handleReportDelete}
-                                            //                 primaryText="刪除此回報"
-                                            //             />
-                                            //         </Menu>
-                                            //     </Popover>
-                                            // </div>

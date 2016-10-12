@@ -43,14 +43,14 @@ export default class DenounceBox extends Component {
         switch(denounceType) {
             case 0:
                 denouncePost = {
-                    'ludo_id': this.props.currentTargetId,
+                    'ludo_id': this.props.currentTargetLudoId,
                     'reason': this.state.reason, 
                     'type': denouncePostTypeArray[denounceType]
                 };
                 break;
             case 1:
                 denouncePost = {
-                    'report_id': this.props.currentTargetId,
+                    'report_id': this.props.currentTargetReportId,
                     'reason': this.state.reason, 
                     'type': denouncePostTypeArray[denounceType]
                 };
@@ -58,8 +58,8 @@ export default class DenounceBox extends Component {
             case 2:
                 /* TODO: Add report id of denounce comment */
                 denouncePost = {
-                    'comment_id': this.props.currentTargetId,
-                    'report_id': this.props.reportId,
+                    'comment_id': this.props.currentTargetCommentId,
+                    'report_id': this.props.currentTargetReportId,
                     'reason': this.state.reason, 
                     'type': denouncePostTypeArray[denounceType]
                 };

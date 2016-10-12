@@ -7,9 +7,9 @@ import MenuItem from 'material-ui/MenuItem';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Popover from 'material-ui/Popover';
 
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+// import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
+// import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
@@ -22,7 +22,7 @@ import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
-injectTapEventPlugin();
+// injectTapEventPlugin();
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
@@ -119,9 +119,9 @@ export default class ActiveReports extends React.Component {
         }
     }
 
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
-    }
+    // getChildContext() {
+    //     return { muiTheme: getMuiTheme(baseTheme) };
+    // }
 
     handleEditImageReportClick(event) {
         event.preventDefault();
@@ -454,12 +454,12 @@ export default class ActiveReports extends React.Component {
                         />
                     : null
                 }
-                <DenounceBox 
+                {/*<DenounceBox 
                     currentTargetId={this.state.currentTargetId}
                     denounceType={1}
                     onRequestClose={this.handleRequestClose}
                     isDenounceBoxOpen={this.state.isDenounceBoxOpen}
-                />
+                />*/}
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
@@ -731,6 +731,6 @@ export default class ActiveReports extends React.Component {
     }
 };
 
-ActiveReports.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+// ActiveReports.childContextTypes = {
+//     muiTheme: React.PropTypes.object.isRequired,
+// };

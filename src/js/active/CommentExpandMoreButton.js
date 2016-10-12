@@ -15,11 +15,7 @@ const style = {
 export default class CommentEditButton extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isDenounceBoxOpen: false,
-        };
         this.handleCommentDenounce = this.handleCommentDenounce.bind(this);
-        this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
     }
 
     handleCommentDenounce(event) {
@@ -28,37 +24,20 @@ export default class CommentEditButton extends Component {
         /* method from CommentList */
         this.props.handleRequestClose();
         if (this.props.commentId) {
-            this.setState({
-                currentTargetId: this.props.commentId,
-                isDenounceBoxOpen: true,
-                isPopOverOfExpandMoreOpen: false
+            this.props.handleDenounceBoxOpen({
+                currentTargetCommentId: this.props.commentId,
+                currentTargetReportId: this.props.reportId,
             });
         } else {
-            this.setState({
-                isPopOverOfExpandMoreOpen: false
-            });
             window.alert('檢舉留言有問題，請重試一次；若問題仍然發生，請聯絡開發人員');
             console.error('CommentList handleCommentDenounce not get comment id');
         }
-    }
-
-    handleDenounceBoxRequestClose() {
-        this.setState({
-            isDenounceBoxOpen: false
-        });
     }
 
     render() {
         const { index, isOldOrNew } = this.props;
         return (
             <div className="comment-button">
-                <DenounceBox
-                    currentTargetId={this.state.currentTargetId}
-                    denounceType={2}
-                    isDenounceBoxOpen={this.state.isDenounceBoxOpen}
-                    onRequestClose={this.handleDenounceBoxRequestClose}
-                    reportId={this.props.reportId}
-                />
                 <IconButton 
                     id={`${isOldOrNew}-comment-expand-more-button-${index}`}
                     onTouchTap={this.props.handleCommentExpandMoreButtonTouchTap}
@@ -75,6 +54,7 @@ export default class CommentEditButton extends Component {
                 >
                     <Menu>
                         <MenuItem
+                            id={this.props.anchorEl.id}
                             innerDivStyle={style}
                             onTouchTap={this.handleCommentDenounce}
                             primaryText="檢舉此留言" 
