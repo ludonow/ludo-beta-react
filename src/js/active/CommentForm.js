@@ -32,24 +32,21 @@ export default class CommentForm extends React.Component {
 
             const commentPost = {
                 'type': 'report',
-                'report_id': this.props.report_id,
+                'report_id': this.props.reportId,
                 'content': commentContent
             };
-            // console.log('CommentForm handleCommentSubmit commentPost', commentPost);   //debug
             axios.post('/apis/comment', commentPost)
             .then(response => {
-                if(response.data.status == '200') {
-                    // console.log('CommentForm updateNewCommentListAfterPost');   // debug
+                if(response.data.status === '200') {
                     this.props.updateNewCommentListAfterPost(response.data.ludo.Attributes.comments);
                 } else {
-                    console.log('CommentForm post message from server: ', response.data.message);
-                    console.log('CommentForm post error from server: ', response.data.err);
+                    console.error('CommentForm post response from server: ', response);
+                    console.error('CommentForm post message from server: ', response.data.message);
                 }
             })
             .catch(error => {
-                console.log('CommentForm post error', error);
+                console.error('CommentForm post error', error);
             });
-
             /* clear the text area of comment form */
             event.target.value = null;
             this.setState({
@@ -60,7 +57,7 @@ export default class CommentForm extends React.Component {
 
     render() {
         return (
-            <div className="comment-container">
+            <div className="single-comment-container">
                 <div className="comment-avatar-container">
                     {
                         /* show user's photo */

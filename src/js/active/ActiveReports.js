@@ -371,8 +371,6 @@ export default class ActiveReports extends React.Component {
     handleReportExpandMoreButtonTouchTap = (event) => {
         /* This prevents ghost click. */
         event.preventDefault();
-        console.log('target', event.target);
-        console.log('currentTarget', event.currentTarget);
         if (event.currentTarget.id.slice(0, 1) === 's') {
             const isEditingWhichStarterReportIndex = Number((event.currentTarget.id).slice(-1));
             this.setState({isEditingWhichStarterReportIndex});
@@ -585,7 +583,7 @@ export default class ActiveReports extends React.Component {
                                         }
                                         <CommentBox 
                                             oldCommentList={reportObject.comments}
-                                            report_id={reportObject.report_id} 
+                                            reportId={reportObject.report_id} 
                                             whoIsUser={whoIsUser}
                                             {...this.props} 
                                         />
@@ -718,7 +716,7 @@ export default class ActiveReports extends React.Component {
                                         }
                                         <CommentBox 
                                             oldCommentList={reportObject.comments}
-                                            report_id={reportObject.report_id} 
+                                            reportId={reportObject.report_id} 
                                             whoIsUser={whoIsUser}
                                             {...this.props} 
                                         />

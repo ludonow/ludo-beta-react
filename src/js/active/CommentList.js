@@ -12,90 +12,120 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Textarea from 'react-textarea-autosize';
 
+import CommentEditButton from './CommentEditButton';
+import CommentExpandMoreButton from './CommentExpandMoreButton';
+
 export default class CommentList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             anchorEl: {},
-            isCommentPopOverOpen: false,
+            currentTargetId: '',
+            isDenounceBoxOpen: false,
             isEditingComment: false,
             isEditingCommentIndex: [],
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false,
             commentTextContent: ''
         };
-        this.handleCommentDeleteTouchTap = this.handleCommentDeleteTouchTap.bind(this);
+        this.handleCommentDelete = this.handleCommentDelete.bind(this);
+        this.handleCommentEditButtonTouchTap = this.handleCommentEditButtonTouchTap.bind(this);
+        this.handleCommentExpandMoreButtonTouchTap = this.handleCommentExpandMoreButtonTouchTap.bind(this);
+        this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
+        this.handleCommentTextEdit = this.handleCommentTextEdit.bind(this);
         this.handleFinishCommentTextEdit = this.handleFinishCommentTextEdit.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
     }
 
-    handleCommentDeleteTouchTap(event) {
+    handleCommentDelete(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         this.setState({
-            isCommentPopOverOpen: false
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false
         });
         const isSureToDelelteComment = window.confirm(`確定要刪除留言嗎？(刪除後不可復原)`);
-        if(isSureToDelelteComment) {
+        if (isSureToDelelteComment) {
             const { isEditingCommentIndex } = this.state;
-            const oldNewIndex = isEditingCommentIndex[0].slice(0, 1);
+            const isOldOrNew = isEditingCommentIndex[0].slice(0, 1);
             const atWhatPositionInArray = Number(isEditingCommentIndex[0].slice(-1));
             let comment_id = null;
-            if (oldNewIndex == 'o') {
+            if (isOldOrNew === 'o') {
                 comment_id = this.props.oldCommentList[atWhatPositionInArray].comment_id;
-            } else if (oldNewIndex == 'n') {
+            } else if (isOldOrNew === 'n') {
                 comment_id = this.props.newCommentList[atWhatPositionInArray].comment_id;
             } else {
-                console.error('oldNewIndex error');
+                console.error('isOldOrNew error');
             }
             if(comment_id) {
+                // TODO: Use new comment delete api to fix bug
                 const commentDeleteBody = {
-                    type: 'report',
-                    report_id: this.props.report_id
+                    'type': 'report',
+                    'report_id': this.props.reportId
                 };
-                axios.delete(`apis/comment/${comment_id}`, commentDeleteBody)
+                // axios.delete(`apis/comment/${comment_id}`, commentDeleteBody)
+                axios.delete(`apis/comment/${comment_id}`)
                 .then(response => {
-                    if(response.data.status == '200') {
+                    if(response.data.status === '200') {
                         this.props.handleShouldReportUpdate(true)
                     } else {
-                        console.error('CommentList handleCommentDeleteTouchTap else response: ', response);
-                        console.error('CommentList handleCommentDeleteTouchTap else message: ', response.data.message);
+                        console.error('CommentList handleCommentDelete else response: ', response);
+                        console.error('CommentList handleCommentDelete else message: ', response.data.message);
                         window.alert('刪除留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                     }
                 })
                 .catch(error => {
-                    console.error('CommentList handleCommentDeleteTouchTap error: ', error);
+                    console.error('CommentList handleCommentDelete error: ', error);
                     window.alert('刪除留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                 });
             }
         }
     }
 
-    handleCommentIconButtonTouchTap = (event) => {
+    handleCommentEditButtonTouchTap(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         const id = event.currentTarget.id;
-        const oldNewIndex = String(id.slice(0, 1));
+        const isOldOrNew = String(id.slice(0, 1));
         const atWhatPositionInArray = String(id.slice(-1));
-        const element = oldNewIndex + atWhatPositionInArray;
+        const element = isOldOrNew + atWhatPositionInArray;
         const isEditingCommentIndex = [];
         isEditingCommentIndex.push(element);
         this.setState({
             anchorEl: event.currentTarget,
-            isCommentPopOverOpen: true,
-            isEditingCommentIndex
+            isEditingCommentIndex,
+            isPopOverOfEditOpen: true
         });
-    };
+    }
 
-    handleCommentTextChange = (event) => {
+    handleCommentExpandMoreButtonTouchTap(event) {
+        /* This prevents ghost click. */
+        event.preventDefault();
+        const id = event.currentTarget.id;
+        const isOldOrNew = String(id.slice(0, 1));
+        const atWhatPositionInArray = String(id.slice(-1));
+        const element = isOldOrNew + atWhatPositionInArray;
+        const isEditingCommentIndex = [];
+        isEditingCommentIndex.push(element);
+        this.setState({
+            anchorEl: event.currentTarget,
+            isEditingCommentIndex,
+            isPopOverOfExpandMoreOpen: true
+        });
+    }
+
+    handleCommentTextChange(event) {
         this.setState({commentTextContent: event.currentTarget.value});
-    };
+    }
 
-    handleCommentTextEditTouchTap = (event) => {
+    handleCommentTextEdit(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         this.setState({
-            isCommentPopOverOpen: false,
-            isEditingComment: true
+            isEditingComment: true,
+            isPopOverOfEditOpen: false
         });
-    };
+    }
 
     handleFinishCommentTextEdit(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
@@ -107,9 +137,9 @@ export default class CommentList extends React.Component {
             const atWhatPositionInArray = Number(event.currentTarget.id.slice(-1));
             if(this.state.commentTextContent) {
                 const commentModifyPutBody = {
-                    content: this.state.commentTextContent,
-                    report_id: this.props.report_id,
-                    type: 'report'
+                    'content': this.state.commentTextContent,
+                    'report_id': this.props.reportId,
+                    'type': 'report'
                 };
                 let comment_id = null;
                 if (oldNewIndex == 'o') {
@@ -163,11 +193,12 @@ export default class CommentList extends React.Component {
         }
     }
 
-    handleRequestClose = () => {
+    handleRequestClose() {
         this.setState({
-            isCommentPopOverOpen: false
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false
         });
-    };
+    }
 
     render() {
         const { newCommentList, oldCommentList } = this.props;
@@ -176,27 +207,27 @@ export default class CommentList extends React.Component {
             <div className="comment-list">
                 {
                     /* remove old comment right after user create a new comment */
-                    oldCommentList && !this.props.isAfterPost? 
+                    oldCommentList && !this.props.isAfterPost ?
                         oldCommentList.map( (commentObject, index) => {
                             return (
                                 <div
-                                    className="comment-container"
+                                    className="single-comment-container"
                                     key={`comment-${index}`}
                                 >
                                     <div className="comment-avatar-container">
-                                    {
-                                        /* show user's photo */
-                                        commentObject.user_id == this.props.currentUserId ?
-                                            <img
-                                                className="comment__avatar"
-                                                src={this.props.userBasicData.photo}
-                                            />
-                                        :
-                                            <img
-                                                className="comment__avatar"
-                                                src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
-                                            />
-                                    }
+                                        {
+                                            /* show user's photo */
+                                            commentObject.user_id == this.props.currentUserId ?
+                                                <img
+                                                    className="comment__avatar"
+                                                    src={this.props.userBasicData.photo}
+                                                />
+                                            :
+                                                <img
+                                                    className="comment__avatar"
+                                                    src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
+                                                />
+                                        }
                                     </div>
                                     <div className="comment__message">
                                         {
@@ -212,38 +243,32 @@ export default class CommentList extends React.Component {
                                             :
                                                 commentObject.content
                                         }
-                                        {
-                                            commentObject.user_id == this.props.currentUserId ? 
-                                                <div>
-                                                    <IconButton 
-                                                        id={`old-comment-edit-button-${index}`}
-                                                        onTouchTap={this.handleCommentIconButtonTouchTap}
-                                                        tooltip="編輯或刪除"
-                                                    >
-                                                        <ModeEdit />
-                                                    </IconButton>
-                                                    <Popover
-                                                        open={this.state.isCommentPopOverOpen}
-                                                        anchorEl={this.state.anchorEl}
-                                                        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                        onRequestClose={this.handleRequestClose}
-                                                    >
-                                                        <Menu>
-                                                            <MenuItem 
-                                                                onTouchTap={this.handleCommentTextEditTouchTap}
-                                                                primaryText="編輯" 
-                                                            />
-                                                            <MenuItem
-                                                                onTouchTap={this.handleCommentDeleteTouchTap}
-                                                                primaryText="刪除此回報"
-                                                            />
-                                                        </Menu>
-                                                    </Popover>
-                                                </div>
-                                            : null
-                                        }
                                     </div>
+                                    {
+                                        commentObject.user_id == this.props.currentUserId ?
+                                            <CommentEditButton
+                                                anchorEl={this.state.anchorEl}
+                                                commentId={commentObject.comment_id}
+                                                handleCommentDelete={this.handleCommentDelete}
+                                                handleCommentEditButtonTouchTap={this.handleCommentEditButtonTouchTap}
+                                                handleCommentTextEdit={this.handleCommentTextEdit}
+                                                handleRequestClose={this.handleRequestClose}
+                                                index={index}
+                                                isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                isOldOrNew="old"
+                                            />
+                                        :
+                                            <CommentExpandMoreButton
+                                                anchorEl={this.state.anchorEl}
+                                                commentId={commentObject.comment_id}
+                                                handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
+                                                handleRequestClose={this.handleRequestClose}
+                                                index={index}
+                                                isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                isOldOrNew="old"
+                                                reportId={this.props.reportId}
+                                            />
+                                    }
                                 </div>
                             );
                         })
@@ -253,21 +278,21 @@ export default class CommentList extends React.Component {
                     /* show new comments right after user create a new comment */
                     newCommentList.map( (commentObject, index) => {
                         return (
-                            <div className="comment-container" key={`new-comment-${index}`}>
+                            <div className="single-comment-container" key={`new-comment-${index}`}>
                                 <div className="comment-avatar-container">
-                                {
-                                    /* show user's photo */
-                                    commentObject.user_id == this.props.currentUserId ?
-                                        <img
-                                            className="comment__avatar"
-                                            src={this.props.userBasicData.photo}
-                                        />
-                                    :
-                                        <img
-                                            className="comment__avatar"
-                                            src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
-                                        />
-                                }
+                                    {
+                                        /* show user's photo */
+                                        commentObject.user_id == this.props.currentUserId ?
+                                            <img
+                                                className="comment__avatar"
+                                                src={this.props.userBasicData.photo}
+                                            />
+                                        :
+                                            <img
+                                                className="comment__avatar"
+                                                src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
+                                            />
+                                    }
                                 </div>
                                 <div className="comment__message">
                                     {
@@ -283,38 +308,32 @@ export default class CommentList extends React.Component {
                                         :
                                             commentObject.content
                                     }
-                                    {
-                                        commentObject.user_id == this.props.currentUserId ? 
-                                            <div>
-                                                <IconButton 
-                                                    id={`new-comment-edit-button-${index}`}
-                                                    onTouchTap={this.handleCommentIconButtonTouchTap}
-                                                    tooltip="編輯或刪除"
-                                                >
-                                                    <ModeEdit />
-                                                </IconButton>
-                                                <Popover
-                                                    open={this.state.isCommentPopOverOpen}
-                                                    anchorEl={this.state.anchorEl}
-                                                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                    onRequestClose={this.handleRequestClose}
-                                                >
-                                                    <Menu>
-                                                        <MenuItem 
-                                                            onTouchTap={this.handleEditTextReportClick}
-                                                            primaryText="編輯" 
-                                                        />
-                                                        <MenuItem
-                                                            onTouchTap={this.handleReportDelete}
-                                                            primaryText="刪除此回報"
-                                                        />
-                                                    </Menu>
-                                                </Popover>
-                                            </div>
-                                        : null
-                                    }
                                 </div>
+                                {
+                                    commentObject.user_id == this.props.currentUserId ? 
+                                        <CommentEditButton
+                                            anchorEl={this.state.anchorEl}
+                                            commentId={commentObject.comment_id}
+                                            handleCommentDelete={this.handleCommentDelete}
+                                            handleCommentEditButtonTouchTap={this.handleCommentEditButtonTouchTap}
+                                            handleCommentTextEdit={this.handleCommentTextEdit}
+                                            handleRequestClose={this.handleRequestClose}
+                                            index={index}
+                                            isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                            isOldOrNew="new"
+                                        />
+                                    :
+                                        <CommentExpandMoreButton
+                                            anchorEl={this.state.anchorEl}
+                                            commentId={commentObject.comment_id}
+                                            handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
+                                            handleRequestClose={this.handleRequestClose}
+                                            index={index}
+                                            isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                            isOldOrNew="new"
+                                            reportId={this.props.reportId}
+                                        />
+                                }
                             </div>
                         )
                     })
@@ -323,3 +342,30 @@ export default class CommentList extends React.Component {
         );
     }
 };
+                                            // <div>
+                                            //     <IconButton 
+                                            //         id={`new-comment-edit-button-${index}`}
+                                            //         onTouchTap={this.handleCommentIconButtonTouchTap}
+                                            //         tooltip="編輯或刪除"
+                                            //     >
+                                            //         <ModeEdit />
+                                            //     </IconButton>
+                                            //     <Popover
+                                            //         open={this.state.isPopOverOfEditOpen}
+                                            //         anchorEl={this.state.anchorEl}
+                                            //         anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                            //         targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                            //         onRequestClose={this.handleRequestClose}
+                                            //     >
+                                            //         <Menu>
+                                            //             <MenuItem 
+                                            //                 onTouchTap={this.handleEditTextReportClick}
+                                            //                 primaryText="編輯" 
+                                            //             />
+                                            //             <MenuItem
+                                            //                 onTouchTap={this.handleReportDelete}
+                                            //                 primaryText="刪除此回報"
+                                            //             />
+                                            //         </Menu>
+                                            //     </Popover>
+                                            // </div>

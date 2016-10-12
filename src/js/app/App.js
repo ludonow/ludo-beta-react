@@ -3,6 +3,7 @@ import axios from '../axios-config';
 
 import Header from './header/Header';
 import Sidebar from './sidebar/Sidebar';
+import DenounceBox from './DenounceBox';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -20,8 +21,13 @@ export default class App extends React.Component {
             currentAuth: null,
             currentLudoId: '',
             currentLudoReportData: [],
+            currentTargetCommentId: '',
+            currentTargetLudoId: '',
+            currentTargetReportId: '',
             currentUserId: '',
+            denounceType: 100,
             hasGotNewReport: false,
+            isDenounceBoxOpen: false,
             isHoveringSidebar: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
@@ -38,6 +44,7 @@ export default class App extends React.Component {
             userBasicData: {},
             userProfileData: {}
         };
+        this.clearCurrentFormValue = this.clearCurrentFormValue.bind(this);
         this.getUserBasicData = this.getUserBasicData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getLatestLudoList = this.getLatestLudoList.bind(this);
@@ -46,6 +53,17 @@ export default class App extends React.Component {
         this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
+        this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
+        this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
+        this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
+        this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
+        this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
+        this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
+        this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
+        this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
+        this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
+        this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
     componentDidMount() {
@@ -86,7 +104,7 @@ export default class App extends React.Component {
         }
     }
 
-    clearCurrentFormValue = () => {
+    clearCurrentFormValue() {
         this.setState({
             currentAuth: null,
             currentFormValue: {
@@ -242,61 +260,85 @@ export default class App extends React.Component {
         });
     }
 
-    handleHasGotNewReport = (boolean) => {
+    handleDenounceBoxRequestClose(event) {
+        this.setState({
+            isDenounceBoxOpen: false
+        });
+    }
+
+    // handleDenounceComment(event) {
+    //     this.setState({
+    //         currentTargetCommentId
+    //     });
+    // }
+
+    // handleDenounceLudo(event) {
+    //     this.setState({
+    //         currentTargetLudoId
+    //     });
+    // }
+
+    // handleDenounceReport(event) {
+    //     this.setState({
+    //         currentTargetReportId
+    //     });
+    // }
+
+    handleHasGotNewReport(boolean) {
         this.setState({
             hasGotNewReport: boolean
         });
     }
 
-    handleIsHoveringSidebar = (boolean) => {
+    handleIsHoveringSidebar(boolean) {
         this.setState({
             isHoveringSidebar: boolean
         });
     }
 
-    handleIsOpeningActivePage = (boolean) => {
+    handleIsOpeningActivePage(boolean) {
         this.setState({
             isOpeningActivePage: boolean
         });
     }
 
-    handleIsOpeningLudoListPage = (boolean) => {
+    handleIsOpeningLudoListPage(boolean) {
         this.setState({
             isOpeningLudoListPage: boolean
         });
     }
 
-    handleIsOpeningProfilePage = (boolean)  => {
+    handleIsOpeningProfilePage(boolean) {
         this.setState({
             isOpeningProfilePage: boolean
         });
     }
 
-    handleShouldLudoListUpdate = (boolean) => {
+    handleShouldLudoListUpdate(boolean) {
         this.setState({
             shouldLudoListUpdate: boolean
         });
     }
 
-    handleShouldProfileUpdate = (boolean) => {
+    handleShouldProfileUpdate(boolean) {
         this.setState({
             shouldProfileUpdate: boolean
         });
     }
 
-    handleShouldReportUpdate = (boolean) => {
+    handleShouldReportUpdate(boolean) {
         this.setState({
             shouldReportUpdate: boolean
         });
     }
 
-    handleShouldUserBasicDataUpdate = (boolean) => {
+    handleShouldUserBasicDataUpdate(boolean) {
         this.setState({
             shouldUserBasicDataUpdate: boolean
         });
     }
 
-    updateCurrentFormValue = (ludoForm) => {
+    updateCurrentFormValue(ludoForm) {
         this.setState({
             currentFormValue: ludoForm
         });
@@ -347,3 +389,11 @@ export default class App extends React.Component {
         );
     }
 }
+                // <DenounceBox
+                //     currentTargetCommentId={this.state.currentTargetCommentId}
+                //     currentTargetLudoId={this.state.currentTargetId}
+                //     currentTargetReportId={this.state.currentTargetReportId}
+                //     denounceType={this.state.denounceType}
+                //     isDenounceBoxOpen={this.state.isDenounceBoxOpen}
+                //     onRequestClose={this.handleDenounceBoxRequestClose}
+                // />
