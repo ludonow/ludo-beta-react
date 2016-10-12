@@ -136,7 +136,7 @@ export default class DenounceBox extends Component {
                 <Dialog
                     actions={actions}
                     onRequestClose={this.props.onRequestClose}
-                    open={this.props.open}
+                    open={this.props.isDenounceBoxOpen}
                     title="檢舉的原因"
                 >
                     <TextField

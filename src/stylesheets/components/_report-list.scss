@@ -1,3 +1,5 @@
+@import "components/single-report";
+
 .report-list {
     width: $grid-item_total-width*2;
     margin: 0 5px;
@@ -25,79 +27,3 @@
                 background-color: gray;
             }
         }
-
-        .player-report-container {
-            @extend %relative;
-            margin: 20px 0;
-            background-color: white;
-            .report-content-container {
-                @extend %flex;
-                align-items: center;
-                justify-content: center;
-                max-width: 100%;
-                padding: 5px;
-                border-bottom: 1px dashed $gray;
-            }
-            .report-content {
-                max-width: 100%;
-            }
-            .report-content__image {
-                cursor: zoom-in;
-            }
-            .report-content__text {
-                padding: 10px;
-            }
-            .report-content__text-edit {
-                width: 97%;
-                // border: none;
-                resize: none;
-            }
-        }
-            .player-report-comment-box-container {
-                @extend %relative;
-                @extend %bottom;
-                @extend %as_wide_as_parent;
-
-                .comment-form {
-                }
-                .comment-list {
-                }
-                    .comment-container {
-                        @extend %as_wide_as_parent;
-                        @extend %flex;
-                        align-items: center;
-                        background-color: $gray;
-                    }
-                        .comment-avatar-container {
-                            @extend %flex;
-                            align-self: flex-start;
-                            justify-content: center;
-                            width: 20%;
-                            height: 40px;
-                            margin: 5px;
-                            .comment__avatar {
-                                width: 80%;
-                                height: 80%;
-                            }
-                        }
-                        .comment__message {
-                            width: 80%;
-                            margin: 5px;
-                            font-size: 14px;
-                            &::-webkit-scrollbar {
-                                width: 8px;
-                            }
-                            /* Handle */
-                            &::-webkit-scrollbar-thumb {
-                                -webkit-border-radius: 10px;
-                                border-radius: 10px;
-                                background-color: $g_background_gray; 
-                                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-                            }
-                        }
-                        textarea.comment__message {
-                            border: none;
-                            resize: none;
-                            padding: 0;
-                        }
-            }
