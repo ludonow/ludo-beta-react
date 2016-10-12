@@ -7,22 +7,15 @@ import MenuItem from 'material-ui/MenuItem';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Popover from 'material-ui/Popover';
 
-// import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-// import getMuiTheme from 'material-ui/styles/getMuiTheme';
-// import injectTapEventPlugin from 'react-tap-event-plugin';
-
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
 import CommentBox from './CommentBox';
-import DenounceBox from '../app/DenounceBox';
 import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
-
-// injectTapEventPlugin();
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
@@ -32,7 +25,6 @@ export default class ActiveReports extends React.Component {
             enlargeImageLocation: '',
             files: [],
             imageLocation: '',
-            isDenounceBoxOpen: false,
             isEditingWhichPlayerReportIndex: '',
             isEditingWhichStarterReportIndex: '',
             isEditingImageReport: false,
@@ -49,14 +41,20 @@ export default class ActiveReports extends React.Component {
             starterReportList: [],
             whoIsUser: ''
         };
+        this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
+        this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
         this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
         this.handleEditTextReportClick = this.handleEditTextReportClick.bind(this);
         this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
         this.handleReportDelete = this.handleReportDelete.bind(this);
         this.handleReportDenounce = this.handleReportDenounce.bind(this);
-        this.closeLightbox = this.closeLightbox.bind(this);
+        this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
+        this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
+        this.handleReportTextChange = this.handleReportTextChange.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
         this.onDrop = this.onDrop.bind(this);
     }
 
@@ -119,9 +117,11 @@ export default class ActiveReports extends React.Component {
         }
     }
 
-    // getChildContext() {
-    //     return { muiTheme: getMuiTheme(baseTheme) };
-    // }
+    handleCloseLightbox() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
+    }
 
     handleEditImageReportClick(event) {
         event.preventDefault();
@@ -219,14 +219,14 @@ export default class ActiveReports extends React.Component {
         }
     }
 
-    handleImageEnlarge = (event) => {
+    handleImageEnlarge(event) {
         this.setState({
             enlargeImageLocation: event.currentTarget.src,
             isImageLightBoxOpen: true
         });
     }
 
-    handleImageRemove = (event) => {
+    handleImageRemove(event) {
         event.preventDefault();
         // const imageIndex = Number(event.currentTarget.value);  // For multiple picture upload
         this.setState({
@@ -345,14 +345,19 @@ export default class ActiveReports extends React.Component {
         } else if (SPIndex === 'p') {
             report_id = this.state.playerReportList[arrayIndex].report_id;
         }
+        if (report_id) {
+            this.props.handleDenounceBoxOpen({
+                currentTargetReportId: report_id,
+            });
+        } else {
+            console.error('ActiveReports handleReportDenounce report_id does not exist');
+        }
         this.setState({
-            currentTargetId: report_id,
-            isDenounceBoxOpen: true,
             isPopOverOfExpandMoreOpen: false
         });
     }
 
-    handleReportEditButtonTouchTap = (event) => {
+    handleReportEditButtonTouchTap(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         if (event.currentTarget.id.slice(0, 1) === 's') {
@@ -368,7 +373,7 @@ export default class ActiveReports extends React.Component {
         });
     }
 
-    handleReportExpandMoreButtonTouchTap = (event) => {
+    handleReportExpandMoreButtonTouchTap(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         if (event.currentTarget.id.slice(0, 1) === 's') {
@@ -384,21 +389,14 @@ export default class ActiveReports extends React.Component {
         });
     }
 
-    handleReportTextChange = (event) => {
+    handleReportTextChange(event) {
         this.setState({reportTextContent: event.currentTarget.value});
     }
 
-    handleRequestClose = () => {
+    handleRequestClose() {
         this.setState({
-            isDenounceBoxOpen: false,
             isPopOverOfEditOpen: false,
             isPopOverOfExpandMoreOpen: false
-        });
-    }
-
-    closeLightbox() {
-        this.setState({
-            isImageLightBoxOpen: false
         });
     }
 
@@ -448,18 +446,12 @@ export default class ActiveReports extends React.Component {
                             mainSrc={this.state.enlargeImageLocation}
                             // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
                             // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
-                            onCloseRequest={this.closeLightbox}
+                            onCloseRequest={this.handleCloseLightbox}
                             // onMovePrevRequest={this.movePrev}
                             // onMoveNextRequest={this.moveNext}
                         />
                     : null
                 }
-                {/*<DenounceBox 
-                    currentTargetId={this.state.currentTargetId}
-                    denounceType={1}
-                    onRequestClose={this.handleRequestClose}
-                    isDenounceBoxOpen={this.state.isDenounceBoxOpen}
-                />*/}
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
