@@ -24,6 +24,9 @@
         // border: none;
         resize: none;
     }
+    .report-tags-container {
+        margin: 10px;
+    }
 }
     .player-report-comment-box-container {
         @extend %relative;

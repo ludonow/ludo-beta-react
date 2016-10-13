@@ -43,6 +43,7 @@ export default class ActiveReports extends React.Component {
         };
         this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
+        this.handleImageDrop = this.handleImageDrop.bind(this);
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
@@ -55,7 +56,6 @@ export default class ActiveReports extends React.Component {
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
-        this.onDrop = this.onDrop.bind(this);
     }
 
     componentWillMount() {
@@ -68,9 +68,7 @@ export default class ActiveReports extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        /* 
-         * classify report data by starter or player
-         */
+        /* classify report data by starter or player */
         if(nextProps.hasGotNewReport) {
             const { currentUserId } = this.props;
             let whoIsUser = '';
@@ -125,9 +123,7 @@ export default class ActiveReports extends React.Component {
 
     handleEditImageReportClick(event) {
         event.preventDefault();
-        /* 
-         *  clear the image-editing array and put user click target into image-editing array
-         */
+        /* clear the image-editing array and put user click target into image-editing array */
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
@@ -146,9 +142,7 @@ export default class ActiveReports extends React.Component {
 
     handleEditTextReportClick(event) {
         event.preventDefault();
-        /* 
-         *  put user click target into text-editing array
-         */
+        /* put user click target into text-editing array */
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingTextReport, isEditingTextReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
@@ -168,10 +162,8 @@ export default class ActiveReports extends React.Component {
     handleFinishReportEditText(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
             event.preventDefault();
-            /* 
-             * send put request to server to modify text report content 
-             */
-            if(this.state.reportTextContent) {
+            /* send put request to server to modify text report content */
+            if (this.state.reportTextContent) {
                 const reportPutBody = {
                     content: this.state.reportTextContent,
                     image_location: ''
@@ -200,14 +192,12 @@ export default class ActiveReports extends React.Component {
                     });
                 }
             }
-            /* 
-             * transfer the text report to the original display instead of textarea by taking the element out of editing text array
-             */
+            /* transfer the text report to the original display instead of textarea by taking the element out of editing text array */
             const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
             const { isEditingTextReport, isEditingTextReportIndex } = this.state;
             const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
             const isInEditingArray = (indexAtWhatPositionInArray != -1);
-            if(isInEditingArray) {
+            if (isInEditingArray) {
                 isEditingTextReportIndex.splice(indexAtWhatPositionInArray, 1);
                 this.setState({
                     isEditingTextReportIndex,
@@ -216,6 +206,37 @@ export default class ActiveReports extends React.Component {
             } else {
                 console.error('text report edit index isInEditingArray error');
             }
+        }
+    }
+
+    handleImageDrop(files) {
+        if (files.length == 1) {
+            this.setState({
+                files,
+                isImageUploaded: true
+            });
+            const { ludoId }= this.props.params;
+            const imgPost = new FormData();
+            imgPost.append('file', files[0]);
+            axios.post('/apis/report-image', imgPost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    this.setState({
+                        image_location: response.data.location
+                    });
+                } else {
+                    console.error('ActiveReports handleImageDrop response from server: ', response);
+                    console.error('ActiveReports handleImageDrop message from server: ', response.data.message);
+                }
+            })
+            .catch(error => {
+                console.error('ActiveReports handleImageDrop error', error);
+            });
+        } else if (files.length > 1) {
+            this.setState({
+                files: []
+            });
+            window.alert('一次只能上傳一張圖片');
         }
     }
 
@@ -237,14 +258,12 @@ export default class ActiveReports extends React.Component {
 
     handleImageReportEditCancelClick(event) {
         event.preventDefault();
-        /* 
-         *  drop the user click target out of image-editing array 
-         */
+        /* drop the user click target out of image-editing array */
         const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
         const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        if(isInEditingArray) {
+        if (isInEditingArray) {
             isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
             this.setState({
                 isEditingImageReport: false,
@@ -275,13 +294,7 @@ export default class ActiveReports extends React.Component {
             axios.put(`/apis/report/${report_id}`, reportPutBody)
             .then( response => {
                 if(response.data.status === '200') {
-                    /*
-                     * remove the specific element in image-edit array
-                     */
-                    // const { isEditingImageReportIndex } = this.state;
-                    // const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(SPIndex + arrayIndex);
-                    // const isInEditingArray = (indexAtWhatPositionInArray != -1);
-                    // isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
+                    /* remove the specific element in image-edit array */
                     this.setState({
                         files: [],
                         image_location: '',
@@ -304,7 +317,7 @@ export default class ActiveReports extends React.Component {
 
     handleReportDelete(event) {
         const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
-        if(isSureToDelelteReport) {
+        if (isSureToDelelteReport) {
             // const SPIndex = (event.currentTarget.id).slice(0, 1);
             const SPIndex = (this.state.anchorEl.id).slice(0, 1);
             const arrayIndex = Number(event.currentTarget.id.slice(-1));
@@ -317,7 +330,7 @@ export default class ActiveReports extends React.Component {
             this.setState({
                 isPopOverOfExpandMoreOpen: false
             });
-            if(report_id) {
+            if (report_id) {
                 axios.delete(`apis/report/${report_id}`)
                 .then(response => {
                     if(response.data.status === '200'){
@@ -344,6 +357,8 @@ export default class ActiveReports extends React.Component {
             report_id = this.state.starterReportList[arrayIndex].report_id;
         } else if (SPIndex === 'p') {
             report_id = this.state.playerReportList[arrayIndex].report_id;
+        } else {
+            console.error('handleReportDenounce SPIndex is not correct');
         }
         if (report_id) {
             this.props.handleDenounceBoxOpen({
@@ -400,37 +415,6 @@ export default class ActiveReports extends React.Component {
         });
     }
 
-    onDrop(files) {
-        if (files.length == 1) {
-            this.setState({
-                files,
-                isImageUploaded: true
-            });
-            const { ludoId }= this.props.params;
-            const imgPost = new FormData();
-            imgPost.append('file', files[0]);
-            axios.post('/apis/report-image', imgPost)
-            .then(response => {
-                if (response.data.status === '200') {
-                    this.setState({
-                        image_location: response.data.location
-                    });
-                } else {
-                    console.error('ActiveReports onDrop response from server: ', response);
-                    console.error('ActiveReports onDrop message from server: ', response.data.message);
-                }
-            })
-            .catch(error => {
-                console.error('ActiveReports onDrop error', error);
-            });
-        } else if (files.length > 1) {
-            this.setState({
-                files: []
-            });
-            window.alert('一次只能上傳一張圖片');
-        }
-    }
-
     render() {
         const { files, 
             isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, 
@@ -457,7 +441,10 @@ export default class ActiveReports extends React.Component {
                         <div className="player-photo-container">
                             {
                                 whoIsUser == 'starter' && this.props.userBasicData.photo?
-                                    <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
+                                    <img
+                                        className="player-photo-container__photo"
+                                        src={this.props.userBasicData.photo}
+                                    />
                                 :
                                     <div className="player-photo-container__photo"/>
                             }
@@ -497,7 +484,8 @@ export default class ActiveReports extends React.Component {
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
-                                                    <img className="report-content report-content__image" 
+                                                    <img
+                                                        className="report-content report-content__image" 
                                                         src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
                                                     />
@@ -514,8 +502,8 @@ export default class ActiveReports extends React.Component {
                                                                 <DropZone 
                                                                     className="upload-picture-button"
                                                                     maxSize={2000000}
-                                                                    onDrop={this.onDrop}
-                                                                    onClick={this.onDrop}
+                                                                    onClick={this.handleImageDrop}
+                                                                    onDrop={this.handleImageDrop}
                                                                     accept={"image/png", "image/pjepg", "image/jpeg"}
                                                                 >
                                                                     <img className="upload-picture-button__icon" src={uploadIcon}/>
@@ -573,6 +561,21 @@ export default class ActiveReports extends React.Component {
                                                     </div>
                                             : null
                                         }
+                                        {
+                                            reportObject.tags ?
+                                                <div className="report-tags-container">
+                                                    {
+                                                        reportObject.tags.map((tagString, index) => {
+                                                            return (
+                                                                <span className="react-tagsinput-tag" key={`report-tag-${index}`}>
+                                                                    {tagString}
+                                                                </span>
+                                                            );
+                                                        })
+                                                    }
+                                                </div>
+                                            : null
+                                        }
                                         <CommentBox 
                                             oldCommentList={reportObject.comments}
                                             reportId={reportObject.report_id} 
@@ -598,7 +601,10 @@ export default class ActiveReports extends React.Component {
                         {
                             this.state.playerReportList.map( (reportObject, index) => {
                                 return (
-                                    <div className="player-report-container" key={`player-report-${index}`}>
+                                    <div
+                                        className="player-report-container"
+                                        key={`player-report-${index}`}
+                                    >
                                         {
                                             whoIsUser == 'player' ?
                                                 <ReportEditButton
@@ -630,7 +636,8 @@ export default class ActiveReports extends React.Component {
                                         {
                                             reportObject.image_location ? 
                                                 <div className="report-content-container">
-                                                    <img className="report-content report-content__image" 
+                                                    <img
+                                                        className="report-content report-content__image" 
                                                         src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
                                                     />
@@ -645,11 +652,11 @@ export default class ActiveReports extends React.Component {
                                                                     取消編輯
                                                                 </button>
                                                                 <DropZone 
+                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
                                                                     className="upload-picture-button"
                                                                     maxSize={2000000}
-                                                                    onDrop={this.onDrop}
-                                                                    onClick={this.onDrop}
-                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
+                                                                    onClick={this.handleImageDrop}
+                                                                    onDrop={this.handleImageDrop}
                                                                 >
                                                                     <img className="upload-picture-button__icon" src={uploadIcon}/>
                                                                 </DropZone>
