@@ -25,7 +25,11 @@
         resize: none;
     }
     .report-tags-container {
-        margin: 10px;
+        margin: 5px;
+        span.report-tag {
+            display: inline-block;
+            margin: 5px;
+        }
     }
 }
     .player-report-comment-box-container {

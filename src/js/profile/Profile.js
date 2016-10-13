@@ -39,7 +39,6 @@ export default class Profile extends Component {
         const { activeKey } = this.state;
         const toggleId = Number(event.target.id);
         const index = activeKey.indexOf(toggleId);
-        debugger;
         if (toggleId == 6) {
             if (index == -1) { // index is not in the array
                 this.setState({activeKey: [1,2,3,4,5,6]});
