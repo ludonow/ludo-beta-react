@@ -66,8 +66,13 @@ $new_skill-text-color: #fdcaad;
     }
 
     .card {
+        @extend %clickable;
         border-color: $card_border-color;
-        background-color: white;
+        // border-color: rbga(0,0,0,0.8);
+        border-style: solid;
+        border-width: 2px;
+        // background-color: white;
+        background-color: rgba(255, 255, 255, 0.8);
         @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
         &:hover {
             box-shadow: 0 4px 20px 0 rgba(0,0,0,0.19);
@@ -77,6 +82,8 @@ $new_skill-text-color: #fdcaad;
 
     .card-front {
         @extend %as_wide_as_parent;
+        color: $card_border-color;
+        font-weight: 600;
         word-wrap: break-word; 
         backface-visibility: hidden;
         transform: rotateY(180deg);
@@ -84,7 +91,6 @@ $new_skill-text-color: #fdcaad;
         transition-timing-function: linear;
 
         .card-top {
-            // height: 180px;
             height: 100px;
             padding: 90px 0;
             @extend %text_center;
@@ -92,12 +98,10 @@ $new_skill-text-color: #fdcaad;
             
             .title {
                 height: 20px;
-                // margin-bottom: 60px;
                 margin-bottom: 20px;
                 padding: 0 30px;
             }
             .duration {
-                // margin-bottom: 60px;
                 margin-bottom: 15px;
             }
         }
@@ -107,7 +111,6 @@ $new_skill-text-color: #fdcaad;
             @extend %flex;
             justify-content: center;
             align-items: center;
-            // padding-bottom: 40px;
         }
             .card-marble__icon {
                 width: 25px;
@@ -123,12 +126,10 @@ $new_skill-text-color: #fdcaad;
             @extend %flex;
             align-items: center;
             height: 50px;
+            border-top-color: black;
+            border-top-style: solid;
+            border-top-width: 2px;
         }
-            .card-bottom__category-icon {
-                justify-content: flex-start;
-                height: 30px;
-                padding-left: 10px;
-            }
             .card-bottom__stage {
                 align-self: flex-end;
                 margin-left: auto;
@@ -213,6 +214,11 @@ $new_skill-text-color: #fdcaad;
     .card-back--form-list {
         width: 210px;
     }
+        .card-bottom__category-icon {
+            justify-content: flex-start;
+            height: 30px;
+            padding-left: 10px;
+        }
 
 // card flip animation
 .card-flip {

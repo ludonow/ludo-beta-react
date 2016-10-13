@@ -18,7 +18,6 @@ const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' stu
 
 const masonryOptions = {
     itemSelector: ".grid-item",
-    // columnWidth: 214,
     columnWidth: 220,
     fitWidth: true
 };
@@ -115,7 +114,7 @@ export default class PlaygroundLudoList extends React.Component {
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
-                                    <div className={`card-top${this.handleCardFrontTopClass(singleLudoObject.category_id)}`}>
+                                    <div className="card-top">
                                         <div className="title">{singleLudoObject.title}</div>
                                         <div className="duration">{singleLudoObject.duration} days</div>
                                         <div className="card-marble">
@@ -123,13 +122,12 @@ export default class PlaygroundLudoList extends React.Component {
                                             <span className="card-marble__number">{singleLudoObject.marbles}</span>
                                         </div>
                                     </div>
-                                    <div className="card-bottom">
-                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(singleLudoObject.category_id)} />
+                                    <div className={`card-bottom ${this.handleCardFrontTopClass(singleLudoObject.category_id)}`}>
                                         <div className={`card-bottom__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
                                     </div>
                                 </div>
                                 <div 
-                                    className={`card card-back${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
+                                    className={`card card-back${isThisCardFlipped ? ' card-flip' : ''} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
@@ -157,8 +155,10 @@ export default class PlaygroundLudoList extends React.Component {
                                         </div>
                                     </div>
                                     <div className="card-bottom">
+                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(singleLudoObject.category_id)} />
                                         <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}>
-                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}
+                                            <div 
+                                                className={`card-bottom__text ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}
                                                 onClick={this.handleCardLink} id={`go-${index}`}
                                             >
                                                 go
