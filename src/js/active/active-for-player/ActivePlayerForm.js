@@ -166,54 +166,58 @@ export default class ActivePlayerForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // TODO: Use notification confirming report
-        this.setState({
-            isReportButtonClickable: false
-        });
-        const isSureToReport = window.confirm(`Are you sure to report?`);
-        if (isSureToReport) {
-            const { ludo_id }= this.props.params;
-            const { currentUserId } = this.props;
-            const currentFormValue = this.props.router_currentFormValue;
-            let whoIsUser = '';
-            (currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
-            const ludoReportPost = {
-                'ludo_id': ludo_id,
-                'player': whoIsUser,
-                'content': this.state.reportText,
-                'image_location': this.state.imageLocation,
-                'tags': this.state.reportTags
-            };
-            debugger;
-            axios.post('apis/report', ludoReportPost)
-            .then(response => {
-                if (response.data.status === '200') {
-                    this.props.handleShouldProfileUpdate(true);
-                    this.props.handleShouldReportUpdate(true);
-                    this.setState({
-                        isImageUploaded: false,
-                        reportText: ''
-                    });
-                } else {
+        // TODO: Use material-ui dialog confirming report
+        if (this.state.reportText || this.state.isImageUploaded) {
+            this.setState({
+                isReportButtonClickable: false
+            });
+            const isSureToReport = window.confirm(`Are you sure to report?`);
+            if (isSureToReport) {
+                const { ludo_id }= this.props.params;
+                const { currentUserId } = this.props;
+                const currentFormValue = this.props.router_currentFormValue;
+                let whoIsUser = '';
+                (currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
+                const ludoReportPost = {
+                    'ludo_id': ludo_id,
+                    'player': whoIsUser,
+                    'content': this.state.reportText,
+                    'image_location': this.state.imageLocation,
+                    'tags': this.state.reportTags
+                };
+                axios.post('apis/report', ludoReportPost)
+                .then((response) => {
+                    if (response.data.status === '200') {
+                        this.props.handleShouldProfileUpdate(true);
+                        this.props.handleShouldReportUpdate(true);
+                        this.setState({
+                            isImageUploaded: false,
+                            reportTags: [],
+                            reportText: ''
+                        });
+                    } else {
+                        window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
+                        console.error('ActivePlayerForm Report else message from server: ', response.data.message);
+                        console.error('ActivePlayerForm Report else error from server: ', response.data.err);
+                        this.setState({
+                            isReportButtonClickable: true
+                        });
+                    }
+                })
+                .catch((error) => {
                     window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
-                    console.error('ActivePlayerForm Report else message from server: ', response.data.message);
-                    console.error('ActivePlayerForm Report else error from server: ', response.data.err);
+                    console.error('ActivePlayerForm Report error', error);
                     this.setState({
                         isReportButtonClickable: true
                     });
-                }
-            })
-            .catch(error => {
-                window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
-                console.error('ActivePlayerForm Report error', error);
+                });
+            } else {
                 this.setState({
                     isReportButtonClickable: true
                 });
-            });
+            }
         } else {
-            this.setState({
-                isReportButtonClickable: true
-            });
+            window.alert('你尚未輸入回報內容或上傳圖片');
         }
     }
 
@@ -245,9 +249,9 @@ export default class ActivePlayerForm extends React.Component {
         const currentFormValue = this.props.router_currentFormValue;
         const { ludoDetailInformation, category, files, 
             isImageLightBoxOpen, isImageUploaded, isReportButtonClickable, isReportTextBlank, 
-            maxDuration, maxMarbles, timeLineMarks, uploadImageIndex 
+            maxDuration, maxMarbles, reportText, timeLineMarks, uploadImageIndex 
         } = this.state;
-        const { category_id, checkpoint, duration, introduction, reportText, marbles, tags, title } = currentFormValue;
+        const { category_id, checkpoint, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         return (
             <div className="form--report">
@@ -390,7 +394,7 @@ export default class ActivePlayerForm extends React.Component {
                     </div>
                     <button
                         className="report-submit-button report-submit-button--report"
-                        disabled={isReportTextBlank && !isImageUploaded && !isReportButtonClickable}
+                        disabled={isReportTextBlank && !isImageUploaded || !isReportButtonClickable}
                         type="submit"
                     >
                         回報

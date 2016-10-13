@@ -136,7 +136,7 @@ export default class ActiveReports extends React.Component {
         this.setState({
             isEditingImageReport: true,
             isEditingImageReportIndex,
-            isPopOverOfExpandMoreOpen: false
+            isPopOverOfEditOpen: false
         });
     }
 
@@ -155,7 +155,7 @@ export default class ActiveReports extends React.Component {
         this.setState({
             isEditingTextReport: true,
             isEditingTextReportIndex,
-            isPopOverOfExpandMoreOpen: false
+            isPopOverOfEditOpen: false
         });
     }
 
@@ -328,7 +328,7 @@ export default class ActiveReports extends React.Component {
                 report_id = this.state.playerReportList[arrayIndex].report_id;
             }
             this.setState({
-                isPopOverOfExpandMoreOpen: false
+                isPopOverOfEditOpen: false
             });
             if (report_id) {
                 axios.delete(`apis/report/${report_id}`)
@@ -567,7 +567,10 @@ export default class ActiveReports extends React.Component {
                                                     {
                                                         reportObject.tags.map((tagString, index) => {
                                                             return (
-                                                                <span className="react-tagsinput-tag" key={`report-tag-${index}`}>
+                                                                <span
+                                                                    className="react-tagsinput-tag report-tag"
+                                                                    key={`report-tag-${index}`}
+                                                                >
                                                                     {tagString}
                                                                 </span>
                                                             );
@@ -711,6 +714,24 @@ export default class ActiveReports extends React.Component {
                                                             {reportObject.content}
                                                         </div>
                                                     </div>
+                                            : null
+                                        }
+                                        {
+                                            reportObject.tags ?
+                                                <div className="report-tags-container">
+                                                    {
+                                                        reportObject.tags.map((tagString, index) => {
+                                                            return (
+                                                                <span
+                                                                    className="react-tagsinput-tag report-tag"
+                                                                    key={`report-tag-${index}`}
+                                                                >
+                                                                    {tagString}
+                                                                </span>
+                                                            );
+                                                        })
+                                                    }
+                                                </div>
                                             : null
                                         }
                                         <CommentBox 
