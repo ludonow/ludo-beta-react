@@ -12,6 +12,7 @@ export default class ProfileLudoCard extends Component {
             isComponentUpdated: true,
             prevSelectedCategoryArrayLength: 0
         };
+        this.handleCurrentWatchingCategory = this.handleCurrentWatchingCategory.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -32,7 +33,7 @@ export default class ProfileLudoCard extends Component {
         }
     }
 
-    handleCurrentWatchingCategory = (event) => {
+    handleCurrentWatchingCategory(event) {
         const currentWatchingCategory = Number(event.currentTarget.id) + 1;
         const filteredProfileLudoingData = this.props.profileLudoData.filter((SingleLudoObject) => {
             if (SingleLudoObject.category_id == currentWatchingCategory) {
@@ -52,7 +53,8 @@ export default class ProfileLudoCard extends Component {
         return (
             <div className="profile-card">
                 <div className="profile-card__title">{this.props.title}</div>
-                <ProfileCategoryTabs onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
+                <ProfileCategoryTabs
+                    onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
                     profileLudoData={this.props.profileLudoData}
                 />
                 <ProfileLudoList profileLudoData={this.state.filteredProfileLudoingData}/>

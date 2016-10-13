@@ -15,7 +15,7 @@ export default class ProfileLudoList extends Component {
         super(props);
     }
 
-    handleSingleLudoClick = event => {
+    handleSingleLudoClick(event) {
         const ludo_id = event.currentTarget.id;
         browserHistory.push(`/ludo/${ludo_id}`);
     }
@@ -26,13 +26,15 @@ export default class ProfileLudoList extends Component {
                 {
                     this.props.profileLudoData.map((ludoObject, index) => {
                         return (
-                            <div className="single-ludo"
+                            <div
+                                className="single-ludo"
                                 id={ludoObject.ludo_id}
                                 key={`Ludoing-${index}`}
                                 onClick={this.handleSingleLudoClick}
                             >
                                 <div className="single-ludo__category-icon-container">
-                                    <img className="single-ludo__category-icon"
+                                    <img
+                                        className="single-ludo__category-icon"
                                         src={iconArray[ludoObject.category_id]}
                                     />
                                 </div>

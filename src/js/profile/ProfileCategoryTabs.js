@@ -18,15 +18,13 @@ export default class ProfileCategoryTabs extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {   
+    componentWillReceiveProps(nextProps) {
         if (nextProps.profileLudoData.length != 0 && !this.state.hasGotData) {
             const { profileLudoData } = nextProps;
-            // let LudoCategoryArray = [0, 0, 0, 0, 0, 0, 0];
             let LudoCategoryArray = new Array(7).fill(0);
             profileLudoData.map((singleLudo) => {
                 LudoCategoryArray[Number(singleLudo.category_id) - 1]++;
             });
-            // console.log('LudoCategoryArray', LudoCategoryArray);   // debug
             this.setState({
                 hasGotData: true,
                 LudoCategoryArray
@@ -41,16 +39,22 @@ export default class ProfileCategoryTabs extends Component {
                 {
                     iconArray.map((iconImage, iconIndex) => {
                         return (
-                            <div className={LudoCategoryArray[iconIndex] ? 'profile-card__category-tabs__image-container' : 'profile-card__category-tabs__image-container--empty'}
+                            <div
+                                className={
+                                    LudoCategoryArray[iconIndex] ? 
+                                        'profile-card__category-tabs__image-container' 
+                                    :
+                                        'profile-card__category-tabs__image-container--empty'
+                                }
                                 id={iconIndex}
                                 key={`icon-${iconIndex}`}
                                 onClick={this.props.onCurrentWatchingCategory}
                             >
-                                <img className="profile-card__category-tabs__image" 
+                                <img
+                                    className="profile-card__category-tabs__image" 
                                     src={iconImage}
                                 />
-                                <div className="number"
-                                >
+                                <div className="number">
                                     {LudoCategoryArray[iconIndex]}
                                 </div>
                             </div>

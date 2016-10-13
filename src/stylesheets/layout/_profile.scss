@@ -1,49 +1,6 @@
 @import "components/profile-content";
+@import "components/profile-card";
 @import "components/profile-card-single-ludo";
 @import "components/profile-history";
 @import "components/profile-statistic";
 @import "components/profile-prize";
-
-    .profile-card {
-        @extend .card;
-        padding: $card_padding;
-    }
-        .profile-card__title {
-            padding-bottom: 15px;
-            font-size: 16px;
-        }
-        .profile-card__category-tabs {
-            display: inline-flex;
-        }
-            .profile-card__category-tabs__image-container {
-                @extend %clickable;
-                @extend %relative;
-                @extend %flex;
-                align-items: center;
-                justify-content: center;
-                width: 60px;
-                height: 60px;
-                margin: 0 5px 5px 5px;
-                @extend %round_border;
-                border: 1px solid black;
-                background-color: $g_background_gray;
-
-                .number {
-                    @extend %absolute;
-                    @extend %right;
-                    @extend %bottom;
-                }
-            }
-            .profile-card__category-tabs__image-container--empty {
-                @extend .profile-card__category-tabs__image-container;
-                background-color: white;
-            }
-            .profile-card__category-tabs__image {
-                width: 40px;
-                height: 40px;
-            }
-        .profile-card__ludolist {
-            @extend %flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
