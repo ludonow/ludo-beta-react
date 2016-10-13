@@ -110,7 +110,7 @@ export default class PlaygroundLudoList extends React.Component {
                         return (
                             <div className={`grid-item`} key={`card-${index}`}>
                                 <div 
-                                    className={`card card-front${isThisCardFlipped ? "" : " card-flip"}`}
+                                    className={`card card--playground card-front${isThisCardFlipped ? "" : " card-flip"}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
@@ -127,7 +127,7 @@ export default class PlaygroundLudoList extends React.Component {
                                     </div>
                                 </div>
                                 <div 
-                                    className={`card card-back${isThisCardFlipped ? ' card-flip' : ''} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
+                                    className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ''} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
