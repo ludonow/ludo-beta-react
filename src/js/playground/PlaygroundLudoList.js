@@ -14,7 +14,7 @@ import othersIcon from '../../images/category_icon/others.svg';
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 import marbleIcon from '../../images/marble.png';
 
-const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new_skill', ' unmentionables', ' others'];
+const categoryClassArray = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new_skill', 'unmentionables', 'others'];
 
 const masonryOptions = {
     itemSelector: ".grid-item",
@@ -108,17 +108,24 @@ export default class PlaygroundLudoList extends React.Component {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
-                            <div className={`grid-item`} key={`card-${index}`}>
+                            <div 
+                                className={`grid-item`}
+                                key={`card-${index}`}
+                            >
                                 <div 
-                                    className={`card card--playground card-front${isThisCardFlipped ? "" : " card-flip"}`}
+                                    className={`card card--playground card-front${isThisCardFlipped ? ' gg' : ' card-flip'}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
                                     <div className="card-top">
+                                        <div className="card-star"></div>
                                         <div className="title">{singleLudoObject.title}</div>
                                         <div className="duration">{singleLudoObject.duration} days</div>
                                         <div className="card-marble">
-                                            <img src={marbleIcon} className="card-marble__icon" />
+                                            <img 
+                                                className="card-marble__icon"
+                                                src={marbleIcon}
+                                            />
                                             <span className="card-marble__number">{singleLudoObject.marbles}</span>
                                         </div>
                                     </div>
@@ -127,16 +134,19 @@ export default class PlaygroundLudoList extends React.Component {
                                     </div>
                                 </div>
                                 <div 
-                                    className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ''} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
+                                    className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ' gg'} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
                                     <div className={this.handleCardBackClass(singleLudoObject.category_id)}>
+                                        <div className="card-star">
+                                        </div>
                                         <div className="card-introduction">
                                             {
-                                                String(singleLudoObject.introduction).length > 20 ?
-                                                String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-                                                : String(singleLudoObject.introduction)
+                                                // String(singleLudoObject.introduction).length > 20 ?
+                                                // String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+                                                // : String(singleLudoObject.introduction)
+                                                String(singleLudoObject.introduction)
                                             }
                                         </div>
                                         <div className="card-hashtags">
