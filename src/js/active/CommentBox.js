@@ -21,23 +21,30 @@ export default class CommentBox extends React.Component {
             newCommentList: []
         };
         this.updateNewCommentList = this.updateNewCommentList.bind(this);
+        this.updateNewCommentListAfterPost = this.updateNewCommentListAfterPost.bind(this);
     }
 
-    updateNewCommentListAfterPost = (updatedCommentList) => {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.oldCommentList.length !== this.props.oldCommentList.length) {
+            console.log('CommentBox componentWillReceiveProps  length different');
+            console.log('this.props.oldCommentList', this.props.oldCommentList);
+        }
+    }
+
+    updateNewCommentList(commentContent) {
+        const commentObject = {};
+        commentObject.content = commentContent;;
+        const { newCommentList } = this.state;
+        newCommentList.push(commentObject);
+        this.setState({
+            newCommentList
+        });
+    }
+
+    updateNewCommentListAfterPost(updatedCommentList) {
         this.setState({
             isAfterPost: true,
             newCommentList: updatedCommentList
-        });
-    };
-
-    updateNewCommentList(commentContent) {
-        const { newCommentList } = this.state;
-        const commentObject = {};
-        commentObject.content = commentContent
-        newCommentList.push(commentObject);
-        // console.log('newCommentList', newCommentList);
-        this.setState({
-            newCommentList
         });
     }
 

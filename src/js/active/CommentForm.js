@@ -36,7 +36,7 @@ export default class CommentForm extends React.Component {
                 'content': commentContent
             };
             axios.post('/apis/comment', commentPost)
-            .then(response => {
+            .then((response) => {
                 if(response.data.status === '200') {
                     this.props.updateNewCommentListAfterPost(response.data.ludo.Attributes.comments);
                 } else {
@@ -44,7 +44,7 @@ export default class CommentForm extends React.Component {
                     console.error('CommentForm post message from server: ', response.data.message);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('CommentForm post error', error);
             });
             /* clear the text area of comment form */
@@ -62,12 +62,22 @@ export default class CommentForm extends React.Component {
                     {
                         /* show user's photo */
                         this.props.currentUserId ?
-                        <img className="comment__avatar" src={this.props.userBasicData.photo}/>
-                        : <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
+                            <img 
+                                className="comment__avatar"
+                                src={this.props.userBasicData.photo}
+                            />
+                        :
+                            <img
+                                className="comment__avatar"
+                                src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
+                            />
                     }
                 </div>
-                <Textarea className="comment__message"
-                    minRows={2} onKeyDown={this.handleCommentSubmit} placeholder="留言..."
+                <Textarea 
+                    className="comment__message"
+                    minRows={2}
+                    onKeyDown={this.handleCommentSubmit}
+                    placeholder="留言..."
                 />
             </div>
         );

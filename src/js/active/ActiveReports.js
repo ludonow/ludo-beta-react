@@ -83,19 +83,14 @@ export default class ActiveReports extends React.Component {
                 }
             }
             const { starterReportList, playerReportList } = this.state;
-            this.setState({
-                starterReportList: [],
-                playerReportList: [],
-                whoIsUser
-            });
-            const newStarterReportList = nextProps.currentLudoReportData.filter(reportObject => {
+            const newStarterReportList = nextProps.currentLudoReportData.filter((reportObject) => {
                 if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
-            const newPlayerReportList = nextProps.currentLudoReportData.filter( (reportObject) => {
+            const newPlayerReportList = nextProps.currentLudoReportData.filter((reportObject) => {
                 if (reportObject.user_id == nextProps.router_currentFormValue.player_id) {
                     return true;
                 } else {
@@ -450,7 +445,7 @@ export default class ActiveReports extends React.Component {
                             }
                         </div>
                         {
-                            this.state.starterReportList.map( (reportObject, index) => {
+                            this.state.starterReportList.map((reportObject, index) => {
                                 return (
                                     <div className="player-report-container" key={`starter-report-${index}`}>
                                         {
@@ -595,21 +590,21 @@ export default class ActiveReports extends React.Component {
                     <div className="player-container">
                         <div className="player-photo-container">
                             {
-                                whoIsUser == 'player' && this.props.userBasicData.photo ?
+                                whoIsUser === 'player' && this.props.userBasicData.photo ?
                                     <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
                                 :
                                     <div className="player-photo-container__photo" />
                             }
                         </div>
                         {
-                            this.state.playerReportList.map( (reportObject, index) => {
+                            this.state.playerReportList.map((reportObject, index) => {
                                 return (
                                     <div
                                         className="player-report-container"
                                         key={`player-report-${index}`}
                                     >
                                         {
-                                            whoIsUser == 'player' ?
+                                            whoIsUser === 'player' ?
                                                 <ReportEditButton
                                                     anchorEl={this.state.anchorEl}
                                                     handleEditTextReportClick={this.handleEditTextReportClick}
@@ -741,8 +736,8 @@ export default class ActiveReports extends React.Component {
                                             {...this.props} 
                                         />
                                     </div>
-                                );
-                            })
+                                );   /* end of return */
+                            })   /* end of map */
                         }
                     </div>
                 </div>
@@ -750,7 +745,3 @@ export default class ActiveReports extends React.Component {
         );
     }
 };
-
-// ActiveReports.childContextTypes = {
-//     muiTheme: React.PropTypes.object.isRequired,
-// };

@@ -255,7 +255,7 @@ export default class App extends React.Component {
 
     getReportOfCurrentLudo(ludo_id) {
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     currentLudoReportData: response.data.reportList,
@@ -266,7 +266,7 @@ export default class App extends React.Component {
                 console.error('app getReportOfCurrentLudo else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error(error);
         });
     }
