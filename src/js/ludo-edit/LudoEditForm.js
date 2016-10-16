@@ -314,6 +314,7 @@ export default class LudoEditForm extends React.Component {
     // }
 
     render() {
+        const { category, currentHoverValue, ludoEditForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
         const { category_id, duration, introduction, marbles, tags, title } = ludoEditForm;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
