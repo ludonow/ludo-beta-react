@@ -15,15 +15,6 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentFormValue: {
-                category_id: 0,
-                checkpoint: [3],
-                duration: 3,
-                introduction: '',
-                marbles: 1,
-                tags: '',
-                title: ''
-            },
             currentAuth: null,
             currentLudoId: '',
             currentLudoReportData: [],
