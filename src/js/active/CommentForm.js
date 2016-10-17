@@ -28,7 +28,7 @@ export default class CommentForm extends React.Component {
             this.setState({
                 commentContent
             });
-            this.props.updateNewCommentList(commentContent);
+            this.props.updateTempCommentList(commentContent);
 
             const commentPost = {
                 'type': 'report',
@@ -38,7 +38,7 @@ export default class CommentForm extends React.Component {
             axios.post('/apis/comment', commentPost)
             .then((response) => {
                 if(response.data.status === '200') {
-                    this.props.updateNewCommentListAfterPost(response.data.ludo.Attributes.comments);
+                    this.props.updateTempCommentListAfterPost(response.data.ludo.Attributes.comments);
                 } else {
                     console.error('CommentForm post response from server: ', response);
                     console.error('CommentForm post message from server: ', response.data.message);

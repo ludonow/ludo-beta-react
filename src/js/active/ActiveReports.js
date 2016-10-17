@@ -575,7 +575,7 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         <CommentBox 
-                                            oldCommentList={reportObject.comments}
+                                            commentListFromDatabase={reportObject.comments}
                                             reportId={reportObject.report_id} 
                                             whoIsUser={whoIsUser}
                                             {...this.props} 
@@ -730,7 +730,7 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         <CommentBox 
-                                            oldCommentList={reportObject.comments}
+                                            commentListFromDatabase={reportObject.comments}
                                             reportId={reportObject.report_id} 
                                             whoIsUser={whoIsUser}
                                             {...this.props} 

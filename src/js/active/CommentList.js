@@ -51,9 +51,9 @@ export default class CommentList extends React.Component {
             const atWhatPositionInArray = Number(isEditingCommentIndex[0].slice(-1));
             let comment_id = null;
             if (isOldOrNew === 'o') {
-                comment_id = this.props.oldCommentList[atWhatPositionInArray].comment_id;
+                comment_id = this.props.commentListFromDatabase[atWhatPositionInArray].comment_id;
             } else if (isOldOrNew === 'n') {
-                comment_id = this.props.newCommentList[atWhatPositionInArray].comment_id;
+                comment_id = this.props.tempCommentList[atWhatPositionInArray].comment_id;
             } else {
                 console.error('isOldOrNew error');
             }
@@ -65,7 +65,7 @@ export default class CommentList extends React.Component {
                 };
                 // axios.delete(`apis/comment/${comment_id}`, commentDeleteBody)
                 axios.delete(`apis/comment/${comment_id}`)
-                .then(response => {
+                .then((response) => {
                     if(response.data.status === '200') {
                         this.props.handleShouldReportUpdate(true)
                     } else {
@@ -74,7 +74,7 @@ export default class CommentList extends React.Component {
                         window.alert('刪除留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error('CommentList handleCommentDelete error: ', error);
                     window.alert('刪除留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                 });
@@ -149,17 +149,18 @@ export default class CommentList extends React.Component {
                 });
                 let comment_id = null;
                 if (isOldOrNew === 'o') {
-                    comment_id = this.props.oldCommentList[atWhatPositionInArray].comment_id;
+                    comment_id = this.props.commentListFromDatabase[atWhatPositionInArray].comment_id;
                 } else if (isOldOrNew === 'n') {
-                    comment_id = this.props.newCommentList[atWhatPositionInArray].comment_id;
+                    comment_id = this.props.tempCommentList[atWhatPositionInArray].comment_id;
                 } else {
-                    console.error('isOldOrNew is not correct');
+                    console.error('isOldOrNew is not "o" or "n"');
                 }
                 if (comment_id) {
                     axios.put(`apis/comment/${comment_id}`, commentModifyPutBody)
                     .then((response) => {
                         if(response.data.status === '200') {
                             this.props.handleShouldReportUpdate(true);
+                            this.props.getCommentListAfterEdit();
                             this.setState({
                                 isEditingComment: false
                             });
@@ -209,14 +210,14 @@ export default class CommentList extends React.Component {
     }
 
     render() {
-        const { newCommentList, oldCommentList } = this.props;
+        const { commentListFromDatabase, tempCommentList } = this.props;
         const { isEditingComment, isEditingCommentIndex } = this.state;
         return (
             <div className="comment-list">
                 {
-                    /* remove old comment right after user create a new comment */
-                    oldCommentList && !this.props.isAfterPost ?
-                        oldCommentList.map((commentObject, index) => {
+                    /* display temp comments right after user create a new comment */
+                    commentListFromDatabase && this.props.shouldShowCommentListFromDatabase ?
+                        commentListFromDatabase.map((commentObject, index) => {
                             return (
                                 <div
                                     className="single-comment-container"
@@ -282,8 +283,8 @@ export default class CommentList extends React.Component {
                             );
                         })
                     :
-                        /* show new comments right after user create a new comment */
-                        newCommentList.map((commentObject, index) => {
+                        /* show temp comments right after user create a new comment */
+                        tempCommentList.map((commentObject, index) => {
                             return (
                                 <div className="single-comment-container" key={`new-comment-${index}`}>
                                     <div className="comment-avatar-container">

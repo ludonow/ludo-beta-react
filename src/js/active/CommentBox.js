@@ -17,49 +17,50 @@ export default class CommentBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAfterPost: false,
-            newCommentList: []
+            shouldShowCommentListFromDatabase: true,
+            tempCommentList: []
         };
-        this.updateNewCommentList = this.updateNewCommentList.bind(this);
-        this.updateNewCommentListAfterPost = this.updateNewCommentListAfterPost.bind(this);
+        this.getCommentListAfterEdit = this.getCommentListAfterEdit.bind(this);
+        this.updateTempCommentList = this.updateTempCommentList.bind(this);
+        this.updateTempCommentListAfterPost = this.updateTempCommentListAfterPost.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.oldCommentList.length !== this.props.oldCommentList.length) {
-            console.log('CommentBox componentWillReceiveProps  length different');
-            console.log('this.props.oldCommentList', this.props.oldCommentList);
-        }
-    }
-
-    updateNewCommentList(commentContent) {
-        const commentObject = {};
-        commentObject.content = commentContent;;
-        const { newCommentList } = this.state;
-        newCommentList.push(commentObject);
+    getCommentListAfterEdit() {
         this.setState({
-            newCommentList
+            shouldShowCommentListFromDatabase: true
         });
     }
 
-    updateNewCommentListAfterPost(updatedCommentList) {
+    updateTempCommentList(commentContent) {
+        const commentObject = {};
+        commentObject.content = commentContent;;
+        const { tempCommentList } = this.state;
+        tempCommentList.push(commentObject);
         this.setState({
-            isAfterPost: true,
-            newCommentList: updatedCommentList
+            tempCommentList
+        });
+    }
+
+    updateTempCommentListAfterPost(updatedCommentList) {
+        this.setState({
+            shouldShowCommentListFromDatabase: false,
+            tempCommentList: updatedCommentList
         });
     }
 
     render() {
-        const { isAfterPost, newCommentList } = this.state; 
+        const { shouldShowCommentListFromDatabase, tempCommentList } = this.state; 
         return (
             <div className="player-report-comment-box-container">
                 <CommentList
-                    newCommentList={newCommentList}
-                    isAfterPost={isAfterPost}
+                    getCommentListAfterEdit={this.getCommentListAfterEdit}
+                    shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
+                    tempCommentList={tempCommentList}
                     {...this.props} 
                 />
                 <CommentForm 
-                    updateNewCommentList={this.updateNewCommentList}
-                    updateNewCommentListAfterPost={this.updateNewCommentListAfterPost}
+                    updateTempCommentList={this.updateTempCommentList}
+                    updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
                     {...this.props} 
                 />
             </div>
