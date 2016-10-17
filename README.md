@@ -25,7 +25,7 @@
 #### only image
 [上傳只有圖片的回報、取消準備上傳的圖片並重新上傳](https://www.youtube.com/watch?v=5i4eYtmu0Ks)
 #### text, image, and tag
-[上傳有文字、圖片加標籤的回報](https://www.youtube.com/watch?v=lUQ32MD1g6k) 
+[上傳有文字、圖片加標籤的回報](https://www.youtube.com/watch?v=lUQ32MD1g6k)   
 其他使用案例：
 - 文字
 - 圖片
