@@ -40,7 +40,7 @@
 #### edit text and image
 [編輯回報的文字及圖片](https://www.youtube.com/watch?v=8l5LDT-9IuY)
 ### delete
-[刪除回報](https://www.youtube.com/watch?v=1jiGsSMM5WQ) 
+[刪除回報](https://www.youtube.com/watch?v=1jiGsSMM5WQ)   
 尚未有標籤編輯功能
 
 ## comment
@@ -49,7 +49,7 @@
 ### edit
 [編輯留言](https://www.youtube.com/watch?v=zhFHyEYdsAI)
 ### delete
-[刪除留言](https://www.youtube.com/watch?v=3p2KZ7U0D1Q) 
+[刪除留言](https://www.youtube.com/watch?v=3p2KZ7U0D1Q)   
 其他使用案例：
 - 新增留言後
     - 刪除該留言
