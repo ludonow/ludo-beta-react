@@ -73,7 +73,7 @@ export default class ActiveReports extends React.Component {
             const { currentUserId } = this.props;
             let whoIsUser = '';
             if (currentUserId) {
-                const currentFormValue = this.props.router_currentFormValue;
+                const currentFormValue = nextProps.router_currentFormValue;
                 if (currentFormValue.starter_id == currentUserId) {
                     whoIsUser = 'starter';
                 } else if (currentFormValue.player_id == currentUserId) {
@@ -98,8 +98,9 @@ export default class ActiveReports extends React.Component {
                 }
             });
             this.setState({
+                playerReportList: newPlayerReportList,
                 starterReportList: newStarterReportList,
-                playerReportList: newPlayerReportList
+                whoIsUser
             });
             if (!this.state.isEditReportButtonClickable) {
                 this.setState({
@@ -435,7 +436,7 @@ export default class ActiveReports extends React.Component {
                     <div className="player-container">
                         <div className="player-photo-container">
                             {
-                                whoIsUser == 'starter' && this.props.userBasicData.photo?
+                                whoIsUser === 'starter' && this.props.userBasicData.photo?
                                     <img
                                         className="player-photo-container__photo"
                                         src={this.props.userBasicData.photo}
@@ -447,9 +448,12 @@ export default class ActiveReports extends React.Component {
                         {
                             this.state.starterReportList.map((reportObject, index) => {
                                 return (
-                                    <div className="player-report-container" key={`starter-report-${index}`}>
+                                    <div
+                                        className="player-report-container"
+                                        key={`starter-report-${index}`}
+                                    >
                                         {
-                                            whoIsUser == 'starter' ?
+                                            whoIsUser === 'starter' ?
                                                 <ReportEditButton
                                                     anchorEl={this.state.anchorEl}
                                                     handleEditTextReportClick={this.handleEditTextReportClick}
@@ -459,8 +463,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
                                                     isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                    reportList={starterReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={starterReportList}
                                                     whichList="starter"
                                                 />
                                             :
@@ -471,8 +475,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
                                                     isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                    reportList={starterReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={starterReportList}
                                                     whichList="starter"
                                                 />
                                         }
@@ -481,8 +485,8 @@ export default class ActiveReports extends React.Component {
                                                 <div className="report-content-container">
                                                     <img
                                                         className="report-content report-content__image" 
-                                                        src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
+                                                        src={reportObject.image_location}
                                                     />
                                                     {
                                                         isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ? 
@@ -614,8 +618,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
                                                     isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                    reportList={playerReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={playerReportList}
                                                     whichList="player"
                                                 />
                                             :
@@ -626,8 +630,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
                                                     isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                    reportList={starterReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={playerReportList}
                                                     whichList="player"
                                                 />
                                         }

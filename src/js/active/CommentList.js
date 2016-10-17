@@ -48,7 +48,7 @@ export default class CommentList extends React.Component {
         if (isSureToDelelteComment) {
             const { isEditingCommentIndex } = this.state;
             const isOldOrNew = isEditingCommentIndex[0].slice(0, 1);
-            const atWhatPositionInArray = Number(isEditingCommentIndex[0].slice(-1));
+            const atWhatPositionInArray = Number(isEditingCommentIndex[0].slice(1));
             let comment_id = null;
             if (isOldOrNew === 'o') {
                 comment_id = this.props.commentListFromDatabase[atWhatPositionInArray].comment_id;
@@ -58,13 +58,7 @@ export default class CommentList extends React.Component {
                 console.error('isOldOrNew error');
             }
             if(comment_id) {
-                // TODO: Use new comment delete api to fix bug
-                const commentDeleteBody = {
-                    'type': 'report',
-                    'report_id': this.props.reportId
-                };
-                // axios.delete(`apis/comment/${comment_id}`, commentDeleteBody)
-                axios.delete(`apis/comment/${comment_id}`)
+                axios.delete(`apis/comment/report/${this.props.reportId}/${comment_id}`)
                 .then((response) => {
                     if(response.data.status === '200') {
                         this.props.handleShouldReportUpdate(true)

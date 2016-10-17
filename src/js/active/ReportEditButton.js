@@ -4,7 +4,6 @@ import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
-import ExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import Popover from 'material-ui/Popover';
 
 export default class ReportEditButton extends Component {
