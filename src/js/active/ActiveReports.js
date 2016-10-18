@@ -97,10 +97,6 @@ export default class ActiveReports extends React.Component {
         this.shuffleArray = this.shuffleArray.bind(this);
     }
 
-    componentDidMount() {
-        this.getRandomAvatarImage();
-    }
-
     componentWillMount() {
         this.props.handleIsOpeningActivePage(true);
         this.props.handleShouldReportUpdate(true);
@@ -112,14 +108,13 @@ export default class ActiveReports extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         /* classify report data by starter or player */
-        if(nextProps.hasGotNewReport) {
-            const { currentUserId } = this.props;
+        if (nextProps.hasGotNewReport) {
+            const { currentUserId, router_currentFormValue } = nextProps;
             let whoIsUser = '';
             if (currentUserId) {
-                const currentFormValue = nextProps.router_currentFormValue;
-                if (currentFormValue.starter_id == currentUserId) {
+                if (router_currentFormValue.starter_id == currentUserId) {
                     whoIsUser = 'starter';
-                } else if (currentFormValue.player_id == currentUserId) {
+                } else if (router_currentFormValue.player_id == currentUserId) {
                     whoIsUser = 'player';
                 } else {
                     whoIsUser = 'bystander';
@@ -131,22 +126,22 @@ export default class ActiveReports extends React.Component {
                 playerReportList: [],
                 whoIsUser
             });
+
             const { currentLudoReportData } = nextProps;
             const newStarterReportList = currentLudoReportData.filter((reportObject) => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {
+                if (reportObject.user_id === router_currentFormValue.starter_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
             const newPlayerReportList = currentLudoReportData.filter((reportObject) => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.player_id) {
+                if (reportObject.user_id === router_currentFormValue.player_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
-
 
             /* get random avatar image and background color */
             const animalImageArray = [
