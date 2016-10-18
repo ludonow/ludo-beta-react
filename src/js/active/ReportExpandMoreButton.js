@@ -29,7 +29,9 @@ export default class ReportEditButton extends Component {
                     </IconButton>
                 </div>
                 {
-                    reportList[isEditingWhichReportIndex] ? 
+                    console.log(`reportList[${isEditingWhichReportIndex}] = `, reportList[isEditingWhichReportIndex])
+                }
+                {   reportList[isEditingWhichReportIndex] ? 
                         <Popover
                             anchorEl={this.props.anchorEl}
                             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
