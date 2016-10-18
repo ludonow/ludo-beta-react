@@ -16,7 +16,7 @@ $card_border-color: hsla(0, 0%, 0%, 0.5);
 $green_opened: #009944;
 $red_active: #e60012;
 
-$lifestyle-color: #53cef4;
+$lifestyle-color: rgba(83, 206, 244, 0.8);   // #53cef4;
 $read-color: #535cf9;
 $exercise-color: #81ea9f;
 $study-color: #ff6d55;
@@ -45,7 +45,6 @@ $new_skill-text-color: #fdcaad;
     }
     .grid-item--ludo-detail-information {
         width: $grid-item--ludo-detail-information_width;
-        // @extend %as_tall_as_parent;
         height: 1000px;
         padding-top: $grid-item_padding;
     }
@@ -66,7 +65,6 @@ $new_skill-text-color: #fdcaad;
     }
 
     .card {
-        @extend %relative;
         background-color: white;
         @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
         &:hover {
@@ -77,7 +75,6 @@ $new_skill-text-color: #fdcaad;
 
     .card--playground {
         @extend %clickable;
-        // border-color: $card_border-color;
         border-color: rgba(0,0,0,0.8);
         border-style: solid;
         border-width: 5px;
@@ -86,10 +83,7 @@ $new_skill-text-color: #fdcaad;
 
     .card-front {
         @extend %relative;
-        float: left;
-
         @extend %as_wide_as_parent;
-        // color: $card_border-color;
         font-weight: 600;
         word-wrap: break-word; 
         backface-visibility: hidden;
@@ -98,9 +92,7 @@ $new_skill-text-color: #fdcaad;
         transition-timing-function: linear;
 
         .card-top {
-            // height: 100px;
-            // padding: 90px 0;
-            margin-bottom: 10px;
+            padding: 60px 0;
             @extend %text_center;
             font-size: 15px;
 
@@ -155,13 +147,11 @@ $new_skill-text-color: #fdcaad;
     }
 
     .card-back {
-        @extend %relative;
-
-        word-wrap: break-word;
-        // @extend %absolute;
-        // left: 11px;
-        // top: 7px;
+        @extend %absolute;
+        left: 11px;
+        top: 7px;
         width: 206px;
+        word-wrap: break-word;
         border: none;
         @extend %text_center;
         font-size: 14px;
@@ -171,31 +161,22 @@ $new_skill-text-color: #fdcaad;
         transition-timing-function: linear;
 
         .card-introduction {
-            float: left;
-            margin-top: -500px;
-            @extend %relative;
-            width: 147px;
-
             @extend %flex;
-            justify-content: center;
             align-items: center;
-            min-height: 80px;
+            justify-content: center;
+            height: 50px;
             margin-top: 20px;
             margin-bottom: 20px;
-            // padding-top: 80px;
+            padding-top: 40px;
             padding-right: 30px;
             padding-left: 30px;
             line-height: 1.3;
         }
         .card-hashtags {
             @extend %relative;
-
-            // height: 111px;
-            min-height: 76px;
+            height: 107px;
             padding-right: 20px;
             padding-left: 20px;
-            // padding-bottom: 40px;
-            // margin-bottom: 20px;
             overflow-x: hidden;
             overflow-y: auto;
             /* scroll bar */
@@ -248,55 +229,7 @@ $new_skill-text-color: #fdcaad;
     transition-timing-function: linear;
 }
 
-.gg.card-front {
-    -webkit-animation: disappear-animation 1s both;
-    animation: disappear-animation 1s both;
-    display: none;
-    // transform: rotateY(0deg);
-    // transition-duration: 0.3s;
-    // transition-timing-function: linear;
-}
-
-.gg.card-back {
-    -webkit-animation: disappear-animation 1s both;
-    animation: disappear-animation 1s both;
-    display: none;
-    // transform: rotateY(0deg);
-    // transition-duration: 0.3s;
-    // transition-timing-function: linear;
-}
-
-@keyframes disappear-animation {
-    0% {
-        display: block;
-        opacity: 1;
-    }
-    99% {
-        display: block;
-        opacity: 0;
-    }
-    100% {
-        display: none;
-    }
-} 
-
-@-webkit-keyframes disappear-animation {
-    0% {
-        display: block;
-        opacity: 1;
-    }
-    99% {
-        display: block;
-        opacity: 0;
-    }
-    100% {
-        display: none;
-    }
-} 
-
-
-
-// card background color by different category
+/* card background color by different category */
 .lifestyle {
     color: white;
     background-color: $lifestyle-color;
@@ -325,7 +258,7 @@ $new_skill-text-color: #fdcaad;
     background-color: $others-color;
 }
 
-// card back bottom traiangle color by different category
+/* card back bottom traiangle color by different category */
 .card-bottom__triangle.lifestyle {
     border-color: transparent transparent $lifestyle-triangle-color transparent;
 }
@@ -349,7 +282,7 @@ $new_skill-text-color: #fdcaad;
 }
 
 
-// card back bottom text color by different categor
+/* card back bottom text color by different category */
 .card-bottom__text.lifestyle {
     color: $lifestyle-color;
     background-color: $lifestyle-triangle-color;

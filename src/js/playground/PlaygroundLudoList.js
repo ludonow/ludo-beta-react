@@ -45,26 +45,10 @@ export default class PlaygroundLudoList extends React.Component {
 
     handleCardStage(stage) {
         if (stage == 1) {
-            return `card-bottom__stage--opened`;
+            return 'card-bottom__stage--opened';
         } else {
-            return `card-bottom__stage--closed`;
+            return 'card-bottom__stage--closed';
         }
-    }
-
-    handleCardBackClass(category_id) {
-        return categoryClassArray[category_id];
-    }
-
-    handleCardBottomGoClass(category_id) {
-        return categoryClassArray[category_id];
-    }
-
-    handleCardFrontTopClass(category_id) {
-        return categoryClassArray[category_id]; 
-    }
-
-    handleCategoryIcon(category_id) {
-        return iconArray[category_id];
     }
 
     handleCardLink(event) {
@@ -77,7 +61,7 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id);
         const { flippedKey } = this.state;
         const index = flippedKey.indexOf(cardIndex);
-        const isElementInArray = (index != -1);
+        const isElementInArray = (index !== -1);
         if (!isElementInArray) {
             this.setState({
                 flippedKey: flippedKey.concat([cardIndex])
@@ -89,7 +73,7 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id);
         const { flippedKey } = this.state;
         const index = flippedKey.indexOf(cardIndex);
-        const isElementInArray = (index != -1);
+        const isElementInArray = (index !== -1);
         if (isElementInArray) {
             flippedKey.splice(index, 1);
             this.setState({
@@ -100,20 +84,19 @@ export default class PlaygroundLudoList extends React.Component {
 
     render() {
         return (
-            <Masonry
-                options={masonryOptions} >
+            <Masonry options={masonryOptions}>
                 <QuickStart />
                 { 
-                    this.props.ludoList.map( (singleLudoObject, index) => {
+                    this.props.ludoList.map((singleLudoObject, index) => {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
                             <div 
-                                className={`grid-item`}
+                                className="grid-item"
                                 key={`card-${index}`}
                             >
                                 <div 
-                                    className={`card card--playground card-front${isThisCardFlipped ? ' gg' : ' card-flip'}`}
+                                    className={`card card--playground card-front${isThisCardFlipped ? '' : ' card-flip'}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
@@ -129,33 +112,36 @@ export default class PlaygroundLudoList extends React.Component {
                                             <span className="card-marble__number">{singleLudoObject.marbles}</span>
                                         </div>
                                     </div>
-                                    <div className={`card-bottom ${this.handleCardFrontTopClass(singleLudoObject.category_id)}`}>
+                                    <div className={`card-bottom ${categoryClassArray[singleLudoObject.category_id]}`}>
                                         <div className={`card-bottom__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
                                     </div>
                                 </div>
                                 <div 
-                                    className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ' gg'} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
+                                    className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ''} ${categoryClassArray[singleLudoObject.category_id]}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
-                                    <div className={this.handleCardBackClass(singleLudoObject.category_id)}>
+                                    <div className={categoryClassArray[singleLudoObject.category_id]}>
                                         <div className="card-star">
                                         </div>
                                         <div className="card-introduction">
                                             {
-                                                // String(singleLudoObject.introduction).length > 20 ?
-                                                // String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-                                                // : String(singleLudoObject.introduction)
-                                                String(singleLudoObject.introduction)
+                                                String(singleLudoObject.introduction).length > 20 ?
+                                                String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+                                                : String(singleLudoObject.introduction)
+                                                // String(singleLudoObject.introduction)
                                             }
                                         </div>
                                         <div className="card-hashtags">
                                             {
                                                 // TODO: Use presentational component and proptypes to receive ludolist data
                                                 Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                                    singleLudoObject.tags.map( (tagString, tagIndex) => {
+                                                    singleLudoObject.tags.map((tagString, tagIndex) => {
                                                         return (
-                                                            <span className="react-tagsinput-tag--card" key={`tag-${tagIndex}`}>
+                                                            <span
+                                                                className="react-tagsinput-tag--card"
+                                                                key={`tag-${tagIndex}`}
+                                                            >
                                                                 {tagString}
                                                             </span>
                                                         );
@@ -164,12 +150,16 @@ export default class PlaygroundLudoList extends React.Component {
                                             }
                                         </div>
                                     </div>
-                                    <div className="card-bottom">
-                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(singleLudoObject.category_id)} />
-                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}>
+                                    <div className={`card-bottom ${categoryClassArray[singleLudoObject.category_id]}`}>
+                                        <img
+                                            className="card-bottom__category-icon"
+                                            src={iconArray[singleLudoObject.category_id]}
+                                        />
+                                        <div className={`card-bottom__triangle ${categoryClassArray[singleLudoObject.category_id]}`}>
                                             <div 
-                                                className={`card-bottom__text ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}
-                                                onClick={this.handleCardLink} id={`go-${index}`}
+                                                className={`card-bottom__text ${categoryClassArray[singleLudoObject.category_id]}`}
+                                                id={`go-${index}`}
+                                                onClick={this.handleCardLink}
                                             >
                                                 go
                                             </div>
@@ -177,7 +167,7 @@ export default class PlaygroundLudoList extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        )
+                        );
                     })
                 }
             </Masonry>
