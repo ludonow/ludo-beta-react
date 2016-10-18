@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import Tooltip from 'material-ui/internal/Tooltip';
 
 const style = {
     'fontSize': '12px',
@@ -13,11 +14,14 @@ export default class HeaderFBPhoto extends Component {
         super(props);
         this.state = {
             anchorEl: {},
-            isLoginPopOverOpen: false
+            isLoginPopOverOpen: false,
+            showTooltip: false
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handlePopoverRequestClose = this.handlePopoverRequestClose.bind(this);
         this.handleProfileIconClick = this.handleProfileIconClick.bind(this);
+        this.handleTooltipDisappear = this.handleTooltipDisappear.bind(this);
+        this.handleTooltipShow = this.handleTooltipShow.bind(this);
     }
 
     handleLogOut() {
@@ -37,12 +41,26 @@ export default class HeaderFBPhoto extends Component {
         });
     }
 
+    handleTooltipDisappear() {
+        this.setState({
+            showTooltip: false
+        });
+    }
+
+    handleTooltipShow() {
+        this.setState({
+            showTooltip: true
+        });
+    }
+
     render() {
         const { userBasicData } = this.props;
         return (
             <div
                 className="header-fb-photo"
                 onClick={this.handleProfileIconClick}
+                onMouseLeave={this.handleTooltipDisappear}
+                onMouseOver={this.handleTooltipShow}
             >
                 {
                     userBasicData.photo ? 
@@ -68,6 +86,14 @@ export default class HeaderFBPhoto extends Component {
                         />
                     </Menu>
                 </Popover>
+                <Tooltip
+                    horizontalPosition="left"
+                    label="登出"
+                    show={this.state.showTooltip}
+                    style={{fontSize: 12, right: 15, top: 40, zIndex: 5}}
+                    touch
+                    verticalPosition="bottom"
+                />
             </div>
         );
     }

@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import Tooltip from 'material-ui/internal/Tooltip';
 
 import Login from '../Login';
 
@@ -18,11 +19,14 @@ export default class HeaderLogin extends Component {
         super();
         this.state = {
             anchorEl: {},
-            isLoginPopOverOpen: false
+            isLoginPopOverOpen: false,
+            showTooltip: false
         };
         this.handleLogIn = this.handleLogIn.bind(this);
         this.handlePopoverRequestClose = this.handlePopoverRequestClose.bind(this);
         this.handleProfileIconClick = this.handleProfileIconClick.bind(this);
+        this.handleTooltipDisappear = this.handleTooltipDisappear.bind(this);
+        this.handleTooltipShow = this.handleTooltipShow.bind(this);
     }
 
     handleLogIn() {
@@ -42,15 +46,39 @@ export default class HeaderLogin extends Component {
         });
     }
 
+    handleTooltipDisappear() {
+        this.setState({
+            showTooltip: false
+        });
+    }
+
+    handleTooltipShow() {
+        this.setState({
+            showTooltip: true
+        });
+    }
+
     render() {
         return(
-            <div className="header-login">
+            <div
+                className="header-login"
+                onMouseLeave={this.handleTooltipDisappear}
+                onMouseOver={this.handleTooltipShow}
+            >
                 <Link to="Login">
                     <img
                         className="profile-icon"
                         src={headerProfileIcon}
                     />
                 </Link>
+                <Tooltip
+                    horizontalPosition="left"
+                    label="登入"
+                    show={this.state.showTooltip}
+                    style={{fontSize: 12, right: 15, top: 40, zIndex: 5}}
+                    touch
+                    verticalPosition="bottom"
+                />
             </div>
         );
     }
