@@ -1,17 +1,17 @@
-.header-marbles {
+.header-fuel {
     @extend %flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     @extend %as_tall_as_parent;
+    max-height: 100%;
     margin: 0 15px;
+    font-size: 14px;
 }
-    .header-marbles__icon {
-        width: $g_header_height_md_min * 0.4;
+    .header-fuel-icon {
+        @extend %relative;
         height: $g_header_height_md_min * 0.4;
     }
-    .header-marbles__number {
+    .header-fuel-text {
         margin-top: 5px;
-        font-family: Exo, "Microsoft JhengHei";
-        font-size: 14px;
     }

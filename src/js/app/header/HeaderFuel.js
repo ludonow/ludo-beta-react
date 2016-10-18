@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import Tooltip from 'material-ui/internal/Tooltip';
 
-import marblesIcon from '../../../images/header/marbles.png';
+import fuelIcon from '../../../images/header/fuel.png';
 
-export default class HeaderMarbles extends React.Component {
-    constructor(props) {
-        super(props);
+export default class HeaderFuel extends React.Component {
+    constructor() {
+        super();
         this.state = {
             showTooltip: false
         };
@@ -28,24 +28,28 @@ export default class HeaderMarbles extends React.Component {
     render() {
         return (
             <div
-                className="header-marbles"
+                className="header-fuel"
                 onMouseLeave={this.handleTooltipDisappear}
                 onMouseOver={this.handleTooltipShow}
             >
                 <img
-                    className="header-marbles__icon"
-                    src={marblesIcon}
+                    className="header-fuel-icon"
+                    src={fuelIcon}
                 />
                 <Tooltip
                     horizontalPosition="left"
-                    label="彈珠數"
+                    label="燃料數"
                     show={this.state.showTooltip}
-                    style={{fontSize: 12, right: 250, top: 40, zIndex: 5}}
+                    style={{fontSize: 12, right: 190, top: 40, zIndex: 5}}
                     touch
                     verticalPosition="bottom"
                 />
-                <div className="header-marbles__number">
-                    {this.props.marbles}
+                <div className="header-fuel-text">
+                    {
+                        this.props.heart ? 
+                            `${this.props.heart} / 4`
+                        : null
+                    } 
                 </div>
             </div>
         );

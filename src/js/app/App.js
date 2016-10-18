@@ -15,15 +15,6 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentFormValue: {
-                category_id: 0,
-                checkpoint: [3],
-                duration: 3,
-                introduction: '',
-                marbles: 1,
-                tags: '',
-                title: ''
-            },
             currentAuth: null,
             currentLudoId: '',
             currentLudoReportData: [],
@@ -132,7 +123,7 @@ export default class App extends React.Component {
 
     getUserBasicData() {
         axios.get('/apis/user')
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     userBasicData: response.data.user,
@@ -140,11 +131,11 @@ export default class App extends React.Component {
                     isLoggedIn: true
                 });
             } else {
-                console.error('app getUserBasicData else response from server: ', response);
-                console.error('app getUserBasicData else message from server: ', response.data.message);
+                // console.error('app getUserBasicData else response from server: ', response);
+                // console.error('app getUserBasicData else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('user error', error);
         });
     }
@@ -255,7 +246,7 @@ export default class App extends React.Component {
 
     getReportOfCurrentLudo(ludo_id) {
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     currentLudoReportData: response.data.reportList,
@@ -266,7 +257,7 @@ export default class App extends React.Component {
                 console.error('app getReportOfCurrentLudo else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error(error);
         });
     }
@@ -386,11 +377,13 @@ export default class App extends React.Component {
         const { router_currentFormValue } = this.props;
         return (
             <div>
-                <Header isProfile={this.state.isOpeningProfilePage} 
+                <Header
+                    isProfile={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
                 />
-                <Sidebar currentUserId={this.state.currentUserId} 
-                    handleIsHoveringSidebar={this.handleIsHoveringSidebar} 
+                <Sidebar
+                    currentUserId={this.state.currentUserId}
+                    handleIsHoveringSidebar={this.handleIsHoveringSidebar}
                     isHoveringSidebar={isHoveringSidebar}
                 />
                 <div className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}>

@@ -28,8 +28,7 @@ export default class ReportEditButton extends Component {
                         <ExpandMore />
                     </IconButton>
                 </div>
-                {
-                    reportList[isEditingWhichReportIndex] ? 
+                {   reportList[isEditingWhichReportIndex] ? 
                         <Popover
                             anchorEl={this.props.anchorEl}
                             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}

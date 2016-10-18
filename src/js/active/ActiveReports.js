@@ -17,10 +17,47 @@ import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
+import animalImage_0 from '../../images/animals/anteater.png';
+import animalImage_1 from '../../images/animals/bat.png';
+import animalImage_2 from '../../images/animals/bulldog.png';
+import animalImage_3 from '../../images/animals/cat.png';
+import animalImage_4 from '../../images/animals/crocodile.png';
+import animalImage_5 from '../../images/animals/duck.png';
+import animalImage_6 from '../../images/animals/elephant.png';
+import animalImage_7 from '../../images/animals/frog.png';
+import animalImage_8 from '../../images/animals/giraffe.png';
+import animalImage_9  from '../../images/animals/hippopotamus.png';
+import animalImage_10 from '../../images/animals/kangaroo.png';
+import animalImage_11 from '../../images/animals/lion.png';
+import animalImage_12 from '../../images/animals/monkey.png';
+import animalImage_13 from '../../images/animals/mouse.png';
+import animalImage_14 from '../../images/animals/octopus.png';
+import animalImage_15 from '../../images/animals/panda.png';
+import animalImage_16 from '../../images/animals/penguin.png';
+import animalImage_17 from '../../images/animals/pig.png';
+import animalImage_18 from '../../images/animals/rabbit.png';
+import animalImage_19 from '../../images/animals/shark.png';
+import animalImage_20 from '../../images/animals/sheep.png';
+import animalImage_21 from '../../images/animals/snake.png';
+import animalImage_22 from '../../images/animals/spider.png';
+import animalImage_23 from '../../images/animals/tiger.png';
+import animalImage_24 from '../../images/animals/turtle.png';
+import animalImage_25 from '../../images/animals/whale.png';
+
 export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            avatarStyle: {
+                avatarImageOfPlayer: '',
+                avatarImageOfStarter: '',
+                avatarOfPlayer: {
+                    'backgroundColor': 'green'
+                },
+                avatarOfStarter: {
+                    'backgroundColor': 'blue'
+                }
+            },
             currentTargetId: '',
             enlargeImageLocation: '',
             files: [],
@@ -41,6 +78,7 @@ export default class ActiveReports extends React.Component {
             starterReportList: [],
             whoIsUser: ''
         };
+        this.getRandomAvatarImage = this.getRandomAvatarImage.bind(this);
         this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageDrop = this.handleImageDrop.bind(this);
@@ -56,6 +94,7 @@ export default class ActiveReports extends React.Component {
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.shuffleArray = this.shuffleArray.bind(this);
     }
 
     componentWillMount() {
@@ -69,14 +108,13 @@ export default class ActiveReports extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         /* classify report data by starter or player */
-        if(nextProps.hasGotNewReport) {
-            const { currentUserId } = this.props;
+        if (nextProps.hasGotNewReport) {
+            const { currentUserId, router_currentFormValue } = nextProps;
             let whoIsUser = '';
             if (currentUserId) {
-                const currentFormValue = this.props.router_currentFormValue;
-                if (currentFormValue.starter_id == currentUserId) {
+                if (router_currentFormValue.starter_id == currentUserId) {
                     whoIsUser = 'starter';
-                } else if (currentFormValue.player_id == currentUserId) {
+                } else if (router_currentFormValue.player_id == currentUserId) {
                     whoIsUser = 'player';
                 } else {
                     whoIsUser = 'bystander';
@@ -88,31 +126,146 @@ export default class ActiveReports extends React.Component {
                 playerReportList: [],
                 whoIsUser
             });
-            const newStarterReportList = nextProps.currentLudoReportData.filter(reportObject => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {
+
+            const { currentLudoReportData } = nextProps;
+            const newStarterReportList = currentLudoReportData.filter((reportObject) => {
+                if (reportObject.user_id === router_currentFormValue.starter_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
-            const newPlayerReportList = nextProps.currentLudoReportData.filter( (reportObject) => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.player_id) {
+            const newPlayerReportList = currentLudoReportData.filter((reportObject) => {
+                if (reportObject.user_id === router_currentFormValue.player_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
+
+            /* get random avatar image and background color */
+            const animalImageArray = [
+                animalImage_0 ,
+                animalImage_1 ,
+                animalImage_2 ,
+                animalImage_3 ,
+                animalImage_4 ,
+                animalImage_5 ,
+                animalImage_6 ,
+                animalImage_7 ,
+                animalImage_8 ,
+                animalImage_9 ,
+                animalImage_10,
+                animalImage_11,
+                animalImage_12,
+                animalImage_13,
+                animalImage_14,
+                animalImage_15,
+                animalImage_16,
+                animalImage_17,
+                animalImage_18,
+                animalImage_19,
+                animalImage_20,
+                animalImage_21,
+                animalImage_22,
+                animalImage_23,
+                animalImage_24,
+                animalImage_25
+            ];
+            const colorArray = [
+                'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
+                'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
+            ];
+            const tempUserIdArray = [];
+            const avatarStyleArray = [];
+            let count = 0;
+            const totalReport = currentLudoReportData.length;
+            for (let iteratorOfReport = 0; iteratorOfReport < totalReport; iteratorOfReport++) {
+                const totalCommentOfSingleReport = currentLudoReportData[iteratorOfReport].comments.length;
+                for (let iteratorOfComment = 0; iteratorOfComment < totalCommentOfSingleReport; iteratorOfComment++) {
+                    const { user_id } = currentLudoReportData[iteratorOfReport].comments[iteratorOfComment];
+                    const indexInTempUserIdArray = tempUserIdArray.indexOf(user_id);
+                    if (indexInTempUserIdArray === -1) {
+                        this.shuffleArray(colorArray);
+                        this.shuffleArray(animalImageArray);
+                        tempUserIdArray.push(user_id);
+                        avatarStyleArray.push({
+                            backgroundColor: colorArray[iteratorOfComment],
+                            src: animalImageArray[iteratorOfComment]
+                        });
+                    } else {
+                        avatarStyleArray[count] = avatarStyleArray[indexInTempUserIdArray];
+                    }
+                    count++;
+                }
+            }
+            console.log('count', count);
+            console.log('final tempUserIdArray', tempUserIdArray);
+            console.log('final avatarStyleArray', avatarStyleArray);
+            /* end of get random avatar image and background color */
+
             this.setState({
+                playerReportList: newPlayerReportList,
                 starterReportList: newStarterReportList,
-                playerReportList: newPlayerReportList
+                whoIsUser
             });
             if (!this.state.isEditReportButtonClickable) {
                 this.setState({
                     isEditReportButtonClickable: true
                 });
             }
+            this.getRandomAvatarImage();
             this.props.handleHasGotNewReport(false);
         }
+    }
+
+    getRandomAvatarImage() {
+        const { router_currentFormValue } = this.props;
+        const { player_nick, starter_nick } = router_currentFormValue;
+        const colorArray = [
+            'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
+            'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
+        ];
+        const animalImageArray = [
+            animalImage_0 ,
+            animalImage_1 ,
+            animalImage_2 ,
+            animalImage_3 ,
+            animalImage_4 ,
+            animalImage_5 ,
+            animalImage_6 ,
+            animalImage_7 ,
+            animalImage_8 ,
+            animalImage_9 ,
+            animalImage_10,
+            animalImage_11,
+            animalImage_12,
+            animalImage_13,
+            animalImage_14,
+            animalImage_15,
+            animalImage_16,
+            animalImage_17,
+            animalImage_18,
+            animalImage_19,
+            animalImage_20,
+            animalImage_21,
+            animalImage_22,
+            animalImage_23,
+            animalImage_24,
+            animalImage_25,
+        ];
+        this.setState({
+            avatarStyle: {
+                avatarImageOfPlayer: animalImageArray[player_nick[1]],
+                avatarImageOfStarter: animalImageArray[starter_nick[1]],
+                avatarOfPlayer: {
+                    'backgroundColor': colorArray[player_nick[0]]
+                },
+                avatarOfStarter: {
+                    'backgroundColor': colorArray[starter_nick[0]]
+                }
+            }
+        });
     }
 
     handleCloseLightbox() {
@@ -415,11 +568,21 @@ export default class ActiveReports extends React.Component {
         });
     }
 
+    shuffleArray(array) {
+        let randomNumber, tempVariable, index;
+        for (index = array.length; index; index-- ) {
+            randomNumber = Math.floor(Math.random() * index);
+            tempVariable = array[index - 1];
+            array[index - 1] = array[randomNumber];
+            array[randomNumber] = tempVariable;
+        }
+    }
+
     render() {
         const { files, 
             isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, 
             isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex, 
-            isEditReportButtonClickable, isImageUploaded, starterReportList, playerReportList, whoIsUser 
+            isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser 
         } = this.state;
         return (
             <div className="report-list">
@@ -440,21 +603,30 @@ export default class ActiveReports extends React.Component {
                     <div className="player-container">
                         <div className="player-photo-container">
                             {
-                                whoIsUser == 'starter' && this.props.userBasicData.photo?
+                                whoIsUser === 'starter' && this.props.userBasicData.photo?
                                     <img
                                         className="player-photo-container__photo"
                                         src={this.props.userBasicData.photo}
                                     />
                                 :
-                                    <div className="player-photo-container__photo"/>
+                                    <div className="player-photo-container__photo">
+                                        <img 
+                                            className="player-photo-container__photo"
+                                            src={avatarStyle.avatarImageOfStarter}
+                                            style={avatarStyle.avatarOfStarter}
+                                        />
+                                    </div>
                             }
                         </div>
                         {
-                            this.state.starterReportList.map( (reportObject, index) => {
+                            this.state.starterReportList.map((reportObject, index) => {
                                 return (
-                                    <div className="player-report-container" key={`starter-report-${index}`}>
+                                    <div
+                                        className="player-report-container"
+                                        key={`starter-report-${index}`}
+                                    >
                                         {
-                                            whoIsUser == 'starter' ?
+                                            whoIsUser === 'starter' ?
                                                 <ReportEditButton
                                                     anchorEl={this.state.anchorEl}
                                                     handleEditTextReportClick={this.handleEditTextReportClick}
@@ -464,8 +636,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
                                                     isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                    reportList={starterReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={starterReportList}
                                                     whichList="starter"
                                                 />
                                             :
@@ -476,8 +648,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
                                                     isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                    reportList={starterReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={starterReportList}
                                                     whichList="starter"
                                                 />
                                         }
@@ -486,8 +658,8 @@ export default class ActiveReports extends React.Component {
                                                 <div className="report-content-container">
                                                     <img
                                                         className="report-content report-content__image" 
-                                                        src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
+                                                        src={reportObject.image_location}
                                                     />
                                                     {
                                                         isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ? 
@@ -580,7 +752,7 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         <CommentBox 
-                                            oldCommentList={reportObject.comments}
+                                            commentListFromDatabase={reportObject.comments}
                                             reportId={reportObject.report_id} 
                                             whoIsUser={whoIsUser}
                                             {...this.props} 
@@ -595,21 +767,27 @@ export default class ActiveReports extends React.Component {
                     <div className="player-container">
                         <div className="player-photo-container">
                             {
-                                whoIsUser == 'player' && this.props.userBasicData.photo ?
+                                whoIsUser === 'player' && this.props.userBasicData.photo ?
                                     <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
                                 :
-                                    <div className="player-photo-container__photo" />
+                                    <div className="player-photo-container__photo">
+                                        <img
+                                            className="player-photo-container__photo"
+                                            src={avatarStyle.avatarImageOfPlayer}
+                                            style={avatarStyle.avatarOfPlayer}
+                                        />
+                                    </div>
                             }
                         </div>
                         {
-                            this.state.playerReportList.map( (reportObject, index) => {
+                            this.state.playerReportList.map((reportObject, index) => {
                                 return (
                                     <div
                                         className="player-report-container"
                                         key={`player-report-${index}`}
                                     >
                                         {
-                                            whoIsUser == 'player' ?
+                                            whoIsUser === 'player' ?
                                                 <ReportEditButton
                                                     anchorEl={this.state.anchorEl}
                                                     handleEditTextReportClick={this.handleEditTextReportClick}
@@ -619,8 +797,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
                                                     isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                    reportList={playerReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={playerReportList}
                                                     whichList="player"
                                                 />
                                             :
@@ -631,8 +809,8 @@ export default class ActiveReports extends React.Component {
                                                     index={index}
                                                     isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
                                                     isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                    reportList={starterReportList}
                                                     onRequestClose={this.handleRequestClose}
+                                                    reportList={playerReportList}
                                                     whichList="player"
                                                 />
                                         }
@@ -735,14 +913,14 @@ export default class ActiveReports extends React.Component {
                                             : null
                                         }
                                         <CommentBox 
-                                            oldCommentList={reportObject.comments}
+                                            commentListFromDatabase={reportObject.comments}
                                             reportId={reportObject.report_id} 
                                             whoIsUser={whoIsUser}
                                             {...this.props} 
                                         />
                                     </div>
-                                );
-                            })
+                                );   /* end of return */
+                            })   /* end of map */
                         }
                     </div>
                 </div>
@@ -750,7 +928,3 @@ export default class ActiveReports extends React.Component {
         );
     }
 };
-
-// ActiveReports.childContextTypes = {
-//     muiTheme: React.PropTypes.object.isRequired,
-// };

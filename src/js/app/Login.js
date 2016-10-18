@@ -79,15 +79,32 @@ export default class Login extends React.Component {
                             <img src={logoImgPath} className="logo-icon" />
                         </div>
                         <div className="email">
-                            <input type="text" placeholder="email" onChange={this.handleEmailField}/>
+                            <input
+                                disabled
+                                onChange={this.handleEmailField}
+                                placeholder="email"
+                                type="text"
+                            />
                         </div>
                         <div className="password">
-                            <input type="text" placeholder="password" onChange={this.handlePasswordField}/>
+                            <input
+                                disabled
+                                onChange={this.handlePasswordField}
+                                placeholder="password"
+                                type="text"
+                            />
                         </div>
-                        <button className="login" onClick={this.handleLogin}>
+                        <button
+                            className="login"
+                            disabled 
+                            onClick={this.handleLogin}
+                        >
                             Log in
                         </button>
-                        <button className="signup">
+                        <button
+                            className="signup"
+                            disabled
+                        >
                             Sign up
                         </button>
                     </div>
@@ -99,14 +116,23 @@ export default class Login extends React.Component {
                         </div>
                         <div className="other-login-icon-container">
                             <div className="twitter">
-                                <img src={twitterIcon} className="other-login-icon" />
+                                <img
+                                    className="other-login-icon"
+                                    src={twitterIcon}
+                                />
                             </div>
                             <div className="google">
-                                <img src={googleIcon} className="other-login-icon" />
+                                <img
+                                    className="other-login-icon"
+                                    src={googleIcon}
+                                />
                             </div>
                             <div className="facebook">
                                 <a href="http://api.ludonow.com/auth/facebook">
-                                    <img src={facebookIcon} className="other-login-icon" />
+                                    <img
+                                        className="fb-login-icon"
+                                        src={facebookIcon}
+                                    />
                                 </a>
                             </div>
                         </div>
