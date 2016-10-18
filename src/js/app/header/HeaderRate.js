@@ -58,13 +58,18 @@ export default class HeaderRate extends React.Component {
         const { isHoverFinishRate, isHoverWinRate, roundSuccessRate, roundWinRate } = this.state;
         return (
             <div className="header-rate-container">
-                <div className="header-rate" id="1" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+                <div
+                    className="header-rate"
+                    id="1"
+                    onMouseLeave={this.handleMouseLeave}
+                    onMouseOver={this.handleMouseOver}
+                >
                     <Circle 
                         className="header-circle-progress-bar"
                         percent={roundSuccessRate}
                         strokeWidth="18"
                         trailWidth="18"
-                        strokeColor={roundSuccessRate > 0 ? `#f77417` : `#FF0000`}
+                        strokeColor="#662d91"
                     />
                     { 
                         isHoverFinishRate
@@ -78,13 +83,18 @@ export default class HeaderRate extends React.Component {
                             </span>
                     }
                 </div>
-                <div className="header-rate" id="2" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+                <div
+                    className="header-rate"
+                    id="2"
+                    onMouseOver={this.handleMouseOver}
+                    onMouseLeave={this.handleMouseLeave}
+                >
                     <Circle 
                         className="header-circle-progress-bar"
                         percent={roundWinRate}
                         strokeWidth="18"
                         trailWidth="18"
-                        strokeColor={roundWinRate > 0 ? `#8bc82a` : `#FF0000`}
+                        strokeColor="#18b1a6"
                     />
                     { 
                         isHoverWinRate

@@ -1,9 +1,9 @@
 @import "components/header-logo";
 @import "components/header-marbles";
-@import "components/header-heart";
+@import "components/header-fuel";
 @import "components/header-rate";
-@import "components/header-clock";
 @import "components/header-level";
+@import "components/header-profile";
 
 // depth
 $header_depth: 3;
@@ -38,19 +38,4 @@ $gray_border: rgba(182, 188, 193, 1);
         justify-content: flex-end;
         @extend %as_wide_as_parent;
         @extend %as_tall_as_parent;
-    }
-
-    .header-facebook-login {
-        @extend %flex;
-        align-items: center;
-        justify-content: center;
-        @extend %relative;
-        left: 170px;
-        width: 200px;
-        height: 100%;
-
-        .facebook-login-icon {
-            width: 50px;
-            height: 50px;
-        }
     }

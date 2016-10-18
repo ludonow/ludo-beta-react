@@ -1,18 +1,17 @@
-import React from "react";
+import React from 'react';
 import { Link } from 'react-router';
+import IconButton from 'material-ui/IconButton';
 
-import HeaderClock from './HeaderClock';
-import HeaderHeart from './HeaderHeart';
+import HeaderFBPhoto from './HeaderFBPhoto';
+import HeaderFuel from './HeaderFuel';
+import HeaderLevel from './HeaderLevel';
 import HeaderLogo from './HeaderLogo';
+import HeaderLogin from './HeaderLogin';
 import HeaderMarbles from './HeaderMarbles';
 import HeaderRate from './HeaderRate';
-import HeaderLevel from './HeaderLevel';
-
 import Login from '../Login';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
-
-// http://ludotest.rzbyc5phqb.ap-southeast-1.elasticbeanstalk.com
 
 export default class Header extends React.Component {
     constructor(props) {
@@ -22,31 +21,29 @@ export default class Header extends React.Component {
     render() {
         const { userBasicData } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
-        return ( 
+        let headerProfile;
+        if (userBasicData.name) {    // user has login
+            headerProfile = <HeaderFBPhoto userBasicData={userBasicData}/>
+        } else {    // user has not login
+            headerProfile = <HeaderLogin />
+        }
+        return (
             <div className="header">
                 <div className="header-left">
                     <HeaderLogo />
-                    {
-                        this.props.userBasicData.name ?
-                            <div className="header-facebook-login">
-                                Hi, {this.props.userBasicData.name}
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="http://api.ludonow.com/logout">
-                                    Log Out
-                                </a>
-                            </div>
-                        :
-                        <div className="header-facebook-login">
-                            <a href="http://api.ludonow.com/auth/facebook">
-                                <img src={facebookIcon} className="facebook-login-icon" />
-                            </a>
-                        </div>
-                    }
                 </div>
                 <div className="header-right">
                     <HeaderMarbles marbles={marbles}/>
-                    <HeaderHeart heart={heart} />
-                    {this.props.isProfile ? null : <HeaderRate success_rate={success_rate} win_rate={win_rate} /> }
+                    <HeaderFuel heart={heart} />
+                        {
+                            this.props.isProfile ? 
+                                null
+                            :
+                                <HeaderRate success_rate={success_rate} win_rate={win_rate} /> 
+                        }
+                    <div className="header-profile">
+                        {headerProfile}
+                    </div>
                 </div>
             </div>
                     // {this.props.isProfile ? <HeaderLevel />: null }

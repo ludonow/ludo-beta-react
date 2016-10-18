@@ -48,12 +48,14 @@
             margin-bottom: 40px;
         }
         .login {
+            @extend %unclickable;
             width: 100px;
             height: 30px;
             color: white;
             background-color: #ea5514;
         }
         .signup {
+            @extend %unclickable;
             width: 100px;
             height: 30px;
             background-color: #fff100;
@@ -71,7 +73,14 @@
             flex-direction: row;
             margin-top: 35px;
 
+            .fb-login-icon {
+                width: 50px;
+                height: 50px;
+                margin: 0 8px;
+            }
+
             .other-login-icon {
+                @extend %unclickable;
                 width: 50px;
                 height: 50px;
                 margin: 0 8px;

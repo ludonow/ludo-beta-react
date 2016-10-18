@@ -4,29 +4,35 @@ import Playground from '../../playground/Playground';
 
 import imageLogo from '../../../images/Ludo_logo.png';
 
-export default class HeaderLogo extends React.Component {
-    handleLogoLink() {
-        browserHistory.push(`/playground`);
-    }
-
-    render() {
-        return (
-            <div className="header-Ludo-logo" style={style} onClick={this.handleLogoLink}>
-                <img src={imageLogo} className="header-Ludo-logo__icon"/>
-            </div>
-        );
-    }
-};
-
 const screenWidth = window.innerWidth;
-const rightSidebarWidth = 100;
-const cardPadding = 5;
+const rightSidebarWidth = 0;
+const cardPadding = 7;
 const gridItemWidth = 210 + 2*cardPadding;
 const mainWidth = screenWidth - rightSidebarWidth;
-const totalColumn = Math.floor(mainWidth / gridItemWidth);
-const contentPaddingX = Math.round( (mainWidth - totalColumn * gridItemWidth)/2 );
-const logoLeft = contentPaddingX + cardPadding;
+const contentPaddingX = Math.round( (mainWidth - 5 * gridItemWidth)/2 );
+const logoLeft = contentPaddingX;
 
 const style = {
     left: `${logoLeft}px`
 };
+
+export default class HeaderLogo extends React.Component {
+    handleLogoLink() {
+        browserHistory.push('/playground');
+    }
+
+    render() {
+        return (
+            <div
+                className="header-Ludo-logo"
+                onClick={this.handleLogoLink}
+                style={style}
+            >
+                <img
+                    className="header-Ludo-logo__icon"
+                    src={imageLogo} 
+                />
+            </div>
+        );
+    }
+}
