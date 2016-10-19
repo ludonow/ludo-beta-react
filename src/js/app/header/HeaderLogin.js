@@ -67,7 +67,7 @@ export default class HeaderLogin extends Component {
             >
                 <Link to="Login">
                     <img
-                        className="profile-icon"
+                        className="header-profile-icon"
                         src={headerProfileIcon}
                     />
                 </Link>

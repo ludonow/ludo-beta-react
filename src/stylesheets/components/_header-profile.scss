@@ -10,7 +10,7 @@
     @extend %flex;
     align-items: center;
 }
-    .profile-icon {
+    .header-profile-icon {
         @extend %clickable;
         width: $g_header_height_md_min * 0.6;
         height: $g_header_height_md_min * 0.6;
