@@ -16,7 +16,7 @@ const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' stu
 
 const masonryOptions = {
     itemSelector: ".form-item",
-    columnWidth: 220,
+    columnWidth: 226,
     fitWidth: true
 };
 
