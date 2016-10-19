@@ -148,9 +148,9 @@ $new_skill-text-color: #fdcaad;
 
     .card-back {
         @extend %absolute;
-        left: 13px;
+        left: 10px;
         top: 7px;
-        width: 180px;//200px;
+        width: 200px;
         word-wrap: break-word;
         @extend %text_center;
         font-size: 14px;
