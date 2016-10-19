@@ -142,7 +142,7 @@ export default class App extends React.Component {
 
     getCurrentLudoData(ludo_id) {
         axios.get(`/apis/ludo/${ludo_id}`)
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     currentAuth: response.data.auth,
@@ -154,14 +154,14 @@ export default class App extends React.Component {
                 console.error('app getCurrentLudoData else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('app getCurrentLudoData error', error);
         });
     }
 
     getLatestLudoList() {
         axios.get('/apis/ludo')
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     ludoList: response.data.ludoList.Items
@@ -171,14 +171,14 @@ export default class App extends React.Component {
                 console.error('app getLatestLudoList else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('app getLatestLudoList error', error);
         });
     }
 
     getProfileData() {
         axios.get('/apis/profile')
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     userProfileData: response.data.user
@@ -188,14 +188,14 @@ export default class App extends React.Component {
                 console.error('app getProfileData else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('app getProfileData error', error);
         });
     }
 
     getProfileWillLudoData(user_id) {
         axios.get(`apis/ludo?stage=1&user_id=${user_id}`)
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     profileWillLudoData: response.data.ludoList.Items
@@ -205,14 +205,14 @@ export default class App extends React.Component {
                 console.error('app getProfileWillLudoData else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('app getProfileWillLudoData error', error);
         });
     }
 
     getProfileLudoingData(user_id) {
         axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     profileLudoingData: response.data.ludoList.Items
@@ -222,14 +222,14 @@ export default class App extends React.Component {
                 console.error('app getProfileLudoingData else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('app getProfileLudoingData error', error);
         });
     }
 
     getProfileDidLudoData(user_id) {
         axios.get(`apis/ludo?stage=3&user_id=${user_id}`)
-        .then(response => {
+        .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
                     profileDidLudoData: response.data.ludoList.Items
@@ -239,7 +239,7 @@ export default class App extends React.Component {
                 console.error('app getProfileDidLudoData else message from server: ', response.data.message);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('app getProfileDidLudoData error', error);
         });
     }

@@ -12,6 +12,7 @@ export default class ProfileHistory extends React.Component {
             isComponentUpdated: true,
             prevSelectedCategoryArrayLength: 0
         };
+        this.handleCurrentWatchingCategory = this.handleCurrentWatchingCategory.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -32,10 +33,10 @@ export default class ProfileHistory extends React.Component {
         }
     }
 
-    handleCurrentWatchingCategory = (event) => {
+    handleCurrentWatchingCategory(event) {
         const currentWatchingCategory = Number(event.currentTarget.id) + 1;
         const filteredProfileNewLudoData = this.props.profileDidLudoData.filter((SingleLudoObject) => {
-            if (SingleLudoObject.category_id == currentWatchingCategory) {
+            if (SingleLudoObject.category_id === currentWatchingCategory) {
                 return true;
             } else {
                 return false;
@@ -52,10 +53,11 @@ export default class ProfileHistory extends React.Component {
         return (
             <div className="profile-card">
                 <div className="profile-card__title">{'之前參與過'}</div>
-                <ProfileCategoryTabs onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
+                <ProfileCategoryTabs
+                    onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
                     profileLudoData={this.props.profileDidLudoData}
                 />
-                <ProfileLudoList profileLudoData={this.state.filteredProfileNewLudoData}/>
+                <ProfileLudoList profileLudoData={this.state.filteredProfileNewLudoData} />
             </div>
         );
     }

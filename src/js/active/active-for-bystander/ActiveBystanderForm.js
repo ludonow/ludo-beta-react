@@ -35,13 +35,11 @@ export default class ActiveBystanderForm extends React.Component {
             this.setState({
                 isFollowButtonClickable: true
             });
-            // console.log('componentWillReceiveProps getTimeLineMarks');   // debug
             this.getTimeLineMarks(nextProps);
         }
     }
 
     componentWillUnmount() {
-        // console.log('ActiveBystanderForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
 
