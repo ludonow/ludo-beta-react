@@ -83,31 +83,3 @@ export default class HeaderLogin extends Component {
         );
     }
 }
-    // render() {
-    //     return (
-    //         <div
-    //             className="header-login"
-    //             onClick={this.handleProfileIconClick}
-    //         >
-    //             <img
-    //                 className="profile-icon"
-    //                 src={headerProfileIcon}
-    //             />
-    //             <Popover
-    //                 anchorEl={this.state.anchorEl}
-    //                 onRequestClose={this.handlePopoverRequestClose}
-    //                 open={this.state.isLoginPopOverOpen}
-    //             >
-    //                 <Menu>
-    //                     <MenuItem
-    //                         href="http://api.ludonow.com/auth/facebook"
-    //                         innerDivStyle={style}
-    //                         linkButton
-    //                         onTouchTap={this.handleLogIn}
-    //                         primaryText="FB登入"
-    //                     />
-    //                 </Menu>
-    //             </Popover>
-    //         </div>
-    //     );
-    // }
