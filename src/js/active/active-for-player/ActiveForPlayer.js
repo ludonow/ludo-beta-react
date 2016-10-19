@@ -9,12 +9,10 @@ export default class ActiveForPlayer extends React.Component {
     }
 
     componentWillMount() {
-        // console.log('ActiveForPlayer componentWillMount');   // debug
         this.props.handleIsOpeningActivePage(true);
     }
 
     componentWillUnmount() {
-        // console.log('ActiveForPlayer componentWillUnmount');   // debug
         this.props.handleIsOpeningActivePage(false);
     }
 

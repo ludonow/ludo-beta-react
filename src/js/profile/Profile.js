@@ -68,7 +68,8 @@ export default class Profile extends Component {
                     <div className="profile-content">
                         <div className="profile-content-information">
                             <div className="profile-content-information-avatar">
-                                <img className="profile-content-information-avatar__photo" 
+                                <img
+                                    className="profile-content-information-avatar__photo"
                                     src={userProfileData.photo}
                                 />
                             </div>
@@ -80,31 +81,36 @@ export default class Profile extends Component {
                             </div>
                         </div>
                         <div className="profile-content-detail">
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="1"
                                 onClick={this.handleActiveClick}
                             >
                                 {'等待加入'}
                             </div>
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="2"
                                 onClick={this.handleActiveClick}
                             >
                                 {'正在進行'}
                             </div>
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="3"
                                 onClick={this.handleActiveClick}
                             >
                                 {'之前參與'}
                             </div>
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="4"
                                 onClick={this.handleActiveClick}
                             >
                                 {'統計資料'}
                             </div>
-                            <div className="profile-content-detail__element--last"
+                            <div
+                                className="profile-content-detail__element--last"
                                 id="6"
                                 onClick={this.handleActiveClick}
                             >
@@ -128,7 +134,8 @@ export default class Profile extends Component {
                     />
                 </div>
                 <div className={`grid-item--profile${activeKey.indexOf(3) != -1 ? '' : ' hidden'}`}>
-                    <ProfileHistory {...this.props} 
+                    <ProfileHistory
+                        {...this.props}
                         forceMasonryUpdate={this.forceMasonryUpdate}
                     />
                 </div>

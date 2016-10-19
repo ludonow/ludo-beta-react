@@ -14,8 +14,8 @@ import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystande
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 
-const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander];
-const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander];
+const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander];
+const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander];
 
 const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
@@ -42,6 +42,7 @@ const ludoRedirect = (nextState, replace, callback) => {
         if(response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
             router_currentFormValue = response.data.ludo;
+            debugger;
             callback();
         } else {
             window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
