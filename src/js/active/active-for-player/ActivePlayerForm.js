@@ -185,7 +185,6 @@ export default class ActivePlayerForm extends React.Component {
                     'image_location': this.state.imageLocation,
                     'tags': this.state.reportTags
                 };
-                console.log('ludoReportPost', ludoReportPost);
                 axios.post('apis/report', ludoReportPost)
                 .then((response) => {
                     if (response.data.status === '200') {
