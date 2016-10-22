@@ -6,7 +6,7 @@
 
 ## 檔案結構
 資料夾名稱都是小寫，單字間以-做分隔；React的JSX是大寫開頭的檔案
-### src (依字母順序排列)
+### src資料夾 (依字母順序排列)
 - data (放測試的假資料)
 - images (放icon)
 - js (主要程式碼)
@@ -132,8 +132,25 @@
         - _right-sidebar.scss
     - vendor (第三方套件的css)
         - fonts
+            - rw-widgets.eot
+            - rw-widgets.svg
+            - rw-widgets.ttf
+            - rw-widgets.woff
         - img
+            - loader-big.gif
+            - loading.gif
         - react-widgets
+            - bootstrap-theme.scss
+            - core.scss
+            - datepicker.scss
+            - icons.scss
+            - mixins.scss
+            - multiselect.scss
+            - normalize.scss
+            - popoup.scss
+            - react-widgets.scss
+            - selectlist.scss
+            - varaibles.scss
         - react-component-slider.css
     - ie.scss
     - main.scss (import其他scss)
