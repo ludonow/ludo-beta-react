@@ -186,10 +186,8 @@ export default class ActivePlayerForm extends React.Component {
                     'tags': this.state.reportTags
                 };
                 console.log('ludoReportPost', ludoReportPost);
-                debugger;
                 axios.post('apis/report', ludoReportPost)
                 .then((response) => {
-                    debugger;
                     if (response.data.status === '200') {
                         this.props.handleShouldProfileUpdate(true);
                         this.props.handleShouldReportUpdate(true);

@@ -109,6 +109,7 @@ export default class ActiveReports extends React.Component {
     componentWillReceiveProps(nextProps) {
         /* classify report data by starter or player */
         if (nextProps.hasGotNewReport) {
+            
             const { currentUserId, router_currentFormValue } = nextProps;
             let whoIsUser = '';
             if (currentUserId) {
@@ -126,7 +127,6 @@ export default class ActiveReports extends React.Component {
                 playerReportList: [],
                 whoIsUser
             });
-
             const { currentLudoReportData } = nextProps;
             const newStarterReportList = currentLudoReportData.filter((reportObject) => {
                 if (reportObject.user_id === router_currentFormValue.starter_id) {
@@ -142,7 +142,6 @@ export default class ActiveReports extends React.Component {
                     return false;
                 }
             });
-
             /* get random avatar image and background color */
             const animalImageArray = [
                 animalImage_0 ,
@@ -181,27 +180,26 @@ export default class ActiveReports extends React.Component {
             let count = 0;
             const totalReport = currentLudoReportData.length;
             for (let iteratorOfReport = 0; iteratorOfReport < totalReport; iteratorOfReport++) {
-                const totalCommentOfSingleReport = currentLudoReportData[iteratorOfReport].comments.length;
-                for (let iteratorOfComment = 0; iteratorOfComment < totalCommentOfSingleReport; iteratorOfComment++) {
-                    const { user_id } = currentLudoReportData[iteratorOfReport].comments[iteratorOfComment];
-                    const indexInTempUserIdArray = tempUserIdArray.indexOf(user_id);
-                    if (indexInTempUserIdArray === -1) {
-                        this.shuffleArray(colorArray);
-                        this.shuffleArray(animalImageArray);
-                        tempUserIdArray.push(user_id);
-                        avatarStyleArray.push({
-                            backgroundColor: colorArray[iteratorOfComment],
-                            src: animalImageArray[iteratorOfComment]
-                        });
-                    } else {
-                        avatarStyleArray[count] = avatarStyleArray[indexInTempUserIdArray];
+                if (currentLudoReportData[iteratorOfReport].comments) {
+                    const totalCommentOfSingleReport = currentLudoReportData[iteratorOfReport].comments.length;
+                    for (let iteratorOfComment = 0; iteratorOfComment < totalCommentOfSingleReport; iteratorOfComment++) {
+                        const { user_id } = currentLudoReportData[iteratorOfReport].comments[iteratorOfComment];
+                        const indexInTempUserIdArray = tempUserIdArray.indexOf(user_id);
+                        if (indexInTempUserIdArray === -1) {
+                            this.shuffleArray(colorArray);
+                            this.shuffleArray(animalImageArray);
+                            tempUserIdArray.push(user_id);
+                            avatarStyleArray.push({
+                                backgroundColor: colorArray[iteratorOfComment],
+                                src: animalImageArray[iteratorOfComment]
+                            });
+                        } else {
+                            avatarStyleArray[count] = avatarStyleArray[indexInTempUserIdArray];
+                        }
+                        count++;
                     }
-                    count++;
                 }
             }
-            console.log('count', count);
-            console.log('final tempUserIdArray', tempUserIdArray);
-            console.log('final avatarStyleArray', avatarStyleArray);
             /* end of get random avatar image and background color */
 
             this.setState({
