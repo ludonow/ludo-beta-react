@@ -1,76 +1,141 @@
-# 測試功能影片
-## account
-### log in
-[FB登入](https://www.youtube.com/watch?v=1gbBHBmgCOk)
-### log out
-[FB登出](https://www.youtube.com/watch?v=EPJYJ1zsSJU)
+# ludo-beta
+## 各階段的ludo
+1. 剛創立，尚未有他人加入(程式碼裡面是OpenedForStarter和OpenedForBystander)：創立者可編輯、刪除；他人可檢舉
+2. 已有他人加入(程式碼裡面是ActiveForPlayer和ActiveForBystander)：非玩家可檢舉
+3. 已結束(也是用AcitveForBystander呈現)
 
-## profile
-[個人頁面](https://www.youtube.com/watch?v=5VqGi69z_8I)   
-- 之前參與過
-- 等待他人加入
-- 正在進行中   
-這三個卡片上面七個icon代表七個種類
-點擊有數字的種類下面會跳出該種類自己有參與的Ludo
-點擊有標題的小卡片會連到該ludo
-在這個頁面測試看看按鈕隨便點會不會出什麼bug
-
-## ludo
-### create
-[創立新ludo](https://www.youtube.com/watch?v=U5INU8mKnnM)
-### join
-[加入他人創立的ludo](https://www.youtube.com/watch?v=2dLNH24VxR4)
-### edit
-[編輯自己創立的ludo](https://www.youtube.com/watch?v=MRWUazvzTqU)
-### delete
-[刪除自己創立的ludo](https://www.youtube.com/watch?v=ErPUJ8Ky9gA)
-
-## report
-### create
-#### only text
-[上傳只有文字的回報](https://www.youtube.com/watch?v=78tM06H1XN0)
-#### only image
-[上傳只有圖片的回報、取消準備上傳的圖片並重新上傳](https://www.youtube.com/watch?v=5i4eYtmu0Ks)
-#### text, image, and tag
-[上傳有文字、圖片加標籤的回報](https://www.youtube.com/watch?v=lUQ32MD1g6k)   
-其他使用案例：
-- 文字
-- 圖片
-- 標籤
-三個隨機排列組合，刪除掉了其中數個再上傳，或者都不刪除直接上傳
-
-### edit
-#### edit text
-[編輯回報的文字](https://www.youtube.com/watch?v=YR3Ak7d56ZM)
-#### edit image
-[編輯回報的圖片](https://www.youtube.com/watch?v=JAfQxC9NaQ4)
-#### edit text and image
-[編輯回報的文字及圖片](https://www.youtube.com/watch?v=8l5LDT-9IuY)
-### delete
-[刪除回報](https://www.youtube.com/watch?v=1jiGsSMM5WQ)   
-尚未有標籤編輯功能
-
-## comment
-### create
-[新增留言](https://www.youtube.com/watch?v=-hU53EfUi3o)
-### edit
-[編輯留言](https://www.youtube.com/watch?v=zhFHyEYdsAI)
-### delete
-[刪除留言](https://www.youtube.com/watch?v=3p2KZ7U0D1Q)   
-其他使用案例：
-- 新增留言後
-    - 刪除該留言
-    - 刪除同一回報中的其他留言
-    - 刪除其他回報中的其他留言
-    - 編輯該留言
-    - 編輯同一回報中的其他留言
-    - 編輯其他回報中的其他留言
-
-## denounce 檢舉
-只能檢舉其他人創建的
-### ludo
-功能尚未完成
-### report
-[檢舉回報](https://www.youtube.com/watch?v=6UAGWIQSBes)
-### comment
-[檢舉留言](https://www.youtube.com/watch?v=QOzHPXzDxoU)
+## 檔案結構
+資料夾名稱都是小寫，單字間以-做分隔；React的JSX是大寫開頭的檔案
+### src (依字母順序排列)
+- data (放測試的假資料)
+- images (放icon)
+- js (主要程式碼)
+    - active
+        - active-for-bystander
+            - ActiveBystanderForm.js
+            - ActiveForBystander.js
+        - active-for-player
+            - ActiveForPlayer.js
+            - ActivePlayerForm.js
+        - ActiveReports.js
+        - CommentBox.js
+        - CommentEditButton.js
+        - CommentExpandMoreButton.js
+        - CommentForm.js
+        - CommentList.js
+        - ReportEditButton.js
+        - ReportExpandMoreButton.js
+    - app
+        - header
+            - Header.js
+            - HeaderClock.js
+            - HeaderFBPhoto.js
+            - HeaderFuel.js
+            - HeaderLevel.js
+            - HeaderLogin.js
+            - HeaderLogo.js
+            - HeaderMarbles.js
+            - HeaderRate.js
+        - search ([未來刪除]此資料夾之後應該用不到了)
+            - Search.js
+            - SearchCard.js
+        - sidebar 
+            - Sidebar.js
+            - SidebarCreate.js
+            - SidebarFriend.js
+            - SidebarPlayground.js
+            - SidebarProfile.js
+            - SidebarReadPlayground.js
+            - SidebarSportsPlayground.js
+        - App.js (API串接大多都在這個檔案裡，僅次於AppRouter，為第二層的component)
+        - AppRouter.js (決定哪個網址連到哪個component，最上層的component)
+        - DenounceBox.js (檢舉的小框框)
+        - index.js (產生index.html的js)
+        - Login.js (登入頁面)
+        - LudoList.js (OpenedForStarter和OpenedForBystander右邊的ludolist)
+    - create
+        - Create.js
+        - CreateForm.js
+    - friend ([未來使用]此資料夾底下的程式碼目前還沒用到)
+        - Friend.js
+        - FriendList.js
+    - ludo-edit
+        - LudoEdit.js
+        - LudoEditForm.js
+    - opened
+        - opened-for-bystander
+            - OpendBystanderForm.js
+            - OpendForBystander.js
+        - opened-for-starter
+            - OpendForStarter.js
+            - OpendStarterForm.js
+    - playground
+        - Playground.js
+        - PlaygroundLudoList.js (跟app資料夾裡的LudoList非常類似，之後重構應該可以合併)
+        - QuickStart.js
+    - profile
+        - Profile.js
+        - ProfileCategoryTabs.js
+        - ProfileContent.js
+        - ProfileHistory.js
+        - ProfileLudoCard.js
+        - ProfileLudoList.js
+        - ProfilePrize.js ([未來使用]現在個人頁面還沒有放成就)
+        - ProfileStatistic.js 
+    - axios-config.js
+    - axios-fakedata-config.js (連接data資料夾假資料的axios設定，後端功能未完成時使用)
+- stylesheets (放CSS和SASS)
+    - components
+        - _card.scss
+        - _comment.scss
+        - _denounce-box.scss
+        - _form.scss
+        - _friend-list.scss ([未來使用])
+        - _header-clock.scss ([未來刪除])
+        - _header-fuel.scss
+        - _header-level.scss
+        - _header-logo.scss
+        - _header-marbles.scss
+        - _header-profile.scss
+        - _header-rate.scss
+        - _login.scss
+        - _ludo-create-information.scss
+        - _ludo-detail-information.scss
+        - _marbles.scss
+        - _playground-quick-start.scss
+        - _profile-card-single-ludo.scss
+        - _profile-card.scss
+        - _profile-content.scss
+        - _profile-history.scss
+        - _profile-ludo.scss
+        - _profile-prize.scss
+        - _profile-statistic.scss
+        - _report-form.scss
+        - _report-list.scss
+        - _single-report.scss
+        - _submit-button.scss
+        - _tags.scss
+    - helpers
+        - _default.scss
+        - _media_query.scss
+        - _mixins.scss
+        - _placeholders.scss
+        - _reset.scss
+        - _variables.scss
+    - layout
+        - _create.scss
+        - _friend.scss
+        - _header.scss
+        - _main-container.scss
+        - _playground.scss
+        - _profile.scss
+        - _right-sidebar.scss
+    - vendor (第三方套件的css)
+        - fonts
+        - img
+        - react-widgets
+        - react-component-slider.css
+    - ie.scss
+    - main.scss (import其他scss)
+    - print.scss
+    - screen.scss
