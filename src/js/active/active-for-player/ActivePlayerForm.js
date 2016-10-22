@@ -185,8 +185,11 @@ export default class ActivePlayerForm extends React.Component {
                     'image_location': this.state.imageLocation,
                     'tags': this.state.reportTags
                 };
+                console.log('ludoReportPost', ludoReportPost);
+                debugger;
                 axios.post('apis/report', ludoReportPost)
                 .then((response) => {
+                    debugger;
                     if (response.data.status === '200') {
                         this.props.handleShouldProfileUpdate(true);
                         this.props.handleShouldReportUpdate(true);
@@ -198,7 +201,9 @@ export default class ActivePlayerForm extends React.Component {
                     } else {
                         window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
                         console.error('ActivePlayerForm Report else message from server: ', response.data.message);
-                        console.error('ActivePlayerForm Report else error from server: ', response.data.err);
+                        if (response.data.err) {
+                            console.error('ActivePlayerForm Report else error from server: ', response.data.err);
+                        }
                         this.setState({
                             isReportButtonClickable: true
                         });

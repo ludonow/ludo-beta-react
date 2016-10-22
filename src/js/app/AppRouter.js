@@ -42,7 +42,6 @@ const ludoRedirect = (nextState, replace, callback) => {
         if(response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
             router_currentFormValue = response.data.ludo;
-            debugger;
             callback();
         } else {
             window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');

@@ -282,7 +282,7 @@ export default class ActiveReports extends React.Component {
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
-        if(!isInEditingArray) {
+        if (!isInEditingArray) {
             isEditingImageReportIndex.splice(0, isEditingImageReportIndex.length);
             isEditingImageReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         }
@@ -331,7 +331,7 @@ export default class ActiveReports extends React.Component {
                 }
                 if (report_id) {
                     axios.put(`/apis/report/${report_id}`, reportPutBody)
-                    .then( response => {
+                    .then((response) => {
                         if(response.data.status === '200') {
                             this.props.handleShouldReportUpdate(true);
                         } else {
@@ -339,7 +339,7 @@ export default class ActiveReports extends React.Component {
                             window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                         }
                     })
-                    .catch( error => {
+                    .catch((error) => {
                         console.error('ActiveReports handleFinishReportEditText report put error', error);
                         window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                     });
