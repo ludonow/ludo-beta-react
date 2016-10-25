@@ -106,7 +106,7 @@ export default class ActivePlayerForm extends React.Component {
     }
 
     handleImageDrop(files) {
-        if (files.length == 1) {
+        if (files.length === 1) {
             this.setState({
                 files,
                 isImageUploaded: true
@@ -115,7 +115,7 @@ export default class ActivePlayerForm extends React.Component {
             const imgPost = new FormData();
             imgPost.append('file', files[0]);
             axios.post('/apis/report-image', imgPost)
-            .then(response => {
+            .then((response) => {
                 if (response.data.status == '200') {
                     this.setState({
                         imageLocation: response.data.location
@@ -126,7 +126,7 @@ export default class ActivePlayerForm extends React.Component {
                     console.error('image upload error from server: ', response.data.err);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('image upload error', error);
             });
         } else if (files.length > 1) {
@@ -191,6 +191,7 @@ export default class ActivePlayerForm extends React.Component {
                         this.props.handleShouldProfileUpdate(true);
                         this.props.handleShouldReportUpdate(true);
                         this.setState({
+                            files: [],
                             isImageUploaded: false,
                             reportTags: [],
                             reportText: ''
