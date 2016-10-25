@@ -156,3 +156,10 @@
     - main.scss (import其他scss)
     - print.scss
     - screen.scss
+
+## 程式碼註解說明
+在jsx有className的地方往上找都可以找到類似
+/* components/_card.scss */
+之類的註解，表示該class以及之後的class定義在_card.scss檔案裡
+如果class定義在不同的檔案裡，會在該class之上註解另一個scss檔案，
+若有標錯的，麻煩在issue裡通知我謝謝~
