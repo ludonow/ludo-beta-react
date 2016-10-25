@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Tooltip from 'material-ui/internal/Tooltip';
 
 const style = {
     'fontSize': '12px',
@@ -87,14 +86,6 @@ export default class HeaderFBPhoto extends Component {
                         />
                     </Menu>
                 </Popover>
-                <Tooltip
-                    horizontalPosition="left"
-                    label="登出"
-                    show={this.state.showTooltip}
-                    style={{fontSize: 12, right: 15, top: 40, zIndex: 5}}
-                    touch
-                    verticalPosition="bottom"
-                />
             </div>
         );
     }
