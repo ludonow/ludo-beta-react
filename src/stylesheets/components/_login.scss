@@ -17,7 +17,7 @@
     height: 530px;
     @extend %margin_center_x;
     @extend %text_center;
-    background-color: white;
+    background-color: rgba(245, 245, 245, 0.9);//white;
     
     .login-top-container {
         .logo-container {
