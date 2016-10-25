@@ -99,9 +99,9 @@ export default class ActivePlayerForm extends React.Component {
         const { checkpoint } = this.props.currentFormValue;
         const index = checkpoint.indexOf(value);
         if (index != -1) {
-            return ` ludo-detail-information-day-picker__button--checkpoint`;
+            return ' ludo-detail-information-day-picker__button--checkpoint';
         } else {
-            return ` ludo-detail-information-day-picker__button--duration`;
+            return ' ludo-detail-information-day-picker__button--duration';
         }
     }
 
@@ -257,7 +257,9 @@ export default class ActivePlayerForm extends React.Component {
         const { category_id, checkpoint, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         return (
+            /* components/_report-form.scss */
             <div className="form--report">
+                {/* components/_ludo-detail-information.scss */}
                 <form
                     className="ludo-detail-information-container report-information-container"
                     onSubmit={this.handleSubmit}
@@ -282,6 +284,7 @@ export default class ActivePlayerForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
+                            {/* components/_marbles.scss */}
                             <div className="label-and-slider">
                                 <div className="text-label">
                                     彈珠數:<span className="text-label--marble-number">{marbles}</span>
@@ -296,6 +299,7 @@ export default class ActivePlayerForm extends React.Component {
                             </div>
                         </div>
                     </div>
+                    {/* components/_report-form.scss */}
                     <div className="report-form-bottom-container report-form-bottom-container--player">
                         <div className="introduction-and-duration">
                             <div className="label-and-introduction--player">
@@ -304,6 +308,7 @@ export default class ActivePlayerForm extends React.Component {
                                     <div className="introduction">
                                         {introduction}
                                     </div>
+                                    {/* components/_tags.scss */}
                                     <div className="text-field--hashtag">
                                         <div className="react-tagsinput">
                                             <span className="react-tagsinput-span">
@@ -365,7 +370,6 @@ export default class ActivePlayerForm extends React.Component {
                                     {
                                         isImageUploaded ?
                                             <div className="upload-preview">
-                                                {/* <span className="upload-preview__text">正要上傳的圖片: </span> */}
                                                 <div className="upload-preview__image-container">
                                                     <img
                                                         className="upload-preview__image"
@@ -395,6 +399,7 @@ export default class ActivePlayerForm extends React.Component {
                                 </div>
                             </div>
                     </div>
+                    {/* components/_submit-button.scss */}
                     <button
                         className="report-submit-button report-submit-button--report"
                         disabled={isReportTextBlank && !isImageUploaded || !isReportButtonClickable}
@@ -406,7 +411,6 @@ export default class ActivePlayerForm extends React.Component {
                 {
                     isImageLightBoxOpen ? 
                         <Lightbox 
-                            className="lighbox-target"
                             mainSrc={files[uploadImageIndex].preview}
                             // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
                             // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}

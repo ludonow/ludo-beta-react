@@ -207,6 +207,7 @@ export default class CommentList extends React.Component {
         const { commentListFromDatabase, tempCommentList } = this.props;
         const { isEditingComment, isEditingCommentIndex } = this.state;
         return (
+            /* components/_comment.scss */
             <div className="comment-list">
                 {
                     /* display temp comments right after user create a new comment */

@@ -10,6 +10,7 @@ export default class Create extends React.Component {
 
     render() {
         return (
+            /* components/_form.scss */
             <div className="form-and-list">
                 <div className="form">
                     <CreateForm {...this.props} />
@@ -21,4 +22,3 @@ export default class Create extends React.Component {
         );
     }
 }
-

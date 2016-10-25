@@ -56,6 +56,7 @@ export default class HeaderFBPhoto extends Component {
     render() {
         const { userBasicData } = this.props;
         return (
+            /* components/_header-profile.scss */
             <div
                 className="header-fb-photo"
                 onClick={this.handleProfileIconClick}

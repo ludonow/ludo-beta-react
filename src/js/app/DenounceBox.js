@@ -101,6 +101,7 @@ export default class DenounceBox extends Component {
     }
 
     render() {
+        /* components/_denounce-box.scss */
         const actions = [
             <RaisedButton
                 className="denounce-button"

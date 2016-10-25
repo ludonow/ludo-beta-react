@@ -22,10 +22,12 @@ export default class ProfileLudoList extends Component {
 
     render() {
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card__ludolist">
                 {
                     this.props.profileLudoData.map((ludoObject, index) => {
                         return (
+                            /* components/_profile-card-single-ludo.scss */
                             <div
                                 className="single-ludo"
                                 id={ludoObject.ludo_id}
@@ -39,9 +41,7 @@ export default class ProfileLudoList extends Component {
                                     />
                                 </div>
                                 <div className="single-ludo__title">
-                                    {
-                                        ludoObject.title
-                                    }
+                                    {ludoObject.title}
                                 </div>
                             </div>
                         );

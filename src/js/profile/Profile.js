@@ -4,7 +4,7 @@ import Masonry from 'react-masonry-component';
 import ProfileHistory from './ProfileHistory';
 import ProfileLudoCard from './ProfileLudoCard';
 import ProfileStatistic from './ProfileStatistic';
-// import ProfilePrize from './ProfilePrize';
+// import ProfilePrize from './ProfilePrize';   (will add in the future)
 
 /* LUDO TODO: make columnWidth a variable */
 const masonryOptions = {
@@ -58,13 +58,15 @@ export default class Profile extends Component {
     render() {
         const { userProfileData } = this.props;
         const { activeKey } = this.state;
-        return ( 
+        return (
+            /* components/_card.scss */
             <Masonry
                 className="grid"
                 options={masonryOptions}
                 ref="masonry"
             >
                 <div className="grid-item--profile">
+                    {/* components/_profile-content.scss */}
                     <div className="profile-content">
                         <div className="profile-content-information">
                             <div className="profile-content-information-avatar">
@@ -119,6 +121,7 @@ export default class Profile extends Component {
                         </div>
                     </div>
                 </div>
+                {/* hidden is defined in helpers/_placeholders */}
                 <div className={`grid-item--profile${activeKey.indexOf(1) != -1 ? '' : ' hidden'}`}>
                     <ProfileLudoCard 
                         forceMasonryUpdate={this.forceMasonryUpdate}

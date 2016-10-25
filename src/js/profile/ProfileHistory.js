@@ -51,6 +51,7 @@ export default class ProfileHistory extends React.Component {
 
     render() {
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card">
                 <div className="profile-card__title">{'之前參與過'}</div>
                 <ProfileCategoryTabs

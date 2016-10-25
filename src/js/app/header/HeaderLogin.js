@@ -60,6 +60,7 @@ export default class HeaderLogin extends Component {
 
     render() {
         return(
+            /* components/_header-profile */
             <div
                 className="header-login"
                 onMouseLeave={this.handleTooltipDisappear}

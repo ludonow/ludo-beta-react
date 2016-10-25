@@ -35,6 +35,7 @@ export default class ProfileCategoryTabs extends Component {
     render() {
         const { LudoCategoryArray } = this.state;
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card__category-tabs">
                 {
                     iconArray.map((iconImage, iconIndex) => {

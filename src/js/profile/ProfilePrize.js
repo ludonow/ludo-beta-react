@@ -28,11 +28,12 @@ export default class ProfilePrize extends React.Component {
 
     render() {
         return (
-            <div className="profile-element">
-                <div className="profile-element__title">成就</div>
+            <div>
+                <div>成就</div>
                 {
                     this.state.rawData.map( (data, index) => {
                         return (
+                            /* components/_profile-prize.scss */
                             <div className="profile-prize__element" key={index}>
                                 <img className="profile-prize__icon" src={data.value} />
                             </div>

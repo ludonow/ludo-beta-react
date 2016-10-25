@@ -72,9 +72,9 @@ export default class ActiveBystanderForm extends React.Component {
         const { checkpoint } = this.props.currentFormValue;
         const index = checkpoint.indexOf(value);
         if (index != -1) {
-            return ` ludo-detail-information-day-picker__button--checkpoint`;
+            return ' ludo-detail-information-day-picker__button--checkpoint';
         } else {
-            return ` ludo-detail-information-day-picker__button--duration`;
+            return ' ludo-detail-information-day-picker__button--duration';
         }
     }
 
@@ -84,13 +84,13 @@ export default class ActiveBystanderForm extends React.Component {
         this.setState({
             isFollowButtonClickable: false
         });
+        // TODO: add follow others' ludo feature 
         // const isSureToFollow = window.confirm(`Are you sure to follow?`);
         // const { currentFormValue, params } = this.props;
         // const { ludoId } = params;
         // const body = {
         // };
         // console.log('body', body);
-
         // console.log('before follow axios put');
         // axios.put(`/apis/ludo/${ludoId}`, body)
         // .then(function (response) {
@@ -109,17 +109,24 @@ export default class ActiveBystanderForm extends React.Component {
     }
 
     render() {
-        // const { currentFormValue } = this.props;
         const currentFormValue = this.props.router_currentFormValue;
         const { category, maxMarbles, timeLineMarks } = this.state;
         const { category_id, checkpoint, duration, introduction, marbles, tags, title } = currentFormValue;
 
         return (
+            /* components/_report-form.scss */
             <div className="form--report">
-                <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
+                {/* components/_ludo-detail-information.scss */}
+                <form
+                    className="ludo-detail-information-container"
+                    onSubmit={this.handleSubmit}
+                >
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img className="category-icon" src={iconArray[category_id]} />
+                            <img
+                                className="category-icon"
+                                src={iconArray[category_id]}
+                            />
                         </div>
                         <div className="top-right-container">
                             <div className="text-field-container">
@@ -134,6 +141,7 @@ export default class ActiveBystanderForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
+                            {/* components/_marbles.scss */}
                             <div className="label-and-slider">
                                 <div className="text-label">
                                     彈珠數:<span className="text-label--marble-number">{marbles}</span>
@@ -144,6 +152,7 @@ export default class ActiveBystanderForm extends React.Component {
                             </div>
                         </div>
                     </div>
+                    {/* components/_report-form.scss */}
                     <div className="report-form-bottom-container">
                         <div className="introduction-container">
                             <div className="text-label">介紹:</div>
@@ -151,6 +160,7 @@ export default class ActiveBystanderForm extends React.Component {
                                 <div className="introduction">
                                     {introduction}
                                 </div>
+                                {/* components/_tags.scss */}
                                 <div className="text-field--hashtag">
                                     <div className="react-tagsinput">
                                         <span className="react-tagsinput-span">
@@ -170,23 +180,34 @@ export default class ActiveBystanderForm extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        {/* components/_report-form.scss */}
                         <div className="time-line-container">
                             <div className="text-label">持續期間:</div>
                             <div className="report-time-line-container">
                                 <div className="report-time-line">
-                                <RcSlider className="time-line" disabled={true} vertical={true} dots included={false}
-                                    max={duration} min={1} value={checkpoint} range={checkpoint.length}
+                                <RcSlider
+                                    className="time-line" 
+                                    disabled vertical dots included={false}
                                     marks={timeLineMarks}
+                                    max={duration}
+                                    min={1}
+                                    range={checkpoint.length}
+                                    value={checkpoint}
                                 />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button className="ludo-detail-information-submit-button" type="submit" disabled={true}>
+                    {/* components/_submit-button.scss */}
+                    <button
+                        className="ludo-detail-information-submit-button"
+                        disabled
+                        type="submit"
+                    >
                         追蹤
                     </button>
                 </form>
             </div>
         );
     }
-};
+}

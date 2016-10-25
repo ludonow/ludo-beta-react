@@ -583,11 +583,11 @@ export default class ActiveReports extends React.Component {
             isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser 
         } = this.state;
         return (
+            /* components/_report-list.scss */
             <div className="report-list">
                 {
                     this.state.isImageLightBoxOpen ? 
                         <Lightbox 
-                            className="lighbox-target"
                             mainSrc={this.state.enlargeImageLocation}
                             // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
                             // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
@@ -619,6 +619,7 @@ export default class ActiveReports extends React.Component {
                         {
                             this.state.starterReportList.map((reportObject, index) => {
                                 return (
+                                    /* components/_single-report.scss */
                                     <div
                                         className="player-report-container"
                                         key={`starter-report-${index}`}
@@ -669,14 +670,19 @@ export default class ActiveReports extends React.Component {
                                                                 >
                                                                     取消編輯
                                                                 </button>
+                                                                {/* components/_report-form.scss */}
                                                                 <DropZone 
+                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
+                                                                    // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
                                                                     maxSize={2000000}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
-                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
                                                                 >
-                                                                    <img className="upload-picture-button__icon" src={uploadIcon}/>
+                                                                    <img
+                                                                        className="upload-picture-button__icon"
+                                                                        src={uploadIcon}
+                                                                    />
                                                                 </DropZone>
                                                                 {
                                                                     isImageUploaded ?
@@ -712,6 +718,7 @@ export default class ActiveReports extends React.Component {
                                                 </div>
                                             : null
                                         }
+                                        {/* components/_single-report.scss */}
                                         {
                                             reportObject.content ?
                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`s${index}`) != -1 ?
@@ -761,6 +768,7 @@ export default class ActiveReports extends React.Component {
                         }
                     </div>
                 </div>
+                {/* components/_report-list.scss */}
                 <div className="report-list-container">
                     <div className="player-container">
                         <div className="player-photo-container">
@@ -777,6 +785,7 @@ export default class ActiveReports extends React.Component {
                                     </div>
                             }
                         </div>
+                        {/* components/_single-report.scss */}
                         {
                             this.state.playerReportList.map((reportObject, index) => {
                                 return (
@@ -830,21 +839,27 @@ export default class ActiveReports extends React.Component {
                                                                 >
                                                                     取消編輯
                                                                 </button>
+                                                                {/* components/_report-form.scss */}
                                                                 <DropZone 
                                                                     accept={"image/png", "image/pjepg", "image/jpeg"}
+                                                                    // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
                                                                     maxSize={2000000}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
                                                                 >
-                                                                    <img className="upload-picture-button__icon" src={uploadIcon}/>
+                                                                    <img
+                                                                        className="upload-picture-button__icon"
+                                                                        src={uploadIcon}
+                                                                    />
                                                                 </DropZone>
                                                                 {
                                                                     isImageUploaded ?
                                                                         <div className="upload-preview">
                                                                             <span className="upload-preview__text">準備變更的圖片: </span>
                                                                             <div className="upload-preview__image-container">
-                                                                                <img className="upload-preview__image" 
+                                                                                <img
+                                                                                    className="upload-preview__image" 
                                                                                     onClick={this.handleImageEnlarge}
                                                                                     src={files[0].preview}
                                                                                 />
@@ -925,4 +940,4 @@ export default class ActiveReports extends React.Component {
             </div>
         );
     }
-};
+}

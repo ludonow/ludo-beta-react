@@ -10,6 +10,7 @@ export default class OpenedForStarter extends React.Component {
 
     render() {
         return (
+            /* components/_form.scss */
             <div className="form-and-list">
                 <OpenedStarterForm {...this.props} />
                 <div className="form-ludo-list-container">

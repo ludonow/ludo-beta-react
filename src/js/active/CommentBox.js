@@ -51,6 +51,7 @@ export default class CommentBox extends React.Component {
     render() {
         const { shouldShowCommentListFromDatabase, tempCommentList } = this.state; 
         return (
+            /* components/_single-report.scss */
             <div className="player-report-comment-box-container">
                 <CommentList
                     getCommentListAfterEdit={this.getCommentListAfterEdit}

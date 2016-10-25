@@ -60,10 +60,11 @@ export default class OpenedBystanderForm extends React.Component {
     handleDayPickerClass(value) {
         const { checkpoint } = this.props.router_currentFormValue;
         const index = checkpoint.indexOf(value);
+        /* components/_ludo-detail-information.scss */
         if (index != -1) {
-            return ` ludo-detail-information-day-picker__button--checkpoint`;
+            return ' ludo-detail-information-day-picker__button--checkpoint';
         } else {
-            return ` ludo-detail-information-day-picker__button--duration`;
+            return ' ludo-detail-information-day-picker__button--duration';
         }
     }
 
@@ -129,32 +130,49 @@ export default class OpenedBystanderForm extends React.Component {
         const currentFormValue = alreadyJoinNewLudo ? alreadyJoinFormValue: this.props.router_currentFormValue;
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
-        for(let i = 1; i <= maxDuration; i++) {
+        for (let i = 1; i <= maxDuration; i++) {
             if (i <= duration) {
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
+                        <input
+                            /* components/_ludo-detail-information.scss */
+                            className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`}
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
                         />, <br key="br" /> 
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
+                        <input
+                            className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`}
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
                         />
                     );
                 }
             } else {
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
+                        <input
+                            className="ludo-detail-information-day-picker__button"
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
                         />, <br key="br" /> 
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
+                        <input
+                            className="ludo-detail-information-day-picker__button"
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
                         />
                     );
                 }
@@ -162,11 +180,19 @@ export default class OpenedBystanderForm extends React.Component {
 
         }
         return (
+            /* components/_form.scss */
             <div className="form">
-                <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
+                {/* components/_ludo-detail-information.scss */}
+                <form
+                    className="ludo-detail-information-container"
+                    onSubmit={this.handleSubmit}
+                >
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img className="category-icon" src={iconArray[category_id]} />
+                            <img
+                                className="category-icon"
+                                src={iconArray[category_id]}
+                            />
                         </div>
                         <div className="top-right-container">
                             <div className="text-field-container">
@@ -181,12 +207,17 @@ export default class OpenedBystanderForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
+                            {/* components/_marbles.scss */}
                             <div className="label-and-slider">
                                 <div className="text-label">
                                     彈珠數:<span className="text-label--marble-number">{marbles}</span>
                                 </div>
                                 <div className="ludo-detail-information-slider--marbles">
-                                    <RcSlider max={maxMarbles} value={marbles} disabled={true} />
+                                    <RcSlider
+                                        disabled
+                                        max={maxMarbles}
+                                        value={marbles}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -197,13 +228,18 @@ export default class OpenedBystanderForm extends React.Component {
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider--duration">
-                            <RcSlider max={maxDuration} value={duration} disabled={true} />
+                            <RcSlider 
+                                disabled
+                                max={maxDuration}
+                                value={duration}
+                            />
                         </div>
                         <div className="text-label">介紹:</div>
                         <div className="text-field-container text-field-container--introduction">
                             <div className="text-field__introduction">
                                 {introduction}
                             </div>
+                            {/* components/_tags.scss */}
                             <div className="text-field--hashtag">
                                 <div className="react-tagsinput">
                                     <span className="react-tagsinput-span">
@@ -222,6 +258,7 @@ export default class OpenedBystanderForm extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        {/* components/_submit-button.scss */}
                         <button 
                             className="ludo-detail-information-submit-button" 
                             type="submit" 

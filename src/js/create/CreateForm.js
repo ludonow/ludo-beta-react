@@ -191,7 +191,7 @@ export default class CreateForm extends React.Component {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
-            .then(response => {
+            .then((response) => {
                 if (response.data.status === '200') {
                     this.setState({
                         isSuccesfullyCreateLudo: true
@@ -199,7 +199,7 @@ export default class CreateForm extends React.Component {
                     const { ludo_id } = response.data;
                     /* get ludo information after create ludo post */
                     axios.get(`/apis/ludo/${ludo_id}`)
-                    .then(response => {
+                    .then((response) => {
                         if (response.data.status === '200') {
                             const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
                             getUserBasicData();
@@ -212,7 +212,7 @@ export default class CreateForm extends React.Component {
                             console.error('get after create post message from server: ', response.data.message);
                         }
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                         console.error('get after create post error', error);
                     });
@@ -221,7 +221,7 @@ export default class CreateForm extends React.Component {
                     console.error('create post message from server: ', response.data.message);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.error('create post error', error);
             });
@@ -352,7 +352,11 @@ export default class CreateForm extends React.Component {
             }
         }
         return (
-            <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
+            /* components/_ludo-create-information.scss */
+            <form
+                className="ludo-create-information-container"
+                onSubmit={this.handleSubmit}
+            >
                 <div className="ludo-create-information-top-container">
                     <div className="category-icon-container">
                         <img className="category-icon" src={this.handleIconChange()} />
@@ -363,9 +367,9 @@ export default class CreateForm extends React.Component {
                             <DropdownList 
                                 className="dropdown-list"
                                 data={category}
-                                onChange={this.handleCategoryChange}
                                 // defaultValue={'select a category'}
                                 defaultValue={'選擇一個種類'}
+                                onChange={this.handleCategoryChange}
                             />
                         </div>
                         <div className="text-field-container">
@@ -377,6 +381,7 @@ export default class CreateForm extends React.Component {
                                 onChange={this.handleTitleChange}
                             />
                         </div>
+                        {/* components/_marbles.scss */}
                         <div className="label-and-slider">
                             <div className="text-label">
                                 {
@@ -400,7 +405,7 @@ export default class CreateForm extends React.Component {
                 <div className="ludo-create-information-bottom-container">
                     <div className="text-label">
                         {
-                            isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
+                            isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'
                         }
                     </div>
                     <div className="ludo-create-information-day-picker">
@@ -430,10 +435,11 @@ export default class CreateForm extends React.Component {
                             />
                         </div>
                     </div>
+                    {/* components/_submit-button.scss */}
                     <button 
                         className="ludo-create-information-submit-button" 
-                        type="submit" 
                         disabled={this.state.isSuccesfullyCreateLudo}
+                        type="submit" 
                     >
                         開始
                     </button>
@@ -441,19 +447,4 @@ export default class CreateForm extends React.Component {
             </form>
         );
     }
-};
-                            // <ReactTags 
-                            //     tags={tags}
-                            //     suggestions={suggestions}
-                            //     handleDelete={this.handleDelete}
-                            //     handleAddition={this.handleAddition}
-                            //     handleDrag={this.handleDrag}
-                            //     placeholder="輸入#標籤"
-                            // />
-
-
-                        // <textarea className="text-field--hashtag" type="text"
-                        //     // placeholder="#hashtag"
-                        //     placeholder="#標籤"
-                        //     onChange={this.handleTagsChange}
-                        // />
+}

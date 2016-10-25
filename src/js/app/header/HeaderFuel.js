@@ -27,6 +27,7 @@ export default class HeaderFuel extends React.Component {
 
     render() {
         return (
+            /* components/_header-fuel.scss */
             <div
                 className="header-fuel"
                 onMouseLeave={this.handleTooltipDisappear}

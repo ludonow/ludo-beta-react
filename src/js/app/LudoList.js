@@ -99,10 +99,12 @@ export default class LudoList extends React.Component {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
+                            /* components/_form.scss */
                             <div
-                                className={`form-item`}
+                                className="form-item"
                                 key={`card-${index}`}
                             >
+                                {/* form-card is defined in components/_form.scss, others are defined in components/_card.scss */}
                                 <div 
                                     className={`form-card card--playground card-front${isThisCardFlipped ? '' : ' card-flip'}`}
                                     id={index}
@@ -180,4 +182,4 @@ export default class LudoList extends React.Component {
             </Masonry>
         );
     }
-};
+}

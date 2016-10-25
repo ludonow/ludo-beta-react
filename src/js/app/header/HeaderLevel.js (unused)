@@ -7,27 +7,11 @@ export default class HeaderLevel extends React.Component {
         this.state = { 
             level: 0
         };
-        this.getLevel = this.getLevel.bind(this);
-    }
-
-    // componentDidMount() {
-    //     this.getLevel();
-    // }
-
-    getLevel() {
-        axios.get('data/LevelData.json')
-        .then(response => {
-            this.setState({
-                level: response.data.value
-            });
-        })
-        .catch(error => {
-            console.log(error);
-        });
     }
 
     render() {
-        return ( 
+        return (
+            /* components/_header-level.scss */
             <div className="header-level">
                 <div className="header-level-number">
                     {this.state.level}
@@ -38,4 +22,4 @@ export default class HeaderLevel extends React.Component {
             </div>
         );
     }
-};
+}

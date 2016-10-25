@@ -51,6 +51,7 @@ export default class ProfileLudoCard extends Component {
 
     render() {
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card">
                 <div className="profile-card__title">{this.props.title}</div>
                 <ProfileCategoryTabs

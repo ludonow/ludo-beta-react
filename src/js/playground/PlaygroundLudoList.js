@@ -91,6 +91,7 @@ export default class PlaygroundLudoList extends React.Component {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
+                            /* components/_card.scss */
                             <div 
                                 className="grid-item"
                                 key={`card-${index}`}
@@ -138,6 +139,7 @@ export default class PlaygroundLudoList extends React.Component {
                                                 Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
                                                     singleLudoObject.tags.map((tagString, tagIndex) => {
                                                         return (
+                                                            /* components/_tags.scss */
                                                             <span
                                                                 className="react-tagsinput-tag--card"
                                                                 key={`tag-${tagIndex}`}

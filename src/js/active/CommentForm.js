@@ -57,6 +57,7 @@ export default class CommentForm extends React.Component {
 
     render() {
         return (
+            /* components/_comment.scss */
             <div className="single-comment-container">
                 <div className="comment-avatar-container">
                     {

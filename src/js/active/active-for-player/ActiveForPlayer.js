@@ -18,6 +18,7 @@ export default class ActiveForPlayer extends React.Component {
 
     render() {
         return (
+            /* components/_report-form.scss */
             <div className="form-and-report">
                 <ActivePlayerForm  {...this.props} />
                 <ActiveReports {...this.props} />

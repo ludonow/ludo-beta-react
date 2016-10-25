@@ -386,6 +386,7 @@ export default class App extends React.Component {
                     handleIsHoveringSidebar={this.handleIsHoveringSidebar}
                     isHoveringSidebar={isHoveringSidebar}
                 />
+                {/* layout/main-container */}
                 <div className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}>
                     {
                         React.cloneElement(this.props.children,

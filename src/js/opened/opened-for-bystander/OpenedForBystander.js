@@ -10,6 +10,7 @@ export default class OpenedForBystander extends React.Component {
 
     render() {
         return (
+            /* components/_form.scss */
             <div className="form-and-list">
                 <OpenedBystanderForm {...this.props} />
                 <div className="form-ludo-list-container">

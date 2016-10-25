@@ -23,6 +23,7 @@ export default class HeaderLogo extends React.Component {
 
     render() {
         return (
+            /* components/_header-logo.scss */
             <div
                 className="header-Ludo-logo"
                 onClick={this.handleLogoLink}

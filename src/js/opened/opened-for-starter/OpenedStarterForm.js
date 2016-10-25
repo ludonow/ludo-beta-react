@@ -149,7 +149,9 @@ export default class OpenedStarterForm extends React.Component {
             }
         }
         return (
+            /* components/_form.scss */
             <div className="form">
+                {/* components/_ludo-detail-information.scss */}
                 <form
                     className="ludo-detail-information-container"
                     onSubmit={this.handleSubmit} 
@@ -174,6 +176,7 @@ export default class OpenedStarterForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
+                            {/* components/_marbles.scss */}
                             <div className="label-and-slider">
                                 <div className="text-label">
                                    {' 彈珠數:'}
@@ -206,6 +209,7 @@ export default class OpenedStarterForm extends React.Component {
                             <div className="text-field__introduction">
                                 {introduction}
                             </div>
+                            {/* components/_tags.scss */}
                             <div className="text-field--hashtag">
                                 <div className="react-tagsinput">
                                     <span className="react-tagsinput-span">
@@ -224,6 +228,7 @@ export default class OpenedStarterForm extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        {/* components/_submit-button.scss */}
                         <button 
                             className="ludo-detail-information-submit-button" 
                             disabled={!this.state.isDeleteButtonClickable}

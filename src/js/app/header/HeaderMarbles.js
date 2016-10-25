@@ -27,6 +27,7 @@ export default class HeaderMarbles extends React.Component {
 
     render() {
         return (
+            /* components/_header-marbles.scss */
             <div
                 className="header-marbles"
                 onMouseLeave={this.handleTooltipDisappear}

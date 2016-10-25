@@ -57,6 +57,7 @@ export default class HeaderRate extends React.Component {
     render() {
         const { isHoverFinishRate, isHoverWinRate, roundSuccessRate, roundWinRate } = this.state;
         return (
+            /* components/_header-rate.scss */
             <div className="header-rate-container">
                 <div
                     className="header-rate"

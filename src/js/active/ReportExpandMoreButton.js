@@ -19,6 +19,7 @@ export default class ReportEditButton extends Component {
         const { index, isEditingWhichReportIndex, reportList, whichList } = this.props;
         return (
             <div>
+                {/* components/_single-report.scss */}
                 <div className="report-icon-button">
                     <IconButton
                         id={`${whichList}-report-expand-more-${index}`}

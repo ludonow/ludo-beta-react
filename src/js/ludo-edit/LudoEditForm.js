@@ -93,6 +93,7 @@ export default class LudoEditForm extends React.Component {
     handleDayPickerClass(value) {
         const { checkpoint } = this.state.ludoEditForm;
         const index = checkpoint.indexOf(value);
+        /* components/ludo-create-information.scss */
         if (index != -1) {
             return ' ludo-create-information-day-picker__button--checkpoint';
         } else {
@@ -225,7 +226,7 @@ export default class LudoEditForm extends React.Component {
             'type': 'modify'
         };
         // const isSureToModify = window.confirm(`Are you sure to modify this ludo?`);
-        const isSureToModify = window.confirm(`確定要修改Ludo內容？`);
+        const isSureToModify = window.confirm('確定要修改Ludo內容？');
         if (isSureToModify) {
             const { ludo_id } = this.props.params;
             axios.put(`/apis/ludo/${ludo_id}`, modifyLudoPutBody)
@@ -317,12 +318,13 @@ export default class LudoEditForm extends React.Component {
         const { category, currentHoverValue, ludoEditForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
         const { category_id, duration, introduction, marbles, tags, title } = ludoEditForm;
         const dayPickerButtons = [];
-        for(let i = 1; i <= maxDuration; i++) {
+        for (let i = 1; i <= maxDuration; i++) {
             if (isDurationSelected && i <= duration 
                 || !isDurationSelected && i <= currentHoverValue) {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input
+                            /* components/_ludo-create-information.scss */
                             className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`}
                             disabled={
                                 (i < 3 && !isDurationSelected)
@@ -386,7 +388,12 @@ export default class LudoEditForm extends React.Component {
             }
         }
         return (
-            <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
+            /* components/_ludo-create-information.scss */
+            <form
+                className="ludo-create-information-container"
+                onSubmit={this.handleSubmit}
+            >
+                {/* components/_ludo-detail-information.scss */}
                 <div className="ludo-detail-information-top-container">
                     <div className="category-icon-container">
                         <img className="category-icon" src={iconArray[category_id]} />
@@ -406,6 +413,7 @@ export default class LudoEditForm extends React.Component {
                                 onChange={this.handleTitleChange}
                             />
                         </div>
+                        {/* components/_marbles.scss */}
                         <div className="label-and-slider">
                             <div className="text-label">
                                 <div>
@@ -422,6 +430,7 @@ export default class LudoEditForm extends React.Component {
                         </div>
                     </div>
                 </div>
+                {/* components/_ludo-create-information.scss */}
                 <div className="ludo-create-information-bottom-container">
                     <div className="text-label">
                         {isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'}
@@ -445,14 +454,16 @@ export default class LudoEditForm extends React.Component {
                             onChange={this.handleIntroductionChange}
                             value={ludoEditForm.introduction}
                         />
+                        {/* components/_tags.scss */}
                         <div className="text-field--hashtag">
                             <TagsInput
-                                value={ludoEditForm.tags} 
-                                onChange={this.handleTagsChange}
                                 inputProps={{maxLength: 30, placeholder:"標籤"}}
+                                onChange={this.handleTagsChange}
+                                value={ludoEditForm.tags} 
                             />
                         </div>
                     </div>
+                    {/* components/_submit-button.scss */}
                     <button 
                         className="ludo-modify-information-submit-button" 
                         type="submit" 
@@ -471,4 +482,4 @@ export default class LudoEditForm extends React.Component {
             </form>
         );
     }
-};
+}

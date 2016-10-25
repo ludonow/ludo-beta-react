@@ -45,13 +45,15 @@ export default class Friend extends React.Component {
 
     render() {
         return (
+            /* components/_card.scss */
             <Masonry
                 className="grid"
                 options={masonryOptions}>
                 {
-                    this.state.rawFriendList.map( (data, index) => {
+                    this.state.rawFriendList.map((data, index) => {
                         return (
                             <div className="grid-item--friend" key={index}>
+                            {/* components/friend-list.scss */}
                                 <div className="friend-list__element">
                                     <img className="friend-list__icon" src={data.value} />
                                 </div>

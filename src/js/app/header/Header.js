@@ -4,7 +4,7 @@ import IconButton from 'material-ui/IconButton';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFuel from './HeaderFuel';
-import HeaderLevel from './HeaderLevel';
+// import HeaderLevel from './HeaderLevel';  // unused
 import HeaderLogo from './HeaderLogo';
 import HeaderLogin from './HeaderLogin';
 import HeaderMarbles from './HeaderMarbles';
@@ -28,6 +28,7 @@ export default class Header extends React.Component {
             headerProfile = <HeaderLogin />
         }
         return (
+            /* layout/_header.scss */
             <div className="header">
                 <div className="header-left">
                     <HeaderLogo />
@@ -41,12 +42,13 @@ export default class Header extends React.Component {
                             :
                                 <HeaderRate success_rate={success_rate} win_rate={win_rate} /> 
                         }
+                    {/* components/_header-profile.scss */}
                     <div className="header-profile">
                         {headerProfile}
                     </div>
                 </div>
             </div>
-                    // {this.props.isProfile ? <HeaderLevel />: null }
+            // {this.props.isProfile ? <HeaderLevel />: null }
         );
     }
 };

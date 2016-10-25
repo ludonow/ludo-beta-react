@@ -71,8 +71,10 @@ export default class Login extends React.Component {
     }
 
     render() {
-        return ( 
+        return (
+            /* components/_card.scss */
             <div className="grid">
+                {/* components/_login.scss */}
                 <div className="login-container">
                     <div className="login-top-container">
                         <div className="logo-container">
