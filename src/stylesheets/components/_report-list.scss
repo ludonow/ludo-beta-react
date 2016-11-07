@@ -7,11 +7,12 @@
 
 .report-list-container {
     display: inline-flex;
-    width: 50%;
+    width: 45%;
+    margin: 0 7px;
+    font-size: 16px;
 }
     .player-container {
         @extend %as_wide_as_parent;
-        margin: 0 7px;
     }
         .player-photo-container {
             @extend %flex;
