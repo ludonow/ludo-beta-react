@@ -672,7 +672,7 @@ export default class ActiveReports extends React.Component {
                                                                 </button>
                                                                 {/* components/_report-form.scss */}
                                                                 <DropZone 
-                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
+                                                                    accept={"image/*"}
                                                                     // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
                                                                     maxSize={2000000}
