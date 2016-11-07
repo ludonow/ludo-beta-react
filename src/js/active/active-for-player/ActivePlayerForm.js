@@ -348,7 +348,7 @@ export default class ActivePlayerForm extends React.Component {
                             <div className="upload-container">
                                 <div className="upload-picture-button-container">
                                     <DropZone 
-                                        accept={"image/png", "image/pjepg", "image/jpeg"}
+                                        accept={"image/*"}
                                         className="upload-picture-button"
                                         maxSize={2000000}
                                         onClick={this.handleImageDrop}
