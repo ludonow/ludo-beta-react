@@ -109,7 +109,6 @@ export default class ActiveReports extends React.Component {
     componentWillReceiveProps(nextProps) {
         /* classify report data by starter or player */
         if (nextProps.hasGotNewReport) {
-            
             const { currentUserId, router_currentFormValue } = nextProps;
             let whoIsUser = '';
             if (currentUserId) {
@@ -599,22 +598,23 @@ export default class ActiveReports extends React.Component {
                 }
                 <div className="report-list-container">
                     <div className="player-container">
-                        <div className="player-photo-container">
+                        <div className="player-avatar-container">
                             {
                                 whoIsUser === 'starter' && this.props.userBasicData.photo?
                                     <img
-                                        className="player-photo-container__photo"
+                                        className="player-avatar-container__photo"
                                         src={this.props.userBasicData.photo}
                                     />
                                 :
-                                    <div className="player-photo-container__photo">
-                                        <img 
-                                            className="player-photo-container__photo"
-                                            src={avatarStyle.avatarImageOfStarter}
-                                            style={avatarStyle.avatarOfStarter}
-                                        />
-                                    </div>
+                                    <img 
+                                        className="player-avatar-container__photo"
+                                        src={avatarStyle.avatarImageOfStarter}
+                                        style={avatarStyle.avatarOfStarter}
+                                    />
                             }
+                        </div>
+                        <div className="player-health-point">
+                            HP: {this.props.router_currentFormValue.starter_hp}%
                         </div>
                         {
                             this.state.starterReportList.map((reportObject, index) => {
@@ -771,19 +771,22 @@ export default class ActiveReports extends React.Component {
                 {/* components/_report-list.scss */}
                 <div className="report-list-container">
                     <div className="player-container">
-                        <div className="player-photo-container">
+                        <div className="player-avatar-container">
                             {
                                 whoIsUser === 'player' && this.props.userBasicData.photo ?
-                                    <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
+                                    <img className="player-avatar-container__photo"
+                                        src={this.props.userBasicData.photo}
+                                    />
                                 :
-                                    <div className="player-photo-container__photo">
-                                        <img
-                                            className="player-photo-container__photo"
-                                            src={avatarStyle.avatarImageOfPlayer}
-                                            style={avatarStyle.avatarOfPlayer}
-                                        />
-                                    </div>
+                                    <img
+                                        className="player-avatar-container__photo"
+                                        src={avatarStyle.avatarImageOfPlayer}
+                                        style={avatarStyle.avatarOfPlayer}
+                                    />
                             }
+                        </div>
+                        <div className="player-health-point">
+                            HP: {this.props.router_currentFormValue.player_hp}%
                         </div>
                         {/* components/_single-report.scss */}
                         {

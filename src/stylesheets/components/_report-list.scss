@@ -14,17 +14,26 @@
     .player-container {
         @extend %as_wide_as_parent;
     }
-        .player-photo-container {
+        .player-avatar-container {
             @extend %flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            border: 2px solid rgba(0, 0, 0, 0.7);
             padding: 5px 0;
             background-color: white;
 
-            .player-photo-container__photo {
+            .player-avatar-container__photo {
                 width: 60px;
                 height: 60px;
+                border: 2px solid rgba(0, 0, 0, 0.7);
                 border-radius: 50%;
                 background-color: gray;
             }
+
+        }
+        .player-health-point {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
         }
