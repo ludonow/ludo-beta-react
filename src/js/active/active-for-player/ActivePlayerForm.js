@@ -317,7 +317,7 @@ export default class ActivePlayerForm extends React.Component {
                                                         tags.map((tagString, index) => {
                                                             return (
                                                                 <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                                    {tagString}
+                                                                    #{tagString}
                                                                 </span>
                                                             );
                                                         })
@@ -350,7 +350,7 @@ export default class ActivePlayerForm extends React.Component {
                                     <DropZone 
                                         accept={"image/*"}
                                         className="upload-picture-button"
-                                        maxSize={2000000}
+                                        maxSize={5242880}
                                         onClick={this.handleImageDrop}
                                         onDrop={this.handleImageDrop}
                                     >

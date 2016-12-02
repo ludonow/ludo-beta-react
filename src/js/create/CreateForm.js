@@ -3,7 +3,6 @@ import { browserHistory } from 'react-router';
 import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
-// import { WithContext as ReactTags } from 'react-tag-input';
 import TagsInput from 'react-tagsinput';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
@@ -32,6 +31,7 @@ export default class CreateForm extends React.Component {
             // category: [lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             currentHoverValue: 3,
+            hashtags: [],
             isCategorySelected: false,
             isDurationSelected: false,
             isMarblesSelected: false,
@@ -52,10 +52,6 @@ export default class CreateForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
-
-        // this.handleDelete = this.handleDelete.bind(this);
-        // this.handleAddition = this.handleAddition.bind(this);
-        // this.handleDrag = this.handleDrag.bind(this);
     }
 
     handleCategoryChange(selectedCategory) {
@@ -262,6 +258,18 @@ export default class CreateForm extends React.Component {
     }
 
     handleTagsChange(tags) {
+        /* Add # symbol in tag field */
+        const hashtags = tags.map((currentTag, index) => {
+            if (currentTag.indexOf('#') !== 0) {
+                currentTag = `#${currentTag}`;
+            } else {
+                currentTag = currentTag;
+            }
+            return currentTag;
+        });
+        this.setState({hashtags});
+
+        /* Tags information for database */
         const { ludoCreateForm } = this.state;
         this.setState(
             Object.assign(ludoCreateForm, {
@@ -270,35 +278,9 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    // handleDelete(i) {
-    //     let tags = this.state.tags;
-    //     tags.splice(i, 1);
-    //     this.setState({tags: tags});
-    // }
-
-    // handleAddition(tag) {
-    //     let tags = this.state.tags;
-    //     tags.push({
-    //         id: tags.length + 1,
-    //         text: tag
-    //     });
-    //     this.setState({tags: tags});
-    // }
-
-    // handleDrag(tag, currPos, newPos) {
-    //     let tags = this.state.tags;
-
-    //     // mutate array
-    //     tags.splice(currPos, 1);
-    //     tags.splice(newPos, 0, tag);
-
-    //     // re-render
-    //     this.setState({ tags: tags });
-    // }
-
     render() {
         const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
-        const { tags, suggestions } = this.state;
+        const { hashtags, suggestions } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= currentHoverValue) {
@@ -412,9 +394,11 @@ export default class CreateForm extends React.Component {
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} 
-                                defaultValue={ludoCreateForm.duration} value={ludoCreateForm.duration}
+                                defaultValue={ludoCreateForm.duration}
+                                max={maxDuration}
+                                min={3} 
                                 onChange={this.handleDurationValue}
+                                value={ludoCreateForm.duration}
                             />
                         </div>
                     </div>
@@ -429,9 +413,9 @@ export default class CreateForm extends React.Component {
                         />
                         <div className="text-field--hashtag">
                             <TagsInput
-                                value={ludoCreateForm.tags} 
+                                inputProps={{maxLength: 30, placeholder:"#標籤"}}
                                 onChange={this.handleTagsChange}
-                                inputProps={{maxLength: 30, placeholder:"標籤"}}
+                                value={hashtags}
                             />
                         </div>
                     </div>

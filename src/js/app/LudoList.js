@@ -145,13 +145,13 @@ export default class LudoList extends React.Component {
                                             {
                                                 // TODO: Use presentational component and proptypes to receive ludolist data
                                                 Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                                    singleLudoObject.tags.map( (tagString, tagIndex) => {
+                                                    singleLudoObject.tags.map((tagString, tagIndex) => {
                                                         return (
                                                             <span
                                                                 className="react-tagsinput-tag--card"
                                                                 key={`tag-${tagIndex}`}
                                                             >
-                                                                {tagString}
+                                                                #{tagString}
                                                             </span>
                                                         );
                                                     })

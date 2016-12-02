@@ -144,7 +144,7 @@ export default class PlaygroundLudoList extends React.Component {
                                                                 className="react-tagsinput-tag--card"
                                                                 key={`tag-${tagIndex}`}
                                                             >
-                                                                {tagString}
+                                                                #{tagString}
                                                             </span>
                                                         );
                                                     })
