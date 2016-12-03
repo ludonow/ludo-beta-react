@@ -481,6 +481,7 @@ export default class ActiveReports extends React.Component {
                 isPopOverOfEditOpen: false
             });
             if (report_id) {
+                const { router_currentFormValue } = this.props;
                 const { ludo_id } = router_currentFormValue;
                 axios.delete(`apis/report/${report_id}/${ludo_id}`)
                 .then(response => {
