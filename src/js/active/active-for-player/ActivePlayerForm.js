@@ -305,7 +305,7 @@ export default class ActivePlayerForm extends React.Component {
                             <div className="label-and-introduction--player">
                                 <div className="text-label">介紹:</div>
                                 <div className="introduction-and-tags--player">
-                                    <div className="introduction">
+                                    <div className="introduction--player">
                                         {introduction}
                                     </div>
                                     {/* components/_tags.scss */}

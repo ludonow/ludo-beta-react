@@ -102,8 +102,6 @@
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
         }
         .introduction--player {
-            @extend %as_wide_as_parent;
-            @extend %as_tall_as_parent;
             padding: 5px 0;
             background-color: $gray_text-field;
         }
