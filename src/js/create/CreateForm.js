@@ -183,7 +183,7 @@ export default class CreateForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
-        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title != '' && ludoCreateForm.tags != '' && ludoCreateForm.introduction != '') {
+        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
@@ -223,17 +223,23 @@ export default class CreateForm extends React.Component {
             });
             
         } else if (!isCategorySelected) {
-            window.alert(`You haven't select the category.`);
-        } else if (ludoCreateForm.title == '') {
-            window.alert(`You haven't fill in the title.`);
-        } else if (ludoCreateForm.tags == '') {
-            window.alert(`You haven't fill in the hash tags.`);
-        } else if (ludoCreateForm.introduction == '') {
-            window.alert(`You haven't fill in the introduction.`);
+            // window.alert('You haven\'t select the category.');
+            window.alert('尚未選擇種類！');
+        } else if (ludoCreateForm.title === '') {
+            // window.alert('You haven\'t fill in the title.');
+            window.alert('尚未輸入標題！');
         } else if (!isMarblesSelected) {
-            window.alert(`You haven't select the marble number.`);
+            // window.alert('You haven\'t select the marble number.');
+            window.alert('尚未選擇彈珠數！');
         } else if (!isDurationSelected) {
-            window.alert(`You haven't select the duration.`);
+            // window.alert('You haven\'t select the duration.');
+            window.alert('尚未選擇持續天數！');
+        } else if (ludoCreateForm.introduction === '') {
+            // window.alert('You haven\'t fill in the introduction.');
+            window.alert('尚未輸入介紹文字！');
+        } else if (ludoCreateForm.tags.length === 0) {
+            // window.alert('You haven\'t fill in the hash tags.');
+            window.alert('尚未輸入#標籤！');
         }
     }
 
