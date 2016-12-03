@@ -61,7 +61,8 @@ export default class CommentList extends React.Component {
                 axios.delete(`apis/comment/report/${this.props.reportId}/${comment_id}`)
                 .then((response) => {
                     if(response.data.status === '200') {
-                        this.props.handleShouldReportUpdate(true)
+                        this.props.handleShouldReportUpdate(true);
+                        this.props.showCommentListFromDataBase();
                     } else {
                         console.error('CommentList handleCommentDelete else response: ', response);
                         console.error('CommentList handleCommentDelete else message: ', response.data.message);
@@ -154,7 +155,7 @@ export default class CommentList extends React.Component {
                     .then((response) => {
                         if(response.data.status === '200') {
                             this.props.handleShouldReportUpdate(true);
-                            this.props.getCommentListAfterEdit();
+                            this.props.showCommentListFromDataBase();
                             this.setState({
                                 isEditingComment: false
                             });

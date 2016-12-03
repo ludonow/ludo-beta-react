@@ -20,12 +20,12 @@ export default class CommentBox extends React.Component {
             shouldShowCommentListFromDatabase: true,
             tempCommentList: []
         };
-        this.getCommentListAfterEdit = this.getCommentListAfterEdit.bind(this);
+        this.showCommentListFromDataBase = this.showCommentListFromDataBase.bind(this);
         this.updateTempCommentList = this.updateTempCommentList.bind(this);
         this.updateTempCommentListAfterPost = this.updateTempCommentListAfterPost.bind(this);
     }
 
-    getCommentListAfterEdit() {
+    showCommentListFromDataBase() {
         this.setState({
             shouldShowCommentListFromDatabase: true
         });
@@ -54,7 +54,7 @@ export default class CommentBox extends React.Component {
             /* components/_single-report.scss */
             <div className="player-report-comment-box-container">
                 <CommentList
-                    getCommentListAfterEdit={this.getCommentListAfterEdit}
+                    showCommentListFromDataBase={this.showCommentListFromDataBase}
                     shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
                     tempCommentList={tempCommentList}
                     {...this.props} 
