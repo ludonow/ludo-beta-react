@@ -96,7 +96,7 @@ export default class AppRouter extends React.Component {
                 <Route path="/" component={App}>
                     <IndexRedirect to="playground"></IndexRedirect>
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
-                    <Route path="friend" component={Friend}></Route>
+                    <Route path="friend" component={Friend} onEnter={isLoggedIn}></Route>
                     <Route path="login" component={Login}></Route>
                     <Route path="ludo/:ludo_id" getComponent={(nextState, cb) => {
                         const Component = ludoPageArray[router_ludoPageIndex];
@@ -107,7 +107,7 @@ export default class AppRouter extends React.Component {
                         cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
                     }} onEnter={isLoggedIn, ludoEditRedirect} OnLeave={ludoRedirect}></Route>
                     <Route path="playground" component={Playground}></Route>
-                    <Route path="profile/:userId" component={Profile} onEnter={isLoggedIn}></Route>
+                    <Route path="profile(/:userId)" component={Profile} onEnter={isLoggedIn}></Route>
                 </Route>
             </Router>
         );
