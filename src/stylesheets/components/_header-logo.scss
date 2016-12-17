@@ -8,5 +8,5 @@
 }
     .header-Ludo-logo__icon {
         @extend %relative;
-        height: $g_header_height_md_min * 0.8;
+        height: $g_header_height_md_min * (3/7);
     }

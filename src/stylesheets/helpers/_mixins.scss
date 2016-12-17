@@ -25,3 +25,12 @@
      -moz-box-shadow: $h-shadow $v-shadow $blur $spread $color;
        -o-box-shadow: $h-shadow $v-shadow $blur $spread $color;
  }
+
+ @mixin circle($width, $color) {
+   width: $width;
+   height: $width;
+   background: $color;
+   -webkit-border-radius: $width/2;
+      -moz-border-radius: $width/2;
+           border-radius: $width/2;
+ }
