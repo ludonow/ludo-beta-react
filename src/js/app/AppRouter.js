@@ -7,6 +7,7 @@ import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
+import Invite from '../create/Invite';
 import Login from './Login';
 import LudoEdit from '../ludo-edit/LudoEdit';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
@@ -97,6 +98,7 @@ export default class AppRouter extends React.Component {
                     <IndexRedirect to="playground"></IndexRedirect>
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
                     <Route path="friend" component={Friend} onEnter={isLoggedIn}></Route>
+                    <Route path="invite/:friend_id" component={Invite} onEnter={isLoggedIn}></Route>
                     <Route path="login" component={Login}></Route>
                     <Route path="ludo/:ludo_id" getComponent={(nextState, cb) => {
                         const Component = ludoPageArray[router_ludoPageIndex];

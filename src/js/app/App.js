@@ -73,11 +73,11 @@ export default class App extends React.Component {
         const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, 
             shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
         } = this.state;
-        if(isOpeningLudoListPage && shouldLudoListUpdate) {
+        if (isOpeningLudoListPage && shouldLudoListUpdate) {
             this.getLatestLudoList();
             this.handleShouldLudoListUpdate(false);
         }
-        if(currentUserId && isLoggedIn && shouldProfileUpdate) {
+        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
             /* 
              * Update profile data after the user did some ludo action and is going to open profile page 
              */
@@ -91,12 +91,12 @@ export default class App extends React.Component {
         }
 
         const { isOpeningActivePage, shouldReportUpdate } = this.state;
-        if(isOpeningActivePage && shouldReportUpdate) {
+        if (isOpeningActivePage && shouldReportUpdate) {
             this.getReportOfCurrentLudo(this.props.params.ludo_id);
             this.handleShouldReportUpdate(false);
         }
 
-        if(shouldUserBasicDataUpdate) {
+        if (shouldUserBasicDataUpdate) {
             this.getUserBasicData();
             this.handleShouldUserBasicDataUpdate(false);
         }
