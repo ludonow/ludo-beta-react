@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InviteForm from './InviteForm';
+import InvitationForm from './InvitationForm';
 import LudoList from '../app/LudoList';
 
 export default class Invite extends React.Component {
@@ -13,7 +13,7 @@ export default class Invite extends React.Component {
             /* components/_form.scss */
             <div className="form-and-list">
                 <div className="form">
-                    <InviteForm {...this.props} />
+                    <InvitationForm {...this.props} />
                 </div>
                 <div className="form-ludo-list-container">
                     <LudoList {...this.props} />

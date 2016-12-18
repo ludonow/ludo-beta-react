@@ -1,9 +1,11 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import TagsInput from 'react-tagsinput';
+
+import axios from '../axios-config';
+import InvitationMessage from './InvitationMessage.js';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -15,7 +17,7 @@ import othersIcon from '../../images/category_icon/others.svg';
 
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
-export default class InviteForm extends React.Component {
+export default class InvitationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,6 +37,7 @@ export default class InviteForm extends React.Component {
             isCategorySelected: false,
             isDurationSelected: false,
             isMarblesSelected: false,
+            isMessageDialogOpen: false,
             isSuccesfullyCreateLudo: false,
             maxDuration: 14,
             maxLengthOfIntroduction: 140,
@@ -49,6 +52,7 @@ export default class InviteForm extends React.Component {
         this.handleIconChange = this.handleIconChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleMarblesChange = this.handleMarblesChange.bind(this);
+        this.handleMessageDialogClose = this.handleMessageDialogClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
@@ -180,77 +184,38 @@ export default class InviteForm extends React.Component {
         });
     }
 
+    handleMessageDialogClose() {
+        this.setState({
+            isMessageDialogOpen: false
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
-        
-        const ludoInvitationPost = {
-            ...ludoCreateForm,
-            type: 'invite',
-            friend_id: this.props.params.friend_id, 
-            message: 'test'
-        };
-        console.log('ludoInvitationPost', ludoInvitationPost);
-
-        // if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
-        //     let { checkpoint } = ludoCreateForm;
-        //     checkpoint = checkpoint.sort((a, b) => { return a - b });
-
-        //     axios.post('/apis/ludo', ludoCreateForm)
-        //     .then((response) => {
-        //         if (response.data.status === '200') {
-        //             this.setState({
-        //                 isSuccesfullyCreateLudo: true
-        //             });
-        //             const { ludo_id } = response.data;
-        //             /* get ludo information after create ludo post */
-        //             axios.get(`/apis/ludo/${ludo_id}`)
-        //             .then((response) => {
-        //                 if (response.data.status === '200') {
-        //                     const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
-        //                     getUserBasicData();
-        //                     handleShouldProfileUpdate(true);
-        //                     updateCurrentFormValue(response.data.ludo);
-        //                     browserHistory.push(`/ludo/${ludo_id}`);
-        //                 } else {
-        //                     window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
-        //                     console.error('get after create post response from server: ', response);
-        //                     console.error('get after create post message from server: ', response.data.message);
-        //                 }
-        //             })
-        //             .catch((error) => {
-        //                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-        //                 console.error('get after create post error', error);
-        //             });
-        //         } else {
-        //             window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-        //             console.error('create post message from server: ', response.data.message);
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-        //         console.error('create post error', error);
-        //     });
-            
-        // } else if (!isCategorySelected) {
-        //     // window.alert('You haven\'t select the category.');
-        //     window.alert('尚未選擇種類！');
-        // } else if (ludoCreateForm.title === '') {
-        //     // window.alert('You haven\'t fill in the title.');
-        //     window.alert('尚未輸入標題！');
-        // } else if (!isMarblesSelected) {
-        //     // window.alert('You haven\'t select the marble number.');
-        //     window.alert('尚未選擇彈珠數！');
-        // } else if (!isDurationSelected) {
-        //     // window.alert('You haven\'t select the duration.');
-        //     window.alert('尚未選擇持續天數！');
-        // } else if (ludoCreateForm.introduction === '') {
-        //     // window.alert('You haven\'t fill in the introduction.');
-        //     window.alert('尚未輸入介紹文字！');
-        // } else if (ludoCreateForm.tags.length === 0) {
-        //     // window.alert('You haven\'t fill in the hash tags.');
-        //     window.alert('尚未輸入#標籤！');
-        // }
+        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
+            this.setState({
+                isMessageDialogOpen: true
+            });
+        } else if (!isCategorySelected) {
+            // window.alert('You haven\'t select the category.');
+            window.alert('尚未選擇種類！');
+        } else if (ludoCreateForm.title === '') {
+            // window.alert('You haven\'t fill in the title.');
+            window.alert('尚未輸入標題！');
+        } else if (!isMarblesSelected) {
+            // window.alert('You haven\'t select the marble number.');
+            window.alert('尚未選擇彈珠數！');
+        } else if (!isDurationSelected) {
+            // window.alert('You haven\'t select the duration.');
+            window.alert('尚未選擇持續天數！');
+        } else if (ludoCreateForm.introduction === '') {
+            // window.alert('You haven\'t fill in the introduction.');
+            window.alert('尚未輸入介紹文字！');
+        } else if (ludoCreateForm.tags.length === 0) {
+            // window.alert('You haven\'t fill in the hash tags.');
+            window.alert('尚未輸入#標籤！');
+        }
     }
 
     handleTitleChange(event) {
@@ -350,101 +315,109 @@ export default class InviteForm extends React.Component {
             }
         }
         return (
-            /* components/_ludo-create-information.scss */
-            <form
-                className="ludo-create-information-container"
-                onSubmit={this.handleSubmit}
-            >
-                <div className="ludo-create-information-top-container">
-                    <div className="category-icon-container">
-                        <img className="category-icon" src={this.handleIconChange()} />
-                    </div>
-                    <div className="top-right-container">
-                        <div className="dropdown-list-container">
-                            <span className="category-label">種類:</span>
-                            <DropdownList 
-                                className="dropdown-list"
-                                data={category}
-                                // defaultValue={'select a category'}
-                                defaultValue={'選擇一個種類'}
-                                onChange={this.handleCategoryChange}
-                            />
+            <div>
+            {/* components/_ludo-create-information.scss */}
+                <form
+                    className="ludo-create-information-container"
+                    onSubmit={this.handleSubmit}
+                >
+                    <div className="ludo-create-information-top-container">
+                        <div className="category-icon-container">
+                            <img className="category-icon" src={this.handleIconChange()} />
                         </div>
-                        <div className="text-field-container">
-                            <span className="text-field-label">標題:</span>
-                            <input className="text-field" type="text"
-                                // placeholder="Title"
-                                placeholder="輸入想要的標題"
-                                maxLength={this.handleTitleMaxLength()}
-                                onChange={this.handleTitleChange}
-                            />
-                        </div>
-                        {/* components/_marbles.scss */}
-                        <div className="label-and-slider">
-                            <div className="text-label">
-                                {
-                                    this.state.isMarblesSelected ? 
-                                        <div>
-                                            彈珠數:
-                                            <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
-                                        </div>
-                                    : `選擇彈珠數` 
-                                }
+                        <div className="top-right-container">
+                            <div className="dropdown-list-container">
+                                <span className="category-label">種類:</span>
+                                <DropdownList 
+                                    className="dropdown-list"
+                                    data={category}
+                                    // defaultValue={'select a category'}
+                                    defaultValue={'選擇一個種類'}
+                                    onChange={this.handleCategoryChange}
+                                />
                             </div>
-                            <div className="ludo-create-information-slider--marbles">
-                                <RcSlider max={maxMarbles} min={1} 
-                                    value={ludoCreateForm.marbles}
-                                    onChange={this.handleMarblesChange}
+                            <div className="text-field-container">
+                                <span className="text-field-label">標題:</span>
+                                <input className="text-field" type="text"
+                                    // placeholder="Title"
+                                    placeholder="輸入想要的標題"
+                                    maxLength={this.handleTitleMaxLength()}
+                                    onChange={this.handleTitleChange}
+                                />
+                            </div>
+                            {/* components/_marbles.scss */}
+                            <div className="label-and-slider">
+                                <div className="text-label">
+                                    {
+                                        this.state.isMarblesSelected ? 
+                                            <div>
+                                                彈珠數:
+                                                <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
+                                            </div>
+                                        : `選擇彈珠數` 
+                                    }
+                                </div>
+                                <div className="ludo-create-information-slider--marbles">
+                                    <RcSlider max={maxMarbles} min={1} 
+                                        value={ludoCreateForm.marbles}
+                                        onChange={this.handleMarblesChange}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="ludo-create-information-bottom-container">
+                        <div className="text-label">
+                            {
+                                isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'
+                            }
+                        </div>
+                        <div className="ludo-create-information-day-picker">
+                            {dayPickerButtons}
+                            <div className="ludo-create-information-slider--duration">
+                                <RcSlider 
+                                    defaultValue={ludoCreateForm.duration}
+                                    max={maxDuration}
+                                    min={3} 
+                                    onChange={this.handleDurationValue}
+                                    value={ludoCreateForm.duration}
                                 />
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className="ludo-create-information-bottom-container">
-                    <div className="text-label">
-                        {
-                            isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'
-                        }
-                    </div>
-                    <div className="ludo-create-information-day-picker">
-                        {dayPickerButtons}
-                        <div className="ludo-create-information-slider--duration">
-                            <RcSlider 
-                                defaultValue={ludoCreateForm.duration}
-                                max={maxDuration}
-                                min={3} 
-                                onChange={this.handleDurationValue}
-                                value={ludoCreateForm.duration}
+                        <div className="text-label">介紹:</div>
+                        <div className="text-field-container text-field-container--introduction">
+                            <textarea 
+                                className="text-field--introduction" 
+                                // placeholder="Introduction" 
+                                placeholder={`詳細的說明(中文最多140字)`}
+                                onChange={this.handleIntroductionChange}
+                                maxLength={maxLengthOfIntroduction}
                             />
+                            <div className="text-field--hashtag">
+                                <TagsInput
+                                    inputProps={{maxLength: 30, placeholder:"#標籤"}}
+                                    onChange={this.handleTagsChange}
+                                    value={hashtags}
+                                />
+                            </div>
                         </div>
+                        {/* components/_submit-button.scss */}
+                        <button 
+                            className="ludo-create-information-submit-button" 
+                            disabled={this.state.isSuccesfullyCreateLudo}
+                            type="submit" 
+                        >
+                            邀請
+                        </button>
                     </div>
-                    <div className="text-label">介紹:</div>
-                    <div className="text-field-container text-field-container--introduction">
-                        <textarea 
-                            className="text-field--introduction" 
-                            // placeholder="Introduction" 
-                            placeholder={`詳細的說明(中文最多140字)`}
-                            onChange={this.handleIntroductionChange}
-                            maxLength={maxLengthOfIntroduction}
-                        />
-                        <div className="text-field--hashtag">
-                            <TagsInput
-                                inputProps={{maxLength: 30, placeholder:"#標籤"}}
-                                onChange={this.handleTagsChange}
-                                value={hashtags}
-                            />
-                        </div>
-                    </div>
-                    {/* components/_submit-button.scss */}
-                    <button 
-                        className="ludo-create-information-submit-button" 
-                        disabled={this.state.isSuccesfullyCreateLudo}
-                        type="submit" 
-                    >
-                        邀請
-                    </button>
-                </div>
-            </form>
+                </form>
+                <InvitationMessage 
+                    friend_id={this.props.params.friend_id}
+                    isMessageDialogOpen={this.state.isMessageDialogOpen}
+                    ludoCreateForm={this.state.ludoCreateForm}
+                    onRequestClose={this.handleMessageDialogClose}
+                />
+            </div>
         );
     }
 }
