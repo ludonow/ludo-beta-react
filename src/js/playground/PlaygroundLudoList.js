@@ -45,9 +45,9 @@ export default class PlaygroundLudoList extends React.Component {
 
     handleCardStage(stage) {
         if (stage == 1) {
-            return 'card-bottom__stage--opened';
+            return 'card-top__stage--opened';
         } else {
-            return 'card-bottom__stage--closed';
+            return 'card-top__stage--closed';
         }
     }
 
@@ -86,89 +86,138 @@ export default class PlaygroundLudoList extends React.Component {
         return (
             <Masonry options={masonryOptions}>
                 <QuickStart />
-                { 
+                {
                     this.props.ludoList.map((singleLudoObject, index) => {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
                             /* components/_card.scss */
-                            <div 
+                            <div
                                 className="grid-item"
                                 key={`card-${index}`}
                             >
-                                <div 
-                                    className={`card card--playground card-front${isThisCardFlipped ? '' : ' card-flip'}`}
-                                    id={index}
-                                    onClick={buttonClickHandler}
-                                >
-                                    <div className="card-top">
-                                        <div className="card-star"></div>
-                                        <div className="title">{singleLudoObject.title}</div>
-                                        <div className="duration">{singleLudoObject.duration} days</div>
-                                        <div className="card-marble">
-                                            <img 
-                                                className="card-marble__icon"
-                                                src={marbleIcon}
-                                            />
-                                            <span className="card-marble__number">{singleLudoObject.marbles}</span>
-                                        </div>
+                            <div
+                                className={`card card--playground card-front${isThisCardFlipped ? '' : ' card-flip'}`}
+                                id={index}
+                                onClick={buttonClickHandler}
+                            >
+                              <div className={categoryClassArray[singleLudoObject.category_id]}
+                              id={index}
+                              onClick={buttonClickHandler}>
+                              {/*three information: star(for user to highlight this card), category, and introduction*/}
+                                <div className="card-information">
+
+                                  <div className="card-star">
+                                  </div>
+                                  <div className ="card-category">
+                                  </div>
+                                  <div className="card-introduction">{
+                                    String(singleLudoObject.introduction).length > 20 ?
+                                    String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+                                    : String(singleLudoObject.introduction)
+                                    /* String(singleLudoObject.introduction)*/
+                                    }
                                     </div>
-                                    <div className={`card-bottom ${categoryClassArray[singleLudoObject.category_id]}`}>
-                                        <div className={`card-bottom__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
-                                    </div>
+                                    <div className="card-hashtags">
+                                    {
+                                    // TODO: Use presentational component and proptypes to receive ludolist data
+                                    Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
+                                        singleLudoObject.tags.map((tagString, tagIndex) => {
+                                            return (
+                                                /* components/_tags.scss */
+                                                <span
+                                                    className="react-tagsinput-tag--card"
+                                                    key={`tag-${tagIndex}`}
+                                                >
+                                                    {tagString}
+                                                </span>
+                                            );
+                                        })
+                                    : null
+                                  }
+                                  </div>
                                 </div>
-                                <div 
-                                    className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ''} ${categoryClassArray[singleLudoObject.category_id]}`}
-                                    id={index}
-                                    onClick={buttonClickHandler}
-                                >
-                                    <div className={categoryClassArray[singleLudoObject.category_id]}>
-                                        <div className="card-star">
-                                        </div>
-                                        <div className="card-introduction">
-                                            {
-                                                String(singleLudoObject.introduction).length > 20 ?
-                                                String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-                                                : String(singleLudoObject.introduction)
+                                  {/*the circle button for GO */}
+                                <div className="card-button_circle">
+                                  <div className="card-button_text"
+                                    id={`go-${index}`}
+                                    onClick={this.handleCardLink}
+                                  >
+                                  Go
+                                  </div>
+                                </div>
+                              </div>
+                              <div className={`card-top__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
+                              {/*stage: shows red/green rectangle that indicates this card is available or not*/}
+                              </div>
+                              <div className="card-front-info">
+                                <div className="card-star"></div>
+                                <div className={`card-bottom ${categoryClassArray[singleLudoObject.category_id]}`}>
+                                  <img
+                                      className="card-front__category-icon"
+                                      src={iconArray[singleLudoObject.category_id]}
+                                  />
+                                </div>
+                                <div className="title">{singleLudoObject.title}</div>
+                                <div className="duration">{singleLudoObject.duration} days</div>
+                                <div className="card-marble">
+                                  <img
+                                      className="card-marble__icon"
+                                      src={marbleIcon}
+                                      />
+                                  <span className="card-marble__number">{singleLudoObject.marbles}</span>
+                                </div>
+                              </div>
+                              <div className="card-views"> </div>
+                            </div>
+
+            //                    <div
+            //                        className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ''} ${categoryClassArray[singleLudoObject.category_id]}`}
+            //                        id={index}
+            //                        onClick={buttonClickHandler}
+            //                    >
+            //                        <div className={categoryClassArray[singleLudoObject.category_id]}>
+            //                            <div className="card-star">
+            //                            </div>
+            //                            <div className="card-introduction">
+            //                                {
+            //                                    String(singleLudoObject.introduction).length > 20 ?
+            //                                    String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+            //                                    : String(singleLudoObject.introduction)
                                                 // String(singleLudoObject.introduction)
-                                            }
-                                        </div>
-                                        <div className="card-hashtags">
+            //                                }
+            //                            </div>
+            /*                            <div className="card-hashtags">
                                             {
                                                 // TODO: Use presentational component and proptypes to receive ludolist data
                                                 Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
                                                     singleLudoObject.tags.map((tagString, tagIndex) => {
                                                         return (
-                                                            /* components/_tags.scss */
+                                                            /* components/_tags.scss *//*
                                                             <span
                                                                 className="react-tagsinput-tag--card"
                                                                 key={`tag-${tagIndex}`}
                                                             >
-                                                                #{tagString}
+                                                                {tagString}
                                                             </span>
                                                         );
                                                     })
                                                 : null
                                             }
-                                        </div>
-                                    </div>
-                                    <div className={`card-bottom ${categoryClassArray[singleLudoObject.category_id]}`}>
-                                        <img
-                                            className="card-bottom__category-icon"
-                                            src={iconArray[singleLudoObject.category_id]}
-                                        />
-                                        <div className={`card-bottom__triangle ${categoryClassArray[singleLudoObject.category_id]}`}>
-                                            <div 
-                                                className={`card-bottom__text ${categoryClassArray[singleLudoObject.category_id]}`}
-                                                id={`go-${index}`}
-                                                onClick={this.handleCardLink}
-                                            >
-                                                go
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            //                            </div>
+            /*                             <div className="card-button_circle">
+                                          <div className="card-button_text"
+                                          id={`go-${index}`}
+                                          onClick={this.handleCardLink}
+                                          >
+                                            Go
+                                          </div> */
+            //                            </div>
+            //                        </div>
+            //                    </div>
+
+
+            //                </div>
                         );
                     })
                 }
