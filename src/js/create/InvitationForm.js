@@ -411,8 +411,8 @@ export default class InvitationForm extends React.Component {
                         </button>
                     </div>
                 </form>
-                <InvitationMessage 
-                    friend_id={this.props.params.friend_id}
+                <InvitationMessage
+                    {...this.props}
                     isMessageDialogOpen={this.state.isMessageDialogOpen}
                     ludoCreateForm={this.state.ludoCreateForm}
                     onRequestClose={this.handleMessageDialogClose}

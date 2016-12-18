@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import axios from '../axios-config';
 
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
@@ -12,13 +13,14 @@ export default class InvitationMessage extends Component {
         super(props);
         this.state = {
             isDialogOfMessageAlreadySendOpen: false,
-            denounceTypeArray: ['Ludo', '回報', '留言'],
+            isDialogOfMessageSendingOpen: false,
             isSendingError: false,
             message: ''
         }
         this.handleMessageAlreadySend = this.handleMessageAlreadySend.bind(this);
         this.handleMessageChange = this.handleMessageChange.bind(this);
         this.handleMessageSend = this.handleMessageSend.bind(this);
+        this.handleMessageSending = this.handleMessageSending.bind(this);
         this.handleSendingError = this.handleSendingError.bind(this);
     }
 
@@ -40,16 +42,26 @@ export default class InvitationMessage extends Component {
         const ludoInvitationPost = {
             ...this.props.ludoCreateForm,
             type: 'invite',
-            friend_id: this.props.friend_id, 
+            friend_id: this.props.params.friend_id, 
             message: this.state.message
         };
         this.props.onRequestClose();
+        this.setState({
+            isDialogOfMessageSendingOpen: true
+        });
         axios.post('/apis/ludo', ludoInvitationPost)
         .then((response) => {
             if (response.data.status === '200') {
                 this.setState({
-                    isDialogOfMessageAlreadySendOpen: true
+                    isDialogOfMessageAlreadySendOpen: true,
+                    isDialogOfMessageSendingOpen: false
                 });
+                const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                getUserBasicData();
+                handleShouldProfileUpdate(true);
+                const { ludo, ludo_id } = response.data;
+                updateCurrentFormValue(ludo);
+                browserHistory.push(`/ludo/${ludo_id}`);
             } else {
                 this.setState({
                     isSendingError: true
@@ -63,6 +75,12 @@ export default class InvitationMessage extends Component {
                 isSendingError: true
             });
             console.error('InvitationMessage handleMessageSend error', error);
+        });
+    }
+
+    handleMessageSending(event) {
+        this.setState({
+            isDialogOfMessageSendingOpen: false
         });
     }
 
@@ -102,6 +120,14 @@ export default class InvitationMessage extends Component {
                 onTouchTap={this.handleSendingError}
             />
         ];
+        const waitActions = [
+            <RaisedButton
+                disabled={!this.state.handleMessageAlreadySend}
+                label="知道了！"
+                primary
+                onTouchTap={this.handleMessageSending}
+            />
+        ];
         return (
             <div>
                 <Dialog
@@ -130,6 +156,14 @@ export default class InvitationMessage extends Component {
                     open={this.state.isSendingError}
                 >
                     Ludo邀請送出錯誤，請再試一次；若問題仍發生，請聯絡開發人員
+                </Dialog>
+                <Dialog
+                    actions={waitActions}
+                    modal
+                    onRequestClose={this.handleMessageSending}
+                    open={this.state.isDialogOfMessageSendingOpen}
+                >
+                    等待Ludo邀請送出...
                 </Dialog>
             </div>
         );
