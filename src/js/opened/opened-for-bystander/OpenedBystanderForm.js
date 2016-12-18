@@ -28,7 +28,21 @@ export default class OpenedBystanderForm extends React.Component {
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        // this._addNotification = this._addNotification.bind(this);
+        // this._notificationSystem = null;
     }
+
+    // _addNotification(event) {
+    //     event.preventDefault();
+    //     this._notificationSystem()._addNotification({
+    //         message: 'Notification message',
+    //         level: 'success'
+    //     });
+    // }
+
+    // componentDidMount() {
+        // this._notificationSystem = this.refs.notificationSystem;
+    // }
 
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
@@ -103,6 +117,8 @@ export default class OpenedBystanderForm extends React.Component {
                 });
             });
         } else {
+            window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+            console.error('OpenedBystanderForm error in state isJoinButtonClickable');
             this.setState({
                 isJoinButtonClickable: true
             });
@@ -232,7 +248,7 @@ export default class OpenedBystanderForm extends React.Component {
                                             tags.map((tagString, index) => {
                                                 return (
                                                     <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                        #{tagString}
+                                                        {tagString}
                                                     </span>
                                                 );
                                             })

@@ -84,10 +84,12 @@ $new_skill-text-color: #fdcaad;
         @extend %as_wide_as_parent;
         font-weight: 600;
         word-wrap: break-word;
-        backface-visibility: hidden;
-        transform: rotateY(180deg);
+        //backface-visibility: hidden;
+        // transform: rotateY(180deg);
         transition-duration: 0.3s;
         transition-timing-function: linear;
+        transform-style: preserve-3d;
+        perspective: 1000px;
 
         .card-top {
             padding: 30px 0 60px 0;
@@ -103,14 +105,7 @@ $new_skill-text-color: #fdcaad;
                 margin-bottom: 15px;
             }
         }
-/*        .card-top__stage {
-            align-self: flex-end;
-            margin-left: auto;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 0 0 30px 30px;
-        }*/
+
         .card-marble {
             @extend %relative;
             @extend %flex;
@@ -142,17 +137,21 @@ $new_skill-text-color: #fdcaad;
                 height: 0;
                 border-style: solid;
                 border-width:  0 30px 30px 0 ;
+                position: absolute;
+                top: 0;
+                right: 0;
             }
             .card-top__stage--opened {
                 border-color: transparent $green_opened transparent transparent;
            }
             .card-top__stage--closed {
                 border-color: transparent $red_active  transparent transparent;
+
             }
     }
 
     .card-back {
-        @extend %absolute;
+      //  @extend %absolute;
         left: 10px;
         top: 7px;
         width: 200px;
@@ -244,9 +243,21 @@ $new_skill-text-color: #fdcaad;
 
 /* card flip animation */
 .card-flip {
-    transform: rotateY(0deg);
+    //backface-visibility: hidden;
+    transform: rotateY(180deg);
     transition-duration: 0.3s;
     transition-timing-function: linear;
+}
+.card-flip .card-back{
+  backface-visibility: visible;
+  transition-duration: 0.3s;
+  transition-timing-function:linear;
+}
+
+.card-flip  .card-top__stage {
+  opacity: 0;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
 }
 
 /* card background color by different category */

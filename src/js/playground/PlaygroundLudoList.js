@@ -97,11 +97,11 @@ export default class PlaygroundLudoList extends React.Component {
                                 key={`card-${index}`}
                             >
                             <div
-                                className={`card card--playground card-front${isThisCardFlipped ? '' : ' card-flip'}`}
+                                className={`card card--playground card-front${isThisCardFlipped ? ' card-flip' : ''}`}
                                 id={index}
                                 onClick={buttonClickHandler}
                             >
-                              <div className={categoryClassArray[singleLudoObject.category_id]}
+                              <div className={`card-back ${categoryClassArray[singleLudoObject.category_id]}`}
                               id={index}
                               onClick={buttonClickHandler}>
                               {/*three information: star(for user to highlight this card), category, and introduction*/}

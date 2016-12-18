@@ -45,9 +45,9 @@ export default class LudoList extends React.Component {
 
     handleCardStage(stage) {
         if (stage === 1) {
-            return 'card-bottom__stage--opened';
+            return 'card-top__stage--opened';
         } else {
-            return 'card-bottom__stage--closed';
+            return 'card-top__stage--closed';
         }
     }
 
@@ -105,7 +105,7 @@ export default class LudoList extends React.Component {
                                 key={`card-${index}`}
                             >
                                 {/* form-card is defined in components/_form.scss, others are defined in components/_card.scss */}
-                                <div 
+                                <div
                                     className={`form-card card--playground card-front${isThisCardFlipped ? '' : ' card-flip'}`}
                                     id={index}
                                     onClick={buttonClickHandler}
@@ -126,7 +126,7 @@ export default class LudoList extends React.Component {
                                         <div className={`card-bottom__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
                                     </div>
                                 </div>
-                                <div 
+                                <div
                                     className={`form-card card--playground card-back card-back--form-list${isThisCardFlipped ? " card-flip" : ""} ${categoryClassArray[singleLudoObject.category_id]}`}
                                     id={index}
                                     onClick={buttonClickHandler}
@@ -145,13 +145,13 @@ export default class LudoList extends React.Component {
                                             {
                                                 // TODO: Use presentational component and proptypes to receive ludolist data
                                                 Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                                    singleLudoObject.tags.map((tagString, tagIndex) => {
+                                                    singleLudoObject.tags.map( (tagString, tagIndex) => {
                                                         return (
                                                             <span
                                                                 className="react-tagsinput-tag--card"
                                                                 key={`tag-${tagIndex}`}
                                                             >
-                                                                #{tagString}
+                                                                {tagString}
                                                             </span>
                                                         );
                                                     })

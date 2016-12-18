@@ -218,7 +218,7 @@ export default class OpenedStarterForm extends React.Component {
                                                 tags.map((tagString, index) => {
                                                     return (
                                                         <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                            #{tagString}
+                                                            {tagString}
                                                         </span>
                                                     );
                                                 })
