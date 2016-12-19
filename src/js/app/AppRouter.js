@@ -38,7 +38,7 @@ const isLoggedIn = (nextState, replace, callback) => {
     axios.get('/apis/user')
     .then((response) => {
         if(response.data.status != '200') {
-            replace(`/login`);
+            replace('/login');
         }
         callback();
     })
