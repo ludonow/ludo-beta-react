@@ -44,6 +44,7 @@ export default class App extends React.Component {
         this.clearCurrentFormValue = this.clearCurrentFormValue.bind(this);
         this.getUserBasicData = this.getUserBasicData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
+        this.getFilteredLudoList = this.getFilteredLudoList.bind(this);
         this.getLatestLudoList = this.getLatestLudoList.bind(this);
         this.getProfileData = this.getProfileData.bind(this);
         this.getProfileWillLudoData = this.getProfileWillLudoData.bind(this);
@@ -156,6 +157,23 @@ export default class App extends React.Component {
         })
         .catch((error) => {
             console.error('app getCurrentLudoData error', error);
+        });
+    }
+
+    getFilteredLudoList(stage) {
+        axios.get(`/apis/ludo?stage=${stage}`)
+        .then((response) => {
+            if(response.data.status === '200') {
+                this.setState({
+                    ludoList: response.data.ludoList.Items
+                });
+            } else {
+                console.error('app getFilteredLudoList else response from server: ', response);
+                console.error('app getFilteredLudoList else message from server: ', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('app getFilteredLudoList error', error);
         });
     }
 
@@ -378,6 +396,8 @@ export default class App extends React.Component {
         return (
             <div>
                 <Header
+                    getFilteredLudoList={this.getFilteredLudoList}
+                    getLatestLudoList={this.getLatestLudoList}
                     isProfile={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
                 />

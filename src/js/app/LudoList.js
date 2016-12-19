@@ -44,10 +44,22 @@ export default class LudoList extends React.Component {
     }
 
     handleCardStage(stage) {
-        if (stage === 1) {
-            return 'card-bottom__stage--opened';
-        } else {
-            return 'card-bottom__stage--closed';
+        switch (stage) {
+            case 0: 
+                return 'card-bottom__stage--0';
+                break;
+            case 1:
+                return 'card-bottom__stage--1';
+                break;
+            case 2:
+                return 'card-bottom__stage--2';
+                break;
+            case 3:
+                return 'card-bottom__stage--3';
+                break;
+            default:
+                return 'card-bottom__stage--0';
+                break;
         }
     }
 

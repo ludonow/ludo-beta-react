@@ -15,7 +15,7 @@ import othersIcon from '../../images/category_icon/others.svg';
 
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
-export default class CreateForm extends React.Component {
+export default class TemplateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,14 +32,14 @@ export default class CreateForm extends React.Component {
             category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             currentHoverValue: 3,
             hashtags: [],
-            isCategorySelected: false,
-            isDurationSelected: false,
-            isMarblesSelected: false,
-            isSuccesfullyCreateLudo: false,
+            hasGotData: false,
+            isCategorySelected: true,
+            isDurationSelected: true,
+            isMarblesSelected: true,
+            isSubmitButtonClickable: false,
             maxDuration: 14,
             maxLengthOfIntroduction: 140,
             maxMarbles: 50,
-            suggestions: ["Banana", "Mango", "Pear", "Apricot"]
         };
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
@@ -50,9 +50,21 @@ export default class CreateForm extends React.Component {
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleTemplateCreate = this.handleTemplateCreate.bind(this);
+        this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { router_currentFormValue } = nextProps;
+        if (!this.state.hasGotData && router_currentFormValue) {
+            this.setState({
+                currentHoverValue: router_currentFormValue.duration,
+                hasGotData: true,
+                isSubmitButtonClickable: true,
+                ludoCreateForm: Object.assign(this.state.ludoCreateForm, router_currentFormValue)
+            });
+        }
     }
 
     handleCategoryChange(selectedCategory) {
@@ -184,14 +196,16 @@ export default class CreateForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
-        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
+        if (!this.props.currentUserId) {
+            browserHistory.push('/login');
+        } else if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
             .then((response) => {
                 if (response.data.status === '200') {
                     this.setState({
-                        isSuccesfullyCreateLudo: true
+                        isSubmitButtonClickable: true
                     });
                     const { ludo_id } = response.data;
                     /* get ludo information after create ludo post */
@@ -244,70 +258,43 @@ export default class CreateForm extends React.Component {
         }
     }
 
-    handleTemplateCreate(event) {
+    handleTemplateDelete(event) {
         event.preventDefault();
-        const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
-        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
-            let { checkpoint } = ludoCreateForm;
-            checkpoint = checkpoint.sort((a, b) => { return a - b });
-            const ludoTemplateForm = {
-                ...ludoCreateForm,
-                type: 'blank'
-            }
-            axios.post('/apis/ludo', ludoTemplateForm)
-            .then((response) => {
-                if (response.data.status === '200') {
-                    this.setState({
-                        isSuccesfullyCreateLudo: true
-                    });
-                    const { ludo_id } = response.data;
-                    /* get ludo information after create ludo post */
-                    axios.get(`/apis/ludo/${ludo_id}`)
-                    .then((response) => {
-                        if (response.data.status === '200') {
-                            const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
-                            getUserBasicData();
-                            handleShouldProfileUpdate(true);
-                            updateCurrentFormValue(response.data.ludo);
-                            browserHistory.push(`/ludo/${ludo_id}`);
-                        } else {
-                            window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
-                            console.error('get after create post response from server: ', response);
-                            console.error('get after create post message from server: ', response.data.message);
-                        }
-                    })
-                    .catch((error) => {
-                        window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                        console.error('get after create post error', error);
-                    });
+        console.log('Delete template!');
+        /* TODO: Use notification confirming delete ludo */
+        this.setState({
+            isSubmitButtonClickable: false
+        });
+        const isSureToDelete = window.confirm('你確定要刪除這個Ludo模板嗎？');
+        // const isSureToDelete = window.confirm('Are you sure to delete this template ludo?');
+        if (isSureToDelete) {
+            axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
+            .then(response => {
+                if(response.data.status == '200') {
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    browserHistory.push('/playground');
                 } else {
-                    window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('create post message from server: ', response.data.message);
+                    window.alert('刪除Ludo模板發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.error('OpenedStarterForm delete else response from server: ', response);
+                    console.error('OpenedStarterForm delete else message from server: ', response.data.message);
+                    this.setState({
+                        isSubmitButtonClickable: true
+                    });
                 }
             })
-            .catch((error) => {
-                window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error('create post error', error);
+            .catch(error => {
+                window.alert('刪除Ludo模板發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                console.error('OpenedStarterForm delete error', error);
+                this.setState({
+                    isSubmitButtonClickable: true
+                });
             });
-            
-        } else if (!isCategorySelected) {
-            // window.alert('You haven\'t select the category.');
-            window.alert('尚未選擇種類！');
-        } else if (ludoCreateForm.title === '') {
-            // window.alert('You haven\'t fill in the title.');
-            window.alert('尚未輸入標題！');
-        } else if (!isMarblesSelected) {
-            // window.alert('You haven\'t select the marble number.');
-            window.alert('尚未選擇彈珠數！');
-        } else if (!isDurationSelected) {
-            // window.alert('You haven\'t select the duration.');
-            window.alert('尚未選擇持續天數！');
-        } else if (ludoCreateForm.introduction === '') {
-            // window.alert('You haven\'t fill in the introduction.');
-            window.alert('尚未輸入介紹文字！');
-        } else if (ludoCreateForm.tags.length === 0) {
-            // window.alert('You haven\'t fill in the hash tags.');
-            window.alert('尚未輸入#標籤！');
+        } else {
+            this.setState({
+                isSubmitButtonClickable: true
+            });
         }
     }
 
@@ -353,8 +340,7 @@ export default class CreateForm extends React.Component {
     }
 
     render() {
-        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
-        const { hashtags, suggestions } = this.state;
+        const { category, currentHoverValue, hashtags, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= currentHoverValue) {
@@ -424,17 +410,20 @@ export default class CreateForm extends React.Component {
                                 className="dropdown-list"
                                 data={category}
                                 // defaultValue={'select a category'}
-                                defaultValue={'選擇一個種類'}
                                 onChange={this.handleCategoryChange}
+                                value={category[ludoCreateForm.category_id-1]}
                             />
                         </div>
                         <div className="text-field-container">
                             <span className="text-field-label">標題:</span>
-                            <input className="text-field" type="text"
+                            <input
+                                className="text-field"
+                                type="text"
                                 // placeholder="Title"
                                 placeholder="輸入想要的標題"
                                 maxLength={this.handleTitleMaxLength()}
                                 onChange={this.handleTitleChange}
+                                value={ludoCreateForm.title}
                             />
                         </div>
                         {/* components/_marbles.scss */}
@@ -450,9 +439,11 @@ export default class CreateForm extends React.Component {
                                 }
                             </div>
                             <div className="ludo-create-information-slider--marbles">
-                                <RcSlider max={maxMarbles} min={1} 
-                                    value={ludoCreateForm.marbles}
+                                <RcSlider
+                                    max={maxMarbles}
+                                    min={1}
                                     onChange={this.handleMarblesChange}
+                                    value={ludoCreateForm.marbles}
                                 />
                             </div>
                         </div>
@@ -468,7 +459,6 @@ export default class CreateForm extends React.Component {
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
                             <RcSlider 
-                                defaultValue={ludoCreateForm.duration}
                                 max={maxDuration}
                                 min={3} 
                                 onChange={this.handleDurationValue}
@@ -478,35 +468,38 @@ export default class CreateForm extends React.Component {
                     </div>
                     <div className="text-label">介紹:</div>
                     <div className="text-field-container text-field-container--introduction">
-                        <textarea 
+                        <textarea
                             className="text-field--introduction" 
                             // placeholder="Introduction" 
+                            maxLength={maxLengthOfIntroduction}
                             placeholder={`詳細的說明(中文最多140字)`}
                             onChange={this.handleIntroductionChange}
-                            maxLength={maxLengthOfIntroduction}
+                            value={ludoCreateForm.introduction}
                         />
                         <div className="text-field--hashtag">
                             <TagsInput
                                 inputProps={{maxLength: 30, placeholder:"#標籤"}}
                                 onChange={this.handleTagsChange}
-                                value={hashtags}
+                                value={ludoCreateForm.tags}
                             />
                         </div>
                     </div>
                     {/* components/_submit-button.scss */}
-                    <button 
-                        className="ludo-create-information-submit-button" 
-                        disabled={this.state.isSuccesfullyCreateLudo}
+                    <button
+                        className="ludo-template-information-submit-button" 
+                        disabled={!this.state.isSubmitButtonClickable}
                         type="submit" 
                     >
-                        開始
+                        使用此模板
                     </button>
                     <button
-                        className="ludo-create-information-submit-button" 
-                        disabled={this.state.isSuccesfullyCreateLudo}
-                        onClick={this.handleTemplateCreate}
+                        className="ludo-template-information-submit-button" 
+                        disabled={!this.state.isSubmitButtonClickable 
+                            || !this.props.currentUserId
+                            || this.props.router_currentFormValue.starter_id !== this.props.currentUserId}
+                        onClick={this.handleTemplateDelete} 
                     >
-                        建立模板
+                        刪除此模板
                     </button>
                 </div>
             </form>

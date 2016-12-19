@@ -31,6 +31,17 @@
     // background-color: green;
 }
 
+.ludo-template-information-submit-button {
+    @extend .ludo-create-information-submit-button;
+    width: auto;
+    padding: 0 10px;
+}
+
+.ludo-template-information-submit-button--delete {
+    @extend .ludo-template-information-submit-button;
+    background-color: $orange_button;
+}
+
 .report-submit-button {
     @extend .ludo-create-information-submit-button;
     margin: 10px 0;

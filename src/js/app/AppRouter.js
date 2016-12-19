@@ -14,9 +14,24 @@ import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
+import Template from '../create/Template';
 
-const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander];
-const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander];
+/*
+    auth        statement：
+    0           not login
+    1           stage 1 creator
+    2           stage 1 other players
+    3           stage 2 playerA (creator)
+    4           stage 2 playerB
+    5           stage 2 other players
+    6           stage 3 all
+    7           stage 0 creator
+    8           stage 0 other players
+    9           stage 0 not login (same as 0, may be modified in the future)
+*/
+
+const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
+const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
 
 const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */

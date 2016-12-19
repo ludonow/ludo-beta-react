@@ -23,6 +23,8 @@ export default class OpenedStarterForm extends React.Component {
             maxDuration: 14,
             maxMarbles: 50
         };
+        this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -39,7 +41,7 @@ export default class OpenedStarterForm extends React.Component {
         this.props.clearCurrentFormValue();
     }
 
-    handleDayPickerClass = (value) => {
+    handleDayPickerClass(value) {
         const { checkpoint } = this.props.router_currentFormValue;
         const index = checkpoint.indexOf(value);
         if (index != -1) {
@@ -49,7 +51,7 @@ export default class OpenedStarterForm extends React.Component {
         }
     }
 
-    handleEdit = (event) => {
+    handleEdit(event) {
         event.preventDefault();
         browserHistory.push(`/ludo-edit/${this.props.params.ludo_id}`);
     }
@@ -59,12 +61,11 @@ export default class OpenedStarterForm extends React.Component {
         this.setState({
             isDeleteButtonClickable: false
         });
-        // TODO: Use notification confirming delete ludo 
-        const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
+        /* TODO: Use notification confirming delete ludo */
+        const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
+        // const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
         if (isSureToDelete) {
-            const { currentFormValue, params } = this.props;
-            const { ludo_id } = params;
-            axios.delete(`/apis/ludo/${ludo_id}`)
+            axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
             .then(response => {
                 if(response.data.status == '200') {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;

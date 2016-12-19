@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import IconButton from 'material-ui/IconButton';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
+import HeaderFilter from './HeaderFilter';
 import HeaderFuel from './HeaderFuel';
 // import HeaderLevel from './HeaderLevel';  // unused
 import HeaderLogo from './HeaderLogo';
@@ -13,13 +13,13 @@ import Login from '../Login';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
 
-export default class Header extends React.Component {
+export default class Header extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const { userBasicData } = this.props;
+        const { getFilteredLudoList, getLatestLudoList, userBasicData } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
         let headerProfile;
         if (userBasicData.name) {    // user has login
@@ -32,6 +32,10 @@ export default class Header extends React.Component {
             <div className="header">
                 <div className="header-left">
                     <HeaderLogo />
+                    <HeaderFilter
+                        getFilteredLudoList={getFilteredLudoList}
+                        getLatestLudoList={getLatestLudoList}
+                    />
                 </div>
                 <div className="header-right">
                     <HeaderMarbles marbles={marbles}/>
@@ -53,4 +57,7 @@ export default class Header extends React.Component {
     }
 };
 
-Header.propTypes = { isProfile: React.PropTypes.bool };
+Header.propTypes = { 
+    getFilteredLudoList: PropTypes.func,
+    isProfile: PropTypes.bool
+};
