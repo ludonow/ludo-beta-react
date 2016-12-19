@@ -117,8 +117,8 @@ export default class PlaygroundLudoList extends React.Component {
                                     : String(singleLudoObject.introduction)
                                     /* String(singleLudoObject.introduction)*/
                                     }
-                                    </div>
-                                    <div className="card-hashtags">
+                                  </div>
+                                  <div className="card-hashtags">
                                     {
                                     // TODO: Use presentational component and proptypes to receive ludolist data
                                     Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
@@ -147,17 +147,14 @@ export default class PlaygroundLudoList extends React.Component {
                                   </div>
                                 </div>
                               </div>
-                              <div className={`card-top__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
                               {/*stage: shows red/green rectangle that indicates this card is available or not*/}
-                              </div>
+                              <div className={`card-top__stage ${this.handleCardStage(singleLudoObject.stage)}`} ></div>
                               <div className="card-front-info">
                                 <div className="card-star"></div>
-                                <div className={`card-bottom ${categoryClassArray[singleLudoObject.category_id]}`}>
-                                  <img
-                                      className="card-front__category-icon"
+                                  <img  className="category-icon"
                                       src={iconArray[singleLudoObject.category_id]}
                                   />
-                                </div>
+
                                 <div className="title">{singleLudoObject.title}</div>
                                 <div className="duration">{singleLudoObject.duration} days</div>
                                 <div className="card-marble">
@@ -169,6 +166,8 @@ export default class PlaygroundLudoList extends React.Component {
                                 </div>
                               </div>
                               <div className="card-views"> </div>
+                            </div>
+
                             </div>
 
             //                    <div

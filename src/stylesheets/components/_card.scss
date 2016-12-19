@@ -79,7 +79,7 @@ $new_skill-text-color: #fdcaad;
         background-color: rgba(255, 255, 255, 1);
     }
 
-    .card-front {
+    .card-front{
         @extend %relative;
         @extend %as_wide_as_parent;
         font-weight: 600;
@@ -90,64 +90,68 @@ $new_skill-text-color: #fdcaad;
         transition-timing-function: linear;
         transform-style: preserve-3d;
         perspective: 1000px;
+    //    position: absolute;
+        .card-top__stage {
+            align-self: flex-end;
+            margin-left: auto;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width:  0 30px 30px 0 ;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .card-top__stage--opened {
+            border-color: transparent $green_opened transparent transparent;
+       }
+        .card-top__stage--closed {
+            border-color: transparent $red_active  transparent transparent;
 
-        .card-top {
-            padding: 30px 0 60px 0;
-            @extend %text_center;
-            font-size: 15px;
-
-            .title {
+        }
+        .card-front-info{
+          @extend %absolute;
+          @extend %flex;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+           margin:auto;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+            .card-star {
+              height: 50px;
+            }
+            .category-icon{
+              width:100px;
+              height:100px;
+              }
+              .title {
                 height: 20px;
-                margin-bottom: 20px;
-                padding: 0 30px;
-            }
-            .duration {
+                margin:20px 0 20px 0;
+              }
+              .duration {
                 margin-bottom: 15px;
-            }
+              }
+              .card-marble{
+                justify-content: center;
+                align-items: center;
+                      .card-marble__icon {
+                                  width: 25px;
+                                  height: 25px;
+                              }
+                      .card-marble__number {
+                        @extend %relative;
+                            font-size: 12px;
+                                  color: black;
+                              }}
         }
 
-        .card-marble {
-            @extend %relative;
-            @extend %flex;
-            justify-content: center;
-            align-items: center;
-        }
-            .card-marble__icon {
-                width: 25px;
-                height: 25px;
-            }
-            .card-marble__number {
-                @extend %absolute;
-                font-size: 12px;
-                color: white;
-            }
 
-          .card-bottom {
-            @extend %flex;
-            align-items: center;
-            height: 50px;
-            border-top-color: black;
-            border-top-style: solid;
-            border-top-width: 8px; // 5px;
-        }
-            .card-top__stage {
-                align-self: flex-end;
-                margin-left: auto;
-                width: 0;
-                height: 0;
-                border-style: solid;
-                border-width:  0 30px 30px 0 ;
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
-            .card-top__stage--opened {
-                border-color: transparent $green_opened transparent transparent;
-           }
-            .card-top__stage--closed {
-                border-color: transparent $red_active  transparent transparent;
-
-            }
+            .card-views {
+                    margin-bottom: 50px;
+                }
     }
 
     .card-back {
@@ -209,11 +213,11 @@ $new_skill-text-color: #fdcaad;
 
 
         }
-        .card-bottom {
+/*        .card-bottom {
             @extend %flex;
             align-items: center;
-        }
-        .card-bottom__triangle {
+        }  */
+  /*      .card-bottom__triangle {
                 align-self: flex-end;
                 margin-left: auto;
                 width: 0;
@@ -227,19 +231,17 @@ $new_skill-text-color: #fdcaad;
                 right: 5px;
                 bottom: 5px;
                 color: red;
-            }
+            }*/
 
     .card-back--form-list {
         width: 210px;
     }
-    .card-star {
-        height: 50px;
-    }
-        .card-bottom__category-icon {
+
+  /*      .card-bottom__category-icon {
             justify-content: flex-start;
             height: 30px;
             padding-left: 10px;
-        }
+        } */
 
 /* card flip animation */
 .card-flip {
@@ -278,6 +280,7 @@ $new_skill-text-color: #fdcaad;
     background-color: $study-color;
 }
 .new_skill {
+    color: white;
     background-color: $new_skill-color;
 }
 .unmentionables {
