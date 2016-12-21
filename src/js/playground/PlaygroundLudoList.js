@@ -15,7 +15,7 @@ const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon,
 import marbleIcon from '../../images/marble.png';
 
 const categoryClassArray = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new_skill', 'unmentionables', 'others'];
-
+const category= ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它']
 const masonryOptions = {
     itemSelector: ".grid-item",
     columnWidth: 226,
@@ -110,6 +110,7 @@ export default class PlaygroundLudoList extends React.Component {
                                   <div className="card-star">
                                   </div>
                                   <div className ="card-category">
+                                  {category[singleLudoObject.category_id]}
                                   </div>
                                   <div className="card-introduction">{
                                     String(singleLudoObject.introduction).length > 20 ?
@@ -164,8 +165,9 @@ export default class PlaygroundLudoList extends React.Component {
                                       />
                                   <span className="card-marble__number">{singleLudoObject.marbles}</span>
                                 </div>
+
                               </div>
-                              <div className="card-views"> </div>
+                              <div className="card-views">{singleLudoObject.views}</div>
                             </div>
 
                             </div>

@@ -1,8 +1,6 @@
 // padding
 $card_padding: 15px;
-$grid-item_padding: 7px;
-// $grid-item_padding: 10px;
-
+$grid-item_padding: 7px; // $grid-item_padding: 10px;
 // dimension
 $grid-item_width: 200px;
 $grid-item_total-width: $grid-item_width + 2*13px;
@@ -10,19 +8,18 @@ $detail_equal_to_columns_of_grid_item: 3;
 $grid-item--ludo-detail-information_width: $grid-item_width * $detail_equal_to_columns_of_grid_item + $grid-item_padding * 2 * ($detail_equal_to_columns_of_grid_item - 1);
 $grid-item--profile_width: 520px;
 $grid-item--friend_width: 170px;
-
 // color
 $card_border-color: hsla(0, 0%, 0%, 0.5);
 $green_opened: #009944;
 $red_active: #e60012;
-$lifestyle-color: rgba(83, 206, 244, 0.8);   // #53cef4;
+$lifestyle-color: rgba(83, 206, 244, 0.8);
+// #53cef4;
 $read-color: #535cf9;
 $exercise-color: #81ea9f;
 $study-color: #ff6d55;
 $new_skill-color: #f2f297;
-$unmentionables-color: #7f297d;
+$unmentionables-color: rgba(127, 41, 125, 0.8);
 $others-color: #f95ab1;
-
 $lifestyle-triangle-color: #dcf5fc;
 $read-triangle-color: #dcdefd;
 $exercise-triangle-color: #e5faeb;
@@ -30,194 +27,228 @@ $study-triangle-color: #ffe1dd;
 $new_skill-triangle-color: #fcfcea;
 $unmentionables-triangle-color: #e5d4e5;
 $others-triangle-color: #fddeef;
-
 $new_skill-text-color: #fdcaad;
 
 .grid {
     @extend %relative;
     @extend %margin_center_x;
 }
-    .grid-item {
-        width: $grid-item_width;
-        padding: 7px 10px;
-    }
-    .grid-item--ludo-detail-information {
-        width: $grid-item--ludo-detail-information_width;
-        height: 1000px;
-        padding-top: $grid-item_padding;
-    }
-    .grid-item--profile {
-        width: $grid-item--profile_width;
-        padding: $grid-item_padding;
-    }
-    .grid-item--friend {
-        @extend .grid-item;
-        width: $grid-item--friend_width;
-    }
 
-    .stamp {
-        @extend .grid-item;
-        @extend %fixed;
-        @extend %right;
-        @extend %bottom;
-    }
+.grid-item {
+    width: $grid-item_width;
+    padding: 7px 10px;
+}
 
-    .card {
-        background-color: white;
-        @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
-        &:hover {
-            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.19);
-            @include transition-duration(0.3s);
-        }
-    }
+.grid-item--ludo-detail-information {
+    width: $grid-item--ludo-detail-information_width;
+    height: 1000px;
+    padding-top: $grid-item_padding;
+}
 
-    .card--playground {
-        @extend %clickable;
-        border-color: rgba(0,0,0,0.8);
-        border-style: solid;
-        border-width: 8px; //5px;
-        background-color: rgba(255, 255, 255, 1);
-    }
+.grid-item--profile {
+    width: $grid-item--profile_width;
+    padding: $grid-item_padding;
+}
 
-    .card-front{
-        @extend %relative;
-        @extend %as_wide_as_parent;
-        font-weight: 600;
-        word-wrap: break-word;
-        //backface-visibility: hidden;
-        // transform: rotateY(180deg);
-        transition-duration: 0.3s;
-        transition-timing-function: linear;
-        transform-style: preserve-3d;
-        perspective: 1000px;
+.grid-item--friend {
+    @extend .grid-item;
+    width: $grid-item--friend_width;
+}
+
+.stamp {
+    @extend .grid-item;
+    @extend %fixed;
+    @extend %right;
+    @extend %bottom;
+}
+
+.card {
+    background-color: white;
+    @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
+
+    &:hover {
+        box-shadow: 0 4px 20px 0 rgba(0,0,0,0.19);
+        @include transition-duration(0.3s);
+    }
+}
+
+.card--playground {
+    @extend %clickable;
+    border-color: rgba(0,0,0,0.8);
+    border-style: solid;
+    border-width: 8px; //5px;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.card-front {
+    @extend %relative;
+    @extend %as_wide_as_parent;
+    font-weight: 600;
+    word-wrap: break-word;
+    //backface-visibility: hidden;
+    // transform: rotateY(180deg);
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+    transform-style: preserve-3d;
+    perspective: 1000px;
     //    position: absolute;
-        .card-top__stage {
-            align-self: flex-end;
-            margin-left: auto;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width:  0 30px 30px 0 ;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-        .card-top__stage--opened {
-            border-color: transparent $green_opened transparent transparent;
-       }
-        .card-top__stage--closed {
-            border-color: transparent $red_active  transparent transparent;
-
-        }
-        .card-front-info{
-          @extend %absolute;
-          @extend %flex;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-           margin:auto;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-            .card-star {
-              height: 50px;
-            }
-            .category-icon{
-              width:100px;
-              height:100px;
-              }
-              .title {
-                height: 20px;
-                margin:20px 0 20px 0;
-              }
-              .duration {
-                margin-bottom: 15px;
-              }
-              .card-marble{
-                justify-content: center;
-                align-items: center;
-                      .card-marble__icon {
-                                  width: 25px;
-                                  height: 25px;
-                              }
-                      .card-marble__number {
-                        @extend %relative;
-                            font-size: 12px;
-                                  color: black;
-                              }}
-        }
-
-
-            .card-views {
-                    margin-bottom: 50px;
-                }
+    .card-top__stage {
+        align-self: flex-end;
+        margin-left: auto;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 30px 30px 0;
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 
-    .card-back {
-      //  @extend %absolute;
-        left: 10px;
-        top: 7px;
-        width: 200px;
-        word-wrap: break-word;
-        @extend %text_center;
-        font-size: 14px;
-        backface-visibility: hidden;
-        transform: rotateY(180deg);
-        transition-duration: 0.3s;
-        transition-timing-function: linear;
+    .card-top__stage--opened {
+        border-color: transparent $green_opened transparent transparent;
+    }
 
-        .card-introduction {
-            @extend %flex;
-            align-items: center;
-            justify-content: center;
+    .card-top__stage--closed {
+        border-color: transparent $red_active transparent transparent;
+    }
+
+    .card-front-info {
+        @extend %absolute;
+        @extend %flex;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .card-star {
             height: 50px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            padding-top: 40px;
-            padding-right: 30px;
-            padding-left: 30px;
-            line-height: 1.3;
         }
-        .card-hashtags {
-            @extend %relative;
-            height: 102px;
-            padding-right: 20px;
-            padding-left: 20px;
-            overflow-x: hidden;
-            overflow-y: auto;
-            /* scroll bar */
-            &::-webkit-scrollbar {
-                width: 4px;
-                height: 4px;
+
+        .category-icon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .title {
+            height: 20px;
+            margin: 20px;
+        }
+
+        .duration {
+            margin-bottom: 15px;
+        }
+
+        .card-marble {
+          //  @extend %relative;
+            text-align: center;
+
+            .card-marble__icon {
+                width: 25px;
+                height: 25px;
             }
-            /* Handle */
-            &::-webkit-scrollbar-thumb {
-                background-color: $g_background_gray;
-                -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+
+            .card-marble__number {
+                @extend %absolute;
+                left: 0;
+                right: 0;
+                margin: auto;
+                font-size: 12px;
+                color: white;
+                line-height: 25px; //When line-height equals to div, it will be centered.
             }
         }
-        .card-button_circle{
-          @include circle(40px, #fff);
-          line-height:40px;
-          display:inline-block;
-          box-shadow:0 0 0 2px black;
-          margin-bottom: 10px;
-          color:black;
-          &:hover {
-              @include circle(40px, gray);//顏色要再改
-              @include transition-duration(0.25s);
-          }
-          }
+    }
+    .card-views {
+        backface-visibility: hidden;
+        font-size:12px;
+        @extend %absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+}
+
+.card-back {
+    //  @extend %absolute;
+    left: 10px;
+    top: 7px;
+    width: 200px;
+    word-wrap: break-word;
+    @extend %text_center;
+    font-size: 14px;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+
+    .card-information{
+      padding:50px 0;
+      min-height: 105px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction: column;
+
+      .card-introduction {
+          @extend %flex;
+          align-items: center;
+          justify-content: center;
+          height: 50px;
+          //    margin-top: 20px;
+          margin-bottom: 20px;
+          padding-top: 40px;
+          padding-right: 30px;
+          padding-left: 30px;
+          line-height: 1.3;
+      }
+
+      .card-hashtags {
+          @extend %relative;
+          //min-height: 144px;
+          padding-right: 20px;
+          padding-left: 20px;
+          margin-bottom:20px;
+          /* scroll bar */
+          // overflow-x: hidden;
+          // overflow-y: auto;
+          // /* scroll bar */
+          // &::-webkit-scrollbar {
+          //     width: 4px;
+          //     height: 4px;
+          // }
+          // /* Handle */
+          // &::-webkit-scrollbar-thumb {
+          //     background-color: $g_background_gray;
+          //     -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+          // } */
+      }
 
 
 
+    }
+    .card-button_circle {
+        @include circle(40px, #fff);
+        line-height: 40px;
+        display: inline-block;
+        box-shadow: 0 0 0 2px black;
+        margin-bottom: 10px;
+        color: black;
+
+        &:hover {
+            @include circle(40px, gray); //顏色要再改
+            @include transition-duration(0.25s);
         }
+    }
+
+}
 /*        .card-bottom {
             @extend %flex;
             align-items: center;
         }  */
-  /*      .card-bottom__triangle {
+/*      .card-bottom__triangle {
                 align-self: flex-end;
                 margin-left: auto;
                 width: 0;
@@ -232,17 +263,14 @@ $new_skill-text-color: #fdcaad;
                 bottom: 5px;
                 color: red;
             }*/
-
-    .card-back--form-list {
-        width: 210px;
-    }
-
-  /*      .card-bottom__category-icon {
+.card-back--form-list {
+    width: 210px;
+}
+/*      .card-bottom__category-icon {
             justify-content: flex-start;
             height: 30px;
             padding-left: 10px;
         } */
-
 /* card flip animation */
 .card-flip {
     //backface-visibility: hidden;
@@ -250,48 +278,58 @@ $new_skill-text-color: #fdcaad;
     transition-duration: 0.3s;
     transition-timing-function: linear;
 }
-.card-flip .card-back{
-  backface-visibility: visible;
-  transition-duration: 0.3s;
-  transition-timing-function:linear;
+
+.card-flip .card-back {
+    backface-visibility: visible;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
 }
 
-.card-flip  .card-top__stage {
-  opacity: 0;
-  transition-duration: 0.3s;
-  transition-timing-function: linear;
+.card-flip .card-top__stage {
+    opacity: 0;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
 }
 
+.card-flip .card-marble__number{
+  opacity:0;
+  transition-duration: 0.3s;
+}
 /* card background color by different category */
 .lifestyle {
-    color: white;
+  //  color: white;
     background-color: $lifestyle-color;
 }
+
 .read {
-    color: white;
+  //  color: white;
     background-color: $read-color;
 }
+
 .exercise {
-    color: white;
+  //  color: white;
     background-color: $exercise-color;
 }
+
 .study {
-    color: white;
+  //  color: white;
     background-color: $study-color;
 }
+
 .new_skill {
-    color: white;
+  //  color: white;
     background-color: $new_skill-color;
 }
+
 .unmentionables {
-    color: white;
+  //  color: white;
     background-color: $unmentionables-color;
 }
+
 .others {
     color: white;
     background-color: $others-color;
 }
-
 /* card back bottom traiangle color by different category */
 /*
 .card-bottom__triangle.lifestyle {
@@ -316,7 +354,6 @@ $new_skill-text-color: #fdcaad;
     border-color: transparent transparent  $others-triangle-color transparent;
 }
 */
-
 /* card back bottom text color by different category */
 /*
 .card-bottom__text.lifestyle {
