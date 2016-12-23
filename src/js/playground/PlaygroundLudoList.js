@@ -97,7 +97,7 @@ export default class PlaygroundLudoList extends React.Component {
                                 key={`card-${index}`}
                             >
                             <div
-                                className={`card card--playground card-front${isThisCardFlipped ? ' card-flip' : ''}`}
+                                className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
                                 id={index}
                                 onClick={buttonClickHandler}
                             >
@@ -171,54 +171,6 @@ export default class PlaygroundLudoList extends React.Component {
                             </div>
 
                             </div>
-
-            //                    <div
-            //                        className={`card card--playground card-back${isThisCardFlipped ? ' card-flip' : ''} ${categoryClassArray[singleLudoObject.category_id]}`}
-            //                        id={index}
-            //                        onClick={buttonClickHandler}
-            //                    >
-            //                        <div className={categoryClassArray[singleLudoObject.category_id]}>
-            //                            <div className="card-star">
-            //                            </div>
-            //                            <div className="card-introduction">
-            //                                {
-            //                                    String(singleLudoObject.introduction).length > 20 ?
-            //                                    String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-            //                                    : String(singleLudoObject.introduction)
-                                                // String(singleLudoObject.introduction)
-            //                                }
-            //                            </div>
-            /*                            <div className="card-hashtags">
-                                            {
-                                                // TODO: Use presentational component and proptypes to receive ludolist data
-                                                Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                                    singleLudoObject.tags.map((tagString, tagIndex) => {
-                                                        return (
-                                                            /* components/_tags.scss *//*
-                                                            <span
-                                                                className="react-tagsinput-tag--card"
-                                                                key={`tag-${tagIndex}`}
-                                                            >
-                                                                {tagString}
-                                                            </span>
-                                                        );
-                                                    })
-                                                : null
-                                            }
-            //                            </div>
-            /*                             <div className="card-button_circle">
-                                          <div className="card-button_text"
-                                          id={`go-${index}`}
-                                          onClick={this.handleCardLink}
-                                          >
-                                            Go
-                                          </div> */
-            //                            </div>
-            //                        </div>
-            //                    </div>
-
-
-            //                </div>
                         );
                     })
                 }
