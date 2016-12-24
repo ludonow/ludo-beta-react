@@ -30,11 +30,12 @@ export default class App extends React.Component {
             isOpeningActivePage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
+            lastEvaluatedKey: {},
+            ludoList: [],
             shouldLudoListUpdate: false,
             shouldProfileUpdate: false,
             shouldReportUpdate: false,
             shouldUserBasicDataUpdate: false,
-            ludoList: [],
             profileWillLudoData: [],
             profileLudoingData: [],
             profileDidLudoData: [],
@@ -182,6 +183,7 @@ export default class App extends React.Component {
         .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
+                    lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
                     ludoList: response.data.ludoList.Items
                 });
             } else {
@@ -398,7 +400,8 @@ export default class App extends React.Component {
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
                     getLatestLudoList={this.getLatestLudoList}
-                    isProfile={this.state.isOpeningProfilePage}
+                    isOpeningLudoListPage={this.state.isOpeningLudoListPage}
+                    isOpeningProfilePage={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
                 />
                 <Sidebar

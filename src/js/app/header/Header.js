@@ -19,7 +19,7 @@ export default class Header extends Component {
     }
 
     render() {
-        const { getFilteredLudoList, getLatestLudoList, userBasicData } = this.props;
+        const { getFilteredLudoList, getLatestLudoList, isOpeningLudoListPage, isOpeningProfilePage, userBasicData } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
         let headerProfile;
         if (userBasicData.name) {    // user has login
@@ -32,16 +32,21 @@ export default class Header extends Component {
             <div className="header">
                 <div className="header-left">
                     <HeaderLogo />
-                    <HeaderFilter
-                        getFilteredLudoList={getFilteredLudoList}
-                        getLatestLudoList={getLatestLudoList}
-                    />
+                    {
+                        isOpeningLudoListPage ? 
+                            <HeaderFilter
+                                getFilteredLudoList={getFilteredLudoList}
+                                getLatestLudoList={getLatestLudoList}
+                            />
+                        :
+                            null
+                    }
                 </div>
                 <div className="header-right">
                     <HeaderMarbles marbles={marbles}/>
                     <HeaderFuel heart={heart} />
                         {
-                            this.props.isProfile ? 
+                            isOpeningProfilePage ? 
                                 null
                             :
                                 <HeaderRate success_rate={success_rate} win_rate={win_rate} /> 
@@ -52,12 +57,15 @@ export default class Header extends Component {
                     </div>
                 </div>
             </div>
-            // {this.props.isProfile ? <HeaderLevel />: null }
+            // {isOpeningProfilePage ? <HeaderLevel />: null }
         );
     }
 };
 
 Header.propTypes = { 
     getFilteredLudoList: PropTypes.func,
-    isProfile: PropTypes.bool
+    getLatestLudoList: PropTypes.func,
+    isOpeningLudoListPage: PropTypes.bool,
+    isOpeningProfilePage: PropTypes.bool,
+    userBasicData: PropTypes.object
 };
