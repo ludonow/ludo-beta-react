@@ -3,7 +3,8 @@
 //    width: $grid-item_total-width*5;
     @extend %margin_center_x;
     margin-top: 77px;
-
+    word-break: break-all;
+    
     -webkit-animation: slide-back 0.35s forwards;
     animation: slide-back 0.35s forwards;
 }
