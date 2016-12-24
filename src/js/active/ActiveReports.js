@@ -486,9 +486,7 @@ export default class ActiveReports extends React.Component {
                 isPopOverOfEditOpen: false
             });
             if (report_id) {
-                const { router_currentFormValue } = this.props;
-                const { ludo_id } = router_currentFormValue;
-                axios.delete(`apis/report/${report_id}/${ludo_id}`)
+                axios.delete(`apis/report/${report_id}`)
                 .then(response => {
                     if(response.data.status === '200'){
                         this.props.handleShouldReportUpdate(true);
@@ -682,7 +680,7 @@ export default class ActiveReports extends React.Component {
                                                                     accept={"image/*"}
                                                                     // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
-                                                                    maxSize={5242880}
+                                                                    maxSize={2000000}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
                                                                 >
@@ -755,7 +753,7 @@ export default class ActiveReports extends React.Component {
                                                                     className="react-tagsinput-tag report-tag"
                                                                     key={`report-tag-${index}`}
                                                                 >
-                                                                    #{tagString}
+                                                                    {tagString}
                                                                 </span>
                                                             );
                                                         })
@@ -854,7 +852,7 @@ export default class ActiveReports extends React.Component {
                                                                     accept={"image/png", "image/pjepg", "image/jpeg"}
                                                                     // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
-                                                                    maxSize={5242880}
+                                                                    maxSize={2000000}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
                                                                 >
@@ -927,7 +925,7 @@ export default class ActiveReports extends React.Component {
                                                                     className="react-tagsinput-tag report-tag"
                                                                     key={`report-tag-${index}`}
                                                                 >
-                                                                    #{tagString}
+                                                                    {tagString}
                                                                 </span>
                                                             );
                                                         })

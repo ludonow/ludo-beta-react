@@ -305,7 +305,7 @@ export default class ActivePlayerForm extends React.Component {
                             <div className="label-and-introduction--player">
                                 <div className="text-label">介紹:</div>
                                 <div className="introduction-and-tags--player">
-                                    <div className="introduction--player">
+                                    <div className="introduction">
                                         {introduction}
                                     </div>
                                     {/* components/_tags.scss */}
@@ -317,7 +317,7 @@ export default class ActivePlayerForm extends React.Component {
                                                         tags.map((tagString, index) => {
                                                             return (
                                                                 <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                                    #{tagString}
+                                                                    {tagString}
                                                                 </span>
                                                             );
                                                         })
@@ -350,7 +350,7 @@ export default class ActivePlayerForm extends React.Component {
                                     <DropZone 
                                         accept={"image/*"}
                                         className="upload-picture-button"
-                                        maxSize={5242880}
+                                        maxSize={2000000}
                                         onClick={this.handleImageDrop}
                                         onDrop={this.handleImageDrop}
                                     >

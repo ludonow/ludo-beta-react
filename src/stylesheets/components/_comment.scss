@@ -22,11 +22,10 @@
             }
         }
         .comment__message {
-            width: 55%;
+            // width: 80%;
+            width: 120px;
             margin: 5px;
             font-size: 14px;
-            word-wrap: break-word;
-            line-height: 1.1;
             &::-webkit-scrollbar {
                 width: 8px;
             }
