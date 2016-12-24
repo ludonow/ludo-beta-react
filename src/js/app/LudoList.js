@@ -107,11 +107,11 @@ export default class LudoList extends React.Component {
                             >
                                 {/* form-card is defined in components/_form.scss, others are defined in components/_card.scss */}
                                 <div
-                                    className={`form-card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
+                                    className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
-                                <div className={`form-card card-back ${categoryClassArray[singleLudoObject.category_id]}`}
+                                <div className={`card-back ${categoryClassArray[singleLudoObject.category_id]}`}
                                 id={index}
                                 onClick={buttonClickHandler}
                                 >
@@ -181,8 +181,8 @@ export default class LudoList extends React.Component {
                                 </div>
                                 <div className="card-views">{singleLudoObject.views}</div>
 
-</div>
-                                </div>
+                              </div>
+                            </div>
 
 
                         );
