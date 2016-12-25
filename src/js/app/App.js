@@ -371,9 +371,10 @@ export default class App extends React.Component {
 
     handleScrollEvent(event) {
         const edgeOffsetY = 250;
-        const { isInfiniteLoading, lastEvaluatedKey } = this.state;
+        const { isInfiniteLoading, isOpeningLudoListPage, lastEvaluatedKey } = this.state;
         const lastEvaluatedKeyString = JSON.stringify(lastEvaluatedKey);
-        if (!isInfiniteLoading &&
+        if (isOpeningLudoListPage &&
+            !isInfiniteLoading &&
             lastEvaluatedKeyString &&
             document.body.scrollTop + edgeOffsetY >= document.body.scrollHeight - window.innerHeight) {
             this.setState({

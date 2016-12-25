@@ -74,7 +74,8 @@ export default class OpenedBystanderForm extends React.Component {
         this.setState({
             isJoinButtonClickable: false
         });
-        const isSureToJoin = window.confirm(`Are you sure to join?`);
+        // const isSureToJoin = window.confirm('Are you sure to join?');
+        const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
         if (isSureToJoin) {
             const { ludo_id } = this.props.params;
             const currentFormValue = this.props.router_currentFormValue;

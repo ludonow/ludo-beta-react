@@ -78,7 +78,7 @@ export default class ActiveReports extends React.Component {
             starterReportList: [],
             whoIsUser: ''
         };
-        this.getRandomAvatarImage = this.getRandomAvatarImage.bind(this);
+        this.getPlayerAvatarImage = this.getPlayerAvatarImage.bind(this);
         this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageDrop = this.handleImageDrop.bind(this);
@@ -142,70 +142,6 @@ export default class ActiveReports extends React.Component {
                 }
             });
 
-            /* get random avatar image and background color */
-            const animalImageArray = [
-                animalImage_0 ,
-                animalImage_1 ,
-                animalImage_2 ,
-                animalImage_3 ,
-                animalImage_4 ,
-                animalImage_5 ,
-                animalImage_6 ,
-                animalImage_7 ,
-                animalImage_8 ,
-                animalImage_9 ,
-                animalImage_10,
-                animalImage_11,
-                animalImage_12,
-                animalImage_13,
-                animalImage_14,
-                animalImage_15,
-                animalImage_16,
-                animalImage_17,
-                animalImage_18,
-                animalImage_19,
-                animalImage_20,
-                animalImage_21,
-                animalImage_22,
-                animalImage_23,
-                animalImage_24,
-                animalImage_25
-            ];
-            const colorArray = [
-                'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
-                'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
-            ];
-            const tempUserIdArray = [];
-            const avatarStyleArray = [];
-            let count = 0;
-            const totalReport = currentLudoReportData.length;
-                /* get comment user ids */
-                for (let iteratorOfReport = 0; iteratorOfReport < totalReport; iteratorOfReport++) {
-                    if (currentLudoReportData[iteratorOfReport].comments) {
-                        const totalCommentOfSingleReport = currentLudoReportData[iteratorOfReport].comments.length;
-                        for (let iteratorOfComment = 0; iteratorOfComment < totalCommentOfSingleReport; iteratorOfComment++) {
-                            const { user_id } = currentLudoReportData[iteratorOfReport].comments[iteratorOfComment];
-                            const indexInTempUserIdArray = tempUserIdArray.indexOf(user_id);
-                            if (indexInTempUserIdArray === -1) {
-                                this.shuffleArray(colorArray);
-                                this.shuffleArray(animalImageArray);
-                                tempUserIdArray.push(user_id);
-                                avatarStyleArray.push({
-                                    backgroundColor: colorArray[iteratorOfComment],
-                                    src: animalImageArray[iteratorOfComment]
-                                });
-                            } else {
-                                avatarStyleArray[count] = avatarStyleArray[indexInTempUserIdArray];
-                            }
-                            count++;
-                        }
-                    }
-                }
-
-                /* get non-repititive comment user id */
-
-            /* end of get random avatar image and background color */
-
             this.setState({
                 playerReportList: newPlayerReportList,
                 starterReportList: newStarterReportList,
@@ -216,18 +152,13 @@ export default class ActiveReports extends React.Component {
                     isEditReportButtonClickable: true
                 });
             }
-            this.getRandomAvatarImage();
+            this.getPlayerAvatarImage();
             this.props.handleHasGotNewReport(false);
         }
     }
 
-    getRandomAvatarImage() {
-        const { router_currentFormValue } = this.props;
-        const { player_nick, starter_nick } = router_currentFormValue;
-        const colorArray = [
-            'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
-            'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
-        ];
+    getPlayerAvatarImage() {
+        const { player_id, starter_id, comments_nick } = this.props.router_currentFormValue;
         const animalImageArray = [
             animalImage_0 ,
             animalImage_1 ,
@@ -256,15 +187,19 @@ export default class ActiveReports extends React.Component {
             animalImage_24,
             animalImage_25,
         ];
+        const colorArray = [
+            'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
+            'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
+        ];
         this.setState({
             avatarStyle: {
-                avatarImageOfPlayer: animalImageArray[player_nick[1]],
-                avatarImageOfStarter: animalImageArray[starter_nick[1]],
+                avatarImageOfPlayer: animalImageArray[comments_nick[player_id][0]],
+                avatarImageOfStarter: animalImageArray[comments_nick[starter_id][0]],
                 avatarOfPlayer: {
-                    'backgroundColor': colorArray[player_nick[0]]
+                    'backgroundColor': colorArray[comments_nick[player_id][1]]
                 },
                 avatarOfStarter: {
-                    'backgroundColor': colorArray[starter_nick[0]]
+                    'backgroundColor': colorArray[comments_nick[starter_id][1]]
                 }
             }
         });

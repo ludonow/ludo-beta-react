@@ -50,6 +50,7 @@ const isLoggedIn = (nextState, replace, callback) => {
 
 let router_ludoPageIndex = null;
 let router_currentFormValue = {};
+let router_currentLudoId = '';
 
 const ludoRedirect = (nextState, replace, callback) => {
     const { ludo_id }= nextState.params;
@@ -58,6 +59,7 @@ const ludoRedirect = (nextState, replace, callback) => {
         if(response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
             router_currentFormValue = response.data.ludo;
+            router_currentLudoId = response.data.ludo.ludo_id;
             callback();
         } else {
             window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
@@ -86,6 +88,7 @@ const ludoEditRedirect = (nextState, replace, callback) => {
             } else {
                 router_ludoPageIndex = response.data.auth;
                 router_currentFormValue = response.data.ludo;
+                router_currentLudoId = response.data.ludo.ludo_id;
                 callback();
             }
         } else {
@@ -115,14 +118,35 @@ export default class AppRouter extends React.Component {
                     <Route path="friend" component={Friend} onEnter={isLoggedIn}></Route>
                     <Route path="invite/:friend_id" component={Invite} onEnter={isLoggedIn}></Route>
                     <Route path="login" component={Login}></Route>
-                    <Route path="ludo/:ludo_id" getComponent={(nextState, cb) => {
-                        const Component = ludoPageArray[router_ludoPageIndex];
-                        cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
-                    }} onEnter={ludoRedirect}></Route>
-                    <Route path="ludo-edit/:ludo_id" getComponent={(nextState, cb) => {
-                        const Component = ludoPageArrayForEdit[router_ludoPageIndex];
-                        cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
-                    }} onEnter={isLoggedIn, ludoEditRedirect} OnLeave={ludoRedirect}></Route>
+                    <Route
+                        path="ludo/:ludo_id"
+                        getComponent={(nextState, cb) => {
+                            const Component = ludoPageArray[router_ludoPageIndex];
+                            cb(null, props => 
+                                <Component 
+                                    {...props} 
+                                    router_currentFormValue={router_currentFormValue}
+                                    router_currentLudoId={router_currentLudoId}
+                                />);
+                        }} 
+                        onEnter={ludoRedirect}
+                    >
+                    </Route>
+                    <Route
+                        path="ludo-edit/:ludo_id"
+                        getComponent={(nextState, cb) => {
+                            const Component = ludoPageArrayForEdit[router_ludoPageIndex];
+                            cb(null, props => 
+                                <Component 
+                                    {...props}
+                                    router_currentFormValue={router_currentFormValue}
+                                    router_currentLudoId={router_currentLudoId}
+                                />);
+                        }} 
+                        onEnter={isLoggedIn, ludoEditRedirect}
+                        OnLeave={ludoRedirect}
+                    >
+                    </Route>
                     <Route path="playground" component={Playground}></Route>
                     <Route path="profile(/:userId)" component={Profile} onEnter={isLoggedIn}></Route>
                 </Route>

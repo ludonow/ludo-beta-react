@@ -32,19 +32,20 @@ export default class CommentBox extends React.Component {
     }
 
     updateTempCommentList(commentContent) {
-        const commentObject = {};
-        commentObject.content = commentContent;;
-        const { tempCommentList } = this.state;
-        tempCommentList.push(commentObject);
+        const commentObject = [{content: ''}];
+        commentObject[0].content = commentContent;
+        const tempCommentList = [];
+        tempCommentList.push.apply(tempCommentList, this.props.commentListFromDatabase);
+        tempCommentList.push.apply(tempCommentList, commentObject);
         this.setState({
             tempCommentList
         });
     }
 
-    updateTempCommentListAfterPost(updatedCommentList) {
+    updateTempCommentListAfterPost(updatedCommentsArray) {
         this.setState({
             shouldShowCommentListFromDatabase: false,
-            tempCommentList: updatedCommentList
+            tempCommentList: updatedCommentsArray
         });
     }
 
