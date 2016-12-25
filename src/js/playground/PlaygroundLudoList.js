@@ -128,7 +128,7 @@ export default class PlaygroundLudoList extends React.Component {
                                     String(singleLudoObject.introduction).length > 20 ?
                                     String(singleLudoObject.introduction).substring(0, 20) + ' ...'
                                     : String(singleLudoObject.introduction)
-                                    /* String(singleLudoObject.introduction)*/ 
+                                    /* String(singleLudoObject.introduction)*/
                                     }
                                   </div>
                                   <div className="card-hashtags">
@@ -152,10 +152,10 @@ export default class PlaygroundLudoList extends React.Component {
                                 </div>
                                   {/*the circle button for GO */}
                                 <div className="card-button_circle"
-                                  onClick={this.handleCardLink}>
+                                  >
                                   <div className="card-button_text"
                                     id={`go-${index}`}
-
+                                    onClick={this.handleCardLink}
                                   >
                                   Go
                                   </div>
