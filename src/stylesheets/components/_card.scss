@@ -119,6 +119,7 @@ $new_skill-text-color: #fdcaad;
     .card-front-info {
         @extend %absolute;
         @extend %flex;
+        backface-visibility: hidden;
         top: 0;
         bottom: 0;
         left: 0;
@@ -147,15 +148,17 @@ $new_skill-text-color: #fdcaad;
         }
 
         .card-marble {
-          //  @extend %relative;
+            backface-visibility: hidden;
             text-align: center;
 
             .card-marble__icon {
+              backface-visibility: hidden;
                 width: 25px;
                 height: 25px;
             }
 
             .card-marble__number {
+              backface-visibility: hidden;
                 @extend %absolute;
                 left: 0;
                 right: 0;
@@ -234,10 +237,13 @@ $new_skill-text-color: #fdcaad;
 
     }
     .card-button_circle {
+        // @extend %relative;
+        // z-index:99;
         @include circle(40px, #fff);
         line-height: 40px;
         display: inline-block;
         box-shadow: 0 0 0 2px black;
+        margin-top: 10px;
         margin-bottom: 10px;
         color: black;
 

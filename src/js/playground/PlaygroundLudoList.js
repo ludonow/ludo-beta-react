@@ -45,7 +45,7 @@ export default class PlaygroundLudoList extends React.Component {
 
     handleCardStage(stage) {
         switch (stage) {
-            case 0: 
+            case 0:
                 return 'card-top__stage--0';
                 break;
             case 1:
@@ -151,10 +151,11 @@ export default class PlaygroundLudoList extends React.Component {
                                   </div>
                                 </div>
                                   {/*the circle button for GO */}
-                                <div className="card-button_circle">
+                                <div className="card-button_circle"
+                                  onClick={this.handleCardLink}>
                                   <div className="card-button_text"
                                     id={`go-${index}`}
-                                    onClick={this.handleCardLink}
+
                                   >
                                   Go
                                   </div>
