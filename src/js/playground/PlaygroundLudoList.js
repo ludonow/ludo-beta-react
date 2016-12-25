@@ -128,7 +128,7 @@ export default class PlaygroundLudoList extends React.Component {
                                     String(singleLudoObject.introduction).length > 20 ?
                                     String(singleLudoObject.introduction).substring(0, 20) + ' ...'
                                     : String(singleLudoObject.introduction)
-                                    /* String(singleLudoObject.introduction)*/
+                                    /* String(singleLudoObject.introduction)*/ 
                                     }
                                   </div>
                                   <div className="card-hashtags">
