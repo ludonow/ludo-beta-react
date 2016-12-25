@@ -12,8 +12,7 @@ $grid-item--friend_width: 170px;
 $card_border-color: hsla(0, 0%, 0%, 0.5);
 $green_opened: #009944;
 $red_active: #e60012;
-$lifestyle-color: rgba(83, 206, 244, 0.8);
-// #53cef4;
+$lifestyle-color: rgba(83, 206, 244, 1);  // #53cef4;
 $read-color: #535cf9;
 $exercise-color: #81ea9f;
 $study-color: #ff6d55;
@@ -104,12 +103,17 @@ $new_skill-text-color: #fdcaad;
         right: 0;
     }
 
-    .card-top__stage--opened {
+    .card-top__stage--0 {
+        border-color: transparent blue transparent transparent;
+    }
+    .card-top__stage--1 {
         border-color: transparent $green_opened transparent transparent;
     }
-
-    .card-top__stage--closed {
+    .card-top__stage--2 {
         border-color: transparent $red_active transparent transparent;
+    }
+    .card-top__stage--3 {
+        border-color: transparent gray transparent transparent;
     }
 
     .card-front-info {
