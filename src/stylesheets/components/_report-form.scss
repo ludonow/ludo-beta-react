@@ -53,8 +53,9 @@
             @extend %flex;
             align-items: center;
             justify-content: center;
-            @extend %as_wide_as_parent;
+            width: 90%;
             height: 14px*13.35;
+            line-height: 1.5;
             background-color: $gray_text-field;
         }
     }

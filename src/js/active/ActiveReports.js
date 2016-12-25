@@ -141,6 +141,7 @@ export default class ActiveReports extends React.Component {
                     return false;
                 }
             });
+
             /* get random avatar image and background color */
             const animalImageArray = [
                 animalImage_0 ,
@@ -178,27 +179,31 @@ export default class ActiveReports extends React.Component {
             const avatarStyleArray = [];
             let count = 0;
             const totalReport = currentLudoReportData.length;
-            for (let iteratorOfReport = 0; iteratorOfReport < totalReport; iteratorOfReport++) {
-                if (currentLudoReportData[iteratorOfReport].comments) {
-                    const totalCommentOfSingleReport = currentLudoReportData[iteratorOfReport].comments.length;
-                    for (let iteratorOfComment = 0; iteratorOfComment < totalCommentOfSingleReport; iteratorOfComment++) {
-                        const { user_id } = currentLudoReportData[iteratorOfReport].comments[iteratorOfComment];
-                        const indexInTempUserIdArray = tempUserIdArray.indexOf(user_id);
-                        if (indexInTempUserIdArray === -1) {
-                            this.shuffleArray(colorArray);
-                            this.shuffleArray(animalImageArray);
-                            tempUserIdArray.push(user_id);
-                            avatarStyleArray.push({
-                                backgroundColor: colorArray[iteratorOfComment],
-                                src: animalImageArray[iteratorOfComment]
-                            });
-                        } else {
-                            avatarStyleArray[count] = avatarStyleArray[indexInTempUserIdArray];
+                /* get comment user ids */
+                for (let iteratorOfReport = 0; iteratorOfReport < totalReport; iteratorOfReport++) {
+                    if (currentLudoReportData[iteratorOfReport].comments) {
+                        const totalCommentOfSingleReport = currentLudoReportData[iteratorOfReport].comments.length;
+                        for (let iteratorOfComment = 0; iteratorOfComment < totalCommentOfSingleReport; iteratorOfComment++) {
+                            const { user_id } = currentLudoReportData[iteratorOfReport].comments[iteratorOfComment];
+                            const indexInTempUserIdArray = tempUserIdArray.indexOf(user_id);
+                            if (indexInTempUserIdArray === -1) {
+                                this.shuffleArray(colorArray);
+                                this.shuffleArray(animalImageArray);
+                                tempUserIdArray.push(user_id);
+                                avatarStyleArray.push({
+                                    backgroundColor: colorArray[iteratorOfComment],
+                                    src: animalImageArray[iteratorOfComment]
+                                });
+                            } else {
+                                avatarStyleArray[count] = avatarStyleArray[indexInTempUserIdArray];
+                            }
+                            count++;
                         }
-                        count++;
                     }
                 }
-            }
+
+                /* get non-repititive comment user id */
+
             /* end of get random avatar image and background color */
 
             this.setState({

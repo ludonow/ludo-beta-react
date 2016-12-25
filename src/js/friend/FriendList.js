@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import Masonry from 'react-masonry-component';
-// import axios from '../axios-config';
-// import config from '../axios-fakedata-config';
+import FriendCard from './FriendCard.js';
 
 const masonryOptions = {
     itemSelector: ".grid-item--friend",
@@ -9,38 +8,22 @@ const masonryOptions = {
     fitWidth: true
 };
 
-export default class Friend extends React.Component {
-    constructor() {
-        super();
-        this.state = { 
-            rawFriendList: []
+export default class FriendList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            friendsArrayDataWithoutDefaultData: [],
+            isDefaultDataHasBeenRemoved: false
         };
     }
 
-    componentDidMount() {
-        // this.getFriendList();
-    }
-
-    getFriendList() {
-        // this.serverRequest = config.get('data/FriendData.json')
-        //     .then(response => {
-        //         this.setState({
-        //             rawFriendList: response.data
-        //         });
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
-
-        // this.state.friendList = this.props.data.map( (data, index) => {
-        //     return (
-        //         <div className="grid-item--friend" key={index}>
-        //             <div className="friend-list__element">
-        //                 <img className="friend-list__icon" src={data.value} />
-        //             </div>
-        //         </div>
-        //     );
-        // });
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.isDefaultDataHasBeenRemoved && nextProps.friendsArrayData[0].createAt) {
+            this.state.friendsArrayDataWithoutDefaultData = nextProps.friendsArrayData.slice(1);
+            this.setState({
+                isDefaultDataHasBeenRemoved: true
+            });
+        }
     }
 
     render() {
@@ -50,18 +33,29 @@ export default class Friend extends React.Component {
                 className="grid"
                 options={masonryOptions}>
                 {
-                    this.state.rawFriendList.map((data, index) => {
-                        return (
-                            <div className="grid-item--friend" key={index}>
-                            {/* components/friend-list.scss */}
-                                <div className="friend-list__element">
-                                    <img className="friend-list__icon" src={data.value} />
-                                </div>
-                            </div>
-                        );
+                    this.state.friendsArrayDataWithoutDefaultData.map((singleFriendObjectData, index) => {
+                        return <FriendCard {...singleFriendObjectData} key={index} />
                     })
                 }
             </Masonry>
         );
     }
 }
+
+FriendList.defaultProps = {
+    friendsArrayData: [
+        {
+            friend_id: "0",
+            create_ludo_id: "0"
+        }
+    ]
+};
+
+FriendList.propTypes = {
+    friendsArrayData: PropTypes.arrayOf(
+        PropTypes.shape({
+            friend_id: PropTypes.string.isRequired,
+            create_ludo_id: PropTypes.string.isRequired
+        }).isRequired
+    ).isRequired
+};

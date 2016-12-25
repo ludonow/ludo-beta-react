@@ -7,22 +7,38 @@ import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
 import Create from '../create/Create';
 import Friend from '../friend/Friend';
+import Invite from '../create/Invite';
 import Login from './Login';
 import LudoEdit from '../ludo-edit/LudoEdit';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
+import Template from '../create/Template';
 
-const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander];
-const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander];
+/*
+    auth        statement：
+    0           not login
+    1           stage 1 creator
+    2           stage 1 other players
+    3           stage 2 playerA (creator)
+    4           stage 2 playerB
+    5           stage 2 other players
+    6           stage 3 all
+    7           stage 0 creator
+    8           stage 0 other players
+    9           stage 0 not login (same as 0, may be modified in the future)
+*/
+
+const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
+const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
 
 const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
     axios.get('/apis/user')
     .then((response) => {
         if(response.data.status != '200') {
-            replace(`/login`);
+            replace('/login');
         }
         callback();
     })
@@ -96,7 +112,8 @@ export default class AppRouter extends React.Component {
                 <Route path="/" component={App}>
                     <IndexRedirect to="playground"></IndexRedirect>
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
-                    <Route path="friend" component={Friend}></Route>
+                    <Route path="friend" component={Friend} onEnter={isLoggedIn}></Route>
+                    <Route path="invite/:friend_id" component={Invite} onEnter={isLoggedIn}></Route>
                     <Route path="login" component={Login}></Route>
                     <Route path="ludo/:ludo_id" getComponent={(nextState, cb) => {
                         const Component = ludoPageArray[router_ludoPageIndex];
@@ -107,7 +124,7 @@ export default class AppRouter extends React.Component {
                         cb(null, props => <Component {...props} router_currentFormValue={router_currentFormValue} />);
                     }} onEnter={isLoggedIn, ludoEditRedirect} OnLeave={ludoRedirect}></Route>
                     <Route path="playground" component={Playground}></Route>
-                    <Route path="profile/:userId" component={Profile} onEnter={isLoggedIn}></Route>
+                    <Route path="profile(/:userId)" component={Profile} onEnter={isLoggedIn}></Route>
                 </Route>
             </Router>
         );

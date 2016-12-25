@@ -26,15 +26,17 @@ export default class App extends React.Component {
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
             isHoveringSidebar: false,
+            isInfiniteLoading: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
+            lastEvaluatedKey: {},
+            ludoList: [],
             shouldLudoListUpdate: false,
             shouldProfileUpdate: false,
             shouldReportUpdate: false,
             shouldUserBasicDataUpdate: false,
-            ludoList: [],
             profileWillLudoData: [],
             profileLudoingData: [],
             profileDidLudoData: [],
@@ -44,6 +46,7 @@ export default class App extends React.Component {
         this.clearCurrentFormValue = this.clearCurrentFormValue.bind(this);
         this.getUserBasicData = this.getUserBasicData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
+        this.getFilteredLudoList = this.getFilteredLudoList.bind(this);
         this.getLatestLudoList = this.getLatestLudoList.bind(this);
         this.getProfileData = this.getProfileData.bind(this);
         this.getProfileWillLudoData = this.getProfileWillLudoData.bind(this);
@@ -57,49 +60,12 @@ export default class App extends React.Component {
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
-    }
-
-    componentDidMount() {
-        this.handleShouldProfileUpdate(true);
-        this.getUserBasicData();
-    }
-
-    componentDidUpdate() {
-        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, 
-            shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
-        } = this.state;
-        if(isOpeningLudoListPage && shouldLudoListUpdate) {
-            this.getLatestLudoList();
-            this.handleShouldLudoListUpdate(false);
-        }
-        if(currentUserId && isLoggedIn && shouldProfileUpdate) {
-            /* 
-             * Update profile data after the user did some ludo action and is going to open profile page 
-             */
-            if (isOpeningProfilePage) {
-                this.getProfileData();
-                this.getProfileWillLudoData(currentUserId);
-                this.getProfileLudoingData(currentUserId);
-                this.getProfileDidLudoData(currentUserId);
-                this.handleShouldProfileUpdate(false);
-            }
-        }
-
-        const { isOpeningActivePage, shouldReportUpdate } = this.state;
-        if(isOpeningActivePage && shouldReportUpdate) {
-            this.getReportOfCurrentLudo(this.props.params.ludo_id);
-            this.handleShouldReportUpdate(false);
-        }
-
-        if(shouldUserBasicDataUpdate) {
-            this.getUserBasicData();
-            this.handleShouldUserBasicDataUpdate(false);
-        }
     }
 
     clearCurrentFormValue() {
@@ -117,6 +83,49 @@ export default class App extends React.Component {
         });
     }
 
+    componentDidMount() {
+        this.handleShouldProfileUpdate(true);
+        this.getUserBasicData();
+        window.addEventListener('scroll', this.handleScrollEvent);
+    }
+
+    componentDidUpdate() {
+        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, 
+            shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
+        } = this.state;
+        if (isOpeningLudoListPage && shouldLudoListUpdate) {
+            this.getLatestLudoList();
+            this.handleShouldLudoListUpdate(false);
+        }
+        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
+            /* 
+             * Update profile data after the user did some ludo action and is going to open profile page 
+             */
+            if (isOpeningProfilePage) {
+                this.getProfileData();
+                this.getProfileWillLudoData(currentUserId);
+                this.getProfileLudoingData(currentUserId);
+                this.getProfileDidLudoData(currentUserId);
+                this.handleShouldProfileUpdate(false);
+            }
+        }
+
+        const { isOpeningActivePage, shouldReportUpdate } = this.state;
+        if (isOpeningActivePage && shouldReportUpdate) {
+            this.getReportOfCurrentLudo(this.props.params.ludo_id);
+            this.handleShouldReportUpdate(false);
+        }
+
+        if (shouldUserBasicDataUpdate) {
+            this.getUserBasicData();
+            this.handleShouldUserBasicDataUpdate(false);
+        }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScrollEvent);
+    }
+
     getChildContext() {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
@@ -131,8 +140,8 @@ export default class App extends React.Component {
                     isLoggedIn: true
                 });
             } else {
-                // console.error('app getUserBasicData else response from server: ', response);
-                // console.error('app getUserBasicData else message from server: ', response.data.message);
+                console.error('app getUserBasicData else response from server: ', response);
+                console.error('app getUserBasicData else message from server: ', response.data.message);
             }
         })
         .catch((error) => {
@@ -159,11 +168,29 @@ export default class App extends React.Component {
         });
     }
 
+    getFilteredLudoList(stage) {
+        axios.get(`/apis/ludo?stage=${stage}`)
+        .then((response) => {
+            if(response.data.status === '200') {
+                this.setState({
+                    ludoList: response.data.ludoList.Items
+                });
+            } else {
+                console.error('app getFilteredLudoList else response from server: ', response);
+                console.error('app getFilteredLudoList else message from server: ', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('app getFilteredLudoList error', error);
+        });
+    }
+
     getLatestLudoList() {
         axios.get('/apis/ludo')
         .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
+                    lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
                     ludoList: response.data.ludoList.Items
                 });
             } else {
@@ -342,6 +369,44 @@ export default class App extends React.Component {
         });
     }
 
+    handleScrollEvent(event) {
+        const edgeOffsetY = 250;
+        const { isInfiniteLoading, lastEvaluatedKey } = this.state;
+        const lastEvaluatedKeyString = JSON.stringify(lastEvaluatedKey);
+        if (!isInfiniteLoading &&
+            lastEvaluatedKeyString &&
+            document.body.scrollTop + edgeOffsetY >= document.body.scrollHeight - window.innerHeight) {
+            this.setState({
+                isInfiniteLoading: true
+            });
+            axios.get(`/apis/ludo?startkey=${lastEvaluatedKeyString}`)
+            .then((response) => {
+                if(response.data.status === '200') {
+                    const newLudoList = [];
+                    newLudoList.push.apply(newLudoList, this.state.ludoList);
+                    newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
+                    this.setState({
+                        isInfiniteLoading: false,
+                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
+                        ludoList: newLudoList
+                    });
+                } else {
+                    this.setState({
+                        isInfiniteLoading: false
+                    });
+                    console.error('app getLatestLudoList else response from server: ', response);
+                    console.error('app getLatestLudoList else message from server: ', response.data.message);
+                }
+            })
+            .catch((error) => {
+                this.setState({
+                    isInfiniteLoading: false
+                });
+                console.error('app getLatestLudoList error', error);
+            });
+        }
+    }
+
     handleShouldLudoListUpdate(boolean) {
         this.setState({
             shouldLudoListUpdate: boolean
@@ -378,7 +443,10 @@ export default class App extends React.Component {
         return (
             <div>
                 <Header
-                    isProfile={this.state.isOpeningProfilePage}
+                    getFilteredLudoList={this.getFilteredLudoList}
+                    getLatestLudoList={this.getLatestLudoList}
+                    isOpeningLudoListPage={this.state.isOpeningLudoListPage}
+                    isOpeningProfilePage={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
                 />
                 <Sidebar
@@ -387,7 +455,11 @@ export default class App extends React.Component {
                     isHoveringSidebar={isHoveringSidebar}
                 />
                 {/* layout/main-container */}
-                <div className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}>
+                <div
+                    className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}
+                    onScroll={this.handleScrollEvent}
+                    ref="mainContainer"
+                >
                     {
                         React.cloneElement(this.props.children,
                             {

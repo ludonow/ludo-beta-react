@@ -1,6 +1,5 @@
 import React from "react";
 import { browserHistory } from "react-router";
-import Playground from '../../playground/Playground';
 
 import imageLogo from '../../../images/Ludo_logo.png';
 
