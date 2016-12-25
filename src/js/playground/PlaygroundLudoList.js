@@ -108,6 +108,29 @@ export default class PlaygroundLudoList extends React.Component {
                                 className="grid-item"
                                 key={`card-${index}`}
                             >
+                            {/* Orginally, the card structure is devided into to parts:card-back and card-front,
+                              But the height of the front-side and back-side will be different.
+                              The New Card structure is based on new design, as users used more tags,
+                              the card's length will be longer..
+
+                              <Div.card-front>
+                              |<div.card-back>
+                              |  |<div.information>
+                              |  |  | <div.category>
+                              |  |  | <div.star>
+                              |  |  | <div.introduction>
+                              |  |  | <div.hashtags>
+                              |  |<div.card-go-button>
+                              |<div.top-stage front-triangle>
+                              |<div.front-info>
+                              |  |<div.category-icon>
+                              |  |<div.title>
+                              |  |<div.duration>
+                              |  |<div.marble>
+                              |  |  |<div.marbleIcon>
+                              |  |  |<div.marblenumber>
+                              |<div.views>
+                            */}
                             <div
                                 className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
                                 id={index}

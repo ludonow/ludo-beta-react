@@ -4,7 +4,7 @@ const parts = require('./libs/parts');
 const path = require('path');
 const pkg = require('./package.json');
 const validate = require('webpack-validator');
-const webpack = require('webpack'); 
+const webpack = require('webpack');
 
 const PATHS = {
     build: path.resolve(__dirname, 'build'),
@@ -13,7 +13,7 @@ const PATHS = {
     imagesbuild: path.resolve(__dirname, 'build', 'images'),
     mainscss: path.resolve(__dirname, 'src', 'stylesheets', 'main.scss'),
     src: path.resolve(__dirname, 'src'),
-    style: path.resolve(__dirname, 'src', 'stylesheets')
+    style: path.resolve(__dirname, 'src', 'stylesheets'),
 };
 
 const common = {
@@ -35,23 +35,23 @@ const common = {
                 loader: 'url-loader?limit=100000',
                 include: PATHS.src
             },
-            { 
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, 
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
                 loader: "file",
                 include: PATHS.src
             },
-            { 
-                test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, 
+            {
+                test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
                 loader: "url-loader?mimetype=application/font-woff",
                 include: PATHS.src
             },
-            { 
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, 
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
                 loader: "url?limit=10000&mimetype=application/octet-stream",
                 include: PATHS.src
             },
-            { 
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 loader: "url?limit=10000&mimetype=image/svg+xml",
                 include: PATHS.src
             },
@@ -68,7 +68,7 @@ const common = {
         filename: '[name].js'
     },
     plugins: [
-        new HtmlWebpackPlugin({ title: 'Ludo' }),
+        new HtmlWebpackPlugin({ title: 'Ludo'}),
         new webpack.NoErrorsPlugin()
     ]
 };
