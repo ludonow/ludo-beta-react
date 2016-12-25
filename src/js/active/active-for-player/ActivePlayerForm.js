@@ -171,7 +171,8 @@ export default class ActivePlayerForm extends React.Component {
             this.setState({
                 isReportButtonClickable: false
             });
-            const isSureToReport = window.confirm(`Are you sure to report?`);
+            // const isSureToReport = window.confirm('Are you sure to report?');
+            const isSureToReport = window.confirm('確定要回報嗎？');
             if (isSureToReport) {
                 const { ludo_id }= this.props.params;
                 const { currentUserId } = this.props;
