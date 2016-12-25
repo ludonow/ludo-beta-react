@@ -26,6 +26,7 @@ export default class App extends React.Component {
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
             isHoveringSidebar: false,
+            isInfiniteLoading: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
             isOpeningLudoListPage: false,
@@ -59,6 +60,7 @@ export default class App extends React.Component {
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
@@ -66,9 +68,25 @@ export default class App extends React.Component {
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
+    clearCurrentFormValue() {
+        this.setState({
+            currentAuth: null,
+            currentFormValue: {
+                category_id: 0,
+                checkpoint: [],
+                duration: 0,
+                introduction: '',
+                marbles: 0,
+                tags: [],
+                title: ''
+            }
+        });
+    }
+
     componentDidMount() {
         this.handleShouldProfileUpdate(true);
         this.getUserBasicData();
+        window.addEventListener('scroll', this.handleScrollEvent);
     }
 
     componentDidUpdate() {
@@ -104,19 +122,8 @@ export default class App extends React.Component {
         }
     }
 
-    clearCurrentFormValue() {
-        this.setState({
-            currentAuth: null,
-            currentFormValue: {
-                category_id: 0,
-                checkpoint: [],
-                duration: 0,
-                introduction: '',
-                marbles: 0,
-                tags: [],
-                title: ''
-            }
-        });
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScrollEvent);
     }
 
     getChildContext() {
@@ -133,8 +140,8 @@ export default class App extends React.Component {
                     isLoggedIn: true
                 });
             } else {
-                // console.error('app getUserBasicData else response from server: ', response);
-                // console.error('app getUserBasicData else message from server: ', response.data.message);
+                console.error('app getUserBasicData else response from server: ', response);
+                console.error('app getUserBasicData else message from server: ', response.data.message);
             }
         })
         .catch((error) => {
@@ -362,6 +369,44 @@ export default class App extends React.Component {
         });
     }
 
+    handleScrollEvent(event) {
+        const edgeOffsetY = 250;
+        const { isInfiniteLoading, lastEvaluatedKey } = this.state;
+        const lastEvaluatedKeyString = JSON.stringify(lastEvaluatedKey);
+        if (!isInfiniteLoading &&
+            lastEvaluatedKeyString &&
+            document.body.scrollTop + edgeOffsetY >= document.body.scrollHeight - window.innerHeight) {
+            this.setState({
+                isInfiniteLoading: true
+            });
+            axios.get(`/apis/ludo?startkey=${lastEvaluatedKeyString}`)
+            .then((response) => {
+                if(response.data.status === '200') {
+                    const newLudoList = [];
+                    newLudoList.push.apply(newLudoList, this.state.ludoList);
+                    newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
+                    this.setState({
+                        isInfiniteLoading: false,
+                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
+                        ludoList: newLudoList
+                    });
+                } else {
+                    this.setState({
+                        isInfiniteLoading: false
+                    });
+                    console.error('app getLatestLudoList else response from server: ', response);
+                    console.error('app getLatestLudoList else message from server: ', response.data.message);
+                }
+            })
+            .catch((error) => {
+                this.setState({
+                    isInfiniteLoading: false
+                });
+                console.error('app getLatestLudoList error', error);
+            });
+        }
+    }
+
     handleShouldLudoListUpdate(boolean) {
         this.setState({
             shouldLudoListUpdate: boolean
@@ -410,7 +455,11 @@ export default class App extends React.Component {
                     isHoveringSidebar={isHoveringSidebar}
                 />
                 {/* layout/main-container */}
-                <div className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}>
+                <div
+                    className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}
+                    onScroll={this.handleScrollEvent}
+                    ref="mainContainer"
+                >
                     {
                         React.cloneElement(this.props.children,
                             {
