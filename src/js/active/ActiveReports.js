@@ -241,7 +241,7 @@ export default class ActiveReports extends React.Component {
         if(!isInEditingArray) {
             isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
-        } 
+        }
         this.setState({
             isEditingTextReport: true,
             isEditingTextReportIndex,
@@ -421,7 +421,9 @@ export default class ActiveReports extends React.Component {
                 isPopOverOfEditOpen: false
             });
             if (report_id) {
-                axios.delete(`apis/report/${report_id}`)
+              const { router_currentFormValue } = this.props;
+              const { ludo_id } = router_currentFormValue;
+              axios.delete(`apis/report/${report_id}/${ludo_id}`)
                 .then(response => {
                     if(response.data.status === '200'){
                         this.props.handleShouldReportUpdate(true);
@@ -516,17 +518,17 @@ export default class ActiveReports extends React.Component {
     }
 
     render() {
-        const { files, 
-            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, 
-            isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex, 
-            isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser 
+        const { files,
+            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex,
+            isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex,
+            isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser
         } = this.state;
         return (
             /* components/_report-list.scss */
             <div className="report-list">
                 {
-                    this.state.isImageLightBoxOpen ? 
-                        <Lightbox 
+                    this.state.isImageLightBoxOpen ?
+                        <Lightbox
                             mainSrc={this.state.enlargeImageLocation}
                             // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
                             // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
@@ -546,7 +548,7 @@ export default class ActiveReports extends React.Component {
                                         src={this.props.userBasicData.photo}
                                     />
                                 :
-                                    <img 
+                                    <img
                                         className="player-avatar-container__photo"
                                         src={avatarStyle.avatarImageOfStarter}
                                         style={avatarStyle.avatarOfStarter}
@@ -593,15 +595,15 @@ export default class ActiveReports extends React.Component {
                                                 />
                                         }
                                         {
-                                            reportObject.image_location ? 
+                                            reportObject.image_location ?
                                                 <div className="report-content-container">
                                                     <img
-                                                        className="report-content report-content__image" 
+                                                        className="report-content report-content__image"
                                                         onClick={this.handleImageEnlarge}
                                                         src={reportObject.image_location}
                                                     />
                                                     {
-                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ? 
+                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ?
                                                             <div>
                                                                 <button
                                                                     disabled={!isEditReportButtonClickable}
@@ -611,11 +613,11 @@ export default class ActiveReports extends React.Component {
                                                                     取消編輯
                                                                 </button>
                                                                 {/* components/_report-form.scss */}
-                                                                <DropZone 
+                                                                <DropZone
                                                                     accept={"image/*"}
                                                                     // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
-                                                                    maxSize={2000000}
+                                                                    maxSize={5242880}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
                                                                 >
@@ -629,14 +631,14 @@ export default class ActiveReports extends React.Component {
                                                                         <div className="upload-preview">
                                                                             <span className="upload-preview__text">準備變更的圖片: </span>
                                                                             <div className="upload-preview__image-container">
-                                                                                <img className="upload-preview__image" 
+                                                                                <img className="upload-preview__image"
                                                                                     onClick={this.handleImageEnlarge}
                                                                                     src={files[0].preview}
                                                                                 />
                                                                                 <div className="upload-preview-instruction-container">
-                                                                                    <button 
+                                                                                    <button
                                                                                         className="upload-preview-instruction__remove"
-                                                                                        onClick={this.handleImageRemove} 
+                                                                                        onClick={this.handleImageRemove}
                                                                                         value="0"
                                                                                     >
                                                                                         ×
@@ -662,7 +664,7 @@ export default class ActiveReports extends React.Component {
                                         {
                                             reportObject.content ?
                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`s${index}`) != -1 ?
-                                                    <Textarea 
+                                                    <Textarea
                                                         className="report-content__text-edit"
                                                         defaultValue={reportObject.content}
                                                         id={`s-${index}`}
@@ -688,7 +690,7 @@ export default class ActiveReports extends React.Component {
                                                                     className="react-tagsinput-tag report-tag"
                                                                     key={`report-tag-${index}`}
                                                                 >
-                                                                    {tagString}
+                                                                    #{tagString}
                                                                 </span>
                                                             );
                                                         })
@@ -696,11 +698,11 @@ export default class ActiveReports extends React.Component {
                                                 </div>
                                             : null
                                         }
-                                        <CommentBox 
+                                        <CommentBox
                                             commentListFromDatabase={reportObject.comments}
-                                            reportId={reportObject.report_id} 
+                                            reportId={reportObject.report_id}
                                             whoIsUser={whoIsUser}
-                                            {...this.props} 
+                                            {...this.props}
                                         />
                                     </div>
                                 );
@@ -765,15 +767,15 @@ export default class ActiveReports extends React.Component {
                                                 />
                                         }
                                         {
-                                            reportObject.image_location ? 
+                                            reportObject.image_location ?
                                                 <div className="report-content-container">
                                                     <img
-                                                        className="report-content report-content__image" 
+                                                        className="report-content report-content__image"
                                                         src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
                                                     />
                                                     {
-                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ? 
+                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ?
                                                             <div>
                                                                 <button
                                                                     disabled={!isEditReportButtonClickable}
@@ -783,11 +785,11 @@ export default class ActiveReports extends React.Component {
                                                                     取消編輯
                                                                 </button>
                                                                 {/* components/_report-form.scss */}
-                                                                <DropZone 
+                                                                <DropZone
                                                                     accept={"image/png", "image/pjepg", "image/jpeg"}
                                                                     // TODO: find out why png is not accepted
                                                                     className="upload-picture-button"
-                                                                    maxSize={2000000}
+                                                                    maxSize={5242880}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
                                                                 >
@@ -802,14 +804,14 @@ export default class ActiveReports extends React.Component {
                                                                             <span className="upload-preview__text">準備變更的圖片: </span>
                                                                             <div className="upload-preview__image-container">
                                                                                 <img
-                                                                                    className="upload-preview__image" 
+                                                                                    className="upload-preview__image"
                                                                                     onClick={this.handleImageEnlarge}
                                                                                     src={files[0].preview}
                                                                                 />
                                                                                 <div className="upload-preview-instruction-container">
-                                                                                    <button 
+                                                                                    <button
                                                                                         className="upload-preview-instruction__remove"
-                                                                                        onClick={this.handleImageRemove} 
+                                                                                        onClick={this.handleImageRemove}
                                                                                         value="0"
                                                                                     >
                                                                                         ×
@@ -833,8 +835,8 @@ export default class ActiveReports extends React.Component {
                                         }
                                         {
                                             reportObject.content ?
-                                                isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ? 
-                                                    <Textarea 
+                                                isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ?
+                                                    <Textarea
                                                         className="report-content__text-edit"
                                                         minRows={2}
                                                         onChange={this.handleReportTextChange}
@@ -860,7 +862,7 @@ export default class ActiveReports extends React.Component {
                                                                     className="react-tagsinput-tag report-tag"
                                                                     key={`report-tag-${index}`}
                                                                 >
-                                                                    {tagString}
+                                                                    #{tagString}
                                                                 </span>
                                                             );
                                                         })
@@ -868,11 +870,11 @@ export default class ActiveReports extends React.Component {
                                                 </div>
                                             : null
                                         }
-                                        <CommentBox 
+                                        <CommentBox
                                             commentListFromDatabase={reportObject.comments}
-                                            reportId={reportObject.report_id} 
+                                            reportId={reportObject.report_id}
                                             whoIsUser={whoIsUser}
-                                            {...this.props} 
+                                            {...this.props}
                                         />
                                     </div>
                                 );   /* end of return */
