@@ -86,10 +86,17 @@ $new_skill-text-color: #fdcaad;
     word-wrap: break-word;
     //backface-visibility: hidden;
     // transform: rotateY(180deg);
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
+    @include transition-duration(0.3s);
+    @include transition-timing-function(linear);
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;/* Chrome, Safari, Opera */
+    -moz-transform-style:preserve-3d;
+    -o-transform-style:preserve-3d;
+
     perspective: 1000px;
+    -webkit-perspective: 1000px; /* Chrome, Safari, Opera */
+    -moz-perspective:1000px;
+    -o-perspective:1000px;
     //    position: absolute;
     .card-top__stage {
         align-self: flex-end;
@@ -119,7 +126,7 @@ $new_skill-text-color: #fdcaad;
     .card-front-info {
         @extend %absolute;
         @extend %flex;
-        backface-visibility: hidden;
+        @include backface-visibility(hidden);
         top: 0;
         bottom: 0;
         left: 0;
@@ -148,17 +155,18 @@ $new_skill-text-color: #fdcaad;
         }
 
         .card-marble {
-            backface-visibility: hidden;
+            @include backface-visibility(hidden);
             text-align: center;
 
             .card-marble__icon {
-              backface-visibility: hidden;
+              @include backface-visibility(hidden);
+
                 width: 25px;
                 height: 25px;
             }
 
             .card-marble__number {
-              backface-visibility: hidden;
+                @include backface-visibility(hidden);
                 @extend %absolute;
                 left: 0;
                 right: 0;
@@ -170,7 +178,7 @@ $new_skill-text-color: #fdcaad;
         }
     }
     .card-views {
-        backface-visibility: hidden;
+        @include backface-visibility(hidden);
         font-size:12px;
         @extend %absolute;
         bottom: 5px;
@@ -186,10 +194,15 @@ $new_skill-text-color: #fdcaad;
     word-wrap: break-word;
     @extend %text_center;
     font-size: 14px;
-    backface-visibility: hidden;
-    transform: rotateY(180deg);
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
+
+    transform:rotateY(180deg);
+    -ms-transform: rotateY(180deg); /* IE 9 */
+    -webkit-transform: rotateY(180deg); /* Chrome, Safari, Opera */
+
+    @include backface-visibility(hidden);
+    @include transition-duration(0.3s);
+    @include transition-timing-function(linear);
+
 
     .card-information{
       padding:50px 0;
@@ -285,25 +298,28 @@ $new_skill-text-color: #fdcaad;
 .card-flip {
     //backface-visibility: hidden;
     transform: rotateY(180deg);
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
+    -ms-transform: rotateY(180deg); /* IE 9 */
+    -webkit-transform: rotateY(180deg); /* Chrome, Safari, Opera */
+    @include transition-duration(0.3s);
+    @include transition-timing-function(linear);
 }
 
 .card-flip .card-back {
-    backface-visibility: visible;
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
+    @include backface-visibility(visible);
+    @include transition-duration(0.3s);
+    @include transition-timing-function(linear);
 }
 
 .card-flip .card-top__stage {
     opacity: 0;
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
-}
+    @include transition-duration(0.3s);
+    @include transition-timing-function(linear);
+  }
 
 .card-flip .card-marble__number{
   opacity:0;
-  transition-duration: 0.3s;
+  @include transition-duration(0.3s);
+  @include transition-timing-function(linear);
 }
 /* card background color by different category */
 .lifestyle {
