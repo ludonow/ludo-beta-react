@@ -8,12 +8,6 @@ rwdMeta.name = 'viewport';
 rwdMeta.content = 'width=device-width, initial-scale=1.0';
 
 const head = document.getElementsByTagName('head')[0].appendChild(rwdMeta);
-/* add favIcon*/
-/* <link rel="shortcut icon" href="./images/favicon.png"> */
-const faveIcon = document.createElement('link');
-faveIcon.setAttribute('rel', 'shortcut icon');
-faveIcon.setAttribute('href', '../../images/favicon.png');
-const headFav = document.getElementsByTagName('head')[0].appendChild(faveIcon);
 
 const div = document.createElement("div");
 div.setAttribute("id", "app");

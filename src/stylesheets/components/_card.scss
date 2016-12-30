@@ -120,6 +120,7 @@ $new_skill-text-color: #fdcaad;
         @extend %absolute;
         @extend %flex;
         backface-visibility: hidden;
+        -webkit-backface-visibility:hidden; /* Chrome, Safari, Opera */
         top: 0;
         bottom: 0;
         left: 0;
@@ -149,28 +150,32 @@ $new_skill-text-color: #fdcaad;
 
         .card-marble {
             backface-visibility: hidden;
+             -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
             text-align: center;
 
             .card-marble__icon {
               backface-visibility: hidden;
-                width: 25px;
-                height: 25px;
+              -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+              width: 25px;
+              height: 25px;
             }
 
             .card-marble__number {
               backface-visibility: hidden;
-                @extend %absolute;
-                left: 0;
-                right: 0;
-                margin: auto;
-                font-size: 12px;
-                color: white;
-                line-height: 25px; //When line-height equals to div, it will be centered.
+              -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+              @extend %absolute;
+              left: 0;
+              right: 0;
+              margin: auto;
+              font-size: 12px;
+              color: white;
+              line-height: 25px; //When line-height equals to div, it will be centered.
             }
         }
     }
     .card-views {
         backface-visibility: hidden;
+        -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
         font-size:12px;
         @extend %absolute;
         bottom: 5px;
@@ -187,6 +192,7 @@ $new_skill-text-color: #fdcaad;
     @extend %text_center;
     font-size: 14px;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
     transform: rotateY(180deg);
     transition-duration: 0.3s;
     transition-timing-function: linear;
@@ -291,6 +297,7 @@ $new_skill-text-color: #fdcaad;
 
 .card-flip .card-back {
     backface-visibility: visible;
+    -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
     transition-duration: 0.3s;
     transition-timing-function: linear;
 }
