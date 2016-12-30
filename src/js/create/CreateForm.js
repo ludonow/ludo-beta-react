@@ -200,7 +200,12 @@ export default class CreateForm extends React.Component {
                     const { ludo_id } = response.data;
                     /* get ludo information after create ludo post */
                     axios.get(`/apis/ludo/${ludo_id}`)
+
                     .then((response) => {
+                      {/*response.data.status   200: everything's fine;
+                                                400: user's data issue;
+                                                401:no login;
+                                                403:no authority */}
                         if (response.data.status === '200') {
                             const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
                             getUserBasicData();
@@ -217,7 +222,13 @@ export default class CreateForm extends React.Component {
                         window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                         console.error('get after create post error', error);
                     });
-                } else {
+
+                }
+                else if(response.data.status === '400'){
+                    window.alert('燃料或彈珠數不足: ' + response.data.message);
+                    console.error('create post message from server: ', response.data.message + response.data.status);
+              }
+                else {
                     window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.error('create post message from server: ', response.data.message);
                 }
@@ -226,7 +237,7 @@ export default class CreateForm extends React.Component {
                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.error('create post error', error);
             });
-            
+
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {
@@ -278,16 +289,21 @@ export default class CreateForm extends React.Component {
                         window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                         console.error('get after create post error', error);
                     });
-                } else {
+                }
+                else if(response.data.status === '400'){
+                    window.alert('彈珠數不足: ' + response.data.message);
+                    console.error('create post message from server: ', response.data.message + response.data.status);
+              }
+                else {
                     window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('create post message from server: ', response.data.message);
+                    console.error('create post message from server: ', response.data.message + response.data.status);
                 }
             })
             .catch((error) => {
                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.error('create post error', error);
             });
-            
+
         } else if (!isCategorySelected) {
             // window.alert('You haven\'t select the category.');
             window.alert('尚未選擇種類！');
@@ -373,19 +389,19 @@ export default class CreateForm extends React.Component {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
                             }
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
@@ -397,19 +413,19 @@ export default class CreateForm extends React.Component {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
                             }
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
@@ -432,7 +448,7 @@ export default class CreateForm extends React.Component {
                     <div className="top-right-container">
                         <div className="dropdown-list-container">
                             <span className="category-label">種類:</span>
-                            <DropdownList 
+                            <DropdownList
                                 className="dropdown-list"
                                 data={category}
                                 // defaultValue={'select a category'}
@@ -453,16 +469,16 @@ export default class CreateForm extends React.Component {
                         <div className="label-and-slider">
                             <div className="text-label">
                                 {
-                                    this.state.isMarblesSelected ? 
+                                    this.state.isMarblesSelected ?
                                         <div>
                                             彈珠數:
                                             <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
                                         </div>
-                                    : `選擇彈珠數` 
+                                    : `選擇彈珠數`
                                 }
                             </div>
                             <div className="ludo-create-information-slider--marbles">
-                                <RcSlider max={maxMarbles} min={1} 
+                                <RcSlider max={maxMarbles} min={1}
                                     value={ludoCreateForm.marbles}
                                     onChange={this.handleMarblesChange}
                                 />
@@ -479,8 +495,8 @@ export default class CreateForm extends React.Component {
                     <div className="ludo-create-information-day-picker">
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
-                            <RcSlider 
-                                max={maxDuration} min={3} 
+                            <RcSlider
+                                max={maxDuration} min={3}
                                 defaultValue={ludoCreateForm.duration} value={ludoCreateForm.duration}
                                 onChange={this.handleDurationValue}
                             />
@@ -488,31 +504,31 @@ export default class CreateForm extends React.Component {
                     </div>
                     <div className="text-label">介紹:</div>
                     <div className="text-field-container text-field-container--introduction">
-                        <textarea 
-                            className="text-field--introduction" 
-                            // placeholder="Introduction" 
+                        <textarea
+                            className="text-field--introduction"
+                            // placeholder="Introduction"
                             placeholder={`詳細的說明(中文最多140字)`}
                             onChange={this.handleIntroductionChange}
                             maxLength={maxLengthOfIntroduction}
                         />
                         <div className="text-field--hashtag">
                             <TagsInput
-                                value={ludoCreateForm.tags} 
+                                value={ludoCreateForm.tags}
                                 onChange={this.handleTagsChange}
                                 inputProps={{maxLength: 30, placeholder:"標籤"}}
                             />
                         </div>
                     </div>
                     {/* components/_submit-button.scss */}
-                    <button 
-                        className="ludo-create-information-submit-button" 
+                    <button
+                        className="ludo-create-information-submit-button"
                         disabled={this.state.isSuccesfullyCreateLudo}
-                        type="submit" 
+                        type="submit"
                     >
                         開始
                     </button>
                     <button
-                        className="ludo-create-information-submit-button" 
+                        className="ludo-create-information-submit-button"
                         disabled={this.state.isSuccesfullyCreateLudo}
                         onClick={this.handleTemplateCreate}
                     >
