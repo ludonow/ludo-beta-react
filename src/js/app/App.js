@@ -53,6 +53,7 @@ export default class App extends React.Component {
         this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
+        this.getUpComingLudoList = this.getUpComingLudoList.bind(this);
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
         this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
@@ -185,14 +186,25 @@ export default class App extends React.Component {
         });
     }
 
+    /* TODO: Need add comments in getLatestLudoList and handleScrollEvent methods and refactor */
     getLatestLudoList() {
         axios.get('/apis/ludo')
         .then((response) => {
             if(response.data.status === '200') {
-                this.setState({
-                    lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
-                    ludoList: response.data.ludoList.Items
-                });
+                if (response.data.ludoList.Count == 0 && response.data.ludoList.LastEvaluatedKey) {
+                    this.setState({
+                        lastEvaluatedKey: response.data.ludolist.LastEvaluatedKey
+                    });
+                    const lastEvaluatedKeyString = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
+                    if (this.state.lastEvaluatedKey.ludo_id) {
+                        this.getUpComingLudoList(lastEvaluatedKeyString);
+                    }
+                } else {
+                    this.setState({
+                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
+                        ludoList: response.data.ludoList.Items
+                    });
+                }
             } else {
                 console.error('app getLatestLudoList else response from server: ', response);
                 console.error('app getLatestLudoList else message from server: ', response.data.message);
@@ -289,6 +301,35 @@ export default class App extends React.Component {
         });
     }
 
+    getUpComingLudoList(lastEvaluatedKeyString) {
+        axios.get(`/apis/ludo?startkey=${lastEvaluatedKeyString}`)
+        .then((response) => {
+            if(response.data.status === '200' && response.dataludoList.LastEvaluatedKey.ludo_id != this.state.lastEvaluatedKey.ludo_id) {
+                console.log('getUpComingLudoList');
+                const newLudoList = [];
+                newLudoList.push.apply(newLudoList, this.state.ludoList);
+                newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
+                this.setState({
+                    isInfiniteLoading: false,
+                    lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
+                    ludoList: newLudoList
+                });
+            } else {
+                this.setState({
+                    isInfiniteLoading: false
+                });
+                console.error('app getLatestLudoList else response from server: ', response);
+                console.error('app getLatestLudoList else message from server: ', response.data.message);
+            }
+        })
+        .catch((error) => {
+            this.setState({
+                isInfiniteLoading: false
+            });
+            console.error('app getLatestLudoList error', error);
+        });
+    }
+
     handleDenounceBoxRequestClose() {
         this.setState({
             isDenounceBoxOpen: false
@@ -369,6 +410,7 @@ export default class App extends React.Component {
         });
     }
 
+    /* TODO: Need add comments in getLatestLudoList and handleScrollEvent methods and refactor */
     handleScrollEvent(event) {
         const edgeOffsetY = 250;
         const { isInfiniteLoading, isOpeningLudoListPage, lastEvaluatedKey } = this.state;
@@ -380,31 +422,7 @@ export default class App extends React.Component {
             this.setState({
                 isInfiniteLoading: true
             });
-            axios.get(`/apis/ludo?startkey=${lastEvaluatedKeyString}`)
-            .then((response) => {
-                if(response.data.status === '200') {
-                    const newLudoList = [];
-                    newLudoList.push.apply(newLudoList, this.state.ludoList);
-                    newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
-                    this.setState({
-                        isInfiniteLoading: false,
-                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
-                        ludoList: newLudoList
-                    });
-                } else {
-                    this.setState({
-                        isInfiniteLoading: false
-                    });
-                    console.error('app getLatestLudoList else response from server: ', response);
-                    console.error('app getLatestLudoList else message from server: ', response.data.message);
-                }
-            })
-            .catch((error) => {
-                this.setState({
-                    isInfiniteLoading: false
-                });
-                console.error('app getLatestLudoList error', error);
-            });
+            this.getUpComingLudoList(lastEvaluatedKeyString);
         }
     }
 
