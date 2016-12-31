@@ -16,6 +16,7 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             currentAuth: null,
+            currentFilterString: '',
             currentLudoId: '',
             currentLudoReportData: [],
             currentTargetCommentId: '',
@@ -47,7 +48,6 @@ export default class App extends React.Component {
         this.getUserBasicData = this.getUserBasicData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getFilteredLudoList = this.getFilteredLudoList.bind(this);
-        this.getLatestLudoList = this.getLatestLudoList.bind(this);
         this.getProfileData = this.getProfileData.bind(this);
         this.getProfileWillLudoData = this.getProfileWillLudoData.bind(this);
         this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
@@ -95,7 +95,7 @@ export default class App extends React.Component {
             shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
         } = this.state;
         if (isOpeningLudoListPage && shouldLudoListUpdate) {
-            this.getLatestLudoList();
+            this.getFilteredLudoList('1&2');
             this.handleShouldLudoListUpdate(false);
         }
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
@@ -131,25 +131,6 @@ export default class App extends React.Component {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
 
-    getUserBasicData() {
-        axios.get('/apis/user')
-        .then((response) => {
-            if(response.data.status === '200') {
-                this.setState({
-                    userBasicData: response.data.user,
-                    currentUserId: response.data.user.user_id,
-                    isLoggedIn: true
-                });
-            } else {
-                console.error('app getUserBasicData else response from server: ', response);
-                console.error('app getUserBasicData else message from server: ', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('user error', error);
-        });
-    }
-
     getCurrentLudoData(ludo_id) {
         axios.get(`/apis/ludo/${ludo_id}`)
         .then((response) => {
@@ -174,44 +155,22 @@ export default class App extends React.Component {
         .then((response) => {
             if(response.data.status === '200') {
                 this.setState({
+                    currentFilterString: `stage=${stage}`,
                     ludoList: response.data.ludoList.Items
                 });
+                if (response.data.ludoList.LastEvaluatedKey) {
+                    this.setState({
+                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey
+                    });
+                    const lastEvaluatedKeyString = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
+                    this.getUpComingLudoList(this.state.currentFilterString, lastEvaluatedKeyString);
+                }
             } else {
                 console.error('app getFilteredLudoList else response from server: ', response);
-                console.error('app getFilteredLudoList else message from server: ', response.data.message);
             }
         })
         .catch((error) => {
             console.error('app getFilteredLudoList error', error);
-        });
-    }
-
-    /* TODO: Need add comments in getLatestLudoList and handleScrollEvent methods and refactor */
-    getLatestLudoList() {
-        axios.get('/apis/ludo')
-        .then((response) => {
-            if(response.data.status === '200') {
-                if (response.data.ludoList.Count == 0 && response.data.ludoList.LastEvaluatedKey) {
-                    this.setState({
-                        lastEvaluatedKey: response.data.ludolist.LastEvaluatedKey
-                    });
-                    const lastEvaluatedKeyString = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
-                    if (this.state.lastEvaluatedKey.ludo_id) {
-                        this.getUpComingLudoList(lastEvaluatedKeyString);
-                    }
-                } else {
-                    this.setState({
-                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
-                        ludoList: response.data.ludoList.Items
-                    });
-                }
-            } else {
-                console.error('app getLatestLudoList else response from server: ', response);
-                console.error('app getLatestLudoList else message from server: ', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('app getLatestLudoList error', error);
         });
     }
 
@@ -301,11 +260,10 @@ export default class App extends React.Component {
         });
     }
 
-    getUpComingLudoList(lastEvaluatedKeyString) {
-        axios.get(`/apis/ludo?startkey=${lastEvaluatedKeyString}`)
+    getUpComingLudoList(filterCondition, lastEvaluatedKeyString) {
+        axios.get(`/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKeyString}`)
         .then((response) => {
-            if(response.data.status === '200' && response.dataludoList.LastEvaluatedKey.ludo_id != this.state.lastEvaluatedKey.ludo_id) {
-                console.log('getUpComingLudoList');
+            if(response.data.status === '200') {
                 const newLudoList = [];
                 newLudoList.push.apply(newLudoList, this.state.ludoList);
                 newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
@@ -318,15 +276,33 @@ export default class App extends React.Component {
                 this.setState({
                     isInfiniteLoading: false
                 });
-                console.error('app getLatestLudoList else response from server: ', response);
-                console.error('app getLatestLudoList else message from server: ', response.data.message);
+                console.error('app getUpComingLudoList else response from server: ', response);
             }
         })
         .catch((error) => {
             this.setState({
                 isInfiniteLoading: false
             });
-            console.error('app getLatestLudoList error', error);
+            console.error('app getUpComingLudoList error', error);
+        });
+    }
+
+    getUserBasicData() {
+        axios.get('/apis/user')
+        .then((response) => {
+            if(response.data.status === '200') {
+                this.setState({
+                    userBasicData: response.data.user,
+                    currentUserId: response.data.user.user_id,
+                    isLoggedIn: true
+                });
+            } else {
+                console.error('app getUserBasicData else response from server: ', response);
+                console.error('app getUserBasicData else message from server: ', response.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('user error', error);
         });
     }
 
@@ -410,7 +386,6 @@ export default class App extends React.Component {
         });
     }
 
-    /* TODO: Need add comments in getLatestLudoList and handleScrollEvent methods and refactor */
     handleScrollEvent(event) {
         const edgeOffsetY = 250;
         const { isInfiniteLoading, isOpeningLudoListPage, lastEvaluatedKey } = this.state;
@@ -422,7 +397,7 @@ export default class App extends React.Component {
             this.setState({
                 isInfiniteLoading: true
             });
-            this.getUpComingLudoList(lastEvaluatedKeyString);
+            this.getUpComingLudoList(this.state.currentFilterString, lastEvaluatedKeyString);
         }
     }
 
@@ -463,7 +438,6 @@ export default class App extends React.Component {
             <div>
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
-                    getLatestLudoList={this.getLatestLudoList}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
@@ -487,7 +461,6 @@ export default class App extends React.Component {
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getUserBasicData: this.getUserBasicData,
                                 getCurrentLudoData: this.getCurrentLudoData,
-                                getLatestLudoList: this.getLatestLudoList,
                                 getProfileData: this.getProfileData,
                                 getProfileWillLudoData: this.getProfileWillLudoData,
                                 getProfileLudoingData: this.getProfileLudoingData,
