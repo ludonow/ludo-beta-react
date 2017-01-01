@@ -11,9 +11,7 @@ const mainWidth = screenWidth - rightSidebarWidth;
 const contentPaddingX = Math.round( (mainWidth - 5 * gridItemWidth)/2 );
 const logoLeft = contentPaddingX;
 
-const style = {
-    left: `${logoLeft}px`
-};
+
 
 export default class HeaderLogo extends React.Component {
     handleLogoLink() {
@@ -26,11 +24,10 @@ export default class HeaderLogo extends React.Component {
             <div
                 className="header-Ludo-logo"
                 onClick={this.handleLogoLink}
-                style={style}
             >
                 <img
                     className="header-Ludo-logo__icon"
-                    src={imageLogo} 
+                    src={imageLogo}
                 />
             </div>
         );

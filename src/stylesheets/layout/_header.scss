@@ -45,4 +45,14 @@ $gray_border: rgba(182, 188, 193, 1);
         .header-right {
         display:none;
         }
+        .header-filter{
+          display: none;
+        }
+        .header-Ludo-logo{
+          left: auto;
+          margin: 0 auto;
+          .header-Ludo-logo__icon{
+            margin:0 auto;
+          }
+        }
     }
