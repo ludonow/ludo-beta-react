@@ -15,7 +15,7 @@ export default class QuickStart extends React.Component {
         >
           {/* components/_playground-quick-start.scss */}
           <div className="quick-start card--playground">
-            <div className="quick-start__icon"></div>
+            <div className="quick-start__icon">NEW</div>
           </div>
         </Link>
       </div>

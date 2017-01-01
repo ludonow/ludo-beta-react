@@ -2,11 +2,14 @@
     @extend .card;
     width: 200px;
     height: 60%;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
     .quick-start__icon {
-        height: 48px;
-        @include background_img_content(quick_start_icon);
-        @extend %background_img_setting;
+      @include circle(50px,#fff);
+      line-height: 50px;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.8);
+      color: black; /*word is black*/
+      text-align:center;
+      margin:auto;
     }
