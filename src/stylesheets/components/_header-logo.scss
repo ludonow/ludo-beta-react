@@ -6,9 +6,6 @@
     @extend %relative;
     width: 205px;
     @extend %as_tall_as_parent;
-    @media (min-width: 320px) and (max-width: 559px) {
-      left:hidden;
-      margin: 0 auto;
     }
 }
     .header-Ludo-logo__icon {
