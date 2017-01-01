@@ -28,9 +28,9 @@
     @extend %margin_center_x;
     @extend %text_center;
     background-color: rgba(245, 245, 245, 0.9);//white;
-    
+
     .login-top-container {
-    
+
         .logo-container {
             .logo-icon {
                 width: 205px;
@@ -81,6 +81,7 @@
                 height: 30px;
                 color: white;
                 background-color: #ea5514;
+                border: 1px solid transparent;
                 &:hover {
                     color: #ea5514;
                     background-color: white;
@@ -98,10 +99,12 @@
                 width: 100px;
                 height: 30px;
                 background-color: #fff100;
+                border: 1px solid transparent;
 
                 &:hover {
                     background-color: white;
                     border: 1px solid #fff100;
+
                 }
                 &:disabled {
                     color: gray;
