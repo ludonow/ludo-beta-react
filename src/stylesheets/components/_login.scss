@@ -48,10 +48,13 @@
                 @extend %text_center;
             }
         }
-        .errorMessage {
+        .error-message {
             margin-bottom: 10px;
             color: red;
             font-size: 12px;
+        }
+        .server-error-message {
+            color: red;
         }
         .buttons {
             @extend %flex;

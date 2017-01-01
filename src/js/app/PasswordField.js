@@ -26,11 +26,11 @@ class PasswordField extends React.Component {
                     infoBar={false}
                     minLength={4}
                     onChange={this.handleChange}
-                    placeholder="輸入密碼"
+                    placeholder={this.props.placeholder}
                     unMaskTime={500}
                     value={this.props.getValue()}
                 />
-                <div className="errorMessage">{errorMessage}</div>
+                <div className="error-message">{errorMessage}</div>
             </div>
         );
     }

@@ -32,6 +32,7 @@ export default class SignUp extends React.Component {
         };
         this.disableButton = this.disableButton.bind(this);
         this.enableButton = this.enableButton.bind(this);
+        this.handleSignUp = this.handleSignUp.bind(this);
     }
 
     disableButton() {
@@ -54,7 +55,8 @@ export default class SignUp extends React.Component {
         .then((response) => {
             console.log('response', response);
             if (response.data.status === '200') {
-                browserHistory.push('/login');
+                this.props.handleShouldUserBasicDataUpdate(true);
+                browserHistory.push('/playground');
             } else {
                 console.error('SignUp handleSignUp response', response);
             }

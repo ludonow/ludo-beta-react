@@ -12,26 +12,12 @@ import logoImgPath from '../../images/Ludo_logo.png';
 // import twitterIcon from '../../images/login/twitter-icon.png';
 import facebookIcon from '../../images/login/facebook-icon.png';
 
-const validators = {
-    password: {
-        regexp: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-        message: '密碼必須大於8碼，至少有1個數字和1個英文字'
-    }
-};
-
-Formsy.addValidationRule('isPassword', (values, value) => {
-    if (validators.password.regexp.test(value)) {
-        return true;
-    } else {
-        return false;
-    }
-});
-
 export default class LogIn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            canSubmit: false
+            canSubmit: false,
+            errorMessageFromServer: ''
         };
         this.disableButton = this.disableButton.bind(this);
         this.enableButton = this.enableButton.bind(this);
@@ -68,6 +54,9 @@ export default class LogIn extends React.Component {
                  /* email not exist */
             //     console.log('email not exist');
             } else {
+                this.setState({
+                    errorMessageFromServer: response.data.message[0]
+                });
                 console.error('Login handleLogIn response', response);
             }
         })
@@ -84,7 +73,6 @@ export default class LogIn extends React.Component {
                     className="login-top-container"
                     onValid={this.enableButton}
                     onValidSubmit={this.handleLogIn}
-                    onInvalid={this.disableButton}
                 >
                     <div className="logo-container">
                         <img src={logoImgPath} className="logo-icon" />
@@ -95,7 +83,6 @@ export default class LogIn extends React.Component {
                         placeholder="輸入Email"
                         required
                         validations="isEmail"
-                        validationError="這不是有效的Email"
                     />
                     <PasswordField
                         className="password"
@@ -103,12 +90,13 @@ export default class LogIn extends React.Component {
                         placeholder="輸入密碼"
                         required
                         validations="isPassword"
-                        validationError={validators.password.message}
                     />
+                    <div className="server-error-message">
+                        {this.state.errorMessageFromServer}
+                    </div>
                     <div className="buttons">
                         <button
                             className="login"
-                            disabled={!this.state.canSubmit}
                             type="submit"
                         >
                             登入

@@ -27,7 +27,7 @@ class FormsyHOCInput extends React.Component {
                     type="text"
                     value={this.props.getValue() || ''}
                 />
-                <div className="errorMessage">{errorMessage}</div>
+                <div className="error-message">{errorMessage}</div>
             </div>
         );
     }
