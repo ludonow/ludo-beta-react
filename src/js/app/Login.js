@@ -2,6 +2,8 @@ import React from "react";
 import axios from '../axios-config';
 import { browserHistory, Link } from 'react-router';
 import Formsy from 'formsy-react';
+import md5 from 'blueimp-md5';
+
 import FormsyHOCInput from './FormsyHOCInput.js';
 import PasswordField from './PasswordField.js';
 
@@ -52,8 +54,9 @@ export default class LogIn extends React.Component {
         browserHistory.push('/playground');
     }
 
-    handleLogIn(data) {
-        axios.post('/login', data)
+    handleLogIn(logInData) {
+        logInData.password = md5(logInData.password);
+        axios.post('/login', logInData)
         .then((response) => {
             if (response.data.status === '200') {
                 this.props.handleShouldUserBasicDataUpdate(true);

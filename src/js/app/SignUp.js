@@ -2,6 +2,8 @@ import React from "react";
 import axios from '../axios-config';
 import { browserHistory, Link } from 'react-router';
 import Formsy from 'formsy-react';
+import md5 from 'blueimp-md5';
+
 import FormsyHOCInput from './FormsyHOCInput.js';
 import PasswordField from './PasswordField.js';
 
@@ -47,6 +49,7 @@ export default class SignUp extends React.Component {
     handleSignUp(data) {
         const signUpData = Object.assign({}, data);
         delete signUpData.repeated_password;
+        signUpData.password = md5(signUpData.password);
         axios.post('/signup', signUpData)
         .then((response) => {
             console.log('response', response);
