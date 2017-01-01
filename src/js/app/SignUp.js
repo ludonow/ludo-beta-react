@@ -47,18 +47,18 @@ export default class SignUp extends React.Component {
     handleSignUp(data) {
         const signUpData = Object.assign({}, data);
         delete signUpData.repeated_password;
-        // axios.post('/signup', signUpData)
-        // .then((response) => {
-        //     if (response.data.status === '200') {
-        //         browserHistory.push('/login');
-        //     } else {
-        //         console.log('SignUp handleSignUp response', response);
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.log('SignUp handleSignUp error', error);
-        // });
-        window.alert(JSON.stringify(signUpData, null, 4));
+        axios.post('/signup', signUpData)
+        .then((response) => {
+            console.log('response', response);
+            if (response.data.status === '200') {
+                browserHistory.push('/login');
+            } else {
+                console.error('SignUp handleSignUp response', response);
+            }
+        })
+        .catch((error) => {
+            console.error('SignUp handleSignUp error', error);
+        });
     }
 
     render() {
@@ -88,7 +88,7 @@ export default class SignUp extends React.Component {
                         validations="isPassword"
                         validationError={validators.password.message}
                     />
-                    <FormsyHOCInput
+                    <PasswordField
                         name="repeated_password"
                         placeholder="再次輸入密碼"
                         required

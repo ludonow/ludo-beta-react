@@ -23,11 +23,11 @@ export default class HeaderFilter extends React.Component {
     }
 
     handleFilterClick() {
-        this.props.getFilteredLudoList('1&2');
+        this.props.getFilteredLudoList();
     }
 
     handleTemplateFilterClick() {
-        this.props.getFilteredLudoList('0');
+        this.props.getFilteredLudoList('stage=0');
     }
 
     render() {

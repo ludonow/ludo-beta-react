@@ -95,7 +95,7 @@ export default class App extends React.Component {
             shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
         } = this.state;
         if (isOpeningLudoListPage && shouldLudoListUpdate) {
-            this.getFilteredLudoList('1&2');
+            this.getFilteredLudoList();
             this.handleShouldLudoListUpdate(false);
         }
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
@@ -150,12 +150,18 @@ export default class App extends React.Component {
         });
     }
 
-    getFilteredLudoList(stage) {
-        axios.get(`/apis/ludo?stage=${stage}`)
+    getFilteredLudoList(filterCondition) {
+        let api = '';
+        if (filterCondition) {
+            api = `/apis/ludo?${filterCondition}`;
+        } else {
+            api = '/apis/ludo';
+        }
+        axios.get(api)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
-                    currentFilterString: `stage=${stage}`,
+                    currentFilterString: filterCondition,
                     ludoList: response.data.ludoList.Items
                 });
                 if (response.data.ludoList.LastEvaluatedKey) {
@@ -263,6 +269,7 @@ export default class App extends React.Component {
     getUpComingLudoList(filterCondition, lastEvaluatedKeyString) {
         axios.get(`/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKeyString}`)
         .then((response) => {
+            console.log('response', response);
             if(response.data.status === '200') {
                 const newLudoList = [];
                 newLudoList.push.apply(newLudoList, this.state.ludoList);
@@ -459,13 +466,13 @@ export default class App extends React.Component {
                                 ...this.state, 
                                 router_currentFormValue,
                                 clearCurrentFormValue: this.clearCurrentFormValue,
-                                getUserBasicData: this.getUserBasicData,
                                 getCurrentLudoData: this.getCurrentLudoData,
                                 getProfileData: this.getProfileData,
                                 getProfileWillLudoData: this.getProfileWillLudoData,
                                 getProfileLudoingData: this.getProfileLudoingData,
                                 getProfileDidLudoData: this.getProfileDidLudoData,
                                 getReportOfCurrentLudo: this.getReportOfCurrentLudo,
+                                getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
                                 handleIsHoveringSidebar: this.handleIsHoveringSidebar,

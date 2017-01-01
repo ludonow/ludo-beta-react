@@ -33,6 +33,7 @@ export default class LogIn extends React.Component {
         };
         this.disableButton = this.disableButton.bind(this);
         this.enableButton = this.enableButton.bind(this);
+        this.handleLogIn = this.handleLogIn.bind(this);
     }
 
     disableButton() {
@@ -54,8 +55,8 @@ export default class LogIn extends React.Component {
     handleLogIn(data) {
         axios.post('/login', data)
         .then((response) => {
-            console.log('response', response);
             if (response.data.status === '200') {
+                this.props.handleShouldUserBasicDataUpdate(true);
                 browserHistory.push('/playground');
             // } else if (response.data.status === '') {
                  /* wrong password */
@@ -64,11 +65,11 @@ export default class LogIn extends React.Component {
                  /* email not exist */
             //     console.log('email not exist');
             } else {
-                console.log('Login handleLogIn response', response);
+                console.error('Login handleLogIn response', response);
             }
         })
         .catch((error) => {
-            console.log('Login handleLogIn error', error);
+            console.error('Login handleLogIn error', error);
         });
     }
 
