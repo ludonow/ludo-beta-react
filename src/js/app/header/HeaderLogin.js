@@ -6,20 +6,18 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Tooltip from 'material-ui/internal/Tooltip';
 
-import Login from '../Login';
-
 import headerProfileIcon from '../../../images/header/profile.png';
 
 const style = {
     'fontSize': '12px'
 };
 
-export default class HeaderLogin extends Component {
+export default class HeaderLogIn extends Component {
     constructor() {
         super();
         this.state = {
             anchorEl: {},
-            isLoginPopOverOpen: false,
+            isLogInPopOverOpen: false,
             showTooltip: false
         };
         this.handleLogIn = this.handleLogIn.bind(this);
@@ -35,14 +33,14 @@ export default class HeaderLogin extends Component {
 
     handlePopoverRequestClose() {
         this.setState({
-            isLoginPopOverOpen: false
+            isLogInPopOverOpen: false
         });
     }
 
     handleProfileIconClick(event) {
         this.setState({
             anchorEl: event.currentTarget,
-            isLoginPopOverOpen: true
+            isLogInPopOverOpen: true
         });
     }
 
@@ -62,11 +60,11 @@ export default class HeaderLogin extends Component {
         return(
             /* components/_header-profile */
             <div
-                className="header-login"
+                className="header-log-in"
                 onMouseLeave={this.handleTooltipDisappear}
                 onMouseOver={this.handleTooltipShow}
             >
-                <Link to="Login">
+                <Link to="login">
                     <img
                         className="header-profile-icon"
                         src={headerProfileIcon}

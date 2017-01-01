@@ -5,7 +5,7 @@
     @extend %relative;
 }
 
-.header-login {
+.header-log-in {
     @extend %as_tall_as_parent;
     @extend %flex;
     align-items: center;
@@ -18,7 +18,7 @@
     }
 
 .header-fb-photo {
-    @extend .header-login;
+    @extend .header-log-in;
 }
     .facebook-avatar {
         @extend .profile-icon;

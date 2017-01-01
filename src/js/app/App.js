@@ -45,7 +45,6 @@ export default class App extends React.Component {
             userProfileData: {}
         };
         this.clearCurrentFormValue = this.clearCurrentFormValue.bind(this);
-        this.getUserBasicData = this.getUserBasicData.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getFilteredLudoList = this.getFilteredLudoList.bind(this);
         this.getProfileData = this.getProfileData.bind(this);
@@ -54,6 +53,7 @@ export default class App extends React.Component {
         this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
         this.getUpComingLudoList = this.getUpComingLudoList.bind(this);
+        this.getUserBasicData = this.getUserBasicData.bind(this);
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
         this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
@@ -290,15 +290,15 @@ export default class App extends React.Component {
     getUserBasicData() {
         axios.get('/apis/user')
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     userBasicData: response.data.user,
                     currentUserId: response.data.user.user_id,
                     isLoggedIn: true
                 });
             } else {
-                console.error('app getUserBasicData else response from server: ', response);
-                console.error('app getUserBasicData else message from server: ', response.data.message);
+                /* not login */
+                // console.error('app getUserBasicData else response from server: ', response);
             }
         })
         .catch((error) => {

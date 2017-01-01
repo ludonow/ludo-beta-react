@@ -6,10 +6,9 @@ import HeaderFilter from './HeaderFilter';
 import HeaderFuel from './HeaderFuel';
 // import HeaderLevel from './HeaderLevel';  // unused
 import HeaderLogo from './HeaderLogo';
-import HeaderLogin from './HeaderLogin';
+import HeaderLogIn from './HeaderLogIn';
 import HeaderMarbles from './HeaderMarbles';
 import HeaderRate from './HeaderRate';
-import Login from '../Login';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
 
@@ -25,7 +24,7 @@ export default class Header extends Component {
         if (userBasicData.name) {    // user has login
             headerProfile = <HeaderFBPhoto userBasicData={userBasicData}/>
         } else {    // user has not login
-            headerProfile = <HeaderLogin />
+            headerProfile = <HeaderLogIn />
         }
         return (
             /* layout/_header.scss */

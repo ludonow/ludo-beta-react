@@ -20,6 +20,7 @@
     background-color: rgba(245, 245, 245, 0.9);//white;
     
     .login-top-container {
+    
         .logo-container {
             .logo-icon {
                 width: 205px;
@@ -31,35 +32,73 @@
             width: 270px;
             height: 30px;
             border: none;
-            margin-bottom: 10px;
             color: rgba(180, 180, 180, 1);
-            background-color: rgba(240, 240, 240, 1);
+            background-color: white;
             &::-webkit-input-placeholder {
                 @extend %text_center;
             }
         }
+        .errorMessage {
+            margin-bottom: 10px;
+            color: red;
+            font-size: 12px;
+        }
+        .buttons {
+            @extend %flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
 
-        button {
-            @extend .ludo-button;
-            border: none;
-            margin-right: 5px;
-            margin-left: 5px;
-            margin-top: 15px;
-            margin-bottom: 40px;
+            a, button {
+                @extend %flex;
+                align-items: center;
+                justify-content: center;
+                @extend .ludo-button;
+                border: none;
+                margin-right: 5px;
+                margin-left: 5px;
+                margin-top: 15px;
+                margin-bottom: 30px;
+                font-size: 12px;
+                text-decoration: none;
+            }
+
+            .login {
+                width: 100px;
+                height: 30px;
+                color: white;
+                background-color: #ea5514;
+                &:hover {
+                    color: #ea5514;
+                    background-color: white;
+                    border: 1px solid #ea5514;
+                }
+                &:disabled {
+                    color: gray;
+                    border: none;
+                    background-color: rgba(220, 220, 220, 1);
+                    @extend %unclickable;
+                }
+            }
+
+            .signup {
+                width: 100px;
+                height: 30px;
+                background-color: #fff100;
+
+                &:hover {
+                    background-color: white;
+                    border: 1px solid #fff100;
+                }
+                &:disabled {
+                    color: gray;
+                    border: none;
+                    background-color: rgba(220, 220, 220, 1);
+                    @extend %unclickable;
+                }
+            }
         }
-        .login {
-            @extend %unclickable;
-            width: 100px;
-            height: 30px;
-            color: white;
-            background-color: #ea5514;
-        }
-        .signup {
-            @extend %unclickable;
-            width: 100px;
-            height: 30px;
-            background-color: #fff100;
-        }
+
     }
 
     .login-bottom-container {
@@ -72,19 +111,21 @@
             justify-content: center;
             flex-direction: row;
             margin-top: 35px;
+        }
 
             .fb-login-icon {
                 width: 50px;
                 height: 50px;
                 margin: 0 8px;
             }
-
+            .fb-login-text {
+                font-size: 14px;
+            }
             .other-login-icon {
                 @extend %unclickable;
                 width: 50px;
                 height: 50px;
                 margin: 0 8px;
             }
-        }
     }
 }
