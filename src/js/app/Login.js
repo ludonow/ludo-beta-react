@@ -108,6 +108,12 @@ export default class LogIn extends React.Component {
                             註冊
                         </Link>
                     </div>
+                    <a
+                        className="forget-password"
+                        href="http://api.ludonow.com/users/password/new"
+                    >
+                        忘記密碼
+                    </a>
                 </Formsy.Form>
                 <div className="login-bottom-container">
                     <a href="http://api.ludonow.com/auth/facebook">
