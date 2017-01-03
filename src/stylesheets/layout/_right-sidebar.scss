@@ -129,3 +129,9 @@ div.sidebar-flip {
             background-image: url('../images/sidebar/ludo_read_icon.png');
         }
     }
+
+@media (max-width: 559px) and (min-width: 320px) {
+  .right-sidebar-hover-area{
+    display:none;
+  }
+}

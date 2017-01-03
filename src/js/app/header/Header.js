@@ -11,12 +11,22 @@ import HeaderMarbles from './HeaderMarbles';
 import HeaderRate from './HeaderRate';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
+import Playground from '../../playground/Playground';
+import Profile from '../../profile/Profile';
+import Create from '../../create/Create';
+import Friend from '../../friend/Friend';
 
 export default class Header extends Component {
     constructor(props) {
         super(props);
     }
+    handleFilterClick() {
+        this.props.getFilteredLudoList();
+    }
 
+    handleTemplateFilterClick() {
+        this.props.getFilteredLudoList('stage=0');
+    }
     render() {
         const { getFilteredLudoList, getLatestLudoList, isOpeningLudoListPage, isOpeningProfilePage, userBasicData } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
@@ -32,7 +42,7 @@ export default class Header extends Component {
                 <div className="header-left">
                     <HeaderLogo />
                     {
-                        isOpeningLudoListPage ? 
+                        isOpeningLudoListPage ?
                             <HeaderFilter
                                 getFilteredLudoList={getFilteredLudoList}
                                 getLatestLudoList={getLatestLudoList}
@@ -45,23 +55,41 @@ export default class Header extends Component {
                     <HeaderMarbles marbles={marbles}/>
                     <HeaderFuel heart={heart} />
                         {
-                            isOpeningProfilePage ? 
+                            isOpeningProfilePage ?
                                 null
                             :
-                                <HeaderRate success_rate={success_rate} win_rate={win_rate} /> 
+                                <HeaderRate success_rate={success_rate} win_rate={win_rate} />
                         }
                     {/* components/_header-profile.scss */}
                     <div className="header-profile">
                         {headerProfile}
                     </div>
                 </div>
+                {/*fab menu icon for RWD design*/}
+                <label className ="fab-menu">
+                  <input type="checkbox"/>
+                    <div className="menu-box">
+                    <div className="menu-circle"></div>
+                    <ul className="menu-items">
+                    <li><a href={`/playground`}>Playground</a></li>
+                    <li><a href={``}>Template</a></li>
+                    <li><a href={``}>Profile</a></li>
+                    <li><a href="/create">Create</a></li>
+                    <li><a href="/friend">Friends</a></li>
+                    {/*If statement of Login/logout is needed*/}
+                    <li>
+                    <a
+                     href="http://api.ludonow.com/logout">Logout</a></li>
+                  </ul>
+                </div>
+              </label>
             </div>
             // {isOpeningProfilePage ? <HeaderLevel />: null }
         );
     }
 };
 
-Header.propTypes = { 
+Header.propTypes = {
     getFilteredLudoList: PropTypes.func,
     getLatestLudoList: PropTypes.func,
     isOpeningLudoListPage: PropTypes.bool,

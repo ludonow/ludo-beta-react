@@ -97,7 +97,7 @@ $new_skill-text-color: #fdcaad;
     -webkit-perspective: 1000px; /* Chrome, Safari, Opera */
     -moz-perspective:1000px;
     -o-perspective:1000px;
-    //    position: absolute;
+    overflow: hidden;
     .card-top__stage {
         align-self: flex-end;
         margin-left: auto;
@@ -321,6 +321,15 @@ $new_skill-text-color: #fdcaad;
   @include transition-duration(0.3s);
   @include transition-timing-function(linear);
 }
+.card-flip .card-views{
+  opacity: 0;
+}
+.card-flip .card-front-info{
+  opacity: 0;
+
+}
+
+
 /* card background color by different category */
 .lifestyle {
   //  color: white;
