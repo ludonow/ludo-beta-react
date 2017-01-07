@@ -19,7 +19,10 @@ import Friend from '../../friend/Friend';
 export default class Header extends Component {
     constructor(props) {
         super(props);
+        this.handleFilterClick = this.handleFilterClick.bind(this);
+        this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
     }
+
     handleFilterClick() {
         this.props.getFilteredLudoList();
     }
@@ -27,6 +30,7 @@ export default class Header extends Component {
     handleTemplateFilterClick() {
         this.props.getFilteredLudoList('stage=0');
     }
+
     render() {
         const { getFilteredLudoList, getLatestLudoList, isOpeningLudoListPage, isOpeningProfilePage, userBasicData } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
@@ -67,21 +71,25 @@ export default class Header extends Component {
                 </div>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
-                  <input type="checkbox"/>
+                    <input type="checkbox"/>
                     <div className="menu-box">
-                    <div className="menu-circle"></div>
-                    <ul className="menu-items">
-                    <li><a href={`/playground`}>Playground</a></li>
-                    <li><a href={``}>Template</a></li>
-                    <li><a href={``}>Profile</a></li>
-                    <li><a href="/create">Create</a></li>
-                    <li><a href="/friend">Friends</a></li>
-                    {/*If statement of Login/logout is needed*/}
-                    <li>
-                    <a
-                     href="http://api.ludonow.com/logout">Logout</a></li>
-                  </ul>
-                </div>
+                        <div className="menu-circle"></div>
+                        <ul className="menu-items">
+                            <li><span onClick={this.handleFilterClick}>Playground</span></li>
+                            <li><span onClick={this.handleTemplateFilterClick}>Template</span></li>
+                            <li><Link to="/profile">Profile</Link></li>
+                            <li><Link to="/create">Create</Link></li>
+                            <li><Link to="/friend">Friends</Link></li>
+                            {/*If statement of Login/logout is needed*/}
+                            <li>
+                            <a
+                                href="http://api.ludonow.com/logout"
+                            >
+                                Logout
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
               </label>
             </div>
             // {isOpeningProfilePage ? <HeaderLevel />: null }

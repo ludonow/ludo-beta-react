@@ -1,11 +1,11 @@
-.fab-menu {
+label.fab-menu {
     display: none;
-}
-@media (max-width: 559px) and (min-width: 320px) {
- display:flex;
+    @media (max-width: 559px) and (min-width: 320px) {
+        display: flex;
+    }
 }
 
-    /* can remove .fab-menu a  */
+/* can remove .fab-menu a  */
 .fab-menu a {
     text-decoration: none;
 }
@@ -75,13 +75,14 @@
     width: 100px;
     padding: 5px;
     list-style: none;
+    color: white;
 }
 
 .menu-items li:hover {
     background-color: gray;
 }
 
-.menu-items a {
+.menu-items a , span {
     color: #fff;
     line-height: 1.5;
 }
