@@ -12,149 +12,227 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Textarea from 'react-textarea-autosize';
 
+import CommentEditButton from './CommentEditButton';
+import CommentExpandMoreButton from './CommentExpandMoreButton';
+
+import animalImage_0 from '../../images/animals/anteater.png';
+import animalImage_1 from '../../images/animals/bat.png';
+import animalImage_2 from '../../images/animals/bulldog.png';
+import animalImage_3 from '../../images/animals/cat.png';
+import animalImage_4 from '../../images/animals/crocodile.png';
+import animalImage_5 from '../../images/animals/duck.png';
+import animalImage_6 from '../../images/animals/elephant.png';
+import animalImage_7 from '../../images/animals/frog.png';
+import animalImage_8 from '../../images/animals/giraffe.png';
+import animalImage_9  from '../../images/animals/hippopotamus.png';
+import animalImage_10 from '../../images/animals/kangaroo.png';
+import animalImage_11 from '../../images/animals/lion.png';
+import animalImage_12 from '../../images/animals/monkey.png';
+import animalImage_13 from '../../images/animals/mouse.png';
+import animalImage_14 from '../../images/animals/octopus.png';
+import animalImage_15 from '../../images/animals/panda.png';
+import animalImage_16 from '../../images/animals/penguin.png';
+import animalImage_17 from '../../images/animals/pig.png';
+import animalImage_18 from '../../images/animals/rabbit.png';
+import animalImage_19 from '../../images/animals/shark.png';
+import animalImage_20 from '../../images/animals/sheep.png';
+import animalImage_21 from '../../images/animals/snake.png';
+import animalImage_22 from '../../images/animals/spider.png';
+import animalImage_23 from '../../images/animals/tiger.png';
+import animalImage_24 from '../../images/animals/turtle.png';
+import animalImage_25 from '../../images/animals/whale.png';
+
+const animalImageArray = [
+    animalImage_0 ,
+    animalImage_1 ,
+    animalImage_2 ,
+    animalImage_3 ,
+    animalImage_4 ,
+    animalImage_5 ,
+    animalImage_6 ,
+    animalImage_7 ,
+    animalImage_8 ,
+    animalImage_9 ,
+    animalImage_10,
+    animalImage_11,
+    animalImage_12,
+    animalImage_13,
+    animalImage_14,
+    animalImage_15,
+    animalImage_16,
+    animalImage_17,
+    animalImage_18,
+    animalImage_19,
+    animalImage_20,
+    animalImage_21,
+    animalImage_22,
+    animalImage_23,
+    animalImage_24,
+    animalImage_25
+];
+
+const colorArray = [
+    'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
+    'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
+];
+
+let animalIndex = 0;
+let colorIndex = 0;
+
 export default class CommentList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             anchorEl: {},
-            isCommentPopOverOpen: false,
+            currentTargetId: '',
+            isDenounceBoxOpen: false,
             isEditingComment: false,
             isEditingCommentIndex: [],
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false,
             commentTextContent: ''
         };
-        this.handleCommentDeleteTouchTap = this.handleCommentDeleteTouchTap.bind(this);
+        this.handleCommentDelete = this.handleCommentDelete.bind(this);
+        this.handleCommentEditButtonTouchTap = this.handleCommentEditButtonTouchTap.bind(this);
+        this.handleCommentExpandMoreButtonTouchTap = this.handleCommentExpandMoreButtonTouchTap.bind(this);
+        this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
+        this.handleCommentTextEdit = this.handleCommentTextEdit.bind(this);
         this.handleFinishCommentTextEdit = this.handleFinishCommentTextEdit.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
     }
 
-    handleCommentDeleteTouchTap(event) {
+    handleCommentDelete(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         this.setState({
-            isCommentPopOverOpen: false
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false
         });
         const isSureToDelelteComment = window.confirm(`確定要刪除留言嗎？(刪除後不可復原)`);
-        if(isSureToDelelteComment) {
+        if (isSureToDelelteComment) {
             const { isEditingCommentIndex } = this.state;
-            const oldNewIndex = isEditingCommentIndex[0].slice(0, 1);
-            const atWhatPositionInArray = Number(isEditingCommentIndex[0].slice(-1));
-            console.log('handleCommentDeleteTouchTap oldNewIndex', oldNewIndex);   // debug
-            console.log('handleCommentDeleteTouchTap atWhatPositionInArray', atWhatPositionInArray);   // debug
+            const isOldOrNew = isEditingCommentIndex[0].slice(0, 1);
+            const atWhatPositionInArray = Number(isEditingCommentIndex[0].slice(1));
             let comment_id = null;
-            if (oldNewIndex == 'o') {
-                comment_id = this.props.oldCommentList[atWhatPositionInArray].comment_id;
-            } else if (oldNewIndex == 'n') {
-                comment_id = this.props.newCommentList[atWhatPositionInArray].comment_id;
+            if (isOldOrNew === 'o') {
+                comment_id = this.props.commentListFromDatabase[atWhatPositionInArray].comment_id;
+            } else if (isOldOrNew === 'n') {
+                comment_id = this.props.tempCommentList[atWhatPositionInArray].comment_id;
             } else {
-                console.log('oldNewIndex error');
+                console.error('isOldOrNew error');
             }
-            console.log('handleCommentDeleteTouchTap comment_id', comment_id);   // debug
             if(comment_id) {
-                const commentDeleteBody = {
-                    type: 'report',
-                    report_id: this.props.report_id
-                };
-                console.log('commentDeleteBody', commentDeleteBody);
-                axios.delete(`apis/comment/${comment_id}`, commentDeleteBody)
-                .then(response => {
-                    if(response.data.status == '200') {
-                        console.log('成功刪除留言');   // debug
+                axios.delete(`apis/comment/report/${this.props.reportId}/${comment_id}`)
+                .then((response) => {
+                    if(response.data.status === '200') {
                         this.props.handleShouldReportUpdate(true)
                     } else {
-                        console.log('CommentList handleCommentDeleteTouchTap else response: ', response);
-                        console.log('CommentList handleCommentDeleteTouchTap else message: ', response.data.message);
+                        console.error('CommentList handleCommentDelete else response: ', response);
+                        console.error('CommentList handleCommentDelete else message: ', response.data.message);
                         window.alert('刪除留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                     }
                 })
-                .catch(error => {
-                    console.log('CommentList handleCommentDeleteTouchTap error: ', error);
+                .catch((error) => {
+                    console.error('CommentList handleCommentDelete error: ', error);
                     window.alert('刪除留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                 });
             }
         }
     }
 
-    handleCommentIconButtonTouchTap = (event) => {
+    handleCommentEditButtonTouchTap(event) {
         /* This prevents ghost click. */
         event.preventDefault();
-        // console.log('CommentList handleCommentIconButtonTouchTap id', event.currentTarget.id);   // debug
-        const id = event.currentTarget.id;
-        const oldNewIndex = String(id.slice(0, 1));
-        // console.log('CommentList handleCommentIconButtonTouchTap oldNewIndex', oldNewIndex);   // debug
-        const atWhatPositionInArray = String(id.slice(-1));
-        // console.log('CommentList handleCommentIconButtonTouchTap atWhatPositionInArray', atWhatPositionInArray);   // debug
-        const element = oldNewIndex + atWhatPositionInArray;
-        // console.log('CommentList handleCommentIconButtonTouchTap element', element);   // debug
+        const { id } = event.currentTarget;
+        const arrayOfSplitIdString = id.split('-');
+        const isOldOrNew = arrayOfSplitIdString[0].slice(0,1);
+        const atWhatPositionInArray = arrayOfSplitIdString[arrayOfSplitIdString.length - 1];
+        const element = isOldOrNew + atWhatPositionInArray;
         const isEditingCommentIndex = [];
         isEditingCommentIndex.push(element);
-        // console.log('CommentList handleCommentIconButtonTouchTap isEditingCommentIndex', isEditingCommentIndex);   // debug
         this.setState({
             anchorEl: event.currentTarget,
-            isCommentPopOverOpen: true,
-            isEditingCommentIndex
+            isEditingCommentIndex,
+            isPopOverOfEditOpen: true
         });
-    };
+    }
 
-    handleCommentTextChange = (event) => {
-        // console.log('CommentList handleCommentTextChange commentTextContent', this.state.commentTextContent);   // debug
+    handleCommentExpandMoreButtonTouchTap(event) {
+        /* This prevents ghost click. */
+        event.preventDefault();
+        const { id } = event.currentTarget;
+        const arrayOfSplitIdString = id.split('-');
+        const isOldOrNew = arrayOfSplitIdString[0].slice(0,1);
+        const atWhatPositionInArray = arrayOfSplitIdString[arrayOfSplitIdString.length - 1];
+        const element = isOldOrNew + atWhatPositionInArray;
+        const isEditingCommentIndex = [];
+        isEditingCommentIndex.push(element);
+        this.setState({
+            anchorEl: event.currentTarget,
+            isEditingCommentIndex,
+            isPopOverOfExpandMoreOpen: true
+        });
+    }
+
+    handleCommentTextChange(event) {
         this.setState({commentTextContent: event.currentTarget.value});
-    };
+    }
 
-    handleCommentTextEditTouchTap = (event) => {
+    handleCommentTextEdit(event) {
         /* This prevents ghost click. */
         event.preventDefault();
         this.setState({
-            isCommentPopOverOpen: false,
-            isEditingComment: true
+            isEditingComment: true,
+            isPopOverOfEditOpen: false
         });
-    };
+    }
 
     handleFinishCommentTextEdit(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
             event.preventDefault();
-            // console.log('CommentList handleFinishCommentTextEdit');   // debug
-            /* 
-             * send put request to server to modify text report content 
-             */
-            const oldNewIndex = (event.currentTarget.id).slice(0, 1);
-            const atWhatPositionInArray = Number(event.currentTarget.id.slice(-1));
-            if(this.state.commentTextContent) {
+            /* send put request to server to modify text report content */
+            const { id } = event.currentTarget;
+            const arrayOfSplitIdString = id.split('-');
+            const isOldOrNew = arrayOfSplitIdString[0].slice(0, 1);
+            const atWhatPositionInArray = arrayOfSplitIdString[arrayOfSplitIdString.length - 1];
+            const { commentTextContent } = this.state;
+            if (commentTextContent && commentTextContent !== event.currentTarget.defaultValue) {
                 const commentModifyPutBody = {
-                    content: this.state.commentTextContent,
-                    report_id: this.props.report_id,
-                    type: 'report'
+                    'content': commentTextContent,
+                    'report_id': this.props.reportId,
+                    'type': 'report'
                 };
+                this.setState({
+                    commentTextContent: ''
+                });
                 let comment_id = null;
-                if (oldNewIndex == 'o') {
-                    // console.log('s');
-                    // reportPutBody.content = this.state.commentTextContent;
-                    comment_id = this.props.oldCommentList[atWhatPositionInArray].comment_id;
-                } else if (oldNewIndex == 'n') {
-                    // console.log('p');
-                    // reportPutBody.content = this.state.commentTextContent;
-                    comment_id = this.props.newCommentList[atWhatPositionInArray].comment_id;
+                if (isOldOrNew === 'o') {
+                    comment_id = this.props.commentListFromDatabase[atWhatPositionInArray].comment_id;
+                } else if (isOldOrNew === 'n') {
+                    comment_id = this.props.tempCommentList[atWhatPositionInArray].comment_id;
+                } else {
+                    console.error('isOldOrNew is not "o" or "n"');
                 }
-                console.log('CommentList handleFinishCommentTextEdit commentModifyPutBody', commentModifyPutBody);   // debug
                 if (comment_id) {
-                    console.log('comment_id', comment_id);   // debug
                     axios.put(`apis/comment/${comment_id}`, commentModifyPutBody)
-                    .then(response => {
-                        if(response.data.status == '200') {
-                            console.log('成功編輯留言');   // debug
+                    .then((response) => {
+                        if(response.data.status === '200') {
                             this.props.handleShouldReportUpdate(true);
+                            this.props.getCommentListAfterEdit();
                             this.setState({
                                 isEditingComment: false
                             });
                         } else {
-                            console.log('CommentList handleFinishCommentTextEdit else response: ', response);
-                            console.log('CommentList handleFinishCommentTextEdit else message: ', message);
+                            console.error('CommentList handleFinishCommentTextEdit else response: ', response);
+                            console.error('CommentList handleFinishCommentTextEdit else message: ', message);
                             window.alert('編輯留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                             this.setState({
                                 isEditingComment: false
                             });
                         }
                     })
-                    .catch(error => {
-                        console.log('CommentList handleFinishCommentTextEdit error: ', error);
+                    .catch((error) => {
+                        console.error('CommentList handleFinishCommentTextEdit error: ', error);
                         window.alert('編輯留言時發生錯誤，請重試一次；若問題依然發生，請聯絡開發團隊');
                         this.setState({
                             isEditingComment: false
@@ -163,165 +241,183 @@ export default class CommentList extends React.Component {
                 }
             }
             /* 
-             * transfer the text report to the original display instead of textarea by taking the element out of editing text array
+             * transfer the text report to the original display instead of textarea 
+             * by taking the element out of editing text array
              */
-            const commentIndex = oldNewIndex + atWhatPositionInArray;
-            console.log('CommentList handleFinishCommentTextEdit commentIndex', commentIndex);   // debug
+            const commentIndex = isOldOrNew + atWhatPositionInArray;
             const { isEditingCommentIndex } = this.state;
             const indexAtWhatPositionInArray = isEditingCommentIndex.indexOf(commentIndex);
-            console.log('CommentList handleFinishCommentTextEdit indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
             const isInEditingArray = (indexAtWhatPositionInArray != -1);
-            if(isInEditingArray) {
+            if (isInEditingArray) {
                 isEditingCommentIndex.splice(indexAtWhatPositionInArray, 1);
                 this.setState({
                     isEditingCommentIndex,
                     isEditingComment: false
                 });
             } else {
-                console.log('comment text edit index isInEditingArray error');
+                console.error('comment text edit index isInEditingArray error');
             }
         }
     }
 
-    handleRequestClose = () => {
+    handleRequestClose() {
         this.setState({
-            isCommentPopOverOpen: false
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false
         });
-    };
+    }
 
     render() {
-        const { newCommentList, oldCommentList } = this.props;
+        const { commentListFromDatabase, tempCommentList } = this.props;
         const { isEditingComment, isEditingCommentIndex } = this.state;
         return (
+            /* components/_comment.scss */
             <div className="comment-list">
                 {
-                    /* remove old comment right after user create a new comment */
-                    oldCommentList && !this.props.isAfterPost? 
-                    oldCommentList.map( (commentObject, index) => {
-                        return (
-                            <div className="comment-container" key={`comment-${index}`}>
-                                <div className="comment-avatar-container">
-                                {
-                                    /* show user's photo */
-                                    commentObject.user_id == this.props.currentUserId ?
-                                    <img className="comment__avatar" src={this.props.userBasicData.photo}/>
-                                    : <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
-                                }
-                                </div>
-                                <div className="comment__message">
+                    /* display temp comments right after user create a new comment */
+                    commentListFromDatabase && this.props.shouldShowCommentListFromDatabase ?
+                        commentListFromDatabase.map((commentObject, index) => {
+                            if (this.props.router_currentFormValue.comments_nick) {
+                                animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
+                                colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
+                            }
+                            return (
+                                <div
+                                    className="single-comment-container"
+                                    key={`comment-${index}`}
+                                >
+                                    <div className="comment-avatar-container">
+                                        {
+                                            /* show random animal avatar image */
+                                            this.props.router_currentFormValue.comments_nick ?
+                                                <img
+                                                    className="comment__avatar"
+                                                    src={animalImageArray[animalIndex]}
+                                                    style={{backgroundColor: colorArray[colorIndex]}}
+                                                />
+                                            :
+                                                <img
+                                                    className="comment__avatar"
+                                                    src="https://api.fnkr.net/testimg/40x40/00CED1/FFF/?text=avatar"
+                                                />
+                                        }
+                                    </div>
+                                    <div className="comment__message">
+                                        {
+                                            isEditingComment && isEditingCommentIndex.indexOf(`o${index}`) != -1 ?
+                                                <Textarea 
+                                                    className="report-content__text-edit"
+                                                    defaultValue={commentObject.content}
+                                                    id={`old-${index}`}
+                                                    minRows={2}
+                                                    onChange={this.handleCommentTextChange}
+                                                    onKeyDown={this.handleFinishCommentTextEdit}
+                                                />
+                                            :
+                                                commentObject.content
+                                        }
+                                    </div>
                                     {
-                                        isEditingComment && isEditingCommentIndex.indexOf(`o${index}`) != -1 ?
-                                        <Textarea 
-                                            className="report-content__text-edit"
-                                            defaultValue={commentObject.content}
-                                            id={`old-${index}`}
-                                            minRows={2}
-                                            onChange={this.handleCommentTextChange}
-                                            onKeyDown={this.handleFinishCommentTextEdit}
-                                        />
+                                        commentObject.user_id == this.props.currentUserId ?
+                                            <CommentEditButton
+                                                anchorEl={this.state.anchorEl}
+                                                commentId={commentObject.comment_id}
+                                                handleCommentDelete={this.handleCommentDelete}
+                                                handleCommentEditButtonTouchTap={this.handleCommentEditButtonTouchTap}
+                                                handleCommentTextEdit={this.handleCommentTextEdit}
+                                                handleRequestClose={this.handleRequestClose}
+                                                index={index}
+                                                isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                isOldOrNew="old"
+                                            />
                                         :
-                                        commentObject.content
+                                            <CommentExpandMoreButton
+                                                anchorEl={this.state.anchorEl}
+                                                commentId={commentObject.comment_id}
+                                                handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
+                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
+                                                handleRequestClose={this.handleRequestClose}
+                                                index={index}
+                                                isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                isOldOrNew="old"
+                                                reportId={this.props.reportId}
+                                            />
                                     }
+                                </div>
+                            );
+                        })
+                    :
+                        /* show temp comments right after user create a new comment */
+                        tempCommentList.map((commentObject, index) => {
+                            if (this.props.router_currentFormValue.comments_nick) {
+                                animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
+                                colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
+                            }
+                            return (
+                                <div
+                                    className="single-comment-container" 
+                                    key={`new-comment-${index}`}
+                                >
+                                    <div className="comment-avatar-container">
+                                        {
+                                            /* show random animal avatar image */
+                                            this.props.router_currentFormValue.comments_nick ?
+                                                <img
+                                                    className="comment__avatar"
+                                                    src={animalImageArray[animalIndex]}
+                                                    style={{backgroundColor: colorArray[colorIndex]}}
+                                                />
+                                            :
+                                                <img
+                                                    className="comment__avatar"
+                                                    src="https://api.fnkr.net/testimg/40x40/00CED1/FFF/?text=avatar"
+                                                />
+                                        }
+                                    </div>
+                                    <div className="comment__message">
+                                        {
+                                            isEditingComment && isEditingCommentIndex.indexOf(`n${index}`) != -1 ?
+                                                <Textarea 
+                                                    className="report-content__text-edit"
+                                                    defaultValue={commentObject.content}
+                                                    id={`new-${index}`}
+                                                    minRows={2}
+                                                    onChange={this.handleCommentTextChange}
+                                                    onKeyDown={this.handleFinishCommentTextEdit}
+                                                />
+                                            :
+                                                commentObject.content
+                                        }
+                                    </div>
                                     {
                                         commentObject.user_id == this.props.currentUserId ? 
-                                        <div>
-                                        <IconButton 
-                                            id={`old-comment-edit-button-${index}`}
-                                            onTouchTap={this.handleCommentIconButtonTouchTap}
-                                            tooltip="編輯或刪除"
-                                        >
-                                            <ModeEdit />
-                                        </IconButton>
-                                            <Popover
-                                                open={this.state.isCommentPopOverOpen}
+                                            <CommentEditButton
                                                 anchorEl={this.state.anchorEl}
-                                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                onRequestClose={this.handleRequestClose}
-                                            >
-                                            <Menu>
-                                                <MenuItem 
-                                                    onTouchTap={this.handleCommentTextEditTouchTap}
-                                                    primaryText="編輯" 
-                                                />
-                                                <MenuItem
-                                                    onTouchTap={this.handleCommentDeleteTouchTap}
-                                                    primaryText="刪除此回報"
-                                                />
-                                            </Menu>
-                                            </Popover>
-                                        </div>
-                                        : null
-                                    }
-                                </div>
-                            </div>
-                        );
-                    })
-                    : null
-                }
-                {
-                    /* show new comments right after user create a new comment */
-                    newCommentList.map( (commentObject, index) => {
-                        // console.log('newCommentList', newCommentList);   // debug
-                        return (
-                            <div className="comment-container" key={`new-comment-${index}`}>
-                                <div className="comment-avatar-container">
-                                {
-                                    /* show user's photo */
-                                    commentObject.user_id == this.props.currentUserId ?
-                                    <img className="comment__avatar" src={this.props.userBasicData.photo}/>
-                                    : <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
-                                }
-                                </div>
-                                <div className="comment__message">
-                                    {
-                                        isEditingComment && isEditingCommentIndex.indexOf(`n${index}`) != -1 ?
-                                        <Textarea 
-                                            className="report-content__text-edit"
-                                            defaultValue={commentObject.content}
-                                            id={`new-${index}`}
-                                            minRows={2}
-                                            onChange={this.handleCommentTextChange}
-                                            onKeyDown={this.handleFinishCommentTextEdit}
-                                        />
+                                                commentId={commentObject.comment_id}
+                                                handleCommentDelete={this.handleCommentDelete}
+                                                handleCommentEditButtonTouchTap={this.handleCommentEditButtonTouchTap}
+                                                handleCommentTextEdit={this.handleCommentTextEdit}
+                                                handleRequestClose={this.handleRequestClose}
+                                                index={index}
+                                                isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                isOldOrNew="new"
+                                            />
                                         :
-                                        commentObject.content
-                                    }
-                                    {
-                                        commentObject.user_id == this.props.currentUserId ? 
-                                        <div>
-                                        <IconButton 
-                                            id={`new-comment-edit-button-${index}`}
-                                            onTouchTap={this.handleCommentIconButtonTouchTap}
-                                            tooltip="編輯或刪除"
-                                        >
-                                            <ModeEdit />
-                                        </IconButton>
-                                            <Popover
-                                                open={this.state.isCommentPopOverOpen}
+                                            <CommentExpandMoreButton
                                                 anchorEl={this.state.anchorEl}
-                                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                onRequestClose={this.handleRequestClose}
-                                            >
-                                            <Menu>
-                                                <MenuItem 
-                                                    onTouchTap={this.handleEditTextReportClick}
-                                                    primaryText="編輯" 
-                                                />
-                                                <MenuItem
-                                                    onTouchTap={this.handleReportDelete}
-                                                    primaryText="刪除此回報"
-                                                />
-                                            </Menu>
-                                            </Popover>
-                                        </div>
-                                        : null
+                                                commentId={commentObject.comment_id}
+                                                handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
+                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
+                                                handleRequestClose={this.handleRequestClose}
+                                                index={index}
+                                                isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                isOldOrNew="new"
+                                                reportId={this.props.reportId}
+                                            />
                                     }
                                 </div>
-                            </div>
-                        )
-                    })
+                            )
+                        })
                 }
             </div>
         );

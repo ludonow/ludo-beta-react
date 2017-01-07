@@ -59,8 +59,9 @@ export default class Sidebar extends React.Component {
     render() {
         const { hoverSidebarIndex, instructionText } = this.state;
         return (
+            /* layout/_right-sidebar.scss */
             <div 
-                className={`right-sidebar-hover-area`} 
+                className="right-sidebar-hover-area"
                 onMouseLeave={this.handleSidebarMouseLeave}
                 onMouseOver={this.handleSidebarMouseOver}
             >
@@ -69,7 +70,7 @@ export default class Sidebar extends React.Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to={`playground`}>
+                            <Link to="/playground">
                                 {
                                     hoverSidebarIndex == 0 ?
                                         <div className="right-sidebar-item__instruction">
@@ -99,7 +100,7 @@ export default class Sidebar extends React.Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to={`/create`}>
+                            <Link to="/create">
                                 {
                                     hoverSidebarIndex == 2 ?
                                         <div className="right-sidebar-item__instruction">
@@ -114,7 +115,7 @@ export default class Sidebar extends React.Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to={`/friend`}>
+                            <Link to="/friend">
                                 {
                                     hoverSidebarIndex == 3 ?
                                         <div className="right-sidebar-item__instruction">
@@ -129,7 +130,7 @@ export default class Sidebar extends React.Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to={`playground`}>
+                            <Link to="playground">
                                 {
                                     hoverSidebarIndex == 4 ?
                                         <div className="right-sidebar-item__instruction">
@@ -144,7 +145,7 @@ export default class Sidebar extends React.Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to={`playground`}>
+                            <Link to="playground">
                                 {
                                     hoverSidebarIndex == 5 ?
                                         <div className="right-sidebar-item__instruction">

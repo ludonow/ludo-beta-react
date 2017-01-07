@@ -2,8 +2,24 @@
 @mixin background_img_content($file_name) {
     background-image: url('../images/#{$file_name}.png');
 }
+//backface-visibility
+@mixin backface-visibility($status){
+  backface-visibility:$status;
+  -moz-backface-visibility:$status;
+  -webkit-backface-visibility:$status;
+  -o-backface-visibility:$status;
+}
 
 // animation
+
+// @mixin TransformrotateY($deg:180deg) {
+//   transform: rotateY($deg);
+//   -moz-transform: rotateY($deg);
+//   -webkit-transform: rotateY($deg);
+//   -o-transform: rotateY($deg);
+//   -ms-transform:transform: rotateY($deg);/* IE 9 */
+// }
+
 @mixin transition-duration($time) {
     transition-duration: $time;
     -moz-transition-duration: $time;
@@ -24,4 +40,13 @@
   -webkit-box-shadow: $h-shadow $v-shadow $blur $spread $color;
      -moz-box-shadow: $h-shadow $v-shadow $blur $spread $color;
        -o-box-shadow: $h-shadow $v-shadow $blur $spread $color;
+ }
+//make a circle
+ @mixin circle($width, $color) {
+   width: $width;
+   height: $width;
+   background: $color;
+   -webkit-border-radius: $width/2;
+      -moz-border-radius: $width/2;
+           border-radius: $width/2;
  }

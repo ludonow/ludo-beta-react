@@ -25,17 +25,14 @@ $g_form-height: 535px;
 }
 
     .form-item {
-        display: inline-flex;
-        width: $grid-item_total-width;
-        // height: 270px;
-        height: 330px;
-        padding-bottom: 10px;
+        @extend .grid-item;
     }
         .form-card {
             @extend .card;
-            margin: 0 5px;
         }
         .form-card.card-back {
-            left: 0;
-            top: 0;
+            @extend %absolute;
+            left: 10px;
+            // top: 7px;
+            width: 200px;
         }

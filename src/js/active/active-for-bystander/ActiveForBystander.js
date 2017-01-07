@@ -9,17 +9,16 @@ export default class ActiveForBystander extends React.Component {
     }
 
     componentWillMount() {
-        // console.log('ActiveForBystander componentWillMount');   // debug
         this.props.handleIsOpeningActivePage(true);
     }
 
     componentWillUnmount() {
-        // console.log('ActiveForBystander componentWillUnmount');   // debug
         this.props.handleIsOpeningActivePage(false);
     }
 
     render() {
         return (
+            /* components/_report-form.scss */
             <div className="form-and-report">
                 <ActiveBystanderForm  {...this.props} />
                 <ActiveReports {...this.props} />

@@ -2,28 +2,63 @@ import React from 'react';
 import axios from '../axios-config';
 
 import IconButton from 'material-ui/IconButton';
-import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
-import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import Popover from 'material-ui/Popover';
 
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
 import CommentBox from './CommentBox';
+import ReportEditButton from './ReportEditButton';
+import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
-injectTapEventPlugin();
+import animalImage_0 from '../../images/animals/anteater.png';
+import animalImage_1 from '../../images/animals/bat.png';
+import animalImage_2 from '../../images/animals/bulldog.png';
+import animalImage_3 from '../../images/animals/cat.png';
+import animalImage_4 from '../../images/animals/crocodile.png';
+import animalImage_5 from '../../images/animals/duck.png';
+import animalImage_6 from '../../images/animals/elephant.png';
+import animalImage_7 from '../../images/animals/frog.png';
+import animalImage_8 from '../../images/animals/giraffe.png';
+import animalImage_9  from '../../images/animals/hippopotamus.png';
+import animalImage_10 from '../../images/animals/kangaroo.png';
+import animalImage_11 from '../../images/animals/lion.png';
+import animalImage_12 from '../../images/animals/monkey.png';
+import animalImage_13 from '../../images/animals/mouse.png';
+import animalImage_14 from '../../images/animals/octopus.png';
+import animalImage_15 from '../../images/animals/panda.png';
+import animalImage_16 from '../../images/animals/penguin.png';
+import animalImage_17 from '../../images/animals/pig.png';
+import animalImage_18 from '../../images/animals/rabbit.png';
+import animalImage_19 from '../../images/animals/shark.png';
+import animalImage_20 from '../../images/animals/sheep.png';
+import animalImage_21 from '../../images/animals/snake.png';
+import animalImage_22 from '../../images/animals/spider.png';
+import animalImage_23 from '../../images/animals/tiger.png';
+import animalImage_24 from '../../images/animals/turtle.png';
+import animalImage_25 from '../../images/animals/whale.png';
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            avatarStyle: {
+                avatarImageOfPlayer: '',
+                avatarImageOfStarter: '',
+                avatarOfPlayer: {
+                    'backgroundColor': 'green'
+                },
+                avatarOfStarter: {
+                    'backgroundColor': 'blue'
+                }
+            },
+            currentTargetId: '',
             enlargeImageLocation: '',
             files: [],
             imageLocation: '',
@@ -36,20 +71,30 @@ export default class ActiveReports extends React.Component {
             isEditReportButtonClickable: false,
             isImageLightBoxOpen: false,
             isImageUploaded: false,
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false,
             reportTextContent: '',
             playerReportList: [],
             starterReportList: [],
-            whoIsUser: '',
-            isReportPopOverOpen: false
+            whoIsUser: ''
         };
+        this.getPlayerAvatarImage = this.getPlayerAvatarImage.bind(this);
+        this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
+        this.handleImageDrop = this.handleImageDrop.bind(this);
+        this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
         this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
         this.handleEditTextReportClick = this.handleEditTextReportClick.bind(this);
         this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
         this.handleReportDelete = this.handleReportDelete.bind(this);
-        this.closeLightbox = this.closeLightbox.bind(this);
-        this.onDrop = this.onDrop.bind(this);
+        this.handleReportDenounce = this.handleReportDenounce.bind(this);
+        this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
+        this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
+        this.handleReportTextChange = this.handleReportTextChange.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.shuffleArray = this.shuffleArray.bind(this);
     }
 
     componentWillMount() {
@@ -62,248 +107,153 @@ export default class ActiveReports extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('ActiveReports componentWillReceiveProps', nextProps.hasGotNewReport);  // debug
-        /* 
-         * classify report data by starter or player
-         */
-        // if(nextProps.currentLudoReportData.length != this.props.currentLudoReportData.length || !this.props.hasGotNewReport) {
-        if(nextProps.hasGotNewReport) {
-            const { currentUserId } = this.props;
+        /* classify report data by starter or player */
+        if (nextProps.hasGotNewReport) {
+            const { currentUserId, router_currentFormValue } = nextProps;
             let whoIsUser = '';
             if (currentUserId) {
-                const currentFormValue = this.props.router_currentFormValue;
-                if (currentFormValue.starter_id == currentUserId) {
+                if (router_currentFormValue.starter_id == currentUserId) {
                     whoIsUser = 'starter';
-                } else if (currentFormValue.player_id == currentUserId) {
+                } else if (router_currentFormValue.player_id == currentUserId) {
                     whoIsUser = 'player';
                 } else {
                     whoIsUser = 'bystander';
                 }
             }
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate this', this.props);   // debug
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate next', nextProps);   // debug
-            // console.log('ActiveReports componentWillReceiveProps shouldReportUpdate whoIsUser', whoIsUser);   // debug
             const { starterReportList, playerReportList } = this.state;
             this.setState({
                 starterReportList: [],
                 playerReportList: [],
                 whoIsUser
             });
-            // console.log('ActiveReports componentWillReceiveProps nextProps.currentLudoReportData', nextProps.currentLudoReportData);   // debug
-            const newStarterReportList = nextProps.currentLudoReportData.filter(reportObject => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.starter_id) {
+            const { currentLudoReportData } = nextProps;
+            const newStarterReportList = currentLudoReportData.filter((reportObject) => {
+                if (reportObject.user_id === router_currentFormValue.starter_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
-            // console.log('ActiveReports componentWillReceiveProps this.state.starterReportList', this.state.starterReportList);   // debug 
-            const newPlayerReportList = nextProps.currentLudoReportData.filter( (reportObject) => {
-                if (reportObject.user_id == nextProps.router_currentFormValue.player_id) {
+            const newPlayerReportList = currentLudoReportData.filter((reportObject) => {
+                if (reportObject.user_id === router_currentFormValue.player_id) {
                     return true;
                 } else {
                     return false;
                 }
             });
-            // console.log('ActiveReports componentWillReceiveProps this.state.playerReportList', this.state.playerReportList);   // debug
+
             this.setState({
+                playerReportList: newPlayerReportList,
                 starterReportList: newStarterReportList,
-                playerReportList: newPlayerReportList
+                whoIsUser
             });
             if (!this.state.isEditReportButtonClickable) {
                 this.setState({
                     isEditReportButtonClickable: true
                 });
             }
+            this.getPlayerAvatarImage();
             this.props.handleHasGotNewReport(false);
         }
     }
 
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
+    getPlayerAvatarImage() {
+        const { player_id, starter_id, comments_nick } = this.props.router_currentFormValue;
+        const animalImageArray = [
+            animalImage_0 ,
+            animalImage_1 ,
+            animalImage_2 ,
+            animalImage_3 ,
+            animalImage_4 ,
+            animalImage_5 ,
+            animalImage_6 ,
+            animalImage_7 ,
+            animalImage_8 ,
+            animalImage_9 ,
+            animalImage_10,
+            animalImage_11,
+            animalImage_12,
+            animalImage_13,
+            animalImage_14,
+            animalImage_15,
+            animalImage_16,
+            animalImage_17,
+            animalImage_18,
+            animalImage_19,
+            animalImage_20,
+            animalImage_21,
+            animalImage_22,
+            animalImage_23,
+            animalImage_24,
+            animalImage_25,
+        ];
+        const colorArray = [
+            'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
+            'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
+        ];
+        this.setState({
+            avatarStyle: {
+                avatarImageOfPlayer: animalImageArray[comments_nick[player_id][0]],
+                avatarImageOfStarter: animalImageArray[comments_nick[starter_id][0]],
+                avatarOfPlayer: {
+                    'backgroundColor': colorArray[comments_nick[player_id][1]]
+                },
+                avatarOfStarter: {
+                    'backgroundColor': colorArray[comments_nick[starter_id][1]]
+                }
+            }
+        });
     }
 
-    handleReportIconButtonTouchTap = (event) => {
-        /* This prevents ghost click. */
-        event.preventDefault();
-        const { whoIsUser } = this.state;
-        if (whoIsUser == 'starter') {
-            const isEditingWhichStarterReportIndex = (event.currentTarget.id).slice(-1);
-            // console.log('isEditingWhichStarterReportIndex', isEditingWhichStarterReportIndex);   // debug
-            this.setState({isEditingWhichStarterReportIndex});
-        } else if (whoIsUser == 'player') {
-            const isEditingWhichPlayerReportIndex = (event.currentTarget.id).slice(-1);
-            // console.log('isEditingWhichPlayerReportIndex', isEditingWhichPlayerReportIndex);   // debug
-            this.setState({isEditingWhichPlayerReportIndex});
-        }
-        // console.log('anchorEl id', event.currentTarget.id);   // debug
+    handleCloseLightbox() {
         this.setState({
-            anchorEl: event.currentTarget,
-            isReportPopOverOpen: true
+            isImageLightBoxOpen: false
         });
-    };
-
-    handleImageEnlarge = (event) => {
-        // console.log('ActiveReports handleImageEnlarge image location', event.currentTarget.src);  // debug
-        this.setState({
-            enlargeImageLocation: event.currentTarget.src,
-            isImageLightBoxOpen: true
-        });
-    };
-
-    handleImageRemove = (event) => {
-        event.preventDefault();
-        // const imageIndex = Number(event.currentTarget.value);  // For multiple picture upload
-        this.setState({
-            files: [],
-            isImageUploaded: false
-        });
-    };
-
-    handleReportTextChange = (event) => {
-        // console.log('ActiveReports handleReportTextChange reportTextContent', this.state.reportTextContent);   // debug
-        this.setState({reportTextContent: event.currentTarget.value});
-    };
-
-    handleRequestClose = () => {
-        this.setState({
-            isReportPopOverOpen: false
-        });
-    };
+    }
 
     handleEditImageReportClick(event) {
         event.preventDefault();
-        /* 
-         *  clear the image-editing array and put user click target into image-editing array
-         */
-        // console.log('ActiveReports handleEditImageReportClick id', event.currentTarget.id);   // debug
+        /* clear the image-editing array and put user click target into image-editing array */
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingImageReport, isEditingImageReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
-        if(!isInEditingArray) {
+        if (!isInEditingArray) {
             isEditingImageReportIndex.splice(0, isEditingImageReportIndex.length);
             isEditingImageReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         }
-        // console.log('ActiveReports handleEditImageReportClick isEditingImageReportIndex', isEditingImageReportIndex);
         this.setState({
             isEditingImageReport: true,
             isEditingImageReportIndex,
-            isReportPopOverOpen: false
+            isPopOverOfEditOpen: false
         });
-    }
-
-    handleImageReportEditCancelClick(event) {
-        event.preventDefault();
-        /* 
-         *  drop the user click target out of image-editing array 
-         */
-        // console.log('ActiveReports handleImageReportEditCancelClick');   // debug
-        const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-        // console.log('ActiveReports handleImageReportEditCancelClick reportIndex', reportIndex);   // debug
-        const { isEditingImageReport, isEditingImageReportIndex } = this.state;
-        const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
-        const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        // console.log('ActiveReports handleImageReportEditCancelClick isInEditingArray', isInEditingArray);   // debug
-        if(isInEditingArray) {
-            isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
-            this.setState({
-                isEditingImageReport: false,
-                isEditingImageReportIndex
-            });
-        } else {
-            console.log('report edit index error');
-        }
-    }
-
-    handleImageReportModifyConfirmClick(event) {
-        event.preventDefault();
-        // console.log('ActiveReports handleImageReportModifyConfirmClick');   // debug
-        const reportPutBody = {
-            content: '',
-            image_location: this.state.image_location
-        };
-        const SPIndex = (event.currentTarget.id).slice(0, 1);
-        const arrayIndex = Number(event.currentTarget.id.slice(-1));
-        let report_id = null;
-        if (SPIndex == 's') {
-            // console.log('s');   // debug
-            // reportPutBody.image_location = this.state.image_location;
-            reportPutBody.content = this.state.starterReportList[arrayIndex].content;
-            report_id = this.state.starterReportList[arrayIndex].report_id;
-        } else if (SPIndex == 'p') {
-            // console.log('p');   // debug
-            // reportPutBody.image_location = this.state.image_location;
-            reportPutBody.content = this.state.playerReportList[arrayIndex].content;
-            report_id = this.state.playerReportList[arrayIndex].report_id;
-        }
-        console.log('reportPutBody', reportPutBody);   // debug
-        if (report_id) {
-            // console.log('report_id', report_id);   // debug
-            axios.put(`/apis/report/${report_id}`, reportPutBody)
-            .then( response => {
-                if(response.data.status === '200') {
-                    // console.log('成功編輯');   // debug
-                    /*
-                     * remove the specific element in image-edit array
-                     */
-                    // const { isEditingImageReportIndex } = this.state;
-                    // const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(SPIndex + arrayIndex);
-                    // const isInEditingArray = (indexAtWhatPositionInArray != -1);
-                    // isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
-                    this.setState({
-                        files: [],
-                        image_location: '',
-                        isEditingImageReportIndex: [],
-                        isImageUploaded: false,
-                        reportTextContent: '',
-                    });
-                    this.props.handleShouldReportUpdate(true);
-                } else {
-                    console.log('ActiveReports handleImageReportModifyConfirmClick report put else response from server: ', response);
-                    window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-                }
-            })
-            .catch( error => {
-                console.log('ActiveReports handleImageReportModifyConfirmClick report put error', error);
-                window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-            });
-        }
     }
 
     handleEditTextReportClick(event) {
         event.preventDefault();
-        /* 
-         *  put user click target into text-editing array
-         */
-        // console.log('ActiveReports handleEditTextReportClick id', event.currentTarget.id);   // debug
+        /* put user click target into text-editing array */
         const reportIndex = Number(event.currentTarget.id.slice(-1));
         const { isEditingTextReport, isEditingTextReportIndex } = this.state;
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-        // console.log('ActiveReports handleEditTextReportClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
         if(!isInEditingArray) {
             isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
-        } 
-        // console.log('ActiveReports handleEditTextReportClick isEditingTextReportIndex', isEditingTextReportIndex);   // debug
+        }
         this.setState({
             isEditingTextReport: true,
             isEditingTextReportIndex,
-            isReportPopOverOpen: false
+            isPopOverOfEditOpen: false
         });
     }
 
     handleFinishReportEditText(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
             event.preventDefault();
-            // console.log('ActiveReports handleFinishReportEditText');   // debug
-            /* 
-             * send put request to server to modify text report content 
-             */
-            if(this.state.reportTextContent) {
+            /* send put request to server to modify text report content */
+            if (this.state.reportTextContent) {
                 const reportPutBody = {
                     content: this.state.reportTextContent,
                     image_location: ''
@@ -312,106 +262,44 @@ export default class ActiveReports extends React.Component {
                 const arrayIndex = Number(event.currentTarget.id.slice(-1));
                 let report_id = null;
                 if (SPIndex == 's') {
-                    // console.log('s');
-                    // reportPutBody.content = this.state.reportTextContent;
                     report_id = this.state.starterReportList[arrayIndex].report_id;
                 } else if (SPIndex == 'p') {
-                    // console.log('p');
-                    // reportPutBody.content = this.state.reportTextContent;
                     report_id = this.state.playerReportList[arrayIndex].report_id;
                 }
-                console.log('ActiveReports handleFinishReportEditText reportPutBody', reportPutBody);   // debug
                 if (report_id) {
-                    // console.log('report_id', report_id);
                     axios.put(`/apis/report/${report_id}`, reportPutBody)
-                    .then( response => {
+                    .then((response) => {
                         if(response.data.status === '200') {
-                            // console.log('成功編輯');
                             this.props.handleShouldReportUpdate(true);
                         } else {
-                            console.log('ActiveReports handleFinishReportEditText report put else response from server: ', response);
+                            console.error('ActiveReports handleFinishReportEditText report put else response from server: ', response);
                             window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                         }
                     })
-                    .catch( error => {
-                        console.log('ActiveReports handleFinishReportEditText report put error', error);
+                    .catch((error) => {
+                        console.error('ActiveReports handleFinishReportEditText report put error', error);
                         window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                     });
                 }
             }
-            /* 
-             * transfer the text report to the original display instead of textarea by taking the element out of editing text array
-             */
+            /* transfer the text report to the original display instead of textarea by taking the element out of editing text array */
             const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-            // console.log('ActiveReports handleEditTextReportClick reportIndex', reportIndex);   // debug
             const { isEditingTextReport, isEditingTextReportIndex } = this.state;
             const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-            // console.log('ActiveReports handleEditTextReportClick indexAtWhatPositionInArray', indexAtWhatPositionInArray);   // debug
             const isInEditingArray = (indexAtWhatPositionInArray != -1);
-            if(isInEditingArray) {
+            if (isInEditingArray) {
                 isEditingTextReportIndex.splice(indexAtWhatPositionInArray, 1);
                 this.setState({
                     isEditingTextReportIndex,
                     isEditingTextReport: false
                 });
             } else {
-                console.log('text report edit index isInEditingArray error');
+                console.error('text report edit index isInEditingArray error');
             }
         }
     }
 
-    handleReportDelete(event) {
-        const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
-        if(isSureToDelelteReport) {
-            // console.log('target', event.currentTarget);   // debug
-            // console.log('id', event.currentTarget.id);   // debug
-            const SPIndex = (event.currentTarget.id).slice(0, 1);
-            const arrayIndex = Number(event.currentTarget.id.slice(-1));
-            // console.log('SPIndex', SPIndex);   // debug
-            // console.log('arrayIndex', arrayIndex);   // debug
-            // console.log('report', this.state.playerReportList[arrayIndex]);   // debug
-            let report_id = null;
-            if (SPIndex == 's') {
-                // console.log('s');
-                // reportPutBody.content = this.state.reportTextContent;
-                report_id = this.state.starterReportList[arrayIndex].report_id;
-            } else if (SPIndex == 'p') {
-                // console.log('p');
-                // reportPutBody.content = this.state.reportTextContent;
-                report_id = this.state.playerReportList[arrayIndex].report_id;
-            }
-            console.log('SPIndex + arrayIndex', SPIndex + arrayIndex);   // debug
-            this.setState({
-                isReportPopOverOpen: false
-            });
-            if(report_id) {
-                axios.delete(`apis/report/${report_id}`)
-                .then(response => {
-                    if(response.data.status === '200'){
-                        // console.log('成功刪除回報');   // debug
-                        this.props.handleShouldReportUpdate(true);
-                    } else {
-                        window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                        console.log(' handleReportDelete else response: ', response);
-                        console.log(' handleReportDelete else message: ', response.data.message);
-                    }
-                })
-                .catch(error => {
-                    window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                    console.log(' handleReportDelete error: ', error);
-                });
-            }
-        }
-    }
-
-    closeLightbox() {
-        this.setState({
-            isImageLightBoxOpen: false
-        });
-    }
-
-    onDrop(files) {
-        // console.log('ActiveReports onDrop files', files);
+    handleImageDrop(files) {
         if (files.length == 1) {
             this.setState({
                 files,
@@ -420,22 +308,19 @@ export default class ActiveReports extends React.Component {
             const { ludoId }= this.props.params;
             const imgPost = new FormData();
             imgPost.append('file', files[0]);
-            // console.log('imgPost file', imgPost.get('file'));
-            // console.log('before post image');
             axios.post('/apis/report-image', imgPost)
             .then(response => {
                 if (response.data.status === '200') {
                     this.setState({
                         image_location: response.data.location
                     });
-                    // console.log('上傳圖片成功', this.state.image_location);
                 } else {
-                    console.log('ActiveReports onDrop response from server: ', response);
-                    console.log('ActiveReports onDrop message from server: ', response.data.message);
+                    console.error('ActiveReports handleImageDrop response from server: ', response);
+                    console.error('ActiveReports handleImageDrop message from server: ', response.data.message);
                 }
             })
             .catch(error => {
-                console.log('ActiveReports onDrop error', error);
+                console.error('ActiveReports handleImageDrop error', error);
             });
         } else if (files.length > 1) {
             this.setState({
@@ -445,22 +330,209 @@ export default class ActiveReports extends React.Component {
         }
     }
 
+    handleImageEnlarge(event) {
+        this.setState({
+            enlargeImageLocation: event.currentTarget.src,
+            isImageLightBoxOpen: true
+        });
+    }
+
+    handleImageRemove(event) {
+        event.preventDefault();
+        // const imageIndex = Number(event.currentTarget.value);  // For multiple picture upload
+        this.setState({
+            files: [],
+            isImageUploaded: false
+        });
+    }
+
+    handleImageReportEditCancelClick(event) {
+        event.preventDefault();
+        /* drop the user click target out of image-editing array */
+        const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
+        const { isEditingImageReport, isEditingImageReportIndex } = this.state;
+        const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
+        const isInEditingArray = (indexAtWhatPositionInArray != -1);
+        if (isInEditingArray) {
+            isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
+            this.setState({
+                isEditingImageReport: false,
+                isEditingImageReportIndex
+            });
+        } else {
+            console.error('report edit index error');
+        }
+    }
+
+    handleImageReportModifyConfirmClick(event) {
+        event.preventDefault();
+        const reportPutBody = {
+            content: '',
+            image_location: this.state.image_location
+        };
+        const SPIndex = (event.currentTarget.id).slice(0, 1);
+        const arrayIndex = Number(event.currentTarget.id.slice(-1));
+        let report_id = null;
+        if (SPIndex == 's') {
+            reportPutBody.content = this.state.starterReportList[arrayIndex].content;
+            report_id = this.state.starterReportList[arrayIndex].report_id;
+        } else if (SPIndex == 'p') {
+            reportPutBody.content = this.state.playerReportList[arrayIndex].content;
+            report_id = this.state.playerReportList[arrayIndex].report_id;
+        }
+        if (report_id) {
+            axios.put(`/apis/report/${report_id}`, reportPutBody)
+            .then( response => {
+                if(response.data.status === '200') {
+                    /* remove the specific element in image-edit array */
+                    this.setState({
+                        files: [],
+                        image_location: '',
+                        isEditingImageReportIndex: [],
+                        isImageUploaded: false,
+                        reportTextContent: '',
+                    });
+                    this.props.handleShouldReportUpdate(true);
+                } else {
+                    console.error('ActiveReports handleImageReportModifyConfirmClick report put else response from server: ', response);
+                    window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+                }
+            })
+            .catch( error => {
+                console.error('ActiveReports handleImageReportModifyConfirmClick report put error', error);
+                window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
+            });
+        }
+    }
+
+    handleReportDelete(event) {
+        const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
+        if (isSureToDelelteReport) {
+            // const SPIndex = (event.currentTarget.id).slice(0, 1);
+            const SPIndex = (this.state.anchorEl.id).slice(0, 1);
+            const arrayIndex = Number(event.currentTarget.id.slice(-1));
+            let report_id = null;
+            if (SPIndex == 's') {
+                report_id = this.state.starterReportList[arrayIndex].report_id;
+            } else if (SPIndex == 'p') {
+                report_id = this.state.playerReportList[arrayIndex].report_id;
+            }
+            this.setState({
+                isPopOverOfEditOpen: false
+            });
+            if (report_id) {
+              const { router_currentFormValue } = this.props;
+              const { ludo_id } = router_currentFormValue;
+              axios.delete(`apis/report/${report_id}/${ludo_id}`)
+                .then(response => {
+                    if(response.data.status === '200'){
+                        this.props.handleShouldReportUpdate(true);
+                    } else {
+                        window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
+                        console.error(' handleReportDelete else response: ', response);
+                        console.error(' handleReportDelete else message: ', response.data.message);
+                    }
+                })
+                .catch(error => {
+                    window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
+                    console.error(' handleReportDelete error: ', error);
+                });
+            }
+        }
+    }
+
+    handleReportDenounce(event) {
+        const SPIndex = (this.state.anchorEl.id).slice(0, 1);
+        const arrayIndex = Number(event.currentTarget.id.slice(-1));
+        let report_id = null;
+        if (SPIndex === 's') {
+            report_id = this.state.starterReportList[arrayIndex].report_id;
+        } else if (SPIndex === 'p') {
+            report_id = this.state.playerReportList[arrayIndex].report_id;
+        } else {
+            console.error('handleReportDenounce SPIndex is not correct');
+        }
+        if (report_id) {
+            this.props.handleDenounceBoxOpen({
+                currentTargetReportId: report_id,
+            });
+        } else {
+            console.error('ActiveReports handleReportDenounce report_id does not exist');
+        }
+        this.setState({
+            isPopOverOfExpandMoreOpen: false
+        });
+    }
+
+    handleReportEditButtonTouchTap(event) {
+        /* This prevents ghost click. */
+        event.preventDefault();
+        if (event.currentTarget.id.slice(0, 1) === 's') {
+            const isEditingWhichStarterReportIndex = Number((event.currentTarget.id).slice(-1));
+            this.setState({isEditingWhichStarterReportIndex});
+        } else if (event.currentTarget.id.slice(0, 1) === 'p') {
+            const isEditingWhichPlayerReportIndex = Number((event.currentTarget.id).slice(-1));
+            this.setState({isEditingWhichPlayerReportIndex});
+        }
+        this.setState({
+            anchorEl: event.currentTarget,
+            isPopOverOfEditOpen: true
+        });
+    }
+
+    handleReportExpandMoreButtonTouchTap(event) {
+        /* This prevents ghost click. */
+        event.preventDefault();
+        if (event.currentTarget.id.slice(0, 1) === 's') {
+            const isEditingWhichStarterReportIndex = Number((event.currentTarget.id).slice(-1));
+            this.setState({isEditingWhichStarterReportIndex});
+        } else if (event.currentTarget.id.slice(0, 1) === 'p') {
+            const isEditingWhichPlayerReportIndex = Number((event.currentTarget.id).slice(-1));
+            this.setState({isEditingWhichPlayerReportIndex});
+        }
+        this.setState({
+            anchorEl: event.currentTarget,
+            isPopOverOfExpandMoreOpen: true
+        });
+    }
+
+    handleReportTextChange(event) {
+        this.setState({reportTextContent: event.currentTarget.value});
+    }
+
+    handleRequestClose() {
+        this.setState({
+            isPopOverOfEditOpen: false,
+            isPopOverOfExpandMoreOpen: false
+        });
+    }
+
+    shuffleArray(array) {
+        let randomNumber, tempVariable, index;
+        for (index = array.length; index; index-- ) {
+            randomNumber = Math.floor(Math.random() * index);
+            tempVariable = array[index - 1];
+            array[index - 1] = array[randomNumber];
+            array[randomNumber] = tempVariable;
+        }
+    }
+
     render() {
-        const { files, 
-            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex, 
-            isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex, 
-            isEditReportButtonClickable, isImageUploaded, starterReportList, playerReportList, whoIsUser 
+        const { files,
+            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex,
+            isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex,
+            isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser
         } = this.state;
         return (
+            /* components/_report-list.scss */
             <div className="report-list">
                 {
-                    this.state.isImageLightBoxOpen ? 
-                        <Lightbox 
-                            className="lighbox-target"
+                    this.state.isImageLightBoxOpen ?
+                        <Lightbox
                             mainSrc={this.state.enlargeImageLocation}
                             // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
                             // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
-                            onCloseRequest={this.closeLightbox}
+                            onCloseRequest={this.handleCloseLightbox}
                             // onMovePrevRequest={this.movePrev}
                             // onMoveNextRequest={this.moveNext}
                         />
@@ -468,145 +540,169 @@ export default class ActiveReports extends React.Component {
                 }
                 <div className="report-list-container">
                     <div className="player-container">
-                        <div className="player-photo-container">
+                        <div className="player-avatar-container">
                             {
-                                whoIsUser == 'starter' && this.props.userBasicData.photo?
-                                <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
-                                : <div className="player-photo-container__photo"/>
+                                whoIsUser === 'starter' && this.props.userBasicData.photo?
+                                    <img
+                                        className="player-avatar-container__photo"
+                                        src={this.props.userBasicData.photo}
+                                    />
+                                :
+                                    <img
+                                        className="player-avatar-container__photo"
+                                        src={avatarStyle.avatarImageOfStarter}
+                                        style={avatarStyle.avatarOfStarter}
+                                    />
                             }
                         </div>
+                        <div className="player-health-point">
+                            HP: {this.props.router_currentFormValue.starter_hp}%
+                        </div>
                         {
-                            this.state.starterReportList.map( (reportObject, index) => {
+                            this.state.starterReportList.map((reportObject, index) => {
                                 return (
-                                    <div className="player-report-container" key={`starter-report-${index}`}>
+                                    /* components/_single-report.scss */
+                                    <div
+                                        className="player-report-container"
+                                        key={`starter-report-${index}`}
+                                    >
                                         {
-                                            whoIsUser == 'starter' ?
-                                            <div>
-                                                <IconButton 
-                                                    id={`starter-report-edit-${index}`}
-                                                    onTouchTap={this.handleReportIconButtonTouchTap}
-                                                    tooltip="編輯"
-                                                >
-                                                    <ModeEdit />
-                                                </IconButton>
-                                                {
-                                                        starterReportList[isEditingWhichStarterReportIndex] ? 
-                                                        <Popover
-                                                            open={this.state.isReportPopOverOpen}
-                                                            anchorEl={this.state.anchorEl}
-                                                            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                            onRequestClose={this.handleRequestClose}
-                                                        >
-                                                            <Menu>
-                                                                <MenuItem 
-                                                                    disabled={!starterReportList[isEditingWhichStarterReportIndex].content}
-                                                                    id={`starter-text-edit-${isEditingWhichStarterReportIndex}`}
-                                                                    onTouchTap={this.handleEditTextReportClick}
-                                                                    primaryText="編輯文字回報" 
-                                                                />
-                                                                <MenuItem 
-                                                                    disabled={!starterReportList[isEditingWhichStarterReportIndex].image_location}
-                                                                    id={`starter-image-edit-${isEditingWhichStarterReportIndex}`}
-                                                                    onTouchTap={this.handleEditImageReportClick}
-                                                                    primaryText="編輯圖片回報" 
-                                                                />
-                                                                <MenuItem
-                                                                    id={`starter-report-delete-${isEditingWhichStarterReportIndex}`}
-                                                                    onTouchTap={this.handleReportDelete}
-                                                                    primaryText="刪除此回報"
-                                                                />
-                                                            </Menu>
-                                                        </Popover>
-                                                        : null
-                                                    }
-                                            </div>
-                                            : null
+                                            whoIsUser === 'starter' ?
+                                                <ReportEditButton
+                                                    anchorEl={this.state.anchorEl}
+                                                    handleEditTextReportClick={this.handleEditTextReportClick}
+                                                    handleEditImageReportClick={this.handleEditImageReportClick}
+                                                    handleReportDelete={this.handleReportDelete}
+                                                    handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
+                                                    index={index}
+                                                    isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
+                                                    isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                    onRequestClose={this.handleRequestClose}
+                                                    reportList={starterReportList}
+                                                    whichList="starter"
+                                                />
+                                            :
+                                                <ReportExpandMoreButton
+                                                    anchorEl={this.state.anchorEl}
+                                                    handleReportDenounce={this.handleReportDenounce}
+                                                    handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                                                    index={index}
+                                                    isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
+                                                    isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                    onRequestClose={this.handleRequestClose}
+                                                    reportList={starterReportList}
+                                                    whichList="starter"
+                                                />
                                         }
                                         {
-                                            reportObject.image_location ? 
+                                            reportObject.image_location ?
                                                 <div className="report-content-container">
-                                                    <img className="report-content report-content__image" 
-                                                        src={reportObject.image_location}
+                                                    <img
+                                                        className="report-content report-content__image"
                                                         onClick={this.handleImageEnlarge}
+                                                        src={reportObject.image_location}
                                                     />
                                                     {
-                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ? 
-                                                        <div>
-                                                            <button
-                                                                disabled={!isEditReportButtonClickable}
-                                                                id={`starter-image-edit-cancel-button-${index}`}
-                                                                onClick={this.handleImageReportEditCancelClick}
-                                                            >
-                                                                取消編輯
-                                                            </button>
-                                                            <DropZone 
-                                                                className="upload-picture-button"
-                                                                maxSize={2000000}
-                                                                onDrop={this.onDrop}
-                                                                onClick={this.onDrop}
-                                                                accept={"image/png", "image/pjepg", "image/jpeg"}
-                                                            >
-                                                                <img className="upload-picture-button__icon" src={uploadIcon}/>
-                                                            </DropZone>
-                                                            {
-                                                                isImageUploaded ?
-                                                                    <div className="upload-preview">
-                                                                        <span className="upload-preview__text">準備變更的圖片: </span>
-                                                                        <div className="upload-preview__image-container">
-                                                                            <img className="upload-preview__image" 
-                                                                                onClick={this.handleImageEnlarge}
-                                                                                src={files[0].preview}
-                                                                            />
-                                                                            <div className="upload-preview-instruction-container">
-                                                                                <button 
-                                                                                    className="upload-preview-instruction__remove"
-                                                                                    onClick={this.handleImageRemove} 
-                                                                                    value="0"
-                                                                                >
-                                                                                    ×
-                                                                                </button>
+                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ?
+                                                            <div>
+                                                                <button
+                                                                    disabled={!isEditReportButtonClickable}
+                                                                    id={`starter-image-edit-cancel-button-${index}`}
+                                                                    onClick={this.handleImageReportEditCancelClick}
+                                                                >
+                                                                    取消編輯
+                                                                </button>
+                                                                {/* components/_report-form.scss */}
+                                                                <DropZone
+                                                                    accept={"image/*"}
+                                                                    // TODO: find out why png is not accepted
+                                                                    className="upload-picture-button"
+                                                                    maxSize={5242880}
+                                                                    onClick={this.handleImageDrop}
+                                                                    onDrop={this.handleImageDrop}
+                                                                >
+                                                                    <img
+                                                                        className="upload-picture-button__icon"
+                                                                        src={uploadIcon}
+                                                                    />
+                                                                </DropZone>
+                                                                {
+                                                                    isImageUploaded ?
+                                                                        <div className="upload-preview">
+                                                                            <span className="upload-preview__text">準備變更的圖片: </span>
+                                                                            <div className="upload-preview__image-container">
+                                                                                <img className="upload-preview__image"
+                                                                                    onClick={this.handleImageEnlarge}
+                                                                                    src={files[0].preview}
+                                                                                />
+                                                                                <div className="upload-preview-instruction-container">
+                                                                                    <button
+                                                                                        className="upload-preview-instruction__remove"
+                                                                                        onClick={this.handleImageRemove}
+                                                                                        value="0"
+                                                                                    >
+                                                                                        ×
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
+                                                                            <button
+                                                                                id={`starter-image-edit-confirm-button-${index}`}
+                                                                                onClick={this.handleImageReportModifyConfirmClick}
+                                                                            >
+                                                                                確定變更
+                                                                            </button>
                                                                         </div>
-                                                                        <button
-                                                                            id={`starter-image-edit-confirm-button-${index}`}
-                                                                            onClick={this.handleImageReportModifyConfirmClick}
-                                                                        >
-                                                                            確定變更
-                                                                        </button>
-                                                                    </div>
-                                                                : null
-                                                            }
-                                                        </div>
+                                                                    : null
+                                                                }
+                                                            </div>
                                                         : null
                                                     }
                                                 </div>
                                             : null
                                         }
+                                        {/* components/_single-report.scss */}
                                         {
                                             reportObject.content ?
                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`s${index}`) != -1 ?
-                                                <Textarea 
-                                                    className="report-content__text-edit"
-                                                    defaultValue={reportObject.content}
-                                                    id={`s-${index}`}
-                                                    minRows={2}
-                                                    onChange={this.handleReportTextChange}
-                                                    onKeyDown={this.handleFinishReportEditText}
-                                                />
+                                                    <Textarea
+                                                        className="report-content__text-edit"
+                                                        defaultValue={reportObject.content}
+                                                        id={`s-${index}`}
+                                                        minRows={2}
+                                                        onChange={this.handleReportTextChange}
+                                                        onKeyDown={this.handleFinishReportEditText}
+                                                    />
                                                 :
-                                                <div className="report-content-container">
-                                                    <div className="report-content report-content__text">
-                                                        {reportObject.content}
+                                                    <div className="report-content-container">
+                                                        <div className="report-content report-content__text">
+                                                            {reportObject.content}
+                                                        </div>
                                                     </div>
+                                            : null
+                                        }
+                                        {
+                                            reportObject.tags ?
+                                                <div className="report-tags-container">
+                                                    {
+                                                        reportObject.tags.map((tagString, index) => {
+                                                            return (
+                                                                <span
+                                                                    className="react-tagsinput-tag report-tag"
+                                                                    key={`report-tag-${index}`}
+                                                                >
+                                                                    #{tagString}
+                                                                </span>
+                                                            );
+                                                        })
+                                                    }
                                                 </div>
                                             : null
                                         }
-                                        <CommentBox 
-                                            oldCommentList={reportObject.comments}
-                                            report_id={reportObject.report_id} 
+                                        <CommentBox
+                                            commentListFromDatabase={reportObject.comments}
+                                            reportId={reportObject.report_id}
                                             whoIsUser={whoIsUser}
-                                            {...this.props} 
+                                            {...this.props}
                                         />
                                     </div>
                                 );
@@ -614,118 +710,124 @@ export default class ActiveReports extends React.Component {
                         }
                     </div>
                 </div>
+                {/* components/_report-list.scss */}
                 <div className="report-list-container">
                     <div className="player-container">
-                        <div className="player-photo-container">
+                        <div className="player-avatar-container">
                             {
-                                whoIsUser == 'player' && this.props.userBasicData.photo ?
-                                <img className="player-photo-container__photo" src={this.props.userBasicData.photo}/>
-                                : <div className="player-photo-container__photo" />
+                                whoIsUser === 'player' && this.props.userBasicData.photo ?
+                                    <img className="player-avatar-container__photo"
+                                        src={this.props.userBasicData.photo}
+                                    />
+                                :
+                                    <img
+                                        className="player-avatar-container__photo"
+                                        src={avatarStyle.avatarImageOfPlayer}
+                                        style={avatarStyle.avatarOfPlayer}
+                                    />
                             }
                         </div>
+                        <div className="player-health-point">
+                            HP: {this.props.router_currentFormValue.player_hp}%
+                        </div>
+                        {/* components/_single-report.scss */}
                         {
-                            this.state.playerReportList.map( (reportObject, index) => {
+                            this.state.playerReportList.map((reportObject, index) => {
                                 return (
-                                    <div className="player-report-container" key={`player-report-${index}`}>
+                                    <div
+                                        className="player-report-container"
+                                        key={`player-report-${index}`}
+                                    >
                                         {
-                                            whoIsUser == 'player' ?
-                                            <div>
-                                                <IconButton 
-                                                    id={`player-report-edit-${index}`}
-                                                    onTouchTap={this.handleReportIconButtonTouchTap}
-                                                    tooltip="編輯"
-                                                >
-                                                    <ModeEdit />
-                                                </IconButton>
-                                                {
-                                                    playerReportList[isEditingWhichPlayerReportIndex] ? 
-                                                    <Popover
-                                                        open={this.state.isReportPopOverOpen}
-                                                        anchorEl={this.state.anchorEl}
-                                                        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                        onRequestClose={this.handleRequestClose}
-                                                    >
-                                                        <Menu>
-                                                            <MenuItem 
-                                                                disabled={!playerReportList[isEditingWhichPlayerReportIndex].content}
-                                                                id={`player-text-edit-${isEditingWhichPlayerReportIndex}`}
-                                                                onTouchTap={this.handleEditTextReportClick}
-                                                                primaryText="編輯文字回報" 
-                                                            />
-                                                            <MenuItem 
-                                                                disabled={!playerReportList[isEditingWhichPlayerReportIndex].image_location}
-                                                                id={`player-image-edit-${isEditingWhichPlayerReportIndex}`}
-                                                                onTouchTap={this.handleEditImageReportClick}
-                                                                primaryText="編輯圖片回報" 
-                                                            />
-                                                            <MenuItem
-                                                                id={`player-report-delete-${isEditingWhichPlayerReportIndex}`}
-                                                                onTouchTap={this.handleReportDelete}
-                                                                primaryText="刪除此回報"
-                                                            />
-                                                        </Menu>
-                                                    </Popover>
-                                                    : null
-                                                }
-                                            </div>
-                                            : null
+                                            whoIsUser === 'player' ?
+                                                <ReportEditButton
+                                                    anchorEl={this.state.anchorEl}
+                                                    handleEditTextReportClick={this.handleEditTextReportClick}
+                                                    handleEditImageReportClick={this.handleEditImageReportClick}
+                                                    handleReportDelete={this.handleReportDelete}
+                                                    handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
+                                                    index={index}
+                                                    isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                                                    isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                    onRequestClose={this.handleRequestClose}
+                                                    reportList={playerReportList}
+                                                    whichList="player"
+                                                />
+                                            :
+                                                <ReportExpandMoreButton
+                                                    anchorEl={this.state.anchorEl}
+                                                    handleReportDenounce={this.handleReportDenounce}
+                                                    handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                                                    index={index}
+                                                    isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                                                    isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                    onRequestClose={this.handleRequestClose}
+                                                    reportList={playerReportList}
+                                                    whichList="player"
+                                                />
                                         }
                                         {
-                                            reportObject.image_location ? 
+                                            reportObject.image_location ?
                                                 <div className="report-content-container">
-                                                    <img className="report-content report-content__image" 
+                                                    <img
+                                                        className="report-content report-content__image"
                                                         src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
                                                     />
                                                     {
-                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ? 
-                                                        <div>
-                                                            <button
-                                                                disabled={!isEditReportButtonClickable}
-                                                                id={`player-image-edit-cancel-button-${index}`}
-                                                                onClick={this.handleImageReportEditCancelClick}
-                                                            >
-                                                                取消編輯
-                                                            </button>
-                                                            <DropZone 
-                                                                className="upload-picture-button"
-                                                                maxSize={2000000}
-                                                                onDrop={this.onDrop}
-                                                                onClick={this.onDrop}
-                                                                accept={"image/png", "image/pjepg", "image/jpeg"}
-                                                            >
-                                                                <img className="upload-picture-button__icon" src={uploadIcon}/>
-                                                            </DropZone>
-                                                            {
-                                                                isImageUploaded ?
-                                                                    <div className="upload-preview">
-                                                                        <span className="upload-preview__text">準備變更的圖片: </span>
-                                                                        <div className="upload-preview__image-container">
-                                                                            <img className="upload-preview__image" 
-                                                                                onClick={this.handleImageEnlarge}
-                                                                                src={files[0].preview}
-                                                                            />
-                                                                            <div className="upload-preview-instruction-container">
-                                                                                <button 
-                                                                                    className="upload-preview-instruction__remove"
-                                                                                    onClick={this.handleImageRemove} 
-                                                                                    value="0"
-                                                                                >
-                                                                                    ×
-                                                                                </button>
+                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ?
+                                                            <div>
+                                                                <button
+                                                                    disabled={!isEditReportButtonClickable}
+                                                                    id={`player-image-edit-cancel-button-${index}`}
+                                                                    onClick={this.handleImageReportEditCancelClick}
+                                                                >
+                                                                    取消編輯
+                                                                </button>
+                                                                {/* components/_report-form.scss */}
+                                                                <DropZone
+                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
+                                                                    // TODO: find out why png is not accepted
+                                                                    className="upload-picture-button"
+                                                                    maxSize={5242880}
+                                                                    onClick={this.handleImageDrop}
+                                                                    onDrop={this.handleImageDrop}
+                                                                >
+                                                                    <img
+                                                                        className="upload-picture-button__icon"
+                                                                        src={uploadIcon}
+                                                                    />
+                                                                </DropZone>
+                                                                {
+                                                                    isImageUploaded ?
+                                                                        <div className="upload-preview">
+                                                                            <span className="upload-preview__text">準備變更的圖片: </span>
+                                                                            <div className="upload-preview__image-container">
+                                                                                <img
+                                                                                    className="upload-preview__image"
+                                                                                    onClick={this.handleImageEnlarge}
+                                                                                    src={files[0].preview}
+                                                                                />
+                                                                                <div className="upload-preview-instruction-container">
+                                                                                    <button
+                                                                                        className="upload-preview-instruction__remove"
+                                                                                        onClick={this.handleImageRemove}
+                                                                                        value="0"
+                                                                                    >
+                                                                                        ×
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
+                                                                            <button
+                                                                                id={`player-image-edit-confirm-button-${index}`}
+                                                                                onClick={this.handleImageReportModifyConfirmClick}
+                                                                            >
+                                                                                確定變更
+                                                                            </button>
                                                                         </div>
-                                                                        <button
-                                                                            id={`player-image-edit-confirm-button-${index}`}
-                                                                            onClick={this.handleImageReportModifyConfirmClick}
-                                                                        >
-                                                                            確定變更
-                                                                        </button>
-                                                                    </div>
-                                                                : null
-                                                            }
-                                                        </div>
+                                                                    : null
+                                                                }
+                                                            </div>
                                                         : null
                                                     }
                                                 </div>
@@ -733,40 +835,54 @@ export default class ActiveReports extends React.Component {
                                         }
                                         {
                                             reportObject.content ?
-                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ? 
-                                                <Textarea 
-                                                    className="report-content__text-edit"
-                                                    minRows={2}
-                                                    onChange={this.handleReportTextChange}
-                                                    onKeyDown={this.handleFinishReportEditText}
-                                                    defaultValue={reportObject.content}
-                                                    id={`p-${index}`}
-                                                />
+                                                isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ?
+                                                    <Textarea
+                                                        className="report-content__text-edit"
+                                                        minRows={2}
+                                                        onChange={this.handleReportTextChange}
+                                                        onKeyDown={this.handleFinishReportEditText}
+                                                        defaultValue={reportObject.content}
+                                                        id={`p-${index}`}
+                                                    />
                                                 :
-                                                <div className="report-content-container">
-                                                    <div className="report-content report-content__text">
-                                                        {reportObject.content}
+                                                    <div className="report-content-container">
+                                                        <div className="report-content report-content__text">
+                                                            {reportObject.content}
+                                                        </div>
                                                     </div>
+                                            : null
+                                        }
+                                        {
+                                            reportObject.tags ?
+                                                <div className="report-tags-container">
+                                                    {
+                                                        reportObject.tags.map((tagString, index) => {
+                                                            return (
+                                                                <span
+                                                                    className="react-tagsinput-tag report-tag"
+                                                                    key={`report-tag-${index}`}
+                                                                >
+                                                                    #{tagString}
+                                                                </span>
+                                                            );
+                                                        })
+                                                    }
                                                 </div>
                                             : null
                                         }
-                                        <CommentBox 
-                                            oldCommentList={reportObject.comments}
-                                            report_id={reportObject.report_id} 
+                                        <CommentBox
+                                            commentListFromDatabase={reportObject.comments}
+                                            reportId={reportObject.report_id}
                                             whoIsUser={whoIsUser}
-                                            {...this.props} 
+                                            {...this.props}
                                         />
                                     </div>
-                                );
-                            })
+                                );   /* end of return */
+                            })   /* end of map */
                         }
                     </div>
                 </div>
             </div>
         );
     }
-};
-
-ActiveReports.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+}

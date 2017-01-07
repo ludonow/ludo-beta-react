@@ -10,6 +10,7 @@ export default class LudoEdit extends React.Component {
 
     render() {
         return (
+            /* components/_form.scss */
             <div className="form-and-list">
                 <div className="form">
                     <LudoEditForm {...this.props} />

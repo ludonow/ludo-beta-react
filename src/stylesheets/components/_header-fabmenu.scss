@@ -1,0 +1,120 @@
+label.fab-menu {
+    display: none;
+    @media (max-width: 559px) and (min-width: 320px) {
+        display: flex;
+    }
+}
+
+/* can remove .fab-menu a  */
+.fab-menu a {
+    text-decoration: none;
+}
+
+.fab-menu {
+    @extend %fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 40px;
+    height: 40px;
+    /*   border: 2px dashed orange; */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; //When cursor moves on this icon, cursor will changed to finger pointer
+}
+
+.menu-box {
+    @extend %relative;
+    border: 2px dashed orange;
+    @include circle(40px,transparent);
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+}
+
+.menu-circle {
+    @extend %absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    @include circle(20px, orange);
+    transition: 0.3s;
+    -webkit-trnasition: 0.3s;
+    -moz-transtition: 0.3s;
+    -o-transtion: 0.3s;
+}
+//when hover on the circle, it will scale up 1.1x
+// .menu-box:hover .menu-circle{
+//   transform:scale(1.1);
+//   transition:0.2s;
+// }
+
+.menu-items {
+    @extend %relative;
+    width: 110px;
+    right: 35px;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    text-align: center;
+    transform: translateY(-40%) scale(0) translateX(-30%);
+    -webkit-transform: translateY(-40%) scale(0) translateX(-30%);
+    -moz-transform: translateY(-40%) scale(0) translateX(-30%);
+    -o-transform: translateY(-40%) scale(0) translateX(-30%);
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+}
+
+.menu-items li {
+    width: 100px;
+    padding: 5px;
+    list-style: none;
+    color: white;
+}
+
+.menu-items li:hover {
+    background-color: gray;
+}
+
+.menu-items a , span {
+    color: #fff;
+    line-height: 1.5;
+}
+
+input {
+    position: absolute;
+    left: -1000rem;
+}
+
+input:checked +.menu-box {
+    border: 2px dashed rgba(0,0,0,0.9);
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+}
+
+input:checked +.menu-box .menu-circle {
+    background-color: rgba(0,0,0,0.95);
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+}
+
+input:checked +.menu-box .menu-items {
+    transform: translateY(-110%) scale(1) translateX(-30%);
+    -webkit-transform: translateY(-110%) scale(1) translateX(-30%);
+    -moz-transform: translateY(-110%) scale(1) translateX(-30%);
+    -o-transform: translateY(-110%) scale(1) translateX(-30%);
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+}

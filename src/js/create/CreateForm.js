@@ -50,6 +50,7 @@ export default class CreateForm extends React.Component {
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleMarblesChange = this.handleMarblesChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTemplateCreate = this.handleTemplateCreate.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
 
@@ -191,7 +192,7 @@ export default class CreateForm extends React.Component {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
-            .then(response => {
+            .then((response) => {
                 if (response.data.status === '200') {
                     this.setState({
                         isSuccesfullyCreateLudo: true
@@ -199,33 +200,44 @@ export default class CreateForm extends React.Component {
                     const { ludo_id } = response.data;
                     /* get ludo information after create ludo post */
                     axios.get(`/apis/ludo/${ludo_id}`)
-                    .then(response => {
+
+                    .then((response) => {
+                      {/*response.data.status   200: everything's fine;
+                                                400: user's data issue;
+                                                401:no login;
+                                                403:no authority */}
                         if (response.data.status === '200') {
-                            const { getBasicUserData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
-                            getBasicUserData();
+                            const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                            getUserBasicData();
                             handleShouldProfileUpdate(true);
                             updateCurrentFormValue(response.data.ludo);
                             browserHistory.push(`/ludo/${ludo_id}`);
                         } else {
                             window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
-                            console.log('get after create post message from server: ', response.data.message);
-                            console.log('get after create post error from server: ', response.data.err);
+                            console.error('get after create post response from server: ', response);
+                            console.error('get after create post message from server: ', response.data.message);
                         }
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                        console.log('get after create post error', error);
+                        console.error('get after create post error', error);
                     });
-                } else {
+
+                }
+                else if(response.data.status === '400'){
+                    window.alert('燃料或彈珠數不足: ' + response.data.message);
+                    console.error('create post message from server: ', response.data.message + response.data.status);
+              }
+                else {
                     window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.log('create post message from server: ', response.data.message);
+                    console.error('create post message from server: ', response.data.message);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.log('create post error', error);
+                console.error('create post error', error);
             });
-            
+
         } else if (!isCategorySelected) {
             window.alert(`You haven't select the category.`);
         } else if (ludoCreateForm.title == '') {
@@ -238,6 +250,78 @@ export default class CreateForm extends React.Component {
             window.alert(`You haven't select the marble number.`);
         } else if (!isDurationSelected) {
             window.alert(`You haven't select the duration.`);
+        }
+    }
+
+    handleTemplateCreate(event) {
+        event.preventDefault();
+        const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
+        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
+            let { checkpoint } = ludoCreateForm;
+            checkpoint = checkpoint.sort((a, b) => { return a - b });
+            const ludoTemplateForm = {
+                ...ludoCreateForm,
+                type: 'blank'
+            }
+            axios.post('/apis/ludo', ludoTemplateForm)
+            .then((response) => {
+                if (response.data.status === '200') {
+                    this.setState({
+                        isSuccesfullyCreateLudo: true
+                    });
+                    const { ludo_id } = response.data;
+                    /* get ludo information after create ludo post */
+                    axios.get(`/apis/ludo/${ludo_id}`)
+                    .then((response) => {
+                        if (response.data.status === '200') {
+                            const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                            getUserBasicData();
+                            handleShouldProfileUpdate(true);
+                            updateCurrentFormValue(response.data.ludo);
+                            browserHistory.push(`/ludo/${ludo_id}`);
+                        } else {
+                            window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
+                            console.error('get after create post response from server: ', response);
+                            console.error('get after create post message from server: ', response.data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                        console.error('get after create post error', error);
+                    });
+                }
+                else if(response.data.status === '400'){
+                    window.alert('彈珠數不足: ' + response.data.message);
+                    console.error('create post message from server: ', response.data.message + response.data.status);
+              }
+                else {
+                    window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.error('create post message from server: ', response.data.message + response.data.status);
+                }
+            })
+            .catch((error) => {
+                window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                console.error('create post error', error);
+            });
+
+        } else if (!isCategorySelected) {
+            // window.alert('You haven\'t select the category.');
+            window.alert('尚未選擇種類！');
+        } else if (ludoCreateForm.title === '') {
+            // window.alert('You haven\'t fill in the title.');
+            window.alert('尚未輸入標題！');
+        } else if (!isMarblesSelected) {
+            // window.alert('You haven\'t select the marble number.');
+            window.alert('尚未選擇彈珠數！');
+        } else if (!isDurationSelected) {
+            // window.alert('You haven\'t select the duration.');
+            window.alert('尚未選擇持續天數！');
+        } else if (ludoCreateForm.introduction === '') {
+            // window.alert('You haven\'t fill in the introduction.');
+            window.alert('尚未輸入介紹文字！');
+        } else if (ludoCreateForm.tags.length === 0) {
+            // window.alert('You haven\'t fill in the hash tags.');
+            window.alert('尚未輸入#標籤！');
         }
     }
 
@@ -305,19 +389,19 @@ export default class CreateForm extends React.Component {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
                             }
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
@@ -329,19 +413,19 @@ export default class CreateForm extends React.Component {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
                             }
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
@@ -352,7 +436,11 @@ export default class CreateForm extends React.Component {
             }
         }
         return (
-            <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
+            /* components/_ludo-create-information.scss */
+            <form
+                className="ludo-create-information-container"
+                onSubmit={this.handleSubmit}
+            >
                 <div className="ludo-create-information-top-container">
                     <div className="category-icon-container">
                         <img className="category-icon" src={this.handleIconChange()} />
@@ -360,12 +448,12 @@ export default class CreateForm extends React.Component {
                     <div className="top-right-container">
                         <div className="dropdown-list-container">
                             <span className="category-label">種類:</span>
-                            <DropdownList 
+                            <DropdownList
                                 className="dropdown-list"
                                 data={category}
-                                onChange={this.handleCategoryChange}
                                 // defaultValue={'select a category'}
                                 defaultValue={'選擇一個種類'}
+                                onChange={this.handleCategoryChange}
                             />
                         </div>
                         <div className="text-field-container">
@@ -377,19 +465,20 @@ export default class CreateForm extends React.Component {
                                 onChange={this.handleTitleChange}
                             />
                         </div>
+                        {/* components/_marbles.scss */}
                         <div className="label-and-slider">
                             <div className="text-label">
                                 {
-                                    this.state.isMarblesSelected ? 
+                                    this.state.isMarblesSelected ?
                                         <div>
                                             彈珠數:
                                             <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
                                         </div>
-                                    : `選擇彈珠數` 
+                                    : `選擇彈珠數`
                                 }
                             </div>
                             <div className="ludo-create-information-slider--marbles">
-                                <RcSlider max={maxMarbles} min={1} 
+                                <RcSlider max={maxMarbles} min={1}
                                     value={ludoCreateForm.marbles}
                                     onChange={this.handleMarblesChange}
                                 />
@@ -400,14 +489,14 @@ export default class CreateForm extends React.Component {
                 <div className="ludo-create-information-bottom-container">
                     <div className="text-label">
                         {
-                            isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
+                            isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'
                         }
                     </div>
                     <div className="ludo-create-information-day-picker">
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
-                            <RcSlider 
-                                max={maxDuration} min={3} 
+                            <RcSlider
+                                max={maxDuration} min={3}
                                 defaultValue={ludoCreateForm.duration} value={ludoCreateForm.duration}
                                 onChange={this.handleDurationValue}
                             />
@@ -415,45 +504,38 @@ export default class CreateForm extends React.Component {
                     </div>
                     <div className="text-label">介紹:</div>
                     <div className="text-field-container text-field-container--introduction">
-                        <textarea 
-                            className="text-field--introduction" 
-                            // placeholder="Introduction" 
+                        <textarea
+                            className="text-field--introduction"
+                            // placeholder="Introduction"
                             placeholder={`詳細的說明(中文最多140字)`}
                             onChange={this.handleIntroductionChange}
                             maxLength={maxLengthOfIntroduction}
                         />
                         <div className="text-field--hashtag">
                             <TagsInput
-                                value={ludoCreateForm.tags} 
+                                value={ludoCreateForm.tags}
                                 onChange={this.handleTagsChange}
                                 inputProps={{maxLength: 30, placeholder:"標籤"}}
                             />
                         </div>
                     </div>
-                    <button 
-                        className="ludo-create-information-submit-button" 
-                        type="submit" 
+                    {/* components/_submit-button.scss */}
+                    <button
+                        className="ludo-create-information-submit-button"
                         disabled={this.state.isSuccesfullyCreateLudo}
+                        type="submit"
                     >
                         開始
+                    </button>
+                    <button
+                        className="ludo-create-information-submit-button"
+                        disabled={this.state.isSuccesfullyCreateLudo}
+                        onClick={this.handleTemplateCreate}
+                    >
+                        建立模板
                     </button>
                 </div>
             </form>
         );
     }
-};
-                            // <ReactTags 
-                            //     tags={tags}
-                            //     suggestions={suggestions}
-                            //     handleDelete={this.handleDelete}
-                            //     handleAddition={this.handleAddition}
-                            //     handleDrag={this.handleDrag}
-                            //     placeholder="輸入#標籤"
-                            // />
-
-
-                        // <textarea className="text-field--hashtag" type="text"
-                        //     // placeholder="#hashtag"
-                        //     placeholder="#標籤"
-                        //     onChange={this.handleTagsChange}
-                        // />
+}

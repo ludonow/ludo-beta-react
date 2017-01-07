@@ -9,55 +9,114 @@
     font-size: 20px;
 }
 
+@media (max-width: 559px) and (min-width: 320px) {
+    .login-container {
+        width: auto;
+        margin: 0 -30px;
+    }
+    .login-container .login-top-container input {
+        width: auto;
+    }
+}
+
 .login-container {
     @extend %flex;
-    // justify-content: center;
     flex-direction: column;
     width: 450px;
     height: 530px;
     @extend %margin_center_x;
     @extend %text_center;
-    background-color: white;
-    
+    background-color: rgba(245, 245, 245, 0.9);
+
     .login-top-container {
+        margin: 30px 0;
+
         .logo-container {
+            margin-bottom: 20px;
             .logo-icon {
                 width: 205px;
-                margin-top: 50px;
-                margin-bottom: 20px;
             }
         }
         input {
             width: 270px;
             height: 30px;
             border: none;
-            margin-bottom: 10px;
             color: rgba(180, 180, 180, 1);
-            background-color: rgba(240, 240, 240, 1);
+            background-color: white;
             &::-webkit-input-placeholder {
                 @extend %text_center;
             }
         }
+        .error-message {
+            margin-bottom: 10px;
+            color: red;
+            font-size: 12px;
+        }
+        .server-error-message {
+            color: red;
+        }
+        .buttons {
+            @extend %flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
 
-        button {
-            @extend .ludo-button;
-            border: none;
-            margin-right: 5px;
-            margin-left: 5px;
-            margin-top: 15px;
-            margin-bottom: 40px;
+            a, button {
+                @extend %flex;
+                align-items: center;
+                justify-content: center;
+                @extend .ludo-button;
+                border: none;
+                margin-right: 5px;
+                margin-left: 5px;
+                margin-top: 15px;
+                font-size: 12px;
+                text-decoration: none;
+            }
+
+            .login {
+                width: 100px;
+                height: 30px;
+                color: white;
+                background-color: #ea5514;
+                border: 1px solid transparent;
+                &:hover {
+                    color: #ea5514;
+                    background-color: white;
+                    border: 1px solid #ea5514;
+                }
+                &:disabled {
+                    color: gray;
+                    border: none;
+                    background-color: rgba(220, 220, 220, 1);
+                    @extend %unclickable;
+                }
+            }
+
+            .signup {
+                width: 100px;
+                height: 30px;
+                background-color: #fff100;
+                border: 1px solid transparent;
+
+                &:hover {
+                    background-color: white;
+                    border: 1px solid #fff100;
+
+                }
+                &:disabled {
+                    color: gray;
+                    border: none;
+                    background-color: rgba(220, 220, 220, 1);
+                    @extend %unclickable;
+                }
+            }
         }
-        .login {
-            width: 100px;
-            height: 30px;
-            color: white;
-            background-color: #ea5514;
+
+        .forget-password {
+            font-size: 12px;
         }
-        .signup {
-            width: 100px;
-            height: 30px;
-            background-color: #fff100;
-        }
+
     }
 
     .login-bottom-container {
@@ -70,12 +129,21 @@
             justify-content: center;
             flex-direction: row;
             margin-top: 35px;
+        }
 
-            .other-login-icon {
+            .fb-login-icon {
                 width: 50px;
                 height: 50px;
                 margin: 0 8px;
             }
-        }
+            .fb-login-text {
+                font-size: 14px;
+            }
+            .other-login-icon {
+                @extend %unclickable;
+                width: 50px;
+                height: 50px;
+                margin: 0 8px;
+            }
     }
 }

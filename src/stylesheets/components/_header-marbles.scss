@@ -1,18 +1,17 @@
 .header-marbles {
     @extend %flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80px;
     @extend %as_tall_as_parent;
+    margin: 0 15px;
 }
     .header-marbles__icon {
-        width: 45px;
-        height: 45px;
+        width: $g_header_height_md_min * 0.4;
+        height: $g_header_height_md_min * 0.4;
     }
     .header-marbles__number {
-        margin: 0 1px;
-        padding-top: 2px;
+        margin-top: 5px;
         font-family: Exo, "Microsoft JhengHei";
-        font-size: 18px;
+        font-size: 14px;
     }

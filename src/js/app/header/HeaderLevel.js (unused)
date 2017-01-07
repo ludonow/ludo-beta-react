@@ -1,0 +1,25 @@
+import React from "react";
+import axios from '../../axios-config';
+
+export default class HeaderLevel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            level: 0
+        };
+    }
+
+    render() {
+        return (
+            /* components/_header-level.scss */
+            <div className="header-level">
+                <div className="header-level-number">
+                    {this.state.level}
+                </div>
+                <div className="header-level-text">
+                    LEVEL
+                </div>
+            </div>
+        );
+    }
+}

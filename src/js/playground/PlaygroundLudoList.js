@@ -14,12 +14,11 @@ import othersIcon from '../../images/category_icon/others.svg';
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 import marbleIcon from '../../images/marble.png';
 
-const categoryClassArray = [' others', ' lifestyle', ' read', ' exercise', ' study', ' new_skill', ' unmentionables', ' others'];
-
+const categoryClassArray = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new_skill', 'unmentionables', 'others'];
+const category= ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它']
 const masonryOptions = {
     itemSelector: ".grid-item",
-    // columnWidth: 214,
-    columnWidth: 220,
+    columnWidth: 226,
     fitWidth: true
 };
 
@@ -45,27 +44,23 @@ export default class PlaygroundLudoList extends React.Component {
     }
 
     handleCardStage(stage) {
-        if (stage == 1) {
-            return `card-bottom__stage--opened`;
-        } else {
-            return `card-bottom__stage--closed`;
+        switch (stage) {
+            case 0:
+                return 'card-top__stage--0';
+                break;
+            case 1:
+                return 'card-top__stage--1';
+                break;
+            case 2:
+                return 'card-top__stage--2';
+                break;
+            case 3:
+                return 'card-top__stage--3';
+                break;
+            default:
+                return 'card-top__stage--0';
+                break;
         }
-    }
-
-    handleCardBackClass(category_id) {
-        return categoryClassArray[category_id];
-    }
-
-    handleCardBottomGoClass(category_id) {
-        return categoryClassArray[category_id];
-    }
-
-    handleCardFrontTopClass(category_id) {
-        return categoryClassArray[category_id]; 
-    }
-
-    handleCategoryIcon(category_id) {
-        return iconArray[category_id];
     }
 
     handleCardLink(event) {
@@ -78,7 +73,7 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id);
         const { flippedKey } = this.state;
         const index = flippedKey.indexOf(cardIndex);
-        const isElementInArray = (index != -1);
+        const isElementInArray = (index !== -1);
         if (!isElementInArray) {
             this.setState({
                 flippedKey: flippedKey.concat([cardIndex])
@@ -90,7 +85,7 @@ export default class PlaygroundLudoList extends React.Component {
         const cardIndex = Number(event.currentTarget.id);
         const { flippedKey } = this.state;
         const index = flippedKey.indexOf(cardIndex);
-        const isElementInArray = (index != -1);
+        const isElementInArray = (index !== -1);
         if (isElementInArray) {
             flippedKey.splice(index, 1);
             this.setState({
@@ -101,73 +96,95 @@ export default class PlaygroundLudoList extends React.Component {
 
     render() {
         return (
-            <Masonry
-                options={masonryOptions} >
+            <Masonry options={masonryOptions}>
                 <QuickStart />
-                { 
-                    this.props.ludoList.map( (singleLudoObject, index) => {
+                {
+                    this.props.ludoList.map((singleLudoObject, index) => {
                         const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                         const buttonClickHandler = isThisCardFlipped ? this.showFront : this.showBack;
                         return (
-                            <div className={`grid-item`} key={`card-${index}`}>
-                                <div 
-                                    className={`card card-front${isThisCardFlipped ? "" : " card-flip"}`}
-                                    id={index}
-                                    onClick={buttonClickHandler}
-                                >
-                                    <div className={`card-top${this.handleCardFrontTopClass(singleLudoObject.category_id)}`}>
-                                        <div className="title">{singleLudoObject.title}</div>
-                                        <div className="duration">{singleLudoObject.duration} days</div>
-                                        <div className="card-marble">
-                                            <img src={marbleIcon} className="card-marble__icon" />
-                                            <span className="card-marble__number">{singleLudoObject.marbles}</span>
-                                        </div>
-                                    </div>
-                                    <div className="card-bottom">
-                                        <img className="card-bottom__category-icon" src={this.handleCategoryIcon(singleLudoObject.category_id)} />
-                                        <div className={`card-bottom__stage ${this.handleCardStage(singleLudoObject.stage)}`} />
-                                    </div>
+                            /* components/_card.scss */
+                            <div
+                                className="grid-item"
+                                key={`card-${index}`}
+                            >
+                            <div
+                                className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
+                                id={index}
+                                onClick={buttonClickHandler}
+                            >
+                              <div className={`card-back ${categoryClassArray[singleLudoObject.category_id]}`}
+                              id={index}
+                              onClick={buttonClickHandler}>
+                              {/*three information: star(for user to highlight this card), category, and introduction*/}
+                                <div className="card-information">
+
+                                  <div className="card-star">
+                                  </div>
+                                  <div className ="card-category">
+                                  {category[singleLudoObject.category_id]}
+                                  </div>
+                                  <div className="card-introduction">{
+                                    String(singleLudoObject.introduction).length > 20 ?
+                                    String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+                                    : String(singleLudoObject.introduction)
+                                    /* String(singleLudoObject.introduction)*/
+                                    }
+                                  </div>
+                                  <div className="card-hashtags">
+                                    {
+                                    // TODO: Use presentational component and proptypes to receive ludolist data
+                                    Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
+                                        singleLudoObject.tags.map((tagString, tagIndex) => {
+                                            return (
+                                                /* components/_tags.scss */
+                                                <span
+                                                    className="react-tagsinput-tag--card"
+                                                    key={`tag-${tagIndex}`}
+                                                >
+                                                    {tagString}
+                                                </span>
+                                            );
+                                        })
+                                    : null
+                                  }
+                                  </div>
                                 </div>
-                                <div 
-                                    className={`card card-back${isThisCardFlipped ? " card-flip" : ""} ${this.handleCardBackClass(singleLudoObject.category_id)}`}
-                                    id={index}
-                                    onClick={buttonClickHandler}
-                                >
-                                    <div className={this.handleCardBackClass(singleLudoObject.category_id)}>
-                                        <div className="card-introduction">
-                                            {
-                                                String(singleLudoObject.introduction).length > 20 ?
-                                                String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-                                                : String(singleLudoObject.introduction)
-                                            }
-                                        </div>
-                                        <div className="card-hashtags">
-                                            {
-                                                // TODO: Use presentational component and proptypes to receive ludolist data
-                                                Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                                    singleLudoObject.tags.map( (tagString, tagIndex) => {
-                                                        return (
-                                                            <span className="react-tagsinput-tag--card" key={`tag-${tagIndex}`}>
-                                                                {tagString}
-                                                            </span>
-                                                        );
-                                                    })
-                                                : null
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className="card-bottom">
-                                        <div className={`card-bottom__triangle ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}>
-                                            <div className={`card-bottom__text ${this.handleCardBottomGoClass(singleLudoObject.category_id)}`}
-                                                onClick={this.handleCardLink} id={`go-${index}`}
-                                            >
-                                                go
-                                            </div>
-                                        </div>
-                                    </div>
+                                  {/*the circle button for GO */}
+                                <div className="card-button_circle"
+                                  >
+                                  <div className="card-button_text"
+                                    id={`go-${index}`}
+                                    onClick={this.handleCardLink}
+                                  >
+                                  Go
+                                  </div>
                                 </div>
+                              </div>
+                              {/*stage: shows red/green rectangle that indicates this card is available or not*/}
+                              <div className={`card-top__stage ${this.handleCardStage(singleLudoObject.stage)}`} ></div>
+                              <div className="card-front-info">
+                                <div className="card-star"></div>
+                                  <img  className="category-icon"
+                                      src={iconArray[singleLudoObject.category_id]}
+                                  />
+
+                                <div className="title">{singleLudoObject.title}</div>
+                                <div className="duration">{singleLudoObject.duration} days</div>
+                                <div className="card-marble">
+                                  <img
+                                      className="card-marble__icon"
+                                      src={marbleIcon}
+                                      />
+                                  <span className="card-marble__number">{singleLudoObject.marbles}</span>
+                                </div>
+
+                              </div>
+                              <div className="card-views">{singleLudoObject.views}</div>
                             </div>
-                        )
+
+                            </div>
+                        );
                     })
                 }
             </Masonry>

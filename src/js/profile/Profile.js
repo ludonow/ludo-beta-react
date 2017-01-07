@@ -4,7 +4,7 @@ import Masonry from 'react-masonry-component';
 import ProfileHistory from './ProfileHistory';
 import ProfileLudoCard from './ProfileLudoCard';
 import ProfileStatistic from './ProfileStatistic';
-// import ProfilePrize from './ProfilePrize';
+// import ProfilePrize from './ProfilePrize';   (will add in the future)
 
 /* LUDO TODO: make columnWidth a variable */
 const masonryOptions = {
@@ -39,7 +39,6 @@ export default class Profile extends Component {
         const { activeKey } = this.state;
         const toggleId = Number(event.target.id);
         const index = activeKey.indexOf(toggleId);
-        debugger;
         if (toggleId == 6) {
             if (index == -1) { // index is not in the array
                 this.setState({activeKey: [1,2,3,4,5,6]});
@@ -59,17 +58,20 @@ export default class Profile extends Component {
     render() {
         const { userProfileData } = this.props;
         const { activeKey } = this.state;
-        return ( 
+        return (
+            /* components/_card.scss */
             <Masonry
                 className="grid"
                 options={masonryOptions}
                 ref="masonry"
             >
                 <div className="grid-item--profile">
+                    {/* components/_profile-content.scss */}
                     <div className="profile-content">
                         <div className="profile-content-information">
                             <div className="profile-content-information-avatar">
-                                <img className="profile-content-information-avatar__photo" 
+                                <img
+                                    className="profile-content-information-avatar__photo"
                                     src={userProfileData.photo}
                                 />
                             </div>
@@ -81,31 +83,36 @@ export default class Profile extends Component {
                             </div>
                         </div>
                         <div className="profile-content-detail">
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="1"
                                 onClick={this.handleActiveClick}
                             >
                                 {'等待加入'}
                             </div>
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="2"
                                 onClick={this.handleActiveClick}
                             >
                                 {'正在進行'}
                             </div>
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="3"
                                 onClick={this.handleActiveClick}
                             >
                                 {'之前參與'}
                             </div>
-                            <div className="profile-content-detail__element"
+                            <div
+                                className="profile-content-detail__element"
                                 id="4"
                                 onClick={this.handleActiveClick}
                             >
                                 {'統計資料'}
                             </div>
-                            <div className="profile-content-detail__element--last"
+                            <div
+                                className="profile-content-detail__element--last"
                                 id="6"
                                 onClick={this.handleActiveClick}
                             >
@@ -114,20 +121,24 @@ export default class Profile extends Component {
                         </div>
                     </div>
                 </div>
+                {/* hidden is defined in helpers/_placeholders */}
                 <div className={`grid-item--profile${activeKey.indexOf(1) != -1 ? '' : ' hidden'}`}>
                     <ProfileLudoCard 
                         forceMasonryUpdate={this.forceMasonryUpdate}
                         profileLudoData={this.props.profileWillLudoData}
+                        title="等待他人加入"
                     />
                 </div>
                 <div className={`grid-item--profile${activeKey.indexOf(2) != -1 ? '' : ' hidden'}`}>
                     <ProfileLudoCard 
                         forceMasonryUpdate={this.forceMasonryUpdate}
                         profileLudoData={this.props.profileLudoingData}
+                        title="正在進行中"
                     />
                 </div>
                 <div className={`grid-item--profile${activeKey.indexOf(3) != -1 ? '' : ' hidden'}`}>
-                    <ProfileHistory {...this.props} 
+                    <ProfileHistory
+                        {...this.props}
                         forceMasonryUpdate={this.forceMasonryUpdate}
                     />
                 </div>

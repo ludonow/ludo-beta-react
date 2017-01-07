@@ -12,6 +12,7 @@ export default class ProfileLudoCard extends Component {
             isComponentUpdated: true,
             prevSelectedCategoryArrayLength: 0
         };
+        this.handleCurrentWatchingCategory = this.handleCurrentWatchingCategory.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -32,7 +33,7 @@ export default class ProfileLudoCard extends Component {
         }
     }
 
-    handleCurrentWatchingCategory = (event) => {
+    handleCurrentWatchingCategory(event) {
         const currentWatchingCategory = Number(event.currentTarget.id) + 1;
         const filteredProfileLudoingData = this.props.profileLudoData.filter((SingleLudoObject) => {
             if (SingleLudoObject.category_id == currentWatchingCategory) {
@@ -50,9 +51,11 @@ export default class ProfileLudoCard extends Component {
 
     render() {
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card">
-                <div className="profile-card__title">{'正在進行中'}</div>
-                <ProfileCategoryTabs onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
+                <div className="profile-card__title">{this.props.title}</div>
+                <ProfileCategoryTabs
+                    onCurrentWatchingCategory={this.handleCurrentWatchingCategory} 
                     profileLudoData={this.props.profileLudoData}
                 />
                 <ProfileLudoList profileLudoData={this.state.filteredProfileLudoingData}/>

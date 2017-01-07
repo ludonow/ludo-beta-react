@@ -33,12 +33,12 @@ export default class LudoEditForm extends React.Component {
             // category: [lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             currentHoverValue: 3,
+            hasUserChangeTheForm: false,
             isDurationSelected: true,
             isModifyButtonClickable: false,
             maxDuration: 14,
             maxLengthOfIntroduction: 140,
-            maxMarbles: 50,
-            suggestions: ["Banana", "Mango", "Pear", "Apricot"]
+            maxMarbles: 50
         };
         this.handleCancelClick = this.handleCancelClick.bind(this);
         this.handleDayPickerClick = this.handleDayPickerClick.bind(this);
@@ -54,13 +54,12 @@ export default class LudoEditForm extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
-        // console.log('LudoEditForm componentWillReceiveProps nextProps', nextProps);   // debug
         if (router_currentFormValue && !this.state.isModifyButtonClickable) {
             const { category_id, checkpoint, duration, introduction, marbles, stage, tags, title } = router_currentFormValue;
-            // console.log('LudoEditForm componentWillReceiveProps isModifyButtonClickable router_currentFormValue', router_currentFormValue);   // debug
             this.setState({
                 isModifyButtonClickable: true,
-                ludoEditForm: Object.assign(this.state.ludoEditForm, {
+                ludoEditForm: {
+                    ...this.state.ludoEditForm, 
                     category_id,
                     checkpoint,
                     duration,
@@ -69,21 +68,24 @@ export default class LudoEditForm extends React.Component {
                     stage,
                     tags,
                     title
-                })
-            })
+                }
+            });
         }
     }
 
     componentWillUnmount() {
-        // console.log('LudoEditForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
 
     handleCancelClick(event) {
         event.preventDefault();
-        // const isSureNotToModify = window.confirm(`Are you sure to cancel the modification?`);
-        const isSureNotToModify = window.confirm(`確定取消變更？`);
-        if (isSureNotToModify) {
+        if (this.state.hasUserChangeTheForm) {
+            // const isSureNotToModify = window.confirm(`Are you sure to cancel the modification?`);
+            const isSureNotToModify = window.confirm('確定放棄變更？');
+            if (isSureNotToModify) {
+                browserHistory.push(`/ludo/${this.props.params.ludo_id}`);
+            }
+        } else {
             browserHistory.push(`/ludo/${this.props.params.ludo_id}`);
         }
     }
@@ -91,21 +93,26 @@ export default class LudoEditForm extends React.Component {
     handleDayPickerClass(value) {
         const { checkpoint } = this.state.ludoEditForm;
         const index = checkpoint.indexOf(value);
-
+        /* components/ludo-create-information.scss */
         if (index != -1) {
-            return ` ludo-create-information-day-picker__button--checkpoint`;
+            return ' ludo-create-information-day-picker__button--checkpoint';
         } else {
-            return ` ludo-create-information-day-picker__button--duration`;
+            return ' ludo-create-information-day-picker__button--duration';
         };
     }
 
     handleDayPickerClick(event) {
+        event.preventDefault();
+        this.setState({
+            hasUserChangeTheForm: true
+        });
         if (!this.state.isDurationSelected) { /* the user has not selected the duration */
             this.setState({
                 isDurationSelected: true,
-                ludoEditForm: Object.assign(this.state.ludoEditForm, {
+                ludoEditForm: {
+                    ...this.state.ludoEditForm,
                     duration: Number(event.target.value)
-                })
+                }
             });
         } else { /* the user has selected the duration */
             const { ludoEditForm } = this.state;
@@ -117,11 +124,12 @@ export default class LudoEditForm extends React.Component {
             } else { /* selected day is in array */
                 checkpoint.splice(index, 1);
             };
-            this.setState(
-                Object.assign(ludoEditForm, {
+            this.setState({
+                ludoEditForm: {
+                    ...this.state.ludoEditForm,
                     checkpoint
-                })
-            );
+                }
+            });
         }
     }
 
@@ -131,18 +139,20 @@ export default class LudoEditForm extends React.Component {
             if (Number(event.target.value) >= 4) {
                 this.setState({
                     currentHoverValue: Number(event.target.value),
-                    ludoEditForm: Object.assign(ludoEditForm, {
-                        duration: Number(event.target.value),
-                        checkpoint: [Number(event.target.value)]
-                    })
+                    ludoEditForm: {
+                        ...this.state.ludoEditForm,
+                        duration: currentSliderValue,
+                        checkpoint: [currentSliderValue]
+                    }
                 });
             } else {
                 this.setState({
                     currentHoverValue: 3,
-                    ludoEditForm: Object.assign(ludoEditForm, {
-                        duration: 3,
-                        checkpoint: [3]
-                    })
+                    ludoEditForm: {
+                        ...this.state.ludoEditForm,
+                        duration: currentSliderValue,
+                        checkpoint: [currentSliderValue]
+                    }
                 });
             }
         }
@@ -151,32 +161,38 @@ export default class LudoEditForm extends React.Component {
     handleDurationValue(currentSliderValue) {
         const { ludoEditForm } = this.state;
         this.setState({
+            hasUserChangeTheForm: true,
             isDurationSelected: false
         });
         if (currentSliderValue >= 4) {
             this.setState({
                 currentHoverValue: currentSliderValue,
-                ludoEditForm: Object.assign(ludoEditForm, {
+                ludoEditForm: {
+                    ...this.state.ludoEditForm,
                     duration: currentSliderValue,
                     checkpoint: [currentSliderValue]
-                })
+                }
             });
         } else {
             this.setState({
                 currentHoverValue: 3,
-                ludoEditForm: Object.assign(ludoEditForm, {
+                ludoEditForm: {
+                    ...this.state.ludoEditForm,
                     duration: 3,
                     checkpoint: [3]
-                })
+                }
             });
         }
     }
 
     handleIntroductionChange(event) {
+        event.preventDefault();
         this.setState({
-            ludoEditForm: Object.assign(this.state.ludoEditForm, {
+            hasUserChangeTheForm: true,
+            ludoEditForm: {
+                ...this.state.ludoEditForm,
                 introduction: event.target.value
-            })
+            }
         });
         if (this.state.ludoEditForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
             this.setState({
@@ -191,10 +207,12 @@ export default class LudoEditForm extends React.Component {
 
     handleMarblesChange(marbles) {
         this.setState({
+            hasUserChangeTheForm: true,
             isMarblesSelected: true,
-            ludoEditForm: Object.assign(this.state.ludoEditForm, {
+            ludoEditForm: {
+                ...this.state.ludoEditForm, 
                 marbles
-            })
+            }
         });
     }
 
@@ -203,44 +221,49 @@ export default class LudoEditForm extends React.Component {
         this.setState({
             isModifyButtonClickable: false
         });
-        const { ludoEditForm } = this.state;
-        let { checkpoint } = ludoEditForm;
-        checkpoint = checkpoint.sort((a, b) => { return a - b });
-        const modifyLudoPutBody = Object.assign(ludoEditForm, {
+        const modifyLudoPutBody = {
+            ...this.state.ludoEditForm,
             'type': 'modify'
-        });
-        // console.log('modifyLudoPutBody', modifyLudoPutBody);   // debug
+        };
         // const isSureToModify = window.confirm(`Are you sure to modify this ludo?`);
-        const isSureToModify = window.confirm(`確定要修改Ludo內容？`);
+        const isSureToModify = window.confirm('確定要修改Ludo內容？');
         if (isSureToModify) {
             const { ludo_id } = this.props.params;
             axios.put(`/apis/ludo/${ludo_id}`, modifyLudoPutBody)
-            .then(response => {
+            .then((response) => {
                 if (response.data.status === '200') {
+                    this.props.handleShouldUserBasicDataUpdate(true);
                     browserHistory.push(`/ludo/${ludo_id}`);
                 } else {
                     this.setState({
                         isModifyButtonClickable: true
                     });
                     window.alert('修改Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.log('modify put message from server: ', response.data.message);
+                    console.error('modify put response from server: ', response);
+                    console.error('modify put message from server: ', response.data.message);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({
                     isModifyButtonClickable: true
                 });
                 window.alert('修改Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.log('modify put error', error);
+                console.error('modify put error: ', error);
+            });
+        } else {
+            this.setState({
+                isModifyButtonClickable: true
             });
         }
     }
 
     handleTitleChange(event) {
-        this.setState({
-            ludoEditForm: Object.assign(this.state.ludoEditForm, {
+         this.setState({
+            hasUserChangeTheForm: true,
+            ludoEditForm: {
+                ...this.state.ludoEditForm,
                 title: event.target.value
-            })
+            }
         });
     }
 
@@ -256,12 +279,13 @@ export default class LudoEditForm extends React.Component {
     }
 
     handleTagsChange(tags) {
-        const { ludoEditForm } = this.state;
-        this.setState(
-            Object.assign(ludoEditForm, {
+        this.setState({
+            hasUserChangeTheForm: true,
+            ludoEditForm: {
+                ...this.state.ludoEditForm,
                 tags
-            })
-        );
+            }
+        });
     }
 
     // handleDelete(i) {
@@ -291,64 +315,85 @@ export default class LudoEditForm extends React.Component {
     // }
 
     render() {
-        // const { currentFormValue } = this.props;
-        const currentFormValue = this.props.router_currentFormValue;
-        const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const { category, currentHoverValue, ludoEditForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
+        const { category_id, duration, introduction, marbles, tags, title } = ludoEditForm;
         const dayPickerButtons = [];
-        for(let i = 1; i <= maxDuration; i++) {
-            if (i <= duration) {
+        for (let i = 1; i <= maxDuration; i++) {
+            if (isDurationSelected && i <= duration 
+                || !isDurationSelected && i <= currentHoverValue) {
                 if (i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                        <input
+                            /* components/_ludo-create-information.scss */
+                            className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= duration && isDurationSelected)
                             }
+                            key={`button-${i}`}
+                            onClick={this.handleDayPickerClick} 
+                            onMouseOver={this.handleDayPickerMouseOver} 
+                            type="button"
+                            value={i}
                         />, <br key="br" /> 
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                        <input
+                            className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= duration && isDurationSelected)
                             }
+                            key={`button-${i}`}
+                            onClick={this.handleDayPickerClick} 
+                            onMouseOver={this.handleDayPickerMouseOver} 
+                            type="button"
+                            value={i}
                         />
                     );
                 }
             } else {
                 if (i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                        <input
+                            className="ludo-create-information-day-picker__button"
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= duration && isDurationSelected)
                             }
+                            key={`button-${i}`}
+                            onClick={this.handleDayPickerClick} 
+                            onMouseOver={this.handleDayPickerMouseOver} 
+                            type="button"
+                            value={i}
                         />, <br key="br" /> 
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                        <input
+                            className="ludo-create-information-day-picker__button"
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= duration && isDurationSelected)
                             }
+                            key={`button-${i}`}
+                            onClick={this.handleDayPickerClick} 
+                            onMouseOver={this.handleDayPickerMouseOver} 
+                            type="button"
+                            value={i}
                         />
                     );
                 }
             }
         }
         return (
-            <form onSubmit={this.handleSubmit} className="ludo-create-information-container">
+            /* components/_ludo-create-information.scss */
+            <form
+                className="ludo-create-information-container"
+                onSubmit={this.handleSubmit}
+            >
+                {/* components/_ludo-detail-information.scss */}
                 <div className="ludo-detail-information-top-container">
                     <div className="category-icon-container">
                         <img className="category-icon" src={iconArray[category_id]} />
@@ -357,7 +402,7 @@ export default class LudoEditForm extends React.Component {
                         <div className="text-field-container">
                             <span className="text-field-label">種類:</span>
                             <span className="text-field-value">
-                                {category[category_id]}
+                                {category[category_id - 1]}
                             </span>
                         </div>
                         <div className="text-field-container">
@@ -368,6 +413,7 @@ export default class LudoEditForm extends React.Component {
                                 onChange={this.handleTitleChange}
                             />
                         </div>
+                        {/* components/_marbles.scss */}
                         <div className="label-and-slider">
                             <div className="text-label">
                                 <div>
@@ -384,17 +430,17 @@ export default class LudoEditForm extends React.Component {
                         </div>
                     </div>
                 </div>
+                {/* components/_ludo-create-information.scss */}
                 <div className="ludo-create-information-bottom-container">
                     <div className="text-label">
-                        {
-                            isDurationSelected ? `選擇進度回報日` : `選擇持續期間:`
-                        }
+                        {isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'}
                     </div>
                     <div className="ludo-create-information-day-picker">
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
                             <RcSlider 
-                                max={maxDuration} min={3} 
+                                max={maxDuration}
+                                min={3}
                                 value={ludoEditForm.duration}
                                 onChange={this.handleDurationValue}
                             />
@@ -408,14 +454,16 @@ export default class LudoEditForm extends React.Component {
                             onChange={this.handleIntroductionChange}
                             value={ludoEditForm.introduction}
                         />
+                        {/* components/_tags.scss */}
                         <div className="text-field--hashtag">
                             <TagsInput
-                                value={ludoEditForm.tags} 
-                                onChange={this.handleTagsChange}
                                 inputProps={{maxLength: 30, placeholder:"標籤"}}
+                                onChange={this.handleTagsChange}
+                                value={ludoEditForm.tags} 
                             />
                         </div>
                     </div>
+                    {/* components/_submit-button.scss */}
                     <button 
                         className="ludo-modify-information-submit-button" 
                         type="submit" 
@@ -434,4 +482,4 @@ export default class LudoEditForm extends React.Component {
             </form>
         );
     }
-};
+}

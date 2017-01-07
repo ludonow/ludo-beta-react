@@ -4,15 +4,21 @@ import { Link } from "react-router";
 import Create from '../create/Create';
 
 export default class QuickStart extends React.Component {
-    render() {
-        return (
-            <div className="grid-item">
-                <Link to="create" className="remove-hyperlink-style">
-                     <div className="quick-start">
-                        <div className="quick-start__icon"></div>
-                     </div>
-                  </Link>
-            </div>
-        );
-    }
+  render() {
+    return (
+      /* components/_card.scss */
+      <div className="grid-item">
+        {/* layout/_create.scss */}
+        <Link
+          className="remove-hyperlink-style"
+          to="create"
+        >
+          {/* components/_playground-quick-start.scss */}
+          <div className="quick-start card--playground">
+            <div className="quick-start__icon">NEW</div>
+          </div>
+        </Link>
+      </div>
+    );
+  }
 }

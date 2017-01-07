@@ -28,28 +28,26 @@ export default class CommentForm extends React.Component {
             this.setState({
                 commentContent
             });
-            this.props.updateNewCommentList(commentContent);
+            this.props.updateTempCommentList(commentContent);
 
             const commentPost = {
-                'type': 'report',
-                'report_id': this.props.report_id,
-                'content': commentContent
+                'content': commentContent,
+                'ludo_id': this.props.router_currentLudoId,
+                'report_id': this.props.reportId,
+                'type': 'report'
             };
-            // console.log('CommentForm handleCommentSubmit commentPost', commentPost);   //debug
             axios.post('/apis/comment', commentPost)
-            .then(response => {
-                if(response.data.status == '200') {
-                    // console.log('CommentForm updateNewCommentListAfterPost');   // debug
-                    this.props.updateNewCommentListAfterPost(response.data.ludo.Attributes.comments);
+            .then((response) => {
+                if(response.data.status === '200') {
+                    this.props.updateTempCommentListAfterPost(response.data.comment.Attributes.comments);
                 } else {
-                    console.log('CommentForm post message from server: ', response.data.message);
-                    console.log('CommentForm post error from server: ', response.data.err);
+                    console.error('CommentForm post response from server: ', response);
+                    console.error('CommentForm post message from server: ', response.data.message);
                 }
             })
-            .catch(error => {
-                console.log('CommentForm post error', error);
+            .catch((error) => {
+                console.error('CommentForm post error', error);
             });
-
             /* clear the text area of comment form */
             event.target.value = null;
             this.setState({
@@ -60,17 +58,28 @@ export default class CommentForm extends React.Component {
 
     render() {
         return (
-            <div className="comment-container">
+            /* components/_comment.scss */
+            <div className="single-comment-container">
                 <div className="comment-avatar-container">
                     {
                         /* show user's photo */
                         this.props.currentUserId ?
-                        <img className="comment__avatar" src={this.props.userBasicData.photo}/>
-                        : <img className="comment__avatar" src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder" />
+                            <img 
+                                className="comment__avatar"
+                                src={this.props.userBasicData.photo}
+                            />
+                        :
+                            <img
+                                className="comment__avatar"
+                                src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
+                            />
                     }
                 </div>
-                <Textarea className="comment__message"
-                    minRows={2} onKeyDown={this.handleCommentSubmit} placeholder="留言..."
+                <Textarea 
+                    className="comment__message"
+                    minRows={2}
+                    onKeyDown={this.handleCommentSubmit}
+                    placeholder="留言..."
                 />
             </div>
         );

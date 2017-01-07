@@ -17,8 +17,8 @@ export default class OpenedStarterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // category: ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
-            category: ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
+            // category: ['lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
+            category: ['生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             isDeleteButtonClickable: false,
             maxDuration: 14,
             maxMarbles: 50
@@ -38,7 +38,6 @@ export default class OpenedStarterForm extends React.Component {
     }
 
     componentWillUnmount() {
-        // console.log('OpenedStarterForm componentWillUnmount');   // debug
         this.props.clearCurrentFormValue();
     }
 
@@ -46,9 +45,9 @@ export default class OpenedStarterForm extends React.Component {
         const { checkpoint } = this.props.router_currentFormValue;
         const index = checkpoint.indexOf(value);
         if (index != -1) {
-            return ` ludo-detail-information-day-picker__button--checkpoint`;
+            return ' ludo-detail-information-day-picker__button--checkpoint';
         } else {
-            return ` ludo-detail-information-day-picker__button--duration`;
+            return ' ludo-detail-information-day-picker__button--duration';
         }
     }
 
@@ -62,26 +61,21 @@ export default class OpenedStarterForm extends React.Component {
         this.setState({
             isDeleteButtonClickable: false
         });
-        // TODO: Use notification confirming delete ludo 
-        const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
+        /* TODO: Use notification confirming delete ludo */
+        const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
+        // const isSureToDelete = window.confirm(`Are you sure to delete this ludo?`);
         if (isSureToDelete) {
-            const { currentFormValue, params } = this.props;
-            const { ludoId } = params;
-            // console.log(`/apis/ludo/${ludoId}`);   // debug
-            // console.log('before quit axios delete');   // debug
-            axios.delete(`/apis/ludo/${ludoId}`)
+            axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
             .then(response => {
                 if(response.data.status == '200') {
-                    
-                    this.props.getBasicUserData();
-                    this.props.handleShouldProfileUpdate(true);
-                    // console.log('response data', response.data);   // debug
-                    // console.log('after quit axios delete');   // debug
-                    browserHistory.push(`/playground`);
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    browserHistory.push('/playground');
                 } else {
                     window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.log('OpenedStarterForm delete else message from server: ', response.data.message);
-                    console.log('OpenedStarterForm delete else error from server: ', response.data.err);
+                    console.error('OpenedStarterForm delete else response from server: ', response);
+                    console.error('OpenedStarterForm delete else message from server: ', response.data.message);
                     this.setState({
                         isDeleteButtonClickable: true
                     });
@@ -89,137 +83,164 @@ export default class OpenedStarterForm extends React.Component {
             })
             .catch(error => {
                 window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.log('OpenedStarterForm delete error', error);
+                console.error('OpenedStarterForm delete error', error);
                 this.setState({
                     isDeleteButtonClickable: true
                 });
             });
         } else {
-            console.log('OpendStarterForm error in state isDeleteButtonClickable');
             this.setState({
                 isDeleteButtonClickable: true
             });
         }
     }
 
-    handleTagsChange(tags) {
-        const { ludoCreateForm } = this.state;
-        this.setState(
-            Object.assign(ludoCreateForm, {
-                tags
-            })
-        );
-    }
-
     render() {
-        // const { currentFormValue } = this.props; 
         const currentFormValue = this.props.router_currentFormValue;
         const { category, maxDuration, maxMarbles } = this.state;
         const { category_id, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= duration) {
-                if(i == 7) {
+                if(i === 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
-                        />, <br key="br" /> 
+                        <input
+                            className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`}
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
+                        />,
+                        <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
+                        <input
+                            className={`ludo-detail-information-day-picker__button${this.handleDayPickerClass(i)}`}
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
                         />
                     );
                 }
             } else {
                 if(i == 7) {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
-                        />, <br key="br" /> 
+                        <input
+                            className="ludo-detail-information-day-picker__button"
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
+                        />,
+                        <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
-                        <input className={`ludo-detail-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            disabled={true}
+                        <input
+                            className="ludo-detail-information-day-picker__button"
+                            disabled
+                            key={`button-${i}`}
+                            type="button"
+                            value={i}
                         />
                     );
                 }
             }
         }
         return (
+            /* components/_form.scss */
             <div className="form">
-                <form onSubmit={this.handleSubmit} className="ludo-detail-information-container">
+                {/* components/_ludo-detail-information.scss */}
+                <form
+                    className="ludo-detail-information-container"
+                    onSubmit={this.handleSubmit} 
+                >
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img className="category-icon" src={iconArray[category_id]} />
+                            <img 
+                                className="category-icon"
+                                src={iconArray[category_id]}
+                            />
                         </div>
                         <div className="top-right-container">
                             <div className="text-field-container">
-                                <span className="text-field-label">種類:</span>
+                                <span className="text-field-label">{'種類:'}</span>
                                 <span className="text-field-value">
-                                    {category[category_id]}
+                                    {category[category_id - 1]}
                                 </span>
                             </div>
                             <div className="text-field-container">
-                                <span className="text-field-label">標題:</span>
+                                <span className="text-field-label">{'標題:'}</span>
                                 <span className="text-field-value">
                                     {title}
                                 </span>
                             </div>
+                            {/* components/_marbles.scss */}
                             <div className="label-and-slider">
                                 <div className="text-label">
-                                    彈珠數:<span className="text-label--marble-number">{marbles}</span>
+                                   {' 彈珠數:'}
+                                   <span className="text-label--marble-number">{marbles}</span>
                                 </div>
                                 <div className="ludo-detail-information-slider--marbles">
-                                    <RcSlider max={maxMarbles} value={marbles} disabled={true} />
+                                    <RcSlider 
+                                        disabled
+                                        max={maxMarbles}
+                                        value={marbles}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">
-                        <div className="text-label">持續期間:</div>
+                        <div className="text-label">{'持續期間:'}</div>
                         <div className="ludo-detail-information-day-picker">
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider--duration">
-                            <RcSlider max={maxDuration} value={duration} disabled={true} />
+                            <RcSlider
+                                disabled
+                                max={maxDuration}
+                                value={duration}
+                            />
                         </div>
-                        <div className="text-label">介紹:</div>
+                        <div className="text-label">{'介紹:'}</div>
                         <div className="text-field-container text-field-container--introduction">
                             <div className="text-field__introduction">
                                 {introduction}
                             </div>
+                            {/* components/_tags.scss */}
                             <div className="text-field--hashtag">
                                 <div className="react-tagsinput">
                                     <span className="react-tagsinput-span">
                                         {
                                             tags.length ?
-                                            tags.map((tagString, index) => {
-                                                return (
-                                                    <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                        {tagString}
-                                                    </span>
-                                                );
-                                            })
+                                                tags.map((tagString, index) => {
+                                                    return (
+                                                        <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                            {tagString}
+                                                        </span>
+                                                    );
+                                                })
                                             : null
                                         }
                                     </span>
                                 </div>
                             </div>
                         </div>
+                        {/* components/_submit-button.scss */}
                         <button 
                             className="ludo-detail-information-submit-button" 
-                            type="submit" 
                             disabled={!this.state.isDeleteButtonClickable}
+                            type="submit" 
                         >
                             刪除
                         </button>
                         <button 
                             className="ludo-detail-information-submit-button" 
-                            onClick={this.handleEdit}
                             disabled={!this.state.isDeleteButtonClickable}
+                            onClick={this.handleEdit}
                         >
                             修改
                         </button>

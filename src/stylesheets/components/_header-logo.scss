@@ -1,4 +1,5 @@
 .header-Ludo-logo {
+    left:123px;
     @extend %clickable;
     @extend %flex;
     align-items: center;
@@ -8,6 +9,5 @@
 }
     .header-Ludo-logo__icon {
         @extend %relative;
-        @extend %as_wide_as_parent;
-        @extend %as_tall_as_parent;
+        height: $g_header_height_md_min * (3/7);
     }

@@ -1,0 +1,52 @@
+.player-report-container {
+    @extend %relative;
+    margin: 20px 0;
+    background-color: white;
+    .report-content-container {
+        @extend %flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 100%;
+        padding: 5px;
+        border-bottom: 1px dashed $gray;
+    }
+    .report-content {
+        max-width: 100%;
+        word-break: break-word;
+    }
+    .report-content__image {
+        cursor: zoom-in;
+    }
+    .report-content__text {
+        padding: 10px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+    }
+    .report-content__text-edit {
+        width: 97%;
+        // border: none;
+        resize: none;
+    }
+    .report-tags-container {
+        margin: 5px;
+        span.report-tag {
+            display: inline-block;
+            margin: 5px;
+        }
+    }
+}
+    .player-report-comment-box-container {
+        @extend %relative;
+        @extend %bottom;
+        @extend %as_wide_as_parent;
+    }
+
+.report-icon-button {
+    @extend %as_wide_as_parent;
+    @extend %flex;
+    justify-content: flex-end;
+}
+
+.report-popover-expand-more-menu-item {
+    // font-size: 12px;
+}

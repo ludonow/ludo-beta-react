@@ -55,6 +55,7 @@ export default class ProfileStatistic extends React.Component {
     render() {
         const { radarData } = this.state;
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card">
                 <div className="profile-card__title">{'統計資訊'}</div>
                 <Radar data={radarData} />

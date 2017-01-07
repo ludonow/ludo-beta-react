@@ -8,6 +8,7 @@ export default class ProfileContent extends React.Component {
     render() {
         const { userProfileData } = this.props;
         return (
+            /* components/_profile-content.scss */
             <div className="profile-content">
                 <div className="profile-content-information">
                     <div className="profile-content-information-avatar">

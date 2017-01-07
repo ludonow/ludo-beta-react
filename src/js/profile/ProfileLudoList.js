@@ -15,31 +15,33 @@ export default class ProfileLudoList extends Component {
         super(props);
     }
 
-    handleSingleLudoClick = event => {
+    handleSingleLudoClick(event) {
         const ludo_id = event.currentTarget.id;
         browserHistory.push(`/ludo/${ludo_id}`);
     }
 
     render() {
         return (
+            /* components/_profile-card.scss */
             <div className="profile-card__ludolist">
                 {
                     this.props.profileLudoData.map((ludoObject, index) => {
                         return (
-                            <div className="single-ludo"
+                            /* components/_profile-card-single-ludo.scss */
+                            <div
+                                className="single-ludo"
                                 id={ludoObject.ludo_id}
                                 key={`Ludoing-${index}`}
                                 onClick={this.handleSingleLudoClick}
                             >
                                 <div className="single-ludo__category-icon-container">
-                                    <img className="single-ludo__category-icon"
+                                    <img
+                                        className="single-ludo__category-icon"
                                         src={iconArray[ludoObject.category_id]}
                                     />
                                 </div>
                                 <div className="single-ludo__title">
-                                    {
-                                        ludoObject.title
-                                    }
+                                    {ludoObject.title}
                                 </div>
                             </div>
                         );
