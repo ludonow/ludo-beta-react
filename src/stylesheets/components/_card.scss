@@ -195,7 +195,7 @@ $new_skill-text-color: #fdcaad;
     word-wrap: break-word;
     @extend %text_center;
     font-size: 14px;
-
+    text-align: center;
     transform:rotateY(180deg);
     -ms-transform: rotateY(180deg); /* IE 9 */
     -webkit-transform: rotateY(180deg); /* Chrome, Safari, Opera */
