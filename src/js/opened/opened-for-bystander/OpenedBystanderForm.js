@@ -2,7 +2,6 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import axios from '../../axios-config';
 import RcSlider from 'rc-slider';
-import NotificationSystem from 'react-notification-system';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';
@@ -28,21 +27,7 @@ export default class OpenedBystanderForm extends React.Component {
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this._addNotification = this._addNotification.bind(this);
-        // this._notificationSystem = null;
     }
-
-    // _addNotification(event) {
-    //     event.preventDefault();
-    //     this._notificationSystem()._addNotification({
-    //         message: 'Notification message',
-    //         level: 'success'
-    //     });
-    // }
-
-    // componentDidMount() {
-        // this._notificationSystem = this.refs.notificationSystem;
-    // }
 
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
@@ -133,7 +118,7 @@ export default class OpenedBystanderForm extends React.Component {
         const dayPickerButtons = [];
         for (let i = 1; i <= maxDuration; i++) {
             if (i <= duration) {
-                if(i == 7) {
+                if (i == 7) {
                     dayPickerButtons.push(
                         <input
                             /* components/_ludo-detail-information.scss */
@@ -156,7 +141,7 @@ export default class OpenedBystanderForm extends React.Component {
                     );
                 }
             } else {
-                if(i == 7) {
+                if (i == 7) {
                     dayPickerButtons.push(
                         <input
                             className="ludo-detail-information-day-picker__button"

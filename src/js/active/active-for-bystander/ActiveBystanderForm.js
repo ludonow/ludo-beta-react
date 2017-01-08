@@ -84,27 +84,26 @@ export default class ActiveBystanderForm extends React.Component {
         this.setState({
             isFollowButtonClickable: false
         });
+        const { ludoId } = this.props.params;
+        const body = {
+            'type': 'follow',
+            'isFollow': false
+        };
+        console.log('body', body);
+        console.log('ludoId', ludoId);
         // TODO: add follow others' ludo feature 
-        // const isSureToFollow = window.confirm(`Are you sure to follow?`);
-        // const { currentFormValue, params } = this.props;
-        // const { ludoId } = params;
-        // const body = {
-        // };
-        // console.log('body', body);
-        // console.log('before follow axios put');
+        // const isSureToFollow = window.confirm('Are you sure to follow?');
         // axios.put(`/apis/ludo/${ludoId}`, body)
-        // .then(function (response) {
-        //     if(response.data.status == '200') {
+        // .then((response) => {
+        //     if (response.data.status === '200') {
         //         // TODO: Confirm following Ludo
-        //         console.log('response data', response.data);
-        //         console.log('after follow axios put');
+        //         console.log('response', response);
         //     } else {
-        //         console.log('follow else message from server: ', response.data.message);
+        //         console.error('follow else response from server: ', response);
         //     }
         // })
-        // .catch(function (error) {
-        //     console.log('follow error', error);
-        //     console.log('follow error message from server: ', response.data.message);
+        // .catch((error) => {
+        //     console.error('follow error', error);
         // });
     }
 
