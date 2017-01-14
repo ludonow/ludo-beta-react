@@ -72,7 +72,7 @@ export default class OpenedBystanderForm extends React.Component {
             };
             axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
             .then(response => {
-                if(response.data.status == '200') {
+                if (response.data.status === '200') {
                     this.setState({
                         isJoinButtonClickable: false
                     });
@@ -81,7 +81,7 @@ export default class OpenedBystanderForm extends React.Component {
                     handleShouldProfileUpdate(true);
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push(`/ludo-edit/${ludo_id}`);
-                } else if(response.data.message == 'Your heart is out.') {
+                } else if (response.data.message === 'Your heart is out.') {
                     window.alert('你的愛心數用完囉！');
                     this.setState({
                         isJoinButtonClickable: false
