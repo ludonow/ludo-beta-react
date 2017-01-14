@@ -444,6 +444,7 @@ export default class App extends React.Component {
             <div>
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
+                    isLoggedIn={this.state.isLoggedIn}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
