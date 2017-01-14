@@ -269,7 +269,6 @@ export default class App extends React.Component {
     getUpComingLudoList(filterCondition, lastEvaluatedKeyString) {
         axios.get(`/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKeyString}`)
         .then((response) => {
-            console.log('response', response);
             if(response.data.status === '200') {
                 const newLudoList = [];
                 newLudoList.push.apply(newLudoList, this.state.ludoList);

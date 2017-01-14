@@ -82,17 +82,19 @@ label.fab-menu {
     background-color: gray;
 }
 
-.menu-items a , span {
-    color: #fff;
-    line-height: 1.5;
+.menu-items {
+    a, span {
+        color: #fff;
+        line-height: 1.5;
+    }
 }
 
-input {
+input.fab-menu-checkbox {
     position: absolute;
     left: -1000rem;
 }
 
-input:checked +.menu-box {
+input:checked.fab-menu-checkbox + .menu-box {
     border: 2px dashed rgba(0,0,0,0.9);
     transition: 0.3s;
     -webkit-transition: 0.3s;
@@ -100,7 +102,7 @@ input:checked +.menu-box {
     -o-transition: 0.3s;
 }
 
-input:checked +.menu-box .menu-circle {
+input:checked.fab-menu-checkbox + .menu-box .menu-circle {
     background-color: rgba(0,0,0,0.95);
     transition: 0.3s;
     -webkit-transition: 0.3s;
@@ -108,7 +110,7 @@ input:checked +.menu-box .menu-circle {
     -o-transition: 0.3s;
 }
 
-input:checked +.menu-box .menu-items {
+input:checked.fab-menu-checkbox + .menu-box .menu-items {
     transform: translateY(-110%) scale(1) translateX(-30%);
     -webkit-transform: translateY(-110%) scale(1) translateX(-30%);
     -moz-transform: translateY(-110%) scale(1) translateX(-30%);
