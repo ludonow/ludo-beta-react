@@ -76,18 +76,22 @@ label.fab-menu {
     padding: 5px;
     list-style: none;
     color: white;
+    line-height: 1.5;
 }
 
 .menu-items li:hover {
     background-color: gray;
 }
-
-.menu-items a , span {
+.menu-items a{
+  color:#fff;
+//  line-height:1.5;
+}
+.menu-items a span {
     color: #fff;
     line-height: 1.5;
 }
 
-input {
+input .checkbox {
     position: absolute;
     left: -1000rem;
 }
