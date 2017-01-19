@@ -91,8 +91,9 @@ label.fab-menu {
     line-height: 1.5;
 }
 
-input .checkbox {
+.fab-menu input {
     position: absolute;
+    left: -1000px;
     left: -1000rem;
 }
 
