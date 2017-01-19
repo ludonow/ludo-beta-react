@@ -54,10 +54,10 @@ export default class LogIn extends React.Component {
                  /* email not exist */
             //     console.log('email not exist');
             } else {
-                window.alart('帳號或密碼錯誤!');
-                this.setState({
-                    errorMessageFromServer: response.data.message
-                });
+                window.alert('帳號或密碼錯誤!');
+                //this.setState(
+                    //errorMessageFromServer: response.data.message
+                //});
                 console.error('Login handleLogIn response', response);
             }
         })
