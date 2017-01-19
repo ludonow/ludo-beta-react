@@ -15,7 +15,7 @@ import SidebarReadPlayground from './SidebarReadPlayground';
 import SidebarTemplate from './SidebarTemplate';
 
 // const sidebarInstructionTextArray = ['Playground', 'Profile', 'Create', 'Friend', 'Sports', 'Read'];
-const sidebarInstructionTextArray = ['個人資料', '遊樂園', '模板', '朋友', '閱讀', '運動'];
+const sidebarInstructionTextArray = ['個人資料', '遊樂園', '模板', '創建', '朋友', '閱讀'];
 
 export default class Sidebar extends React.Component {
     constructor(props) {
@@ -104,7 +104,7 @@ export default class Sidebar extends React.Component {
                         </Link>
 
                         </div>
-                        {/*Teplate*/}
+                        {/*Template*/}
                         <div className="right-sidebar-item color-sidebar3" id="2"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
@@ -120,14 +120,30 @@ export default class Sidebar extends React.Component {
                                 <SidebarTemplate />
                             </span>
                         </div>
-                        {/*friend*/}
+                        {/* Create */}
                         <div className="right-sidebar-item color-sidebar4" id="3"
+                            onMouseLeave={this.handleMouseLeave}
+                            onMouseOver={this.handleMouseOver}
+                        >
+                            <Link to="/create">
+                                {
+                                    hoverSidebarIndex == 3 ?
+                                        <div className="right-sidebar-item__instruction">
+                                            {instructionText}
+                                        </div>
+                                    : null
+                                }
+                                <SidebarCreate {...this.props} />
+                            </Link>
+                        </div>
+                        {/*friend*/}
+                        <div className="right-sidebar-item color-sidebar5" id="4"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
                             <Link to="/friend">
                                 {
-                                    hoverSidebarIndex == 3 ?
+                                    hoverSidebarIndex == 4 ?
                                         <div className="right-sidebar-item__instruction">
                                             {instructionText}
                                         </div>
@@ -137,22 +153,6 @@ export default class Sidebar extends React.Component {
                             </Link>
                         </div>
                         {/*read*/}
-                        <div className="right-sidebar-item color-sidebar5" id="4"
-                            onMouseLeave={this.handleMouseLeave}
-                            onMouseOver={this.handleMouseOver}
-                        >
-                            <Link to="playground">
-                                {
-                                    hoverSidebarIndex == 4 ?
-                                        <div className="right-sidebar-item__instruction">
-                                            {instructionText}
-                                        </div>
-                                    : null
-                                }
-                                <SidebarReadPlayground />
-                            </Link>
-                        </div>
-                        {/*Sports*/}
                         <div className="right-sidebar-item color-sidebar6" id="5"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
@@ -165,7 +165,7 @@ export default class Sidebar extends React.Component {
                                         </div>
                                     : null
                                 }
-                                <SidebarSportsPlayground />
+                                <SidebarReadPlayground />
                             </Link>
                         </div>
                     </div>

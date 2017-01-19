@@ -112,22 +112,21 @@ div.sidebar-flip {
     }
     .color-sidebar4 {
         background-color: $sidebar-color-4;
+        .start-ludo-icon {
+            background-image: url('../images/sidebar/start_ludo_icon.png');
+        }
+    }
+    .color-sidebar5 {
+        background-color: $sidebar-color-5;
         .freinds-icon {
             background-image: url('../images/sidebar/ludo_friends_icon.png');
             background-size: 160%;
         }
     }
-    .color-sidebar5 {
-        background-color: $sidebar-color-5;
-        .ludo-read-icon {
-            background-image: url('../images/sidebar/ludo_read_icon.png');
-        }
-    }
     .color-sidebar6 {
         background-color: $sidebar-color-6;
-        .ludo-sports-icon {
-            background-image: url('../images/sidebar/ludo_sports_icon.png');
-            background-size: 120%;
+        .ludo-read-icon {
+            background-image: url('../images/sidebar/ludo_read_icon.png');
         }
     }
 
