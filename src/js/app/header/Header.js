@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFilter from './HeaderFilter';
@@ -25,10 +25,12 @@ export default class Header extends Component {
 
     handleFilterClick() {
         this.props.getFilteredLudoList();
+        browserHistory.push('/playground');
     }
 
     handleTemplateFilterClick() {
         this.props.getFilteredLudoList('stage=0');
+        browserHistory.push('/playground');
     }
 
     render() {
@@ -71,7 +73,7 @@ export default class Header extends Component {
                 </div>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
-                    <input type="checkbox"/>
+                    <input className="fab-menu-checkbox" type="checkbox"/>
                     <div className="menu-box">
                         <div className="menu-circle"></div>
                         <ul className="menu-items">
@@ -80,13 +82,16 @@ export default class Header extends Component {
                             <li><Link to="/profile">Profile</Link></li>
                             <li><Link to="/create">Create</Link></li>
                             <li><Link to="/friend">Friends</Link></li>
-                            {/*If statement of Login/logout is needed*/}
+                            {/* TODO: RWD for fab-menu in log in page */}
                             <li>
-                            <a
-                                href="http://api.ludonow.com/logout"
-                            >
-                                Logout
-                            </a>
+                              {
+                                this.props.isLoggedIn ?
+                                <a href="http://api.ludonow.com/logout">
+                                  Log Out
+                                </a>
+                                :
+                                <Link to="/login">Log In</Link>
+                              }                                  
                             </li>
                         </ul>
                     </div>

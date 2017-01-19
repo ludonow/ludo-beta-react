@@ -61,7 +61,7 @@ export default class ActiveBystanderForm extends React.Component {
             } else {
                 durationTimeMarks[i] = i;
             }
-            
+
         }
         this.setState({
             timeLineMarks: durationTimeMarks
@@ -84,27 +84,28 @@ export default class ActiveBystanderForm extends React.Component {
         this.setState({
             isFollowButtonClickable: false
         });
-        const { ludoId } = this.props.params;
+        const { ludo_Id } = this.props.params;
         const body = {
             'type': 'follow',
             'isFollow': false
         };
         console.log('body', body);
-        console.log('ludoId', ludoId);
-        // TODO: add follow others' ludo feature 
-        // const isSureToFollow = window.confirm('Are you sure to follow?');
-        // axios.put(`/apis/ludo/${ludoId}`, body)
-        // .then((response) => {
-        //     if (response.data.status === '200') {
-        //         // TODO: Confirm following Ludo
-        //         console.log('response', response);
-        //     } else {
-        //         console.error('follow else response from server: ', response);
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.error('follow error', error);
-        // });
+        console.log('ludo_Id', ludo_Id);
+        // TODO: add follow others' ludo feature
+        axios.put(`/apis/ludo/${ludo_id}`, body)
+        .then((response) => {
+            if (response.data.status === '200') {
+              // TODO: Confirm following Ludo
+              console.log('response', response);
+            }
+            else {
+                console.error('follow else response from server: ', response);
+             }
+         }
+       )
+        .catch((error) => {
+           console.error('follow error', error);
+         });
     }
 
     render() {
@@ -167,7 +168,10 @@ export default class ActiveBystanderForm extends React.Component {
                                                 tags.length ?
                                                 tags.map((tagString, index) => {
                                                     return (
-                                                        <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                        <span
+                                                          className="react-tagsinput-tag"
+                                                          key={`tag-${index}`}
+                                                          >
                                                             {tagString}
                                                         </span>
                                                     );
@@ -185,8 +189,9 @@ export default class ActiveBystanderForm extends React.Component {
                             <div className="report-time-line-container">
                                 <div className="report-time-line">
                                 <RcSlider
-                                    className="time-line" 
-                                    disabled vertical dots included={false}
+                                    className="time-line"
+                                    disabled vertical dots
+                                    included={false}
                                     marks={timeLineMarks}
                                     max={duration}
                                     min={1}
@@ -200,7 +205,7 @@ export default class ActiveBystanderForm extends React.Component {
                     {/* components/_submit-button.scss */}
                     <button
                         className="ludo-detail-information-submit-button"
-                        disabled
+                        disabled={!this.state.isFollowButtonClickable}
                         type="submit"
                     >
                         追蹤

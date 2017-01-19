@@ -91,7 +91,7 @@ export default class App extends React.Component {
     }
 
     componentDidUpdate() {
-        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage, 
+        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage,
             shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
         } = this.state;
         if (isOpeningLudoListPage && shouldLudoListUpdate) {
@@ -99,8 +99,8 @@ export default class App extends React.Component {
             this.handleShouldLudoListUpdate(false);
         }
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
-            /* 
-             * Update profile data after the user did some ludo action and is going to open profile page 
+            /*
+             * Update profile data after the user did some ludo action and is going to open profile page
              */
             if (isOpeningProfilePage) {
                 this.getProfileData();
@@ -269,7 +269,6 @@ export default class App extends React.Component {
     getUpComingLudoList(filterCondition, lastEvaluatedKeyString) {
         axios.get(`/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKeyString}`)
         .then((response) => {
-            console.log('response', response);
             if(response.data.status === '200') {
                 const newLudoList = [];
                 newLudoList.push.apply(newLudoList, this.state.ludoList);
@@ -445,6 +444,7 @@ export default class App extends React.Component {
             <div>
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
+                    isLoggedIn={this.state.isLoggedIn}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
@@ -463,7 +463,7 @@ export default class App extends React.Component {
                     {
                         React.cloneElement(this.props.children,
                             {
-                                ...this.state, 
+                                ...this.state,
                                 router_currentFormValue,
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getCurrentLudoData: this.getCurrentLudoData,
