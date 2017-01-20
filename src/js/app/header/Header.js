@@ -86,12 +86,12 @@ export default class Header extends Component {
                             <li>
                               {
                                 this.props.isLoggedIn ?
-                                <a href="http://api.ludonow.com/logout">
+                                <a href="https://api.ludonow.com/logout">
                                   Log Out
                                 </a>
                                 :
                                 <Link to="/login">Log In</Link>
-                              }                                  
+                              }
                             </li>
                         </ul>
                     </div>
