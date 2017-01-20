@@ -59,6 +59,7 @@ export default class SignUp extends React.Component {
                 browserHistory.push('/playground');
             } else {
                 console.error('SignUp handleSignUp response', response);
+                window.alert('此郵件已被使用！');
             }
         })
         .catch((error) => {

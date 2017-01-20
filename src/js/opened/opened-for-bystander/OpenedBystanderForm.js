@@ -81,7 +81,7 @@ export default class OpenedBystanderForm extends React.Component {
                     handleShouldProfileUpdate(true);
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push(`/ludo-edit/${ludo_id}`);
-                } else if (response.data.message === 'Your Fuel is out.') {
+                } else if (response.data.message === 'Your fuel is out.') {
                     window.alert('你的燃料用完囉！');
                     this.setState({
                         isJoinButtonClickable: true
@@ -127,7 +127,7 @@ export default class OpenedBystanderForm extends React.Component {
                             key={`button-${i}`}
                             type="button"
                             value={i}
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
@@ -149,7 +149,7 @@ export default class OpenedBystanderForm extends React.Component {
                             key={`button-${i}`}
                             type="button"
                             value={i}
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
@@ -214,7 +214,7 @@ export default class OpenedBystanderForm extends React.Component {
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider--duration">
-                            <RcSlider 
+                            <RcSlider
                                 disabled
                                 max={maxDuration}
                                 value={duration}
@@ -245,9 +245,9 @@ export default class OpenedBystanderForm extends React.Component {
                             </div>
                         </div>
                         {/* components/_submit-button.scss */}
-                        <button 
-                            className="ludo-detail-information-submit-button" 
-                            type="submit" 
+                        <button
+                            className="ludo-detail-information-submit-button"
+                            type="submit"
                             disabled={!isJoinButtonClickable || !this.props.isLoggedIn}
                         >
                             加入

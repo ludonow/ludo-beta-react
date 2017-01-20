@@ -8,6 +8,7 @@ label.fab-menu {
 /* can remove .fab-menu a  */
 .fab-menu a {
     text-decoration: none;
+    color:#fff;
 }
 
 .fab-menu {
@@ -82,15 +83,16 @@ label.fab-menu {
     background-color: gray;
 }
 
-.menu-items {
-    a, span {
-        color: #fff;
-        line-height: 1.5;
-    }
+.menu-items{
+  a span {
+      color: #fff;
+      line-height: 1.5;
+  }
 }
 
-input.fab-menu-checkbox {
+.fab-menu input {
     position: absolute;
+    left: -1000px;
     left: -1000rem;
 }
 

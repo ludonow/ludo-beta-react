@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, PropTypes }from "react";
 import { Link } from "react-router";
 
 import Playground from '../../playground/Playground';
@@ -12,9 +12,10 @@ import SidebarCreate from './SidebarCreate';
 import SidebarFriend from './SidebarFriend';
 import SidebarSportsPlayground from './SidebarSportsPlayground';
 import SidebarReadPlayground from './SidebarReadPlayground';
+import SidebarTemplate from './SidebarTemplate';
 
 // const sidebarInstructionTextArray = ['Playground', 'Profile', 'Create', 'Friend', 'Sports', 'Read'];
-const sidebarInstructionTextArray = ['遊樂園', '個人資料', '創建Ludo', '朋友', '運動', '閱讀'];
+const sidebarInstructionTextArray = ['個人資料', '遊樂園', '模板', '創建', '朋友', '閱讀'];
 
 export default class Sidebar extends React.Component {
     constructor(props) {
@@ -28,6 +29,7 @@ export default class Sidebar extends React.Component {
         this.handleMouseOver = this.handleMouseOver.bind(this);
         this.handleSidebarMouseLeave = this.handleSidebarMouseLeave.bind(this);
         this.handleSidebarMouseOver = this.handleSidebarMouseOver.bind(this);
+        this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
     }
 
     handleMouseLeave(event) {
@@ -55,54 +57,77 @@ export default class Sidebar extends React.Component {
             this.props.handleIsHoveringSidebar(true);
         }
     }
+    handleTemplateFilterClick() {
+        this.props.getFilteredLudoList('stage=0');
+    }
 
     render() {
-        const { hoverSidebarIndex, instructionText } = this.state;
+        const {getFilteredLudoList, hoverSidebarIndex, instructionText } = this.state;
         return (
             /* layout/_right-sidebar.scss */
-            <div 
+            <div
                 className="right-sidebar-hover-area"
                 onMouseLeave={this.handleSidebarMouseLeave}
                 onMouseOver={this.handleSidebarMouseOver}
             >
                     <div className={`right-sidebar${this.props.isHoveringSidebar ? ` sidebar-flip` : ``}`}>
-                        <div className="right-sidebar-item color-sidebar1" id="0" 
+                        {/*UserID*/}
+                        <div className="right-sidebar-item color-sidebar1" id="0"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to="/playground">
+                        <Link to={`/profile/${this.props.currentUserId}`}>
+                            {
+                                hoverSidebarIndex == 0 ?
+                                    <div className="right-sidebar-item__instruction">
+                                        {instructionText}
+                                    </div>
+                                : null
+                            }
+                            <SidebarProfile {...this.props} />
+                        </Link>
+                        </div>
+                        {/*playground*/}
+                        <div className="right-sidebar-item color-sidebar2" id="1"
+                            onMouseLeave={this.handleMouseLeave}
+                            onMouseOver={this.handleMouseOver}
+                        >
+                        <Link to="/playground">
+                            {
+                                hoverSidebarIndex == 1 ?
+                                    <div className="right-sidebar-item__instruction">
+                                        {instructionText}
+                                    </div>
+                                : null
+                            }
+                            <SidebarPlayground />
+                        </Link>
+
+                        </div>
+                        {/*Template*/}
+                        <div className="right-sidebar-item color-sidebar3" id="2"
+                            onMouseLeave={this.handleMouseLeave}
+                            onMouseOver={this.handleMouseOver}
+                        >
+                            <span onTouchTap={this.handleTemplateFilterClick}>
                                 {
-                                    hoverSidebarIndex == 0 ?
+                                    hoverSidebarIndex == 2 ?
                                         <div className="right-sidebar-item__instruction">
                                             {instructionText}
                                         </div>
                                     : null
                                 }
-                                <SidebarPlayground />
-                            </Link>
+                                <SidebarTemplate />
+                            </span>
                         </div>
-                        <div className="right-sidebar-item color-sidebar2" id="1" 
-                            onMouseLeave={this.handleMouseLeave}
-                            onMouseOver={this.handleMouseOver}
-                        >
-                            <Link to={`/profile/${this.props.currentUserId}`}>
-                                {
-                                    hoverSidebarIndex == 1 ?
-                                        <div className="right-sidebar-item__instruction">
-                                            {instructionText}
-                                        </div>
-                                    : null
-                                }
-                                <SidebarProfile {...this.props} />
-                            </Link>
-                        </div>
-                        <div className="right-sidebar-item color-sidebar3" id="2" 
+                        {/* Create */}
+                        <div className="right-sidebar-item color-sidebar4" id="3"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
                             <Link to="/create">
                                 {
-                                    hoverSidebarIndex == 2 ?
+                                    hoverSidebarIndex == 3 ?
                                         <div className="right-sidebar-item__instruction">
                                             {instructionText}
                                         </div>
@@ -111,13 +136,14 @@ export default class Sidebar extends React.Component {
                                 <SidebarCreate {...this.props} />
                             </Link>
                         </div>
-                        <div className="right-sidebar-item color-sidebar4" id="3" 
+                        {/*friend*/}
+                        <div className="right-sidebar-item color-sidebar5" id="4"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
                             <Link to="/friend">
                                 {
-                                    hoverSidebarIndex == 3 ?
+                                    hoverSidebarIndex == 4 ?
                                         <div className="right-sidebar-item__instruction">
                                             {instructionText}
                                         </div>
@@ -126,22 +152,8 @@ export default class Sidebar extends React.Component {
                                 <SidebarFriend />
                             </Link>
                         </div>
-                        <div className="right-sidebar-item color-sidebar5" id="4" 
-                            onMouseLeave={this.handleMouseLeave}
-                            onMouseOver={this.handleMouseOver}
-                        >
-                            <Link to="playground">
-                                {
-                                    hoverSidebarIndex == 4 ?
-                                        <div className="right-sidebar-item__instruction">
-                                            {instructionText}
-                                        </div>
-                                    : null
-                                }
-                                <SidebarSportsPlayground />
-                            </Link>
-                        </div>
-                        <div className="right-sidebar-item color-sidebar6" id="5" 
+                        {/*read*/}
+                        <div className="right-sidebar-item color-sidebar6" id="5"
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
@@ -166,3 +178,7 @@ export default class Sidebar extends React.Component {
         );
     }
 };
+
+Sidebar.propTypes = {
+    getFilteredLudoList: PropTypes.func
+  };

@@ -54,8 +54,9 @@ export default class LogIn extends React.Component {
                  /* email not exist */
             //     console.log('email not exist');
             } else {
+                window.alert('帳號或密碼錯誤!');
                 this.setState({
-                    errorMessageFromServer: response.data.message[0]
+                    errorMessageFromServer: response.data.message
                 });
                 console.error('Login handleLogIn response', response);
             }
@@ -110,13 +111,13 @@ export default class LogIn extends React.Component {
                     </div>
                     <a
                         className="forget-password"
-                        href="http://api.ludonow.com/users/password/new"
+                        href="https://api.ludonow.com/users/password/new"
                     >
                         忘記密碼
                     </a>
                 </Formsy.Form>
                 <div className="login-bottom-container">
-                    <a href="http://api.ludonow.com/auth/facebook">
+                    <a href="https://api.ludonow.com/auth/facebook">
                         <img
                             className="fb-login-icon"
                             src={facebookIcon}

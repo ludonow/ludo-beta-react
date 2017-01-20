@@ -61,7 +61,7 @@ export default class ActiveBystanderForm extends React.Component {
             } else {
                 durationTimeMarks[i] = i;
             }
-            
+
         }
         this.setState({
             timeLineMarks: durationTimeMarks
@@ -89,8 +89,6 @@ export default class ActiveBystanderForm extends React.Component {
             'type': 'follow',
             'isFollow': false
         };
-        console.log('body', body);
-        console.log('ludo_id', ludo_id);
         // TODO: add follow others' ludo feature 
         axios.put(`/apis/ludo/${ludo_id}`, body)
         .then((response) => {
@@ -191,8 +189,8 @@ export default class ActiveBystanderForm extends React.Component {
                             <div className="report-time-line-container">
                                 <div className="report-time-line">
                                 <RcSlider
-                                    className="time-line" 
-                                    disabled vertical dots 
+                                    className="time-line"
+                                    disabled vertical dots
                                     included={false}
                                     marks={timeLineMarks}
                                     max={duration}

@@ -95,6 +95,7 @@ $new_skill-text-color: #fdcaad;
     -webkit-perspective: 1000px; /* Chrome, Safari, Opera */
     -moz-perspective: 1000px;
     -o-perspective: 1000px;
+    overflow: hidden;
     .card-top__stage {
         align-self: flex-end;
         margin-left: auto;
@@ -316,7 +317,7 @@ $new_skill-text-color: #fdcaad;
 }
 .card-flip .card-front-info{
   opacity: 0;
-
+  visibility: hidden;
 }
 
 /* card background color by different category */

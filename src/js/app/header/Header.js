@@ -73,7 +73,7 @@ export default class Header extends Component {
                 </div>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
-                    <input className ="fab-menu-checkbox" type="checkbox"/>
+                    <input className="fab-menu-checkbox" type="checkbox"/>
                     <div className="menu-box">
                         <div className="menu-circle"></div>
                         <ul className="menu-items">

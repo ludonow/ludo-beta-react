@@ -93,34 +93,34 @@ div.sidebar-flip {
 
     .color-sidebar1 {
         background-color: $sidebar-color-1;
-        .playground-icon {
-            background-image: url('../images/sidebar/playground_icon.png');
-        }
-    }
-    .color-sidebar2 {
-        background-color: $sidebar-color-2;
         .profile-icon {
             background-image: url('../images/sidebar/profile_icon.png');
         }
     }
+    .color-sidebar2 {
+        background-color: $sidebar-color-2;
+        .playground-icon {
+            background-image: url('../images/sidebar/playground_icon.png');
+        }
+    }
     .color-sidebar3 {
         background-color: $sidebar-color-3;
-        .start-ludo-icon {
-            background-image: url('../images/sidebar/start_ludo_icon.png');
+        .ludo-Template-icon {
+            background-image: url('../images/sidebar/ludo_template_icon.png');
+            background-size: auto;
         }
     }
     .color-sidebar4 {
         background-color: $sidebar-color-4;
-        .freinds-icon {
-            background-image: url('../images/sidebar/ludo_friends_icon.png');
-            background-size: 160%;
+        .start-ludo-icon {
+            background-image: url('../images/sidebar/start_ludo_icon.png');
         }
     }
     .color-sidebar5 {
         background-color: $sidebar-color-5;
-        .ludo-sports-icon {
-            background-image: url('../images/sidebar/ludo_sports_icon.png');
-            background-size: 120%;
+        .freinds-icon {
+            background-image: url('../images/sidebar/ludo_friends_icon.png');
+            background-size: 160%;
         }
     }
     .color-sidebar6 {
