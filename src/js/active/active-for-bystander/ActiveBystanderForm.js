@@ -84,30 +84,6 @@ export default class ActiveBystanderForm extends React.Component {
         this.setState({
             isFollowButtonClickable: false
         });
-<<<<<<< HEAD
-        // TODO: add follow others' ludo feature 
-        // const isSureToFollow = window.confirm(`Are you sure to follow?`);
-        // const { currentFormValue, params } = this.props;
-        // const { ludoId } = params;
-        // const body = {
-        // };
-        // console.log('body', body);
-        // console.log('before follow axios put');
-        // axios.put(`/apis/ludo/${ludoId}`, body)
-        // .then(function (response) {
-        //     if(response.data.status == '200') {
-        //         // TODO: Confirm following Ludo
-        //         console.log('response data', response.data);
-        //         console.log('after follow axios put');
-        //     } else {
-        //         console.log('follow else message from server: ', response.data.message);
-        //     }
-        // })
-        // .catch(function (error) {
-        //     console.log('follow error', error);
-        //     console.log('follow error message from server: ', response.data.message);
-        // });
-=======
         const { ludo_id } = this.props.params;
         const body = {
             'type': 'follow',
@@ -126,7 +102,6 @@ export default class ActiveBystanderForm extends React.Component {
         .catch((error) => {
             console.error('follow error', error);
         });
->>>>>>> test
     }
 
     render() {
@@ -214,14 +189,9 @@ export default class ActiveBystanderForm extends React.Component {
                             <div className="report-time-line-container">
                                 <div className="report-time-line">
                                 <RcSlider
-<<<<<<< HEAD
-                                    className="time-line" 
-                                    disabled vertical dots included={false}
-=======
                                     className="time-line"
                                     disabled vertical dots
                                     included={false}
->>>>>>> test
                                     marks={timeLineMarks}
                                     max={duration}
                                     min={1}
@@ -235,11 +205,7 @@ export default class ActiveBystanderForm extends React.Component {
                     {/* components/_submit-button.scss */}
                     <button
                         className="ludo-detail-information-submit-button"
-<<<<<<< HEAD
-                        disabled
-=======
                         disabled={!this.state.isFollowButtonClickable}
->>>>>>> test
                         type="submit"
                     >
                         追蹤
@@ -248,8 +214,4 @@ export default class ActiveBystanderForm extends React.Component {
             </div>
         );
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> test

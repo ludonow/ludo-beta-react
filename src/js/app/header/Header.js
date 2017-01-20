@@ -1,9 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-<<<<<<< HEAD
-import { Link } from 'react-router';
-=======
 import { browserHistory, Link } from 'react-router';
->>>>>>> test
 
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFilter from './HeaderFilter';
@@ -29,18 +25,12 @@ export default class Header extends Component {
 
     handleFilterClick() {
         this.props.getFilteredLudoList();
-<<<<<<< HEAD
-=======
         browserHistory.push('/playground');
->>>>>>> test
     }
 
     handleTemplateFilterClick() {
         this.props.getFilteredLudoList('stage=0');
-<<<<<<< HEAD
-=======
         browserHistory.push('/playground');
->>>>>>> test
     }
 
     render() {
@@ -83,11 +73,7 @@ export default class Header extends Component {
                 </div>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
-<<<<<<< HEAD
-                    <input type="checkbox"/>
-=======
                     <input className="fab-menu-checkbox" type="checkbox"/>
->>>>>>> test
                     <div className="menu-box">
                         <div className="menu-circle"></div>
                         <ul className="menu-items">
@@ -96,15 +82,6 @@ export default class Header extends Component {
                             <li><Link to="/profile">Profile</Link></li>
                             <li><Link to="/create">Create</Link></li>
                             <li><Link to="/friend">Friends</Link></li>
-<<<<<<< HEAD
-                            {/*If statement of Login/logout is needed*/}
-                            <li>
-                            <a
-                                href="http://api.ludonow.com/logout"
-                            >
-                                Logout
-                            </a>
-=======
                             {/* TODO: RWD for fab-menu in log in page */}
                             <li>
                                 {
@@ -115,7 +92,6 @@ export default class Header extends Component {
                                     :
                                         <Link to="/login">Log In</Link>
                                 }
->>>>>>> test
                             </li>
                         </ul>
                     </div>
