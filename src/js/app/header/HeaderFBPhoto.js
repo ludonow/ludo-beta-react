@@ -63,7 +63,11 @@ export default class HeaderFBPhoto extends Component {
                 onMouseOver={this.handleTooltipShow}
             >
                 {
+<<<<<<< HEAD
                     userBasicData.photo ? 
+=======
+                    userBasicData.photo ?
+>>>>>>> test
                         <img
                             className="facebook-avatar"
                             src={userBasicData.photo}
@@ -78,7 +82,11 @@ export default class HeaderFBPhoto extends Component {
                 >
                     <Menu>
                         <MenuItem
+<<<<<<< HEAD
                             href="http://api.ludonow.com/logout"
+=======
+                            href="https://api.ludonow.com/logout"
+>>>>>>> test
                             innerDivStyle={style}
                             linkButton
                             onTouchTap={this.handleLogOut}
@@ -89,4 +97,8 @@ export default class HeaderFBPhoto extends Component {
             </div>
         );
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> test

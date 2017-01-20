@@ -57,7 +57,6 @@ export default class LogIn extends React.Component {
                 this.setState({
                     errorMessageFromServer: response.data.message[0]
                 });
-                console.error('Login handleLogIn response', response);
             }
         })
         .catch((error) => {
@@ -110,13 +109,13 @@ export default class LogIn extends React.Component {
                     </div>
                     <a
                         className="forget-password"
-                        href="http://api.ludonow.com/users/password/new"
+                        href="https://api.ludonow.com/users/password/new"
                     >
                         忘記密碼
                     </a>
                 </Formsy.Form>
                 <div className="login-bottom-container">
-                    <a href="http://api.ludonow.com/auth/facebook">
+                    <a href="https://api.ludonow.com/auth/facebook">
                         <img
                             className="fb-login-icon"
                             src={facebookIcon}

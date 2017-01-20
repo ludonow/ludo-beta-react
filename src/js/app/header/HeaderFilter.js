@@ -35,18 +35,31 @@ export default class HeaderFilter extends React.Component {
             /* components/_header-logo.scss */
             <div
                 className="header-filter"
+<<<<<<< HEAD
                 style={style}
             >
                 <RaisedButton 
+=======
+            >
+                <RaisedButton
+>>>>>>> test
                     label="全部"
                     onTouchTap={this.handleFilterClick}
                 />
                 &nbsp;
+<<<<<<< HEAD
                 <RaisedButton 
+=======
+                <RaisedButton
+>>>>>>> test
                     label="模板"
                     onTouchTap={this.handleTemplateFilterClick}
                 />
             </div>
         );
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> test

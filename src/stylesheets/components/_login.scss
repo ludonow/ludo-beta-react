@@ -9,16 +9,6 @@
     font-size: 20px;
 }
 
-@media (max-width: 559px) and (min-width: 320px) {
-    .login-container {
-        width: auto;
-        margin: 0 -30px;
-    }
-    .login-container .login-top-container input {
-        width: auto;
-    }
-}
-
 .login-container {
     @extend %flex;
     flex-direction: column;
@@ -145,5 +135,15 @@
                 height: 50px;
                 margin: 0 8px;
             }
+    }
+}
+
+@media (max-width: 559px) and (min-width: 320px) {
+    .login-container {
+        width: auto;
+        margin: 0 -30px;
+    }
+    .login-container .login-top-container input {
+        width: auto;
     }
 }

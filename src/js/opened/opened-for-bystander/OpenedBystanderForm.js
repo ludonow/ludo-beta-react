@@ -2,7 +2,6 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import axios from '../../axios-config';
 import RcSlider from 'rc-slider';
-import NotificationSystem from 'react-notification-system';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';
@@ -28,21 +27,7 @@ export default class OpenedBystanderForm extends React.Component {
         };
         this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this._addNotification = this._addNotification.bind(this);
-        // this._notificationSystem = null;
     }
-
-    // _addNotification(event) {
-    //     event.preventDefault();
-    //     this._notificationSystem()._addNotification({
-    //         message: 'Notification message',
-    //         level: 'success'
-    //     });
-    // }
-
-    // componentDidMount() {
-        // this._notificationSystem = this.refs.notificationSystem;
-    // }
 
     componentWillReceiveProps(nextProps) {
         const { router_currentFormValue } = nextProps;
@@ -87,7 +72,7 @@ export default class OpenedBystanderForm extends React.Component {
             };
             axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
             .then(response => {
-                if(response.data.status == '200') {
+                if (response.data.status === '200') {
                     this.setState({
                         isJoinButtonClickable: false
                     });
@@ -96,10 +81,10 @@ export default class OpenedBystanderForm extends React.Component {
                     handleShouldProfileUpdate(true);
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push(`/ludo-edit/${ludo_id}`);
-                } else if(response.data.message == 'Your heart is out.') {
-                    window.alert('你的愛心數用完囉！');
+                } else if (response.data.message === 'Your fuel is out.') {
+                    window.alert('你的燃料用完囉！');
                     this.setState({
-                        isJoinButtonClickable: false
+                        isJoinButtonClickable: true
                     });
                 } else {
                     window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
@@ -133,7 +118,7 @@ export default class OpenedBystanderForm extends React.Component {
         const dayPickerButtons = [];
         for (let i = 1; i <= maxDuration; i++) {
             if (i <= duration) {
-                if(i == 7) {
+                if (i == 7) {
                     dayPickerButtons.push(
                         <input
                             /* components/_ludo-detail-information.scss */
@@ -142,7 +127,7 @@ export default class OpenedBystanderForm extends React.Component {
                             key={`button-${i}`}
                             type="button"
                             value={i}
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
@@ -156,7 +141,7 @@ export default class OpenedBystanderForm extends React.Component {
                     );
                 }
             } else {
-                if(i == 7) {
+                if (i == 7) {
                     dayPickerButtons.push(
                         <input
                             className="ludo-detail-information-day-picker__button"
@@ -164,7 +149,7 @@ export default class OpenedBystanderForm extends React.Component {
                             key={`button-${i}`}
                             type="button"
                             value={i}
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
@@ -229,7 +214,7 @@ export default class OpenedBystanderForm extends React.Component {
                             {dayPickerButtons}
                         </div>
                         <div className="ludo-detail-information-slider--duration">
-                            <RcSlider 
+                            <RcSlider
                                 disabled
                                 max={maxDuration}
                                 value={duration}
@@ -260,9 +245,9 @@ export default class OpenedBystanderForm extends React.Component {
                             </div>
                         </div>
                         {/* components/_submit-button.scss */}
-                        <button 
-                            className="ludo-detail-information-submit-button" 
-                            type="submit" 
+                        <button
+                            className="ludo-detail-information-submit-button"
+                            type="submit"
                             disabled={!isJoinButtonClickable || !this.props.isLoggedIn}
                         >
                             加入

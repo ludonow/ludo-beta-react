@@ -61,7 +61,7 @@ export default class ActiveBystanderForm extends React.Component {
             } else {
                 durationTimeMarks[i] = i;
             }
-            
+
         }
         this.setState({
             timeLineMarks: durationTimeMarks
@@ -84,6 +84,7 @@ export default class ActiveBystanderForm extends React.Component {
         this.setState({
             isFollowButtonClickable: false
         });
+<<<<<<< HEAD
         // TODO: add follow others' ludo feature 
         // const isSureToFollow = window.confirm(`Are you sure to follow?`);
         // const { currentFormValue, params } = this.props;
@@ -106,6 +107,26 @@ export default class ActiveBystanderForm extends React.Component {
         //     console.log('follow error', error);
         //     console.log('follow error message from server: ', response.data.message);
         // });
+=======
+        const { ludo_id } = this.props.params;
+        const body = {
+            'type': 'follow',
+            'isFollow': false
+        };
+        // TODO: add follow others' ludo feature 
+        axios.put(`/apis/ludo/${ludo_id}`, body)
+        .then((response) => {
+            if (response.data.status === '200') {
+                // TODO: Confirm following Ludo
+                console.log('response', response);
+            } else {
+                console.error('follow else response from server: ', response);
+            }
+        })
+        .catch((error) => {
+            console.error('follow error', error);
+        });
+>>>>>>> test
     }
 
     render() {
@@ -147,7 +168,11 @@ export default class ActiveBystanderForm extends React.Component {
                                     彈珠數:<span className="text-label--marble-number">{marbles}</span>
                                 </div>
                                 <div className="ludo-detail-information-slider--marbles">
-                                    <RcSlider max={maxMarbles} value={marbles} disabled={true} />
+                                    <RcSlider 
+                                        disabled
+                                        max={maxMarbles}
+                                        value={marbles}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -168,7 +193,10 @@ export default class ActiveBystanderForm extends React.Component {
                                                 tags.length ?
                                                 tags.map((tagString, index) => {
                                                     return (
-                                                        <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                        <span
+                                                            className="react-tagsinput-tag"
+                                                            key={`tag-${index}`}
+                                                        >
                                                             {tagString}
                                                         </span>
                                                     );
@@ -186,8 +214,14 @@ export default class ActiveBystanderForm extends React.Component {
                             <div className="report-time-line-container">
                                 <div className="report-time-line">
                                 <RcSlider
+<<<<<<< HEAD
                                     className="time-line" 
                                     disabled vertical dots included={false}
+=======
+                                    className="time-line"
+                                    disabled vertical dots
+                                    included={false}
+>>>>>>> test
                                     marks={timeLineMarks}
                                     max={duration}
                                     min={1}
@@ -201,7 +235,11 @@ export default class ActiveBystanderForm extends React.Component {
                     {/* components/_submit-button.scss */}
                     <button
                         className="ludo-detail-information-submit-button"
+<<<<<<< HEAD
                         disabled
+=======
+                        disabled={!this.state.isFollowButtonClickable}
+>>>>>>> test
                         type="submit"
                     >
                         追蹤
@@ -210,4 +248,8 @@ export default class ActiveBystanderForm extends React.Component {
             </div>
         );
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> test

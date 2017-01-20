@@ -1,6 +1,6 @@
 // padding
 $card_padding: 15px;
-$grid-item_padding: 7px; // $grid-item_padding: 10px;
+$grid-item_padding: 7px;
 // dimension
 $grid-item_width: 200px;
 $grid-item_total-width: $grid-item_width + 2*13px;
@@ -12,7 +12,7 @@ $grid-item--friend_width: 170px;
 $card_border-color: hsla(0, 0%, 0%, 0.5);
 $green_opened: #009944;
 $red_active: #e60012;
-$lifestyle-color: rgba(83, 206, 244, 1);  // #53cef4;
+$lifestyle-color: rgba(83, 206, 244, 1);
 $read-color: #535cf9;
 $exercise-color: #81ea9f;
 $study-color: #ff6d55;
@@ -84,19 +84,17 @@ $new_skill-text-color: #fdcaad;
     @extend %as_wide_as_parent;
     font-weight: 600;
     word-wrap: break-word;
-    //backface-visibility: hidden;
-    // transform: rotateY(180deg);
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
     transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;/* Chrome, Safari, Opera */
-    -moz-transform-style:preserve-3d;
-    -o-transform-style:preserve-3d;
+    -webkit-transform-style: preserve-3d; /* Chrome, Safari, Opera */
+    -moz-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
 
     perspective: 1000px;
     -webkit-perspective: 1000px; /* Chrome, Safari, Opera */
-    -moz-perspective:1000px;
-    -o-perspective:1000px;
+    -moz-perspective: 1000px;
+    -o-perspective: 1000px;
     overflow: hidden;
     .card-top__stage {
         align-self: flex-end;
@@ -108,7 +106,6 @@ $new_skill-text-color: #fdcaad;
         position: absolute;
         top: 0;
         right: 0;
-      //  box-shadow: 0 0 0 5px rgba(0,0,0,0.8);
     }
 
     .card-top__stage--0 {
@@ -188,7 +185,6 @@ $new_skill-text-color: #fdcaad;
 }
 
 .card-back {
-    //  @extend %absolute;
     left: 10px;
     top: 7px;
     width: 200px;
@@ -218,7 +214,6 @@ $new_skill-text-color: #fdcaad;
           align-items: center;
           justify-content: center;
           height: 50px;
-          //    margin-top: 20px;
           margin-bottom: 20px;
           padding-top: 40px;
           padding-right: 30px;
@@ -228,7 +223,6 @@ $new_skill-text-color: #fdcaad;
 
       .card-hashtags {
           @extend %relative;
-          //min-height: 144px;
           padding-right: 20px;
           padding-left: 20px;
           margin-bottom:20px;
@@ -246,13 +240,8 @@ $new_skill-text-color: #fdcaad;
           //     -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
           // } */
       }
-
-
-
     }
     .card-button_circle {
-        // @extend %relative;
-        // z-index:99;
         @include circle(40px, #fff);
         line-height: 40px;
         display: inline-block;
@@ -295,14 +284,21 @@ $new_skill-text-color: #fdcaad;
             height: 30px;
             padding-left: 10px;
         } */
+
 /* card flip animation */
 .card-flip {
-    //backface-visibility: hidden;
     transform: rotateY(180deg);
     -ms-transform: rotateY(180deg); /* IE 9 */
     -webkit-transform: rotateY(180deg); /* Chrome, Safari, Opera */
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
+}
+.card-flip .card-views{
+  opacity: 0;
+}
+.card-flip .card-front-info{
+  opacity: 0;
+
 }
 
 .card-flip .card-back {
@@ -327,28 +323,23 @@ $new_skill-text-color: #fdcaad;
 }
 .card-flip .card-front-info{
   opacity: 0;
-
+  visibility: hidden;
 }
-
 
 /* card background color by different category */
 .lifestyle {
-  //  color: white;
     background-color: $lifestyle-color;
 }
 
 .read {
-  //  color: white;
     background-color: $read-color;
 }
 
 .exercise {
-  //  color: white;
     background-color: $exercise-color;
 }
 
 .study {
-  //  color: white;
     background-color: $study-color;
 }
 
@@ -358,7 +349,6 @@ $new_skill-text-color: #fdcaad;
 }
 
 .unmentionables {
-  //  color: white;
     background-color: $unmentionables-color;
 }
 
