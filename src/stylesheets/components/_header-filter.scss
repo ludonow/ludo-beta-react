@@ -1,4 +1,5 @@
 .header-filter {
+    visibility: hidden;
     @extend %relative;
     left:25%;
     align-self: center;

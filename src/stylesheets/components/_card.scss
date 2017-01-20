@@ -109,7 +109,7 @@ $new_skill-text-color: #fdcaad;
     }
 
     .card-top__stage--0 {
-        border-color: transparent blue transparent transparent;
+        border-color: transparent transparent transparent transparent;
     }
     .card-top__stage--1 {
         border-color: transparent $green_opened transparent transparent;
@@ -327,6 +327,7 @@ $new_skill-text-color: #fdcaad;
 
 .read {
     background-color: $read-color;
+    color:white;
 }
 
 .exercise {
@@ -335,6 +336,7 @@ $new_skill-text-color: #fdcaad;
 
 .study {
     background-color: $study-color;
+    color:white;
 }
 
 .new_skill {
@@ -343,6 +345,7 @@ $new_skill-text-color: #fdcaad;
 
 .unmentionables {
     background-color: $unmentionables-color;
+    color:white;
 }
 
 .others {
