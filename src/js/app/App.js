@@ -451,6 +451,7 @@ export default class App extends React.Component {
                 />
                 <Sidebar
                     currentUserId={this.state.currentUserId}
+                    getFilteredLudoList={this.getFilteredLudoList}
                     handleIsHoveringSidebar={this.handleIsHoveringSidebar}
                     isHoveringSidebar={isHoveringSidebar}
                 />
