@@ -240,7 +240,6 @@ $new_skill-text-color: #fdcaad;
           //     -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
           // } */
       }
-
     }
     .card-button_circle {
         @include circle(40px, #fff);
@@ -294,6 +293,13 @@ $new_skill-text-color: #fdcaad;
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
 }
+.card-flip .card-views{
+  opacity: 0;
+}
+.card-flip .card-front-info{
+  opacity: 0;
+
+}
 
 .card-flip .card-back {
     @include backface-visibility(visible);
@@ -338,6 +344,7 @@ $new_skill-text-color: #fdcaad;
 }
 
 .new_skill {
+  //  color: white;
     background-color: $new_skill-color;
 }
 

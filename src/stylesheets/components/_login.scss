@@ -9,7 +9,6 @@
     font-size: 20px;
 }
 
-
 .login-container {
     @extend %flex;
     flex-direction: column;
@@ -138,6 +137,7 @@
             }
     }
 }
+
 @media (max-width: 559px) and (min-width: 320px) {
     .login-container {
         width: auto;

@@ -35,6 +35,7 @@ export default class HeaderFilter extends React.Component {
             /* components/_header-logo.scss */
             <div
                 className="header-filter"
+                style={style}
             >
                 <RaisedButton
                     label="全部"

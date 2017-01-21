@@ -28,7 +28,8 @@ export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            canSubmit: false
+            canSubmit: false,
+            errorMessageFromServer: ''
         };
         this.disableButton = this.disableButton.bind(this);
         this.enableButton = this.enableButton.bind(this);
@@ -58,8 +59,9 @@ export default class SignUp extends React.Component {
                 this.props.handleShouldUserBasicDataUpdate(true);
                 browserHistory.push('/playground');
             } else {
-                console.error('SignUp handleSignUp response', response);
-                window.alert('此郵件已被使用！');
+                this.setState({
+                    errorMessageFromServer: response.data.message[0]
+                });
             }
         })
         .catch((error) => {
@@ -108,6 +110,9 @@ export default class SignUp extends React.Component {
                         validations="maxLength:10"
                         validationError="姓名大於10個字"
                     />
+                    <div className="server-error-message">
+                        {this.state.errorMessageFromServer}
+                    </div>
                     <div className="buttons">
                         <button
                             className="signup"

@@ -206,4 +206,4 @@ export default class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
     getFilteredLudoList: PropTypes.func
-  };
+};
