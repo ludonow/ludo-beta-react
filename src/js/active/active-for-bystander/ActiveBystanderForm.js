@@ -20,6 +20,7 @@ export default class ActiveBystanderForm extends React.Component {
             // category: ['others', 'lifestyle', 'read', 'exercise', 'study', 'new skill', 'unmentionalbles', 'others'],
             category: ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它'],
             isFollowButtonClickable: false,
+            isUserFollowingThisLudo: false,
             maxDuration: 14,
             maxMarbles: 50,
             timeLineMarks: {}
@@ -30,12 +31,23 @@ export default class ActiveBystanderForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { router_currentFormValue } = nextProps;
+        const { currentUserId, isLoggedIn, router_currentFormValue } = nextProps;
         if (router_currentFormValue && !this.state.isFollowButtonClickable) {
-            this.setState({
-                isFollowButtonClickable: true
-            });
             this.getTimeLineMarks(nextProps);
+            console.log('router_currentFormValue.followers', router_currentFormValue.followers);
+            for (let i = 0; i < router_currentFormValue.followers.length; i++) {
+                if (router_currentFormValue.followers[i].user_id === currentUserId) {
+                    this.setState({
+                        isUserFollowingThisLudo: true
+                    });
+                    break;
+                }
+            }
+            if (isLoggedIn) {
+                this.setState({
+                    isFollowButtonClickable: true
+                });
+            }
         }
     }
 
@@ -87,20 +99,31 @@ export default class ActiveBystanderForm extends React.Component {
         const { ludo_id } = this.props.params;
         const body = {
             'type': 'follow',
-            'isFollow': false
+            'isFollow': this.state.isUserFollowingThisLudo
         };
         // TODO: add follow others' ludo feature 
         axios.put(`/apis/ludo/${ludo_id}`, body)
         .then((response) => {
             if (response.data.status === '200') {
                 // TODO: Confirm following Ludo
-                console.log('response', response);
+                this.setState({
+                    isFollowButtonClickable: true,
+                    isUserFollowingThisLudo: !this.state.isUserFollowingThisLudo
+                });
             } else {
-                console.error('follow else response from server: ', response);
+                this.setState({
+                    isFollowButtonClickable: true
+                });
+                window.alert('追蹤Ludo時發生錯誤，請再試一次，若問題依然發生，請聯絡開發團隊');
+                console.error('ActiveBystanderForm handleSubmit else response from server: ', response);
             }
         })
         .catch((error) => {
-            console.error('follow error', error);
+            this.setState({
+                isFollowButtonClickable: true
+            });
+            window.alert('追蹤Ludo時發生錯誤，請再試一次，若問題依然發生，請聯絡開發團隊');
+            console.error('ActiveBystanderForm handleSubmit error', error);
         });
     }
 
@@ -108,6 +131,11 @@ export default class ActiveBystanderForm extends React.Component {
         const currentFormValue = this.props.router_currentFormValue;
         const { category, maxMarbles, timeLineMarks } = this.state;
         const { category_id, checkpoint, duration, introduction, marbles, tags, title } = currentFormValue;
+        let textOnSubmitButton = '';
+        this.state.isUserFollowingThisLudo ?
+            textOnSubmitButton = '取消追蹤'
+        :
+            textOnSubmitButton = '追蹤'
 
         return (
             /* components/_report-form.scss */
@@ -208,7 +236,12 @@ export default class ActiveBystanderForm extends React.Component {
                         disabled={!this.state.isFollowButtonClickable}
                         type="submit"
                     >
-                        追蹤
+                        {
+                            this.props.isLoggedIn ?
+                                textOnSubmitButton
+                            :
+                                '登入後即可追蹤'
+                        }
                     </button>
                 </form>
             </div>
