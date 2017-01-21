@@ -60,6 +60,7 @@ export default class LogIn extends React.Component {
             }
         })
         .catch((error) => {
+            window.alert('登入時發生錯誤，請再試一次，若問題依舊發生，請聯絡開發人員！');
             console.error('Login handleLogIn error', error);
         });
     }
@@ -81,13 +82,15 @@ export default class LogIn extends React.Component {
                         name="email"
                         placeholder="輸入Email"
                         required
+                        type="text"
                         validations="isEmail"
                     />
-                    <PasswordField
+                    <FormsyHOCInput
                         className="password"
                         name="password"
                         placeholder="輸入密碼"
                         required
+                        type="password"
                         validations="isPassword"
                     />
                     <div className="server-error-message">

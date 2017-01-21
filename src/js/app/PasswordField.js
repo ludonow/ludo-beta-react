@@ -9,6 +9,7 @@ class PasswordField extends React.Component {
     }
 
     handleChange(value) {
+        console.log('value', value);
         this.props.setValue(value);
     }
 
@@ -26,9 +27,9 @@ class PasswordField extends React.Component {
                     infoBar={false}
                     minLength={4}
                     onChange={this.handleChange}
-                    placeholder={this.props.placeholder}
+                    placeholder={this.props.placeholder || ''}
                     unMaskTime={500}
-                    value={this.props.getValue()}
+                    value={this.props.getValue() || ''}
                 />
                 <div className="error-message">{errorMessage}</div>
             </div>

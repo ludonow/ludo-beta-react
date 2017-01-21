@@ -24,7 +24,7 @@ class FormsyHOCInput extends React.Component {
                 <input
                     onChange={this.changeValue}
                     placeholder={this.props.placeholder || ''}
-                    type="text"
+                    type={this.props.type || ''}
                     value={this.props.getValue() || ''}
                 />
                 <div className="error-message">{errorMessage}</div>

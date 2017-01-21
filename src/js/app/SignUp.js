@@ -54,7 +54,6 @@ export default class SignUp extends React.Component {
         signUpData.password = md5(signUpData.password);
         axios.post('/signup', signUpData)
         .then((response) => {
-            console.log('response', response);
             if (response.data.status === '200') {
                 this.props.handleShouldUserBasicDataUpdate(true);
                 browserHistory.push('/playground');
@@ -65,6 +64,7 @@ export default class SignUp extends React.Component {
             }
         })
         .catch((error) => {
+            window.alert('註冊時發生錯誤，請再試一次，若問題依舊發生，請聯絡開發人員！');
             console.error('SignUp handleSignUp error', error);
         });
     }
@@ -89,17 +89,19 @@ export default class SignUp extends React.Component {
                         validations="isEmail"
                         validationError="這不是有效的Email"
                     />
-                    <PasswordField
+                    <FormsyHOCInput
                         name="password"
                         placeholder="輸入密碼"
                         required
+                        type="password"
                         validations="isPassword"
                         validationError={validators.password.message}
                     />
-                    <PasswordField
+                    <FormsyHOCInput
                         name="repeated_password"
                         placeholder="再次輸入密碼"
                         required
+                        type="password"
                         validations="equalsField:password"
                         validationError="與之前輸入密碼不同"
                     />
