@@ -110,7 +110,9 @@ const ludoEditRedirect = (nextState, replace, callback) => {
 };
 
 function GATracking() {
-    ReactGA.pageview(window.location.hash);
+    // ReactGA.pageview(window.location.hash);
+    ReactGA.set({ page: window.location.pathname });
+    ReactGA.pageview(window.location.pathname);
 }
 
 /* TODO: find out usage of getComponent callback */
