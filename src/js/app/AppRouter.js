@@ -16,6 +16,8 @@ import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 import SignUp from './SignUp';
 import Template from '../create/Template';
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-84701861-1'); //Unique Google Analytics tracking number
 
 /*
     auth        statement：
@@ -107,12 +109,15 @@ const ludoEditRedirect = (nextState, replace, callback) => {
     });
 };
 
+function GATracking() {
+    ReactGA.pageview(window.location.hash);
+}
 
 /* TODO: find out usage of getComponent callback */
 export default class AppRouter extends React.Component {
     render() {
         return (
-            <Router history={browserHistory}>
+            <Router history={browserHistory} onUpdate={GATracking}>
                 <Route path="/" component={App}>
                     <IndexRedirect to="playground"></IndexRedirect>
                     <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
