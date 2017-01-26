@@ -21,6 +21,8 @@
     @extend .header-log-in;
 }
     .facebook-avatar {
+        width:50px;
+        height:50px;
         @extend .profile-icon;
         @extend %round_border;
     }
