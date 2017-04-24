@@ -34,7 +34,6 @@ export default class ActiveBystanderForm extends React.Component {
         const { currentUserId, isLoggedIn, router_currentFormValue } = nextProps;
         if (router_currentFormValue && !this.state.isFollowButtonClickable) {
             this.getTimeLineMarks(nextProps);
-            console.log('router_currentFormValue.followers', router_currentFormValue.followers);
             for (let i = 0; i < router_currentFormValue.followers.length; i++) {
                 if (router_currentFormValue.followers[i].user_id === currentUserId) {
                     this.setState({
@@ -101,7 +100,7 @@ export default class ActiveBystanderForm extends React.Component {
             'type': 'follow',
             'isFollow': this.state.isUserFollowingThisLudo
         };
-        // TODO: add follow others' ludo feature 
+        // TODO: add follow others' ludo feature
         axios.put(`/apis/ludo/${ludo_id}`, body)
         .then((response) => {
             if (response.data.status === '200') {
@@ -171,7 +170,7 @@ export default class ActiveBystanderForm extends React.Component {
                                     彈珠數:<span className="text-label--marble-number">{marbles}</span>
                                 </div>
                                 <div className="ludo-detail-information-slider--marbles">
-                                    <RcSlider 
+                                    <RcSlider
                                         disabled
                                         max={maxMarbles}
                                         value={marbles}
