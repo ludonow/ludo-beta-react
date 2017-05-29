@@ -4,10 +4,8 @@ import { browserHistory, Link } from 'react-router';
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFilter from './HeaderFilter';
 import HeaderFuel from './HeaderFuel';
-// import HeaderLevel from './HeaderLevel';  // unused
 import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
-import HeaderMarbles from './HeaderMarbles';
 import HeaderRate from './HeaderRate';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
@@ -58,7 +56,6 @@ export default class Header extends Component {
                     }
                 </div>
                 <div className="header-right">
-                    <HeaderMarbles marbles={marbles}/>
                     <HeaderFuel heart={heart} />
                         {
                             isOpeningProfilePage ?
@@ -85,7 +82,7 @@ export default class Header extends Component {
                             {/* TODO: RWD for fab-menu in log in page */}
                             <li>
                                 {
-                                    this.props.isLoggedIn ? 
+                                    this.props.isLoggedIn ?
                                         <a href="http://api.ludonow.com/logout">
                                             Log Out
                                         </a>

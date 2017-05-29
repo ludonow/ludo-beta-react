@@ -17,6 +17,8 @@ import othersIcon from '../../../images/category_icon/others.svg';
 
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
+import introductionIcon from '../../../images/active/introduction-icon.png';
+import tagIcon from '../../../images/active/tag-icon.png';
 import uploadIcon from '../../../images/active/upload-icon.png';
 
 export default class ActivePlayerForm extends React.Component {
@@ -39,15 +41,12 @@ export default class ActivePlayerForm extends React.Component {
             uploadImageIndex: 0
         };
         this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
-        this.handleDayPickerClass = this.handleDayPickerClass.bind(this);
         this.handleImageDrop = this.handleImageDrop.bind(this);
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTagsChange = this.handleTagsChange.bind(this);
-        // this.moveNext = this.moveNext.bind(this);
-        // this.movePrev = this.movePrev.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -67,23 +66,11 @@ export default class ActivePlayerForm extends React.Component {
     getTimeLineMarks(nextProps) {
         const { state } = this;
         const currentFormValue = nextProps.router_currentFormValue;
-        const { checkpoint, duration } = currentFormValue;
+        const { duration } = currentFormValue;
 
         const { timeLineMarks } = state;
         const durationTimeMarks = {};
-        for (let i = 1; i <= duration; i++) {
-            if (checkpoint.indexOf(i) != -1) {
-                durationTimeMarks[i] = {
-                    style: {
-                        color: 'white'
-                    },
-                    label: i
-                };
-            } else {
-                durationTimeMarks[i] = i;
-            }
-            
-        }
+        durationTimeMarks[duration] = duration;
         this.setState({
             timeLineMarks: durationTimeMarks
         });
@@ -93,16 +80,6 @@ export default class ActivePlayerForm extends React.Component {
         this.setState({
             isImageLightBoxOpen: false
         });
-    }
-
-    handleDayPickerClass(value) {
-        const { checkpoint } = this.props.currentFormValue;
-        const index = checkpoint.indexOf(value);
-        if (index != -1) {
-            return ' ludo-detail-information-day-picker__button--checkpoint';
-        } else {
-            return ' ludo-detail-information-day-picker__button--duration';
-        }
     }
 
     handleImageDrop(files) {
@@ -231,29 +208,11 @@ export default class ActivePlayerForm extends React.Component {
         });
     }
 
-    // moveNext() {
-    //     const { state } = this;
-    //     this.setState(
-    //         Object.assign(state, {
-    //             uploadImageIndex: (state.uploadImageIndex + 1) % state.files.length
-    //         })
-    //     );
-    // }
-
-    // movePrev() {
-    //     const { state } = this;
-    //     this.setState(
-    //         Object.assign(state, {
-    //             uploadImageIndex: (state.uploadImageIndex + state.files.length - 1) % state.files.length
-    //         })
-    //     );
-    // }
-
     render() {
         const currentFormValue = this.props.router_currentFormValue;
-        const { ludoDetailInformation, category, files, 
-            isImageLightBoxOpen, isImageUploaded, isReportButtonClickable, isReportTextBlank, 
-            maxDuration, maxMarbles, reportText, timeLineMarks, uploadImageIndex 
+        const { ludoDetailInformation, category, files,
+            isImageLightBoxOpen, isImageUploaded, isReportButtonClickable, isReportTextBlank,
+            maxDuration, maxMarbles, reportText, timeLineMarks, uploadImageIndex
         } = this.state;
         const { category_id, checkpoint, duration, introduction, marbles, tags, title } = currentFormValue;
         const dayPickerButtons = [];
@@ -288,136 +247,116 @@ export default class ActivePlayerForm extends React.Component {
                             {/* components/_marbles.scss */}
                             <div className="label-and-slider">
                                 <div className="text-label">
-                                    彈珠數:<span className="text-label--marble-number">{marbles}</span>
+                                    遊戲天數:
                                 </div>
-                                <div className="ludo-detail-information-slider--marbles">
+                                <div className="horizotal-slider duration">
                                     <RcSlider
                                         disabled
-                                        max={maxMarbles}
-                                        value={marbles}
+                                        marks={timeLineMarks}
+                                        max={duration}
+                                        value={duration}
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* components/_report-form.scss */}
-                    <div className="report-form-bottom-container report-form-bottom-container--player">
-                        <div className="introduction-and-duration">
+                    <div className="report-form-bottom-container--player">
+                        <div className="introduction-and-tags--player">
                             <div className="label-and-introduction--player">
-                                <div className="text-label">介紹:</div>
-                                <div className="introduction-and-tags--player">
-                                    <div className="introduction">
-                                        {introduction}
-                                    </div>
-                                    {/* components/_tags.scss */}
-                                    <div className="text-field--hashtag">
-                                        <div className="react-tagsinput">
-                                            <span className="react-tagsinput-span">
-                                                {
-                                                    tags.length ?
-                                                        tags.map((tagString, index) => {
-                                                            return (
-                                                                <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                                    {tagString}
-                                                                </span>
-                                                            );
-                                                        })
-                                                    : null
-                                                }
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div className="image-label"><img src={introductionIcon} /></div>
+                                <div className="introduction--player">
+                                    {introduction}
                                 </div>
-                            </div>
-                            <div className="time-line-container--player">
-                                <div className="text-label">持續期間:</div>
-                                <div className="report-time-line-container">
-                                    <div className="report-time-line">
-                                    <RcSlider
-                                        className="time-line"
-                                        disabled vertical dots included={false}
-                                        marks={timeLineMarks}
-                                        max={duration}
-                                        min={1}
-                                        range={checkpoint.length}
-                                        value={checkpoint}
-                                    />
+                                {/* components/_tags.scss */}
+                                <div className="ludo-tags">
+                                    <div className="tag-icon">
+                                        <img src={tagIcon} />
                                     </div>
+                                    {
+                                        tags.length ?
+                                            tags.map((tagString, index) => {
+                                                return (
+                                                    <span className="ludo-tag" key={`ludo-tag-${index}`}>
+                                                        {tagString}
+                                                    </span>
+                                                );
+                                            })
+                                        : null
+                                    }
                                 </div>
                             </div>
                         </div>
-                            <div className="upload-container">
-                                <div className="upload-picture-button-container">
-                                    <DropZone 
-                                        accept={"image/*"}
-                                        className="upload-picture-button"
-                                        maxSize={2000000}
-                                        onClick={this.handleImageDrop}
-                                        onDrop={this.handleImageDrop}
-                                    >
-                                        <img className="upload-picture-button__icon" src={uploadIcon}/>
-                                    </DropZone>
-                                </div>
-                                <div className="upload-content-and-tags">
-                                    <textarea 
-                                        className="upload-text-container"
-                                        maxLength="140"
-                                        onChange={this.handleReportTextChange}
-                                        // placeholder="Report here"
-                                        placeholder="輸入要回報的內容，140字為限"
-                                        rows="6"
-                                        value={isReportTextBlank ? '' : this.state.reportText}
-                                    />
-                                    {
-                                        isImageUploaded ?
-                                            <div className="upload-preview">
-                                                <div className="upload-preview__image-container">
-                                                    <img
-                                                        className="upload-preview__image"
-                                                        onClick={this.handleImageEnlarge}
-                                                        src={files[uploadImageIndex].preview}
-                                                    />
-                                                    <div className="upload-preview-instruction-container">
-                                                        <button 
-                                                            className="upload-preview-instruction__remove"
-                                                            onClick={this.handleImageRemove} 
-                                                            value="0"
-                                                        >
-                                                            ×
-                                                        </button>
-                                                    </div>
+                        <div className="upload-container">
+                            <div className="upload-content-and-tags">
+                                <textarea
+                                    className="upload-text-container"
+                                    maxLength="140"
+                                    onChange={this.handleReportTextChange}
+                                    // placeholder="Report here"
+                                    placeholder="分享你養成習慣的心得以及圖片吧！"
+                                    rows="6"
+                                    value={isReportTextBlank ? '' : this.state.reportText}
+                                />
+                                {
+                                    isImageUploaded ?
+                                        <div className="upload-preview">
+                                            <div className="upload-preview__image-container">
+                                                <img
+                                                    className="upload-preview__image"
+                                                    onClick={this.handleImageEnlarge}
+                                                    src={files[uploadImageIndex].preview}
+                                                />
+                                                <div className="upload-preview-instruction-container">
+                                                    <button
+                                                        className="upload-preview-instruction__remove"
+                                                        onClick={this.handleImageRemove}
+                                                        value="0"
+                                                    >
+                                                        ×
+                                                    </button>
                                                 </div>
                                             </div>
-                                        : null
-                                    }
-                                    <div className="upload-report-tags-container">
-                                        <TagsInput
-                                            inputProps={{maxLength: 30, placeholder:"標籤"}}
-                                            onChange={this.handleTagsChange}
-                                            value={this.state.reportTags} 
-                                        />
-                                    </div>
-                                </div>
+                                        </div>
+                                    : null
+                                }
+                                {/*<div className="upload-report-tags-container">
+                                    <TagsInput
+                                        inputProps={{maxLength: 30, placeholder:"標籤"}}
+                                        onChange={this.handleTagsChange}
+                                        value={this.state.reportTags}
+                                    />
+                            </div>*/}
                             </div>
+                            <div className="upload-picture-button-container">
+                                <DropZone
+                                    accept={"image/*"}
+                                    className="upload-picture-button"
+                                    maxSize={2000000}
+                                    onClick={this.handleImageDrop}
+                                    onDrop={this.handleImageDrop}
+                                >
+                                    <img className="upload-picture-button__icon" src={uploadIcon}/>
+                                </DropZone>
+                            </div>
+                        </div>
                     </div>
                     {/* components/_submit-button.scss */}
-                    <button
-                        className="report-submit-button report-submit-button--report"
-                        disabled={isReportTextBlank && !isImageUploaded || !isReportButtonClickable}
-                        type="submit"
-                    >
-                        回報
-                    </button>
+                    <div className="submit-button-container">
+                        <button
+                            className="report-submit-button report-submit-button--report"
+                            disabled={isReportTextBlank && !isImageUploaded || !isReportButtonClickable}
+                            type="submit"
+                        >
+                            發佈
+                        </button>
+                    </div>
                 </form>
                 {
-                    isImageLightBoxOpen ? 
-                        <Lightbox 
+                    isImageLightBoxOpen ?
+                        <Lightbox
                             mainSrc={files[uploadImageIndex].preview}
-                            // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
-                            // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
                             onCloseRequest={this.handleCloseLightbox}
-                            // onMovePrevRequest={this.movePrev}
-                            // onMoveNextRequest={this.moveNext}
                         />
                     : null
                 }

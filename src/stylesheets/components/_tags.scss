@@ -25,8 +25,8 @@
         }
         /* Handle */
         &::-webkit-scrollbar-thumb {
-            background-color: $g_background_gray; 
-            -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5); 
+            background-color: $g_background_gray;
+            -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
         }
     }
     /* TODO: Use other method to let the span is as tall as create tags input span */
@@ -90,6 +90,27 @@ span.react-tagsinput-tag {
     outline: none;
 }
 
+
+.introduction-and-tags--player {
+    .tag-icon {
+        @extend %relative;
+        top: 10px;
+        display: inline-block;
+        height: 30px;
+        img {
+            height: 100%;
+        }
+    }
+    .ludo-tag {
+        display: inline-block;
+        margin: 5px;
+        padding: 3px 10px;
+        background-color: rgba(0,0,0,0.6);
+        color: white;
+        font-size: 14px;
+    }
+}
+
 /* overwrite css of react-tag-input */
 // div.ReactTags__tags {
 //     @extend %as_wide_as_parent;
@@ -108,7 +129,7 @@ span.react-tagsinput-tag {
 //     //     @extend %text_center;
 //     // }
 // }
-// div.ReactTags__tagInput input, 
+// div.ReactTags__tagInput input,
 // div.ReactTags__tagInput input:focus {
 //     // height: 31px;
 //     height: 14px;
