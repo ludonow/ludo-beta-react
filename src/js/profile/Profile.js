@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Masonry from 'react-masonry-component';
 
-import ProfileHistory from './ProfileHistory';
 import ProfileLudoCard from './ProfileLudoCard';
 import ProfileStatistic from './ProfileStatistic';
-// import ProfilePrize from './ProfilePrize';   (will add in the future)
+// import ProfilePrize from './ProfilePrize';   TODO: add this in the future
 
 /* LUDO TODO: make columnWidth a variable */
 const masonryOptions = {
@@ -17,7 +16,7 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeKey: [2]
+            activeKey: [1,2,3,4,5,6]
         };
         this.forceMasonryUpdate = this.forceMasonryUpdate.bind(this);
         this.handleActiveClick = this.handleActiveClick.bind(this);
@@ -68,82 +67,29 @@ export default class Profile extends Component {
                 <div className="grid-item--profile">
                     {/* components/_profile-content.scss */}
                     <div className="profile-content">
-                        <div className="profile-content-information">
-                            <div className="profile-content-information-avatar">
-                                <img
-                                    className="profile-content-information-avatar__photo"
-                                    src={userProfileData.photo}
-                                />
-                            </div>
-                            <div className="profile-content-information-tag">
-                                <div className="profile-content-information-tag__element">{userProfileData.name}</div>
-                                <div className="profile-content-information-tag__element">{'生日'}</div>
-                                <div className="profile-content-information-tag__element">{'語言'}</div>
-                                <div className="profile-content-information-tag__element">{'習慣'}</div>
-                            </div>
-                        </div>
-                        <div className="profile-content-detail">
-                            <div
-                                className="profile-content-detail__element"
-                                id="1"
-                                onClick={this.handleActiveClick}
-                            >
-                                {'等待加入'}
-                            </div>
-                            <div
-                                className="profile-content-detail__element"
-                                id="2"
-                                onClick={this.handleActiveClick}
-                            >
-                                {'正在進行'}
-                            </div>
-                            <div
-                                className="profile-content-detail__element"
-                                id="3"
-                                onClick={this.handleActiveClick}
-                            >
-                                {'之前參與'}
-                            </div>
-                            <div
-                                className="profile-content-detail__element"
-                                id="4"
-                                onClick={this.handleActiveClick}
-                            >
-                                {'統計資料'}
-                            </div>
-                            <div
-                                className="profile-content-detail__element--last"
-                                id="6"
-                                onClick={this.handleActiveClick}
-                            >
-                                {activeKey.indexOf(6) != -1 ? '關閉全部' : '顯示全部'}
-                            </div>
+                        <div className="profile-content-information-avatar">
+                            <img
+                                className="profile-content-information-avatar__photo"
+                                src={userProfileData.photo}
+                            />
                         </div>
                     </div>
-                </div>
-                {/* hidden is defined in helpers/_placeholders */}
-                <div className={`grid-item--profile${activeKey.indexOf(1) != -1 ? '' : ' hidden'}`}>
-                    <ProfileLudoCard 
+                    {/* hidden is defined in helpers/_placeholders */}
+                    <ProfileLudoCard
                         forceMasonryUpdate={this.forceMasonryUpdate}
                         profileLudoData={this.props.profileWillLudoData}
                         title="等待他人加入"
                     />
-                </div>
-                <div className={`grid-item--profile${activeKey.indexOf(2) != -1 ? '' : ' hidden'}`}>
-                    <ProfileLudoCard 
+                    <ProfileLudoCard
                         forceMasonryUpdate={this.forceMasonryUpdate}
                         profileLudoData={this.props.profileLudoingData}
                         title="正在進行中"
                     />
-                </div>
-                <div className={`grid-item--profile${activeKey.indexOf(3) != -1 ? '' : ' hidden'}`}>
-                    <ProfileHistory
-                        {...this.props}
+                    <ProfileLudoCard
                         forceMasonryUpdate={this.forceMasonryUpdate}
+                        profileLudoData={this.props.profileDidLudoData}
+                        title="之前參與過"
                     />
-                </div>
-                <div className={`grid-item--profile${activeKey.indexOf(4) != -1 ? '' : ' hidden'}`}>
-                    <ProfileStatistic {...this.props} />
                 </div>
             </Masonry>
         );

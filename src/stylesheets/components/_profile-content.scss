@@ -1,4 +1,4 @@
-/* 
+/*
 variables
     color
         $g_background_gray
@@ -13,7 +13,8 @@ variables
         align-items: center;
     }
         .profile-content-information-avatar {
-            @extend %half_width_of_parent;
+            width: 200px;
+            @extend %margin_center_x;
         }
             .profile-content-information-avatar__photo {
                 width: 90%;
