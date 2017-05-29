@@ -12,12 +12,12 @@ export default class Create extends React.Component {
         return (
             /* components/_form.scss */
             <div className="form-and-list">
-                <div className="form">
+                {/*<div className="form">*/}
                     <CreateForm {...this.props} />
-                </div>
-                <div className="form-ludo-list-container">
+                {/*</div>*/}
+                {/*<div className="form-ludo-list-container">
                     <LudoList {...this.props} />
-                </div>
+                </div>*/}
             </div>
         );
     }
