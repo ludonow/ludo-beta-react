@@ -13,6 +13,8 @@ import studyIcon from '../../images/category_icon/study.svg';
 import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
+import introductionIcon from '../../images/active/introduction-icon.png';
+import tagIcon from '../../images/active/tag-icon.png';
 
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
@@ -466,7 +468,7 @@ export default class CreateForm extends React.Component {
                             />
                         </div>
                         {/* components/_marbles.scss */}
-                        <div className="label-and-slider">
+                        {/*<div className="label-and-slider">
                             <div className="text-label">
                                 {
                                     this.state.isMarblesSelected ?
@@ -483,17 +485,34 @@ export default class CreateForm extends React.Component {
                                     onChange={this.handleMarblesChange}
                                 />
                             </div>
-                        </div>
+                        </div>*/}
                     </div>
                 </div>
                 <div className="ludo-create-information-bottom-container">
-                    <div className="text-label">
-                        {
-                            isDurationSelected ? '選擇進度回報日' : '選擇持續期間:'
-                        }
+                    <div className="image-label"><img src={introductionIcon} /></div>
+                    <div className="text-field-container text-field-container--introduction">
+                        <textarea
+                            className="text-field--introduction"
+                            // placeholder="Introduction"
+                            placeholder={`寫下你對遊戲的敘述吧！`}
+                            onChange={this.handleIntroductionChange}
+                            maxLength={maxLengthOfIntroduction}
+                        />
+                    </div>
+                    <div className="image-label">
+                        <img src={tagIcon} />
+                    </div>
+                    <div className="text-field-container text-field-container--introduction">
+                        <div className="text-field--hashtag">
+                            <TagsInput
+                                value={ludoCreateForm.tags}
+                                onChange={this.handleTagsChange}
+                                inputProps={{maxLength: 30, placeholder:"給這張遊戲卡一些標籤吧！"}}
+                            />
+                        </div>
                     </div>
                     <div className="ludo-create-information-day-picker">
-                        {dayPickerButtons}
+                        <div className="text-label">選擇遊戲的天數：</div>
                         <div className="ludo-create-information-slider--duration">
                             <RcSlider
                                 max={maxDuration} min={3}
@@ -501,23 +520,8 @@ export default class CreateForm extends React.Component {
                                 onChange={this.handleDurationValue}
                             />
                         </div>
-                    </div>
-                    <div className="text-label">介紹:</div>
-                    <div className="text-field-container text-field-container--introduction">
-                        <textarea
-                            className="text-field--introduction"
-                            // placeholder="Introduction"
-                            placeholder={`詳細的說明(中文最多140字)`}
-                            onChange={this.handleIntroductionChange}
-                            maxLength={maxLengthOfIntroduction}
-                        />
-                        <div className="text-field--hashtag">
-                            <TagsInput
-                                value={ludoCreateForm.tags}
-                                onChange={this.handleTagsChange}
-                                inputProps={{maxLength: 30, placeholder:"標籤"}}
-                            />
-                        </div>
+                        <div className="text-label">選擇約定第幾天回報：</div>
+                        {dayPickerButtons}
                     </div>
                     {/* components/_submit-button.scss */}
                     <button

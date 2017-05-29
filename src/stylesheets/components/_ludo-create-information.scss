@@ -6,14 +6,16 @@ $gray_text_in_text-field: rgba(160, 160, 160, 1);
 $orange_button: rgba(248, 182, 45, 1);
 
 .ludo-create-information-container {
-    @extend %fixed;
+    /*@extend %fixed;*/
     width: 540px;
-    height: 500px;
+    /*height: 600px;*/
     overflow-y: auto;
     @extend .card;
     padding-right: 35px;
     padding-left: 35px;
     padding-top: 30px;
+    padding-bottom: 20px;
+    margin: 10px auto;
     @extend %text_center;
 
     &::-webkit-scrollbar {
@@ -51,7 +53,7 @@ $orange_button: rgba(248, 182, 45, 1);
         padding-left: 20px;
 
         .category-icon {
-            height: 150px;
+            height: 120px;
         }
     }
 }
@@ -115,11 +117,17 @@ $orange_button: rgba(248, 182, 45, 1);
     font-size: 14px;
 
     .rc-slider {
-        margin-bottom: 16px;
+        margin-top: 25px; 
+        margin-bottom: 26px;
     }
     .text-label {
         text-align: left;
-        margin-bottom: 5px;
+        margin-bottom: 15px;
+    }
+    .image-label {
+        @extend %relative;
+        text-align: left;
+        margin-left: -5px;
     }
     .text-label--marble-number {
         margin-left: 20px;
@@ -133,7 +141,7 @@ $orange_button: rgba(248, 182, 45, 1);
         @extend .ludo-button;
         width: 50px;
         height: 30px;
-        margin: 5px;
+        margin: 0px 5px 10px 5px;
         font-size: 20px;
         color: $black_button;
         background-color: $black_button;
@@ -177,16 +185,17 @@ $orange_button: rgba(248, 182, 45, 1);
         /* overwrite textarea default css */
         textarea {
             resize: none;
-            border: none;
-            padding: 0;
+            /*border: none;*/
+            margin: 5px 0px 10px 0;
         }
         .text-field--introduction {
-            @extend %as_wide_as_parent;
+            /*@extend %as_wide_as_parent;*/
+            width: 98%;
             height: 14px*5;
-            background-color: $gray_text-field;
+            /*background-color: $gray_text-field;*/
             &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-                @extend %text_center;
-                line-height: 14px*5;
+                /*@extend %text_center;*/
+                /*line-height: 14px*5;*/
             }
         }
     }
