@@ -13,6 +13,8 @@ import studyIcon from '../../images/category_icon/study.svg';
 import newSkillIcon from '../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
 import othersIcon from '../../images/category_icon/others.svg';
+import introductionIcon from '../../images/active/introduction-icon.png';
+import tagIcon from '../../images/active/tag-icon.png';
 
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
@@ -487,7 +489,7 @@ export default class CreateForm extends React.Component {
                     </div>
                 </div>
                 <div className="ludo-create-information-bottom-container">
-                    <div className="text-label">介紹:</div>
+                    <div className="image-label"><img src={introductionIcon} /></div>
                     <div className="text-field-container text-field-container--introduction">
                         <textarea
                             className="text-field--introduction"
@@ -497,7 +499,9 @@ export default class CreateForm extends React.Component {
                             maxLength={maxLengthOfIntroduction}
                         />
                     </div>
-                    <div className="text-label">標籤:</div>
+                    <div className="image-label">
+                        <img src={tagIcon} />
+                    </div>
                     <div className="text-field-container text-field-container--introduction">
                         <div className="text-field--hashtag">
                             <TagsInput
