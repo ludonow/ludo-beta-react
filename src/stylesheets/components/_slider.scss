@@ -1,0 +1,66 @@
+.horizotal-slider {
+  width: 100%;
+}
+
+.time-line {
+    transform: rotate(180deg);
+    .rc-slider-dot {
+        width: 20px;
+        height: 20px;
+    }
+    span.rc-slider-dot {
+        border-color: $black;
+    }
+    .rc-slider-handle {
+        left: -4px;
+        width: 23px;
+        height: 23px;
+    }
+    div.rc-slider-handle {
+        border-color: $black;
+        background-color: rgb(248, 182, 45);
+    }
+    .rc-slider-mark-text {
+        color: $black;
+        transform: rotate(180deg);
+    }
+    div.rc-slider-mark {
+        left: 0;
+        top: -9px;
+        @extend %flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rc-slider-step {
+        right: 6px;
+    }
+    div.rc-slider-track {
+        background-color: $black;
+    }
+}
+.time-line.rc-slider-disabled {
+    background-color: $black;
+}
+
+.form--report .duration {
+  .rc-slider-handle {
+      width: 10px;
+      height: 10px;
+      margin-left: -5px;
+      margin-top: -3px;
+      border: none;
+  }
+  div.rc-slider-handle {
+      background-color: rgb(248, 182, 45);
+  }
+  div.rc-slider-track {
+      background-color: $black;
+  }
+  div.rc-slider-mark {
+      left: -3px;
+      top: 15px;
+      @extend %flex;
+      align-items: center;
+      justify-content: center;
+  }
+}

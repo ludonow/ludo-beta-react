@@ -47,6 +47,14 @@
     margin: 10px 0;
 }
 
+.submit-button-container {
+    @extend %relative;
+    right: 4px;
+    text-align: right;
+}
+
 .report-submit-button--report {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 10px;
+    background-color: $black;
 }
