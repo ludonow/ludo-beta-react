@@ -189,8 +189,8 @@ export default class CreateForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
-        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title != '' && ludoCreateForm.tags != '' && ludoCreateForm.introduction != '') {
+        const { isCategorySelected, isDurationSelected, ludoCreateForm } = this.state;
+        if (isCategorySelected && isDurationSelected && ludoCreateForm.title != '' && ludoCreateForm.tags != '' && ludoCreateForm.introduction != '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
@@ -225,12 +225,10 @@ export default class CreateForm extends React.Component {
                         console.error('get after create post error', error);
                     });
 
-                }
-                else if(response.data.status === '400'){
+                } else if (response.data.status === '400') {
                     window.alert('燃料或彈珠數不足: ' + response.data.message);
                     console.error('create post message from server: ', response.data.message + response.data.status);
-              }
-                else {
+                } else {
                     window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.error('create post message from server: ', response.data.message);
                 }
@@ -248,8 +246,6 @@ export default class CreateForm extends React.Component {
             window.alert(`You haven't fill in the hash tags.`);
         } else if (ludoCreateForm.introduction == '') {
             window.alert(`You haven't fill in the introduction.`);
-        } else if (!isMarblesSelected) {
-            window.alert(`You haven't select the marble number.`);
         } else if (!isDurationSelected) {
             window.alert(`You haven't select the duration.`);
         }
@@ -257,8 +253,8 @@ export default class CreateForm extends React.Component {
 
     handleTemplateCreate(event) {
         event.preventDefault();
-        const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
-        if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
+        const { isCategorySelected, isDurationSelected, ludoCreateForm } = this.state;
+        if (isCategorySelected && isDurationSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             const ludoTemplateForm = {
@@ -312,9 +308,6 @@ export default class CreateForm extends React.Component {
         } else if (ludoCreateForm.title === '') {
             // window.alert('You haven\'t fill in the title.');
             window.alert('尚未輸入標題！');
-        } else if (!isMarblesSelected) {
-            // window.alert('You haven\'t select the marble number.');
-            window.alert('尚未選擇彈珠數！');
         } else if (!isDurationSelected) {
             // window.alert('You haven\'t select the duration.');
             window.alert('尚未選擇持續天數！');
