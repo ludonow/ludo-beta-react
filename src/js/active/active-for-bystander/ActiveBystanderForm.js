@@ -65,12 +65,18 @@ export default class ActiveBystanderForm extends React.Component {
             if (checkpoint.indexOf(i) != -1) {
                 durationTimeMarks[i] = {
                     style: {
-                        color: 'white'
+                        color: 'white',
+                        width: '13px'
                     },
                     label: i
                 };
             } else {
-                durationTimeMarks[i] = i;
+                durationTimeMarks[i] = {
+                    style: {
+                        width: '13px'
+                    },
+                    label: i
+                };
             }
 
         }
@@ -214,7 +220,6 @@ export default class ActiveBystanderForm extends React.Component {
                         <div className="time-line-container">
                             <div className="text-label">持續期間:</div>
                             <div className="report-time-line-container">
-                                <div className="report-time-line">
                                 <RcSlider
                                     className="time-line"
                                     disabled vertical dots
@@ -225,7 +230,6 @@ export default class ActiveBystanderForm extends React.Component {
                                     range={checkpoint.length}
                                     value={checkpoint}
                                 />
-                                </div>
                             </div>
                         </div>
                     </div>
