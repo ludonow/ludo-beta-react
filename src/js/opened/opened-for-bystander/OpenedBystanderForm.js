@@ -193,19 +193,6 @@ export default class OpenedBystanderForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
-                            {/* components/_marbles.scss */}
-                            <div className="label-and-slider">
-                                <div className="text-label">
-                                    彈珠數:<span className="text-label--marble-number">{marbles}</span>
-                                </div>
-                                <div className="ludo-detail-information-slider--marbles">
-                                    <RcSlider
-                                        disabled
-                                        max={maxMarbles}
-                                        value={marbles}
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div className="ludo-detail-information-bottom-container">

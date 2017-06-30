@@ -155,11 +155,11 @@ export default class OpenedStarterForm extends React.Component {
                 {/* components/_ludo-detail-information.scss */}
                 <form
                     className="ludo-detail-information-container"
-                    onSubmit={this.handleSubmit} 
+                    onSubmit={this.handleSubmit}
                 >
                     <div className="ludo-detail-information-top-container">
                         <div className="category-icon-container">
-                            <img 
+                            <img
                                 className="category-icon"
                                 src={iconArray[category_id]}
                             />
@@ -176,20 +176,6 @@ export default class OpenedStarterForm extends React.Component {
                                 <span className="text-field-value">
                                     {title}
                                 </span>
-                            </div>
-                            {/* components/_marbles.scss */}
-                            <div className="label-and-slider">
-                                <div className="text-label">
-                                   {' 彈珠數:'}
-                                   <span className="text-label--marble-number">{marbles}</span>
-                                </div>
-                                <div className="ludo-detail-information-slider--marbles">
-                                    <RcSlider 
-                                        disabled
-                                        max={maxMarbles}
-                                        value={marbles}
-                                    />
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,15 +216,15 @@ export default class OpenedStarterForm extends React.Component {
                             </div>
                         </div>
                         {/* components/_submit-button.scss */}
-                        <button 
-                            className="ludo-detail-information-submit-button" 
+                        <button
+                            className="ludo-detail-information-submit-button"
                             disabled={!this.state.isDeleteButtonClickable}
-                            type="submit" 
+                            type="submit"
                         >
                             刪除
                         </button>
-                        <button 
-                            className="ludo-detail-information-submit-button" 
+                        <button
+                            className="ludo-detail-information-submit-button"
                             disabled={!this.state.isDeleteButtonClickable}
                             onClick={this.handleEdit}
                         >
