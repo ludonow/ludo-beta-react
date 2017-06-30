@@ -14,6 +14,8 @@ import SidebarSportsPlayground from './SidebarSportsPlayground';
 import SidebarReadPlayground from './SidebarReadPlayground';
 import SidebarTemplate from './SidebarTemplate';
 
+import arrowIcon from '../../../images/sidebar/arrow.png';
+
 // const sidebarInstructionTextArray = ['Playground', 'Profile', 'Create', 'Friend', 'Sports', 'Read'];
 const sidebarInstructionTextArray = ['個人資料', '遊樂園', '模板', '創建', '朋友', '閱讀'];
 
@@ -86,7 +88,7 @@ export default class Sidebar extends React.Component {
             >
                     <div className={`right-sidebar${this.props.isHoveringSidebar ? ` sidebar-flip` : ``}`}>
                         {/*UserID*/}
-                        <div 
+                        <div
                             className="right-sidebar-item color-sidebar1"
                             id="0"
                             onMouseLeave={this.handleMouseLeave}
@@ -195,9 +197,7 @@ export default class Sidebar extends React.Component {
                         </div>
                     </div>
                     <div className={`right-sidebar-arrow-container${this.props.isHoveringSidebar ? '' : ' sidebar-flip'}`}>
-                        <div className="arrow">
-                            ◄
-                        </div>
+                        <img src={arrowIcon} />
                     </div>
             </div>
         );

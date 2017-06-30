@@ -35,19 +35,9 @@ div.sidebar-flip {
     justify-content: center;
     color: white;
 
-    transform: translate(34px + 5px,0);
-    transition-duration: 0.2s;
+    transform: translate(60px + 5px,0);
+    transition-duration: 0.1s;
     transition-timing-function: ease-in-out;
-
-    .arrow {
-        @extend %as_wide_as_parent;
-        @extend %flex;
-        align-items: center;
-        justify-content: center;
-        height: 33px;
-        @extend %round_border;
-        background-color: rgba(0,0,0,0.5);
-    }
 }
 
 .right-sidebar {
