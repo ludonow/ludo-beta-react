@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import ReportDate from './ReportDate';
+
 import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -21,6 +23,10 @@ export default class ReportEditButton extends Component {
             <div>
                 {/* components/_single-report.scss */}
                 <div className="report-icon-button">
+                    <ReportDate
+                        index={index}
+                        reportList={reportList}
+                    />
                     <IconButton
                         id={`${whichList}-report-expand-more-${index}`}
                         onTouchTap={this.props.handleReportExpandMoreButtonTouchTap}
@@ -30,7 +36,7 @@ export default class ReportEditButton extends Component {
                     </IconButton>
                 </div>
                 {
-                    reportList[isEditingWhichReportIndex] ? 
+                    reportList[index] ?
                         <Popover
                             anchorEl={this.props.anchorEl}
                             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
@@ -40,7 +46,7 @@ export default class ReportEditButton extends Component {
                         >
                             <Menu>
                                 <MenuItem
-                                    id={`${whichList}-report-denounce-${isEditingWhichReportIndex}`}
+                                    id={`${whichList}-report-denounce-${index}`}
                                     innerDivStyle={style}
                                     onTouchTap={this.props.handleReportDenounce}
                                     primaryText="檢舉此回報"

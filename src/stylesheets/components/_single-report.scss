@@ -27,6 +27,14 @@
         // border: none;
         resize: none;
     }
+    .report-date {
+        @extend %as_wide_as_parent;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-left: 10px;
+        font-size: 12px;
+    }
     .report-tags-container {
         margin: 5px;
         span.report-tag {
