@@ -159,7 +159,7 @@ export default class App extends React.Component {
         }
         axios.get(api)
         .then((response) => {
-            if (response.data.status === '200') {
+            if (response.data.status == 200) {
                 this.setState({
                     currentFilterString: filterCondition,
                     ludoList: response.data.ludoList.Items

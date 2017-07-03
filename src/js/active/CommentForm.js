@@ -64,7 +64,7 @@ export default class CommentForm extends React.Component {
                     {
                         /* show user's photo */
                         this.props.currentUserId ?
-                            <img 
+                            <img
                                 className="comment__avatar"
                                 src={this.props.userBasicData.photo}
                             />
@@ -75,7 +75,7 @@ export default class CommentForm extends React.Component {
                             />
                     }
                 </div>
-                <Textarea 
+                <Textarea
                     className="comment__message"
                     minRows={2}
                     onKeyDown={this.handleCommentSubmit}

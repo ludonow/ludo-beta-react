@@ -50,7 +50,7 @@ export default class CommentBox extends React.Component {
     }
 
     render() {
-        const { shouldShowCommentListFromDatabase, tempCommentList } = this.state; 
+        const { shouldShowCommentListFromDatabase, tempCommentList } = this.state;
         return (
             /* components/_single-report.scss */
             <div className="player-report-comment-box-container">
@@ -58,15 +58,14 @@ export default class CommentBox extends React.Component {
                     getCommentListAfterEdit={this.getCommentListAfterEdit}
                     shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
                     tempCommentList={tempCommentList}
-                    {...this.props} 
+                    {...this.props}
                 />
-                <CommentForm 
+                <CommentForm
                     updateTempCommentList={this.updateTempCommentList}
                     updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                    {...this.props} 
+                    {...this.props}
                 />
             </div>
         );
     }
 };
-

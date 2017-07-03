@@ -240,8 +240,8 @@ export default class CommentList extends React.Component {
                     });
                 }
             }
-            /* 
-             * transfer the text report to the original display instead of textarea 
+            /*
+             * transfer the text report to the original display instead of textarea
              * by taking the element out of editing text array
              */
             const commentIndex = isOldOrNew + atWhatPositionInArray;
@@ -289,23 +289,23 @@ export default class CommentList extends React.Component {
                                     <div className="comment-avatar-container">
                                         {
                                             /* show random animal avatar image */
-                                            this.props.router_currentFormValue.comments_nick ?
-                                                <img
-                                                    className="comment__avatar"
-                                                    src={animalImageArray[animalIndex]}
-                                                    style={{backgroundColor: colorArray[colorIndex]}}
-                                                />
+                                            commentObject.user_id === this.props.currentUserId ?
+                                            <img
+                                                className="comment__avatar"
+                                                src={this.props.userBasicData.photo}
+                                            />
                                             :
-                                                <img
-                                                    className="comment__avatar"
-                                                    src="https://api.fnkr.net/testimg/40x40/00CED1/FFF/?text=avatar"
-                                                />
+                                            <img
+                                                className="comment__avatar"
+                                                src={animalImageArray[animalIndex]}
+                                                style={{backgroundColor: colorArray[colorIndex]}}
+                                            />
                                         }
                                     </div>
                                     <div className="comment__message">
                                         {
                                             isEditingComment && isEditingCommentIndex.indexOf(`o${index}`) != -1 ?
-                                                <Textarea 
+                                                <Textarea
                                                     className="report-content__text-edit"
                                                     defaultValue={commentObject.content}
                                                     id={`old-${index}`}
@@ -348,14 +348,14 @@ export default class CommentList extends React.Component {
                         })
                     :
                         /* show temp comments right after user create a new comment */
-                        tempCommentList.map((commentObject, index) => {
-                            if (this.props.router_currentFormValue.comments_nick) {
+                        tempCommentList && tempCommentList.map((commentObject, index) => {
+                            if (this.props.router_currentFormValue && this.props.router_currentFormValue.comments_nick) {
                                 animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
                                 colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
                             }
                             return (
                                 <div
-                                    className="single-comment-container" 
+                                    className="single-comment-container"
                                     key={`new-comment-${index}`}
                                 >
                                     <div className="comment-avatar-container">
@@ -377,7 +377,7 @@ export default class CommentList extends React.Component {
                                     <div className="comment__message">
                                         {
                                             isEditingComment && isEditingCommentIndex.indexOf(`n${index}`) != -1 ?
-                                                <Textarea 
+                                                <Textarea
                                                     className="report-content__text-edit"
                                                     defaultValue={commentObject.content}
                                                     id={`new-${index}`}
@@ -390,7 +390,7 @@ export default class CommentList extends React.Component {
                                         }
                                     </div>
                                     {
-                                        commentObject.user_id == this.props.currentUserId ? 
+                                        commentObject.user_id == this.props.currentUserId ?
                                             <CommentEditButton
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
