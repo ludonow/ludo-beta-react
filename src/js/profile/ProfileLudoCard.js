@@ -27,7 +27,6 @@ export default class ProfileLudoCard extends Component {
             this.setState({
                 filteredProfileLudoData: nextProps.profileLudoData
             });
-            console.log('setState');
         }
     }
 
