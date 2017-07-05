@@ -8,7 +8,8 @@ export default class ReportDate extends Component {
     formatDate(dateString) {
         const date = new Date(dateString);
         const formatYear = date.getFullYear();
-        const formatMonth = date.getMonth();
+        // getMonth method starts from 0, so plus 1 to be correct month
+        const formatMonth = date.getMonth() + 1;
         const formatDate = date.getDate();
         const formatHours = date.getHours();
         const formatMinutes = date.getMinutes();
