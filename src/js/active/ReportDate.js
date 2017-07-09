@@ -6,13 +6,15 @@ export default class ReportDate extends Component {
     }
 
     formatDate(dateString) {
-        const date = new Date(dateString);
-        const formatYear = date.getFullYear();
-        // getMonth method starts from 0, so plus 1 to be correct month
-        const formatMonth = date.getMonth() + 1;
-        const formatDate = date.getDate();
-        const formatHours = date.getHours();
-        const formatMinutes = date.getMinutes();
+        const dateArray = dateString.split('-');
+        const formatYear = dateArray[0];
+        const formatMonth = dateArray[1];
+        const dateAndTimeArray = dateArray[2].split(', ');
+        const formatDate = dateAndTimeArray[0];
+        const timeArray = dateAndTimeArray[1].split(':');
+        const formatHours = timeArray[0];
+        const minutesAndPeriod = timeArray[1].split(' ');
+        const formatMinutes = minutesAndPeriod[0];
         return `${formatYear}/${formatMonth}/${formatDate} ${formatHours}:${formatMinutes}`;
     }
 
