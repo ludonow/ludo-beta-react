@@ -58,6 +58,7 @@ export default class CommentBox extends React.Component {
                     getCommentListAfterEdit={this.getCommentListAfterEdit}
                     shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
                     tempCommentList={tempCommentList}
+                    updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
                     {...this.props}
                 />
                 <CommentForm
