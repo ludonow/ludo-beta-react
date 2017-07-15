@@ -288,7 +288,7 @@ export default class CommentList extends React.Component {
                                 >
                                     <div className="comment-avatar-container">
                                         {
-                                            /* show random animal avatar image */
+                                            /* show specific animal avatar image if comment user is not current user */
                                             commentObject.user_id === this.props.currentUserId ?
                                             <img
                                                 className="comment__avatar"
@@ -360,18 +360,18 @@ export default class CommentList extends React.Component {
                                 >
                                     <div className="comment-avatar-container">
                                         {
-                                            /* show random animal avatar image */
-                                            this.props.router_currentFormValue.comments_nick ?
-                                                <img
-                                                    className="comment__avatar"
-                                                    src={animalImageArray[animalIndex]}
-                                                    style={{backgroundColor: colorArray[colorIndex]}}
-                                                />
+                                            /* show specific animal avatar image if comment user is not current user */
+                                            commentObject.user_id === this.props.currentUserId ?
+                                            <img
+                                                className="comment__avatar"
+                                                src={this.props.userBasicData.photo}
+                                            />
                                             :
-                                                <img
-                                                    className="comment__avatar"
-                                                    src="https://api.fnkr.net/testimg/40x40/00CED1/FFF/?text=avatar"
-                                                />
+                                            <img
+                                                className="comment__avatar"
+                                                src={animalImageArray[animalIndex]}
+                                                style={{backgroundColor: colorArray[colorIndex]}}
+                                            />
                                         }
                                     </div>
                                     <div className="comment__message">
