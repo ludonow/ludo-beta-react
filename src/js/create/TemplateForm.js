@@ -198,7 +198,7 @@ export default class TemplateForm extends React.Component {
         const { isCategorySelected, isDurationSelected, isMarblesSelected, ludoCreateForm } = this.state;
         if (!this.props.currentUserId) {
             browserHistory.push('/login');
-        } else if (isCategorySelected && isDurationSelected && isMarblesSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
+        } else if (isCategorySelected && isDurationSelected && ludoCreateForm.title !== '' && ludoCreateForm.tags.length !== 0 && ludoCreateForm.introduction !== '') {
             let { checkpoint } = ludoCreateForm;
             checkpoint = checkpoint.sort((a, b) => { return a - b });
             axios.post('/apis/ludo', ludoCreateForm)
@@ -236,16 +236,13 @@ export default class TemplateForm extends React.Component {
                 window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.error('create post error', error);
             });
-            
+
         } else if (!isCategorySelected) {
             // window.alert('You haven\'t select the category.');
             window.alert('尚未選擇種類！');
         } else if (ludoCreateForm.title === '') {
             // window.alert('You haven\'t fill in the title.');
             window.alert('尚未輸入標題！');
-        } else if (!isMarblesSelected) {
-            // window.alert('You haven\'t select the marble number.');
-            window.alert('尚未選擇彈珠數！');
         } else if (!isDurationSelected) {
             // window.alert('You haven\'t select the duration.');
             window.alert('尚未選擇持續天數！');
@@ -347,19 +344,19 @@ export default class TemplateForm extends React.Component {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
                             }
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button${this.handleDayPickerClass(i)}`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
@@ -371,19 +368,19 @@ export default class TemplateForm extends React.Component {
                 if (i == 7) {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
                             }
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
                         <input className={`ludo-create-information-day-picker__button`} type="button" value={i} key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             disabled={
                                 (i < 3 && !isDurationSelected)
                                 || (i >= ludoCreateForm.duration && isDurationSelected)
@@ -406,7 +403,7 @@ export default class TemplateForm extends React.Component {
                     <div className="top-right-container">
                         <div className="dropdown-list-container">
                             <span className="category-label">種類:</span>
-                            <DropdownList 
+                            <DropdownList
                                 className="dropdown-list"
                                 data={category}
                                 // defaultValue={'select a category'}
@@ -426,27 +423,6 @@ export default class TemplateForm extends React.Component {
                                 value={ludoCreateForm.title}
                             />
                         </div>
-                        {/* components/_marbles.scss */}
-                        <div className="label-and-slider">
-                            <div className="text-label">
-                                {
-                                    this.state.isMarblesSelected ? 
-                                        <div>
-                                            彈珠數:
-                                            <span className="text-label--marble-number">{ludoCreateForm.marbles}</span>
-                                        </div>
-                                    : `選擇彈珠數` 
-                                }
-                            </div>
-                            <div className="ludo-create-information-slider--marbles">
-                                <RcSlider
-                                    max={maxMarbles}
-                                    min={1}
-                                    onChange={this.handleMarblesChange}
-                                    value={ludoCreateForm.marbles}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div className="ludo-create-information-bottom-container">
@@ -458,9 +434,9 @@ export default class TemplateForm extends React.Component {
                     <div className="ludo-create-information-day-picker">
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
-                            <RcSlider 
+                            <RcSlider
                                 max={maxDuration}
-                                min={3} 
+                                min={3}
                                 onChange={this.handleDurationValue}
                                 value={ludoCreateForm.duration}
                             />
@@ -469,8 +445,8 @@ export default class TemplateForm extends React.Component {
                     <div className="text-label">介紹:</div>
                     <div className="text-field-container text-field-container--introduction">
                         <textarea
-                            className="text-field--introduction" 
-                            // placeholder="Introduction" 
+                            className="text-field--introduction"
+                            // placeholder="Introduction"
                             maxLength={maxLengthOfIntroduction}
                             placeholder={`詳細的說明(中文最多140字)`}
                             onChange={this.handleIntroductionChange}
@@ -486,18 +462,18 @@ export default class TemplateForm extends React.Component {
                     </div>
                     {/* components/_submit-button.scss */}
                     <button
-                        className="ludo-template-information-submit-button" 
+                        className="ludo-template-information-submit-button"
                         disabled={!this.state.isSubmitButtonClickable}
-                        type="submit" 
+                        type="submit"
                     >
                         使用此模板
                     </button>
                     <button
-                        className="ludo-template-information-submit-button" 
-                        disabled={!this.state.isSubmitButtonClickable 
+                        className="ludo-template-information-submit-button"
+                        disabled={!this.state.isSubmitButtonClickable
                             || !this.props.currentUserId
                             || this.props.router_currentFormValue.starter_id !== this.props.currentUserId}
-                        onClick={this.handleTemplateDelete} 
+                        onClick={this.handleTemplateDelete}
                     >
                         刪除此模板
                     </button>

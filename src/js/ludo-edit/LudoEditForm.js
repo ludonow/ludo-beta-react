@@ -59,7 +59,7 @@ export default class LudoEditForm extends React.Component {
             this.setState({
                 isModifyButtonClickable: true,
                 ludoEditForm: {
-                    ...this.state.ludoEditForm, 
+                    ...this.state.ludoEditForm,
                     category_id,
                     checkpoint,
                     duration,
@@ -210,7 +210,7 @@ export default class LudoEditForm extends React.Component {
             hasUserChangeTheForm: true,
             isMarblesSelected: true,
             ludoEditForm: {
-                ...this.state.ludoEditForm, 
+                ...this.state.ludoEditForm,
                 marbles
             }
         });
@@ -319,7 +319,7 @@ export default class LudoEditForm extends React.Component {
         const { category_id, duration, introduction, marbles, tags, title } = ludoEditForm;
         const dayPickerButtons = [];
         for (let i = 1; i <= maxDuration; i++) {
-            if (isDurationSelected && i <= duration 
+            if (isDurationSelected && i <= duration
                 || !isDurationSelected && i <= currentHoverValue) {
                 if (i == 7) {
                     dayPickerButtons.push(
@@ -331,11 +331,11 @@ export default class LudoEditForm extends React.Component {
                                 || (i >= duration && isDurationSelected)
                             }
                             key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             type="button"
                             value={i}
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
@@ -346,8 +346,8 @@ export default class LudoEditForm extends React.Component {
                                 || (i >= duration && isDurationSelected)
                             }
                             key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             type="button"
                             value={i}
                         />
@@ -363,11 +363,11 @@ export default class LudoEditForm extends React.Component {
                                 || (i >= duration && isDurationSelected)
                             }
                             key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             type="button"
                             value={i}
-                        />, <br key="br" /> 
+                        />, <br key="br" />
                     );
                 } else {
                     dayPickerButtons.push(
@@ -378,8 +378,8 @@ export default class LudoEditForm extends React.Component {
                                 || (i >= duration && isDurationSelected)
                             }
                             key={`button-${i}`}
-                            onClick={this.handleDayPickerClick} 
-                            onMouseOver={this.handleDayPickerMouseOver} 
+                            onClick={this.handleDayPickerClick}
+                            onMouseOver={this.handleDayPickerMouseOver}
                             type="button"
                             value={i}
                         />
@@ -413,21 +413,6 @@ export default class LudoEditForm extends React.Component {
                                 onChange={this.handleTitleChange}
                             />
                         </div>
-                        {/* components/_marbles.scss */}
-                        <div className="label-and-slider">
-                            <div className="text-label">
-                                <div>
-                                    彈珠數:
-                                    <span className="text-label--marble-number">{ludoEditForm.marbles}</span>
-                                </div>
-                            </div>
-                            <div className="ludo-create-information-slider--marbles">
-                                <RcSlider max={maxMarbles} min={1} 
-                                    value={ludoEditForm.marbles}
-                                    onChange={this.handleMarblesChange}
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
                 {/* components/_ludo-create-information.scss */}
@@ -438,7 +423,7 @@ export default class LudoEditForm extends React.Component {
                     <div className="ludo-create-information-day-picker">
                         {dayPickerButtons}
                         <div className="ludo-create-information-slider--duration">
-                            <RcSlider 
+                            <RcSlider
                                 max={maxDuration}
                                 min={3}
                                 value={ludoEditForm.duration}
@@ -448,8 +433,8 @@ export default class LudoEditForm extends React.Component {
                     </div>
                     <div className="text-label">介紹:</div>
                     <div className="text-field-container text-field-container--introduction">
-                        <textarea 
-                            className="text-field--introduction" 
+                        <textarea
+                            className="text-field--introduction"
                             maxLength={maxLengthOfIntroduction}
                             onChange={this.handleIntroductionChange}
                             value={ludoEditForm.introduction}
@@ -459,20 +444,20 @@ export default class LudoEditForm extends React.Component {
                             <TagsInput
                                 inputProps={{maxLength: 30, placeholder:"標籤"}}
                                 onChange={this.handleTagsChange}
-                                value={ludoEditForm.tags} 
+                                value={ludoEditForm.tags}
                             />
                         </div>
                     </div>
                     {/* components/_submit-button.scss */}
-                    <button 
-                        className="ludo-modify-information-submit-button" 
-                        type="submit" 
+                    <button
+                        className="ludo-modify-information-submit-button"
+                        type="submit"
                         disabled={!this.state.isModifyButtonClickable}
                     >
                         確定變更
                     </button>
-                    <button 
-                        className="ludo-modify-information-submit-button--cancel" 
+                    <button
+                        className="ludo-modify-information-submit-button--cancel"
                         onClick={this.handleCancelClick}
                         disabled={!this.state.isModifyButtonClickable}
                     >
