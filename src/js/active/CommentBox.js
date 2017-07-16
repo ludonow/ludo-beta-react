@@ -61,11 +61,16 @@ export default class CommentBox extends React.Component {
                     updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
                     {...this.props}
                 />
-                <CommentForm
-                    updateTempCommentList={this.updateTempCommentList}
-                    updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                    {...this.props}
-                />
+                {
+                    this.props.currentUserId ?
+                        <CommentForm
+                            updateTempCommentList={this.updateTempCommentList}
+                            updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
+                            {...this.props}
+                        />
+                    :
+                        null
+                }
             </div>
         );
     }
