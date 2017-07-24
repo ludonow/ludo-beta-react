@@ -275,12 +275,14 @@ export default class CommentList extends React.Component {
             <div className="comment-list">
                 {
                     /* display temp comments right after user create a new comment */
-                    commentListFromDatabase && this.props.shouldShowCommentListFromDatabase ?
+                    commentListFromDatabase
+                    && this.props.shouldShowCommentListFromDatabase
+                    && this.props.router_currentFormValue
+                    && this.props.router_currentFormValue.comments_nick
+                    ?
                         commentListFromDatabase.map((commentObject, index) => {
-                            if (this.props.router_currentFormValue.comments_nick) {
-                                animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
-                                colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
-                            }
+                            animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
+                            colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
                             return (
                                 <div
                                     className="single-comment-container"
@@ -347,8 +349,16 @@ export default class CommentList extends React.Component {
                             );
                         })
                     :
+                        null
+                    }
+                    {
                         /* show temp comments right after user create a new comment */
-                        tempCommentList && tempCommentList.map((commentObject, index) => {
+                        tempCommentList
+                        && !this.props.shouldShowCommentListFromDatabase
+                        && this.props.router_currentFormValue
+                        && this.props.router_currentFormValue.comments_nick
+                        ?
+                        tempCommentList.map((commentObject, index) => {
                             if (this.props.router_currentFormValue && this.props.router_currentFormValue.comments_nick) {
                                 animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
                                 colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
@@ -418,6 +428,8 @@ export default class CommentList extends React.Component {
                                 </div>
                             )
                         })
+                        :
+                        null
                 }
             </div>
         );
