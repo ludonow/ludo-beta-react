@@ -394,11 +394,12 @@ export default class App extends React.Component {
 
     handleScrollEvent(event) {
         const edgeOffsetY = 250;
-        const { isInfiniteLoading, isOpeningLudoListPage, lastEvaluatedKey } = this.state;
+        const { isInfiniteLoading, isOpeningLudoListPage, lastEvaluatedKey, ludoList } = this.state;
         const lastEvaluatedKeyString = JSON.stringify(lastEvaluatedKey);
         if (isOpeningLudoListPage &&
             !isInfiniteLoading &&
             lastEvaluatedKeyString &&
+            ludoList.length >= 25 &&
             document.body.scrollTop + edgeOffsetY >= document.body.scrollHeight - window.innerHeight) {
             this.setState({
                 isInfiniteLoading: true
