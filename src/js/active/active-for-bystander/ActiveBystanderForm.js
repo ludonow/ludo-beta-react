@@ -13,6 +13,9 @@ import othersIcon from '../../../images/category_icon/others.svg';
 
 const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
 
+import introductionIcon from '../../../images/active/introduction-icon.png';
+import tagIcon from '../../../images/active/tag-icon.png';
+
 export default class ActiveBystanderForm extends React.Component {
     constructor(props) {
         super(props);
@@ -147,7 +150,7 @@ export default class ActiveBystanderForm extends React.Component {
             <div className="form--report">
                 {/* components/_ludo-detail-information.scss */}
                 <form
-                    className="ludo-detail-information-container"
+                    className="ludo-detail-information-container report-information-container"
                     onSubmit={this.handleSubmit}
                 >
                     <div className="ludo-detail-information-top-container">
@@ -170,53 +173,34 @@ export default class ActiveBystanderForm extends React.Component {
                                     {title}
                                 </span>
                             </div>
+                            <div className="duration">
+                                遊戲天數: {duration}
+                            </div>
                         </div>
                     </div>
                     {/* components/_report-form.scss */}
                     <div className="report-form-bottom-container">
-                        <div className="introduction-container">
-                            <div className="text-label">介紹:</div>
-                            <div className="introduction-and-tags">
-                                <div className="introduction">
-                                    {introduction}
-                                </div>
-                                {/* components/_tags.scss */}
-                                <div className="text-field--hashtag">
-                                    <div className="react-tagsinput">
-                                        <span className="react-tagsinput-span">
-                                            {
-                                                tags.length ?
-                                                tags.map((tagString, index) => {
-                                                    return (
-                                                        <span
-                                                            className="react-tagsinput-tag"
-                                                            key={`tag-${index}`}
-                                                        >
-                                                            {tagString}
-                                                        </span>
-                                                    );
-                                                })
-                                                : null
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
+                        <div className="introduction-and-tags">
+                            <div className="image-label"><img src={introductionIcon} /></div>
+                            <div className="introduction">
+                                {introduction}
                             </div>
-                        </div>
-                        {/* components/_report-form.scss */}
-                        <div className="time-line-container">
-                            <div className="text-label">持續期間:</div>
-                            <div className="report-time-line-container">
-                                <RcSlider
-                                    className="time-line"
-                                    disabled vertical dots
-                                    included={false}
-                                    marks={timeLineMarks}
-                                    max={duration}
-                                    min={1}
-                                    range={checkpoint.length}
-                                    value={checkpoint}
-                                />
+                            {/* components/_tags.scss */}
+                            <div className="ludo-tags">
+                                <div className="tag-icon">
+                                    <img src={tagIcon} />
+                                </div>
+                                {
+                                    tags.length ?
+                                        tags.map((tagString, index) => {
+                                            return (
+                                                <span className="ludo-tag" key={`ludo-tag-${index}`}>
+                                                    {tagString}
+                                                </span>
+                                            );
+                                        })
+                                    : null
+                                }
                             </div>
                         </div>
                     </div>

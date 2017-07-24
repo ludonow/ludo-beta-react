@@ -91,7 +91,7 @@ span.react-tagsinput-tag {
 }
 
 
-.introduction-and-tags--player {
+.introduction-and-tags, .introduction-and-tags--player {
     .tag-icon {
         @extend %relative;
         top: 10px;
