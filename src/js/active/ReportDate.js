@@ -15,7 +15,8 @@ export default class ReportDate extends Component {
         const formatHours = timeArray[0];
         const minutesAndPeriod = timeArray[1].split(' ');
         const formatMinutes = minutesAndPeriod[0];
-        return `${formatYear}/${formatMonth}/${formatDate} ${formatHours}:${formatMinutes}`;
+        const period = minutesAndPeriod[1];
+        return `${formatYear}/${formatMonth}/${formatDate} ${formatHours}:${formatMinutes} ${period}`;
     }
 
     render() {
