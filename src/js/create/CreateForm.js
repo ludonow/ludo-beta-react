@@ -495,15 +495,11 @@ export default class CreateForm extends React.Component {
                     <div className="image-label">
                         <img src={tagIcon} />
                     </div>
-                    <div className="text-field-container text-field-container--introduction">
-                        <div className="text-field--hashtag">
-                            <TagsInput
-                                value={ludoCreateForm.tags}
-                                onChange={this.handleTagsChange}
-                                inputProps={{maxLength: 30, placeholder:"給這張遊戲卡一些標籤吧！"}}
-                            />
-                        </div>
-                    </div>
+                    <TagsInput
+                        value={ludoCreateForm.tags}
+                        onChange={this.handleTagsChange}
+                        inputProps={{maxLength: 30, placeholder:"給這張遊戲卡一些標籤！"}}
+                    />
                     <div className="ludo-create-information-day-picker">
                         <div className="text-label">選擇遊戲的天數：</div>
                         <div className="ludo-create-information-slider--duration">

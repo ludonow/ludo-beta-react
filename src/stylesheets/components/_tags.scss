@@ -7,27 +7,15 @@
 
 /* overwrite css of react-tagsinput */
 .react-tagsinput {
-    background-color: $gray_text-field;
-    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    border: 1px solid rgb(169, 169, 169);
 
-    .react-tagsinput-span, span:not(.react-tagsinput-tag) {
-        @extend %flex;
-        flex-direction: row;
-        align-items: center;
+    span:not(.react-tagsinput-tag) {
         @extend %as_wide_as_parent;
-        padding-top: 6px;
-        padding-bottom: 10px;
-        overflow-x: scroll;
-        /* scroll bar */
-        &::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        /* Handle */
-        &::-webkit-scrollbar-thumb {
-            background-color: $g_background_gray;
-            -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
-        }
+        display: inline-flex;
+        flex-wrap: wrap;
+        padding: 5px;
     }
     /* TODO: Use other method to let the span is as tall as create tags input span */
     .react-tagsinput-span {
@@ -44,8 +32,7 @@ span.react-tagsinput-tag {
     max-height: 28px;
     background-color: rgba(0,0,0,0.6);
     color: white;
-    margin-right: 1px;
-    margin-left: 1px;
+    margin: 1px;
     padding: 5px;
     font-size: 13px;
     font-weight: 400;
@@ -75,17 +62,11 @@ span.react-tagsinput-tag {
 }
 
 .react-tagsinput-input {
-    width: 80px;
-    height: 18px;
-    // font-family: sans-serif;
+    margin-left: 5px;
     font-size: 13px;
     font-weight: 400;
-    // margin-bottom: 6px;
-    // margin-top: 1px;
-    margin-left: 5px;
     border: 0;
     padding: 5px;
-    // background: transparent;
     color: #777;
     outline: none;
 }
