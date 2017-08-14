@@ -437,6 +437,9 @@ export default class ActiveReports extends React.Component {
             isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex,
             isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser
         } = this.state;
+
+        const { currentUserId, router_currentFormValue, userBasicData } = this.props;
+        const { comments_nick, player_id, starter_id } = router_currentFormValue;
         return (
             /* components/_report-list.scss */
             <div className="report-list">
@@ -455,10 +458,10 @@ export default class ActiveReports extends React.Component {
                 <div className="report-list-container">
                     <div className="player-container">
                         <ReportAvatar
-                            renderWhoseAvatar='starter'
-                            userPhotoUrl={this.props.userBasicData.photo}
-                            whoIsUser={whoIsUser}
-                            {...this.props}
+                            avatarBackgroundColorIndex={comments_nick[starter_id][1]}
+                            avatarImageIndex={comments_nick[starter_id][0]}
+                            isThisBelongToCurrentUser={(router_currentFormValue.starter_id == currentUserId)}
+                            userPhotoUrl={userBasicData.photo}
                         />
                         <div className="player-health-point">
                             HP: {this.props.router_currentFormValue.starter_hp}%
@@ -619,10 +622,10 @@ export default class ActiveReports extends React.Component {
                 <div className="report-list-container">
                     <div className="player-container">
                         <ReportAvatar
-                            renderWhoseAvatar='player'
-                            userPhotoUrl={this.props.userBasicData.photo}
-                            whoIsUser={whoIsUser}
-                            {...this.props}
+                            avatarBackgroundColorIndex={comments_nick[player_id][1]}
+                            avatarImageIndex={comments_nick[player_id][0]}
+                            isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
+                            userPhotoUrl={userBasicData.photo}
                         />
                         <div className="player-health-point">
                             HP: {this.props.router_currentFormValue.player_hp}%

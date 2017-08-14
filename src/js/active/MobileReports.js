@@ -12,24 +12,25 @@ export default class MobileReports extends React.Component {
     }
 
     render() {
-        const { router_currentFormValue } = this.props;
+        const { currentUserId, router_currentFormValue } = this.props;
+        const { comments_nick, player_id, starter_id } = router_currentFormValue;
         return (
             <Tabs>
                 <TabList>
                     <Tab>
                         <ReportAvatar
-                            renderWhoseAvatar='starter'
-                            router_currentFormValue={router_currentFormValue}
+                            avatarBackgroundColorIndex={comments_nick[starter_id][1]}
+                            avatarImageIndex={comments_nick[starter_id][0]}
+                            isThisBelongToCurrentUser={(router_currentFormValue.starter_id == currentUserId)}
                             userPhotoUrl={userPhotoUrl}
-                            whoIsUser='bystander'
                         />  
                     </Tab>
                     <Tab>
                          <ReportAvatar
-                            renderWhoseAvatar='player'
-                            router_currentFormValue={router_currentFormValue}
+                            avatarBackgroundColorIndex={comments_nick[player_id][1]}
+                            avatarImageIndex={comments_nick[player_id][0]}
+                            isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
                             userPhotoUrl={userPhotoUrl}
-                            whoIsUser='bystander'
                         /> 
                     </Tab>
                 </TabList>
