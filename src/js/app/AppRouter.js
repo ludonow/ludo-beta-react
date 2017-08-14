@@ -31,7 +31,7 @@ import Template from '../create/Template';
     9           stage 0 not login (same as 0, may be modified in the future)
 */
 
-const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
+const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForPlayer, ActiveForPlayer, Template, Template, Template];
 const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
 
 const isLoggedIn = (nextState, replace, callback) => {

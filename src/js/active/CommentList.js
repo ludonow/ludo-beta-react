@@ -354,7 +354,7 @@ export default class CommentList extends React.Component {
                     {
                         /* show temp comments right after user create a new comment */
                         tempCommentList
-                        && !this.props.shouldShowCommentListFromDatabase
+                        && !(this.props.shouldShowCommentListFromDatabase)
                         && this.props.router_currentFormValue
                         && this.props.router_currentFormValue.comments_nick
                         ?

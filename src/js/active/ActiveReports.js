@@ -12,52 +12,16 @@ import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
 import CommentBox from './CommentBox';
+import ReportAvatar from './ReportAvatar';
 import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
-import animalImage_0 from '../../images/animals/anteater.png';
-import animalImage_1 from '../../images/animals/bat.png';
-import animalImage_2 from '../../images/animals/bulldog.png';
-import animalImage_3 from '../../images/animals/cat.png';
-import animalImage_4 from '../../images/animals/crocodile.png';
-import animalImage_5 from '../../images/animals/duck.png';
-import animalImage_6 from '../../images/animals/elephant.png';
-import animalImage_7 from '../../images/animals/frog.png';
-import animalImage_8 from '../../images/animals/giraffe.png';
-import animalImage_9  from '../../images/animals/hippopotamus.png';
-import animalImage_10 from '../../images/animals/kangaroo.png';
-import animalImage_11 from '../../images/animals/lion.png';
-import animalImage_12 from '../../images/animals/monkey.png';
-import animalImage_13 from '../../images/animals/mouse.png';
-import animalImage_14 from '../../images/animals/octopus.png';
-import animalImage_15 from '../../images/animals/panda.png';
-import animalImage_16 from '../../images/animals/penguin.png';
-import animalImage_17 from '../../images/animals/pig.png';
-import animalImage_18 from '../../images/animals/rabbit.png';
-import animalImage_19 from '../../images/animals/shark.png';
-import animalImage_20 from '../../images/animals/sheep.png';
-import animalImage_21 from '../../images/animals/snake.png';
-import animalImage_22 from '../../images/animals/spider.png';
-import animalImage_23 from '../../images/animals/tiger.png';
-import animalImage_24 from '../../images/animals/turtle.png';
-import animalImage_25 from '../../images/animals/whale.png';
-
 export default class ActiveReports extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            avatarStyle: {
-                avatarImageOfPlayer: '',
-                avatarImageOfStarter: '',
-                avatarOfPlayer: {
-                    'backgroundColor': 'green'
-                },
-                avatarOfStarter: {
-                    'backgroundColor': 'blue'
-                }
-            },
             currentTargetId: '',
             enlargeImageLocation: '',
             files: [],
@@ -78,7 +42,6 @@ export default class ActiveReports extends React.Component {
             starterReportList: [],
             whoIsUser: ''
         };
-        this.getPlayerAvatarImage = this.getPlayerAvatarImage.bind(this);
         this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageDrop = this.handleImageDrop.bind(this);
@@ -152,57 +115,8 @@ export default class ActiveReports extends React.Component {
                     isEditReportButtonClickable: true
                 });
             }
-            this.getPlayerAvatarImage();
             this.props.handleHasGotNewReport(false);
         }
-    }
-
-    getPlayerAvatarImage() {
-        const { player_id, starter_id, comments_nick } = this.props.router_currentFormValue;
-        const animalImageArray = [
-            animalImage_0 ,
-            animalImage_1 ,
-            animalImage_2 ,
-            animalImage_3 ,
-            animalImage_4 ,
-            animalImage_5 ,
-            animalImage_6 ,
-            animalImage_7 ,
-            animalImage_8 ,
-            animalImage_9 ,
-            animalImage_10,
-            animalImage_11,
-            animalImage_12,
-            animalImage_13,
-            animalImage_14,
-            animalImage_15,
-            animalImage_16,
-            animalImage_17,
-            animalImage_18,
-            animalImage_19,
-            animalImage_20,
-            animalImage_21,
-            animalImage_22,
-            animalImage_23,
-            animalImage_24,
-            animalImage_25,
-        ];
-        const colorArray = [
-            'aliceblue', 'black', 'cyan', 'deeppink', 'darkviolet', 'fuchsia',
-            'gold', 'honeydew', 'indianred', 'ivory', 'khaki'
-        ];
-        this.setState({
-            avatarStyle: {
-                avatarImageOfPlayer: animalImageArray[comments_nick[player_id][0]],
-                avatarImageOfStarter: animalImageArray[comments_nick[starter_id][0]],
-                avatarOfPlayer: {
-                    'backgroundColor': colorArray[comments_nick[player_id][1]]
-                },
-                avatarOfStarter: {
-                    'backgroundColor': colorArray[comments_nick[starter_id][1]]
-                }
-            }
-        });
     }
 
     handleCloseLightbox() {
@@ -540,21 +454,12 @@ export default class ActiveReports extends React.Component {
                 }
                 <div className="report-list-container">
                     <div className="player-container">
-                        <div className="player-avatar-container">
-                            {
-                                whoIsUser === 'starter' && this.props.userBasicData.photo?
-                                    <img
-                                        className="player-avatar-container__photo"
-                                        src={this.props.userBasicData.photo}
-                                    />
-                                :
-                                    <img
-                                        className="player-avatar-container__photo"
-                                        src={avatarStyle.avatarImageOfStarter}
-                                        style={avatarStyle.avatarOfStarter}
-                                    />
-                            }
-                        </div>
+                        <ReportAvatar
+                            renderWhoseAvatar='starter'
+                            userPhotoUrl={this.props.userBasicData.photo}
+                            whoIsUser={whoIsUser}
+                            {...this.props}
+                        />
                         <div className="player-health-point">
                             HP: {this.props.router_currentFormValue.starter_hp}%
                         </div>
@@ -713,20 +618,12 @@ export default class ActiveReports extends React.Component {
                 {/* components/_report-list.scss */}
                 <div className="report-list-container">
                     <div className="player-container">
-                        <div className="player-avatar-container">
-                            {
-                                whoIsUser === 'player' && this.props.userBasicData.photo ?
-                                    <img className="player-avatar-container__photo"
-                                        src={this.props.userBasicData.photo}
-                                    />
-                                :
-                                    <img
-                                        className="player-avatar-container__photo"
-                                        src={avatarStyle.avatarImageOfPlayer}
-                                        style={avatarStyle.avatarOfPlayer}
-                                    />
-                            }
-                        </div>
+                        <ReportAvatar
+                            renderWhoseAvatar='player'
+                            userPhotoUrl={this.props.userBasicData.photo}
+                            whoIsUser={whoIsUser}
+                            {...this.props}
+                        />
                         <div className="player-health-point">
                             HP: {this.props.router_currentFormValue.player_hp}%
                         </div>
@@ -884,5 +781,16 @@ export default class ActiveReports extends React.Component {
                 </div>
             </div>
         );
+    }
+}
+
+ActiveReports.defaultProps = {
+    'router_currentFormValue': {
+        'comments_nick': {
+            'a': [0, 0],
+            'b': [0, 0]
+        },
+        'player_id': 'a',
+        'starter_id': 'b'
     }
 }
