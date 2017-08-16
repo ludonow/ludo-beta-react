@@ -2,6 +2,7 @@ import React from 'react';
 
 import { animalImageArray, colorArray } from './avatarImage';
 
+/* components/_report-avatar.scss */
 const ReportAvatar = (props) => (
     <div className="player-avatar-container">
         {

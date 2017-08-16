@@ -2,7 +2,7 @@
     @extend %relative;
 //    width: $grid-item_total-width*5;
     @extend %margin_center_x;
-    margin-top: 77px;
+    margin-top: 70px;
     word-break: break-all;
     
     -webkit-animation: slide-back 0.35s forwards;
@@ -13,22 +13,13 @@
     @extend %relative;
     width: $grid-item_total-width*5;
     @extend %margin_center_x;
-    margin-top: 77px;
+    margin-top: 70px;
     -webkit-animation: slide 0.35s forwards;
     animation: slide 0.35s forwards;
 }
 
 .right-sidebar-hover-area{
   z-index: 10;
-}
-
-@media (min-width: 320px) and (max-width: 559px) {
-    .main-container {
-        width: 226px;
-    }
-    .main-container.hoveringSidebar{
-        width: 226px;
-    }
 }
 
 @media (min-width: 560px) and (max-width: 704px) {

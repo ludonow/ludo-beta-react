@@ -16,8 +16,11 @@ export default class MobileReports extends React.Component {
         const { comments_nick, player_id, starter_id } = router_currentFormValue;
         return (
             <Tabs>
-                <TabList>
-                    <Tab>
+                <TabList className="react-tabs__tab-list mobile-avatar">
+                    <Tab 
+                        className="react-tabs__tab mobile-avatar"
+                        selectedClassName="react-tabs__tab--selected mobile-avatar"
+                    >
                         <ReportAvatar
                             avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                             avatarImageIndex={comments_nick[starter_id][0]}
@@ -25,7 +28,10 @@ export default class MobileReports extends React.Component {
                             userPhotoUrl={userPhotoUrl}
                         />  
                     </Tab>
-                    <Tab>
+                    <Tab 
+                        className="react-tabs__tab mobile-avatar"
+                        selectedClassName="react-tabs__tab--selected mobile-avatar"
+                    >
                          <ReportAvatar
                             avatarBackgroundColorIndex={comments_nick[player_id][1]}
                             avatarImageIndex={comments_nick[player_id][0]}
