@@ -3,6 +3,8 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import ReportAvatar from './ReportAvatar';
+import ReportList from './ReportList';
+import ReportText from './ReportText';
 
 const userPhotoUrl = '../../images/animals/bat.png';
 
@@ -11,8 +13,22 @@ export default class MobileReports extends React.Component {
         super(props);
     }
 
+    componentWillMount() {
+        this.props.handleIsOpeningActivePage(true);
+        this.props.handleShouldReportUpdate(true);
+    }
+
+    componentWillUnmount() {
+        this.props.handleIsOpeningActivePage(false);
+    }
+
     render() {
-        const { currentUserId, router_currentFormValue } = this.props;
+        const { 
+            currentLudoReportData,
+            currentUserId,
+            handleShouldReportUpdate,
+            router_currentFormValue
+        } = this.props;
         const { comments_nick, player_id, starter_id } = router_currentFormValue;
         return (
             <Tabs>
@@ -24,9 +40,9 @@ export default class MobileReports extends React.Component {
                         <ReportAvatar
                             avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                             avatarImageIndex={comments_nick[starter_id][0]}
-                            isThisBelongToCurrentUser={(router_currentFormValue.starter_id == currentUserId)}
+                            isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
                             userPhotoUrl={userPhotoUrl}
-                        />  
+                        />
                     </Tab>
                     <Tab 
                         className="react-tabs__tab mobile-avatar"
@@ -35,17 +51,33 @@ export default class MobileReports extends React.Component {
                          <ReportAvatar
                             avatarBackgroundColorIndex={comments_nick[player_id][1]}
                             avatarImageIndex={comments_nick[player_id][0]}
-                            isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
+                            isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
                             userPhotoUrl={userPhotoUrl}
                         /> 
                     </Tab>
                 </TabList>
 
                 <TabPanel>
-                    <h2>Any content 1</h2>
+                    <ReportList
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
+                        reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.starter_id)}
+                    />
+                    {router_currentFormValue.starter_id == currentUserId
+                        ? <div>reportButton</div>
+                        : null
+                    }
                 </TabPanel>
                 <TabPanel>
-                    <h2>Any content 2</h2>
+                    <ReportList
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
+                        reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.player_id)}
+                    />
+                    {router_currentFormValue.player_id == currentUserId
+                        ? <div>reportButton</div>
+                        : null
+                    }
                 </TabPanel>
             </Tabs>
         );

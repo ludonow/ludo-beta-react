@@ -3,19 +3,24 @@ import React from 'react';
 import { animalImageArray, colorArray } from './avatarImage';
 
 /* components/_report-avatar.scss */
-const ReportAvatar = (props) => (
+const ReportAvatar = ({
+    avatarBackgroundColorIndex,
+    avatarImageIndex,
+    isThisBelongToCurrentUser,
+    userPhotoUrl
+}) => (
     <div className="player-avatar-container">
         {
-            props.isThisBelongToCurrentUser ?
+            isThisBelongToCurrentUser ?
                 <img
                     className="player-avatar-container__photo"
-                    src={props.userPhotoUrl}
+                    src={userPhotoUrl}
                 />
             :
                 <img
                     className="player-avatar-container__photo"
-                    src={animalImageArray[props.avatarImageIndex]}
-                    style={{'backgroundColor': colorArray[props.avatarBackgroundColorIndex]}} 
+                    src={animalImageArray[avatarImageIndex]}
+                    style={{'backgroundColor': colorArray[avatarBackgroundColorIndex]}} 
                 />
         }
     </div>

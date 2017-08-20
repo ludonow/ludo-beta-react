@@ -512,7 +512,23 @@ export default class ActiveReports extends React.Component {
                                                     />
                                                     {
                                                         isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ?
-                                                            <div>
+                                                            <div className="editing-image">
+                                                                {/* components/_single-report.scss */}
+                                                                <DropZone
+                                                                    accept={["image/png", "image/pjepg", "image/jpeg"]}
+                                                                    // TODO: find out why png is not accepted
+                                                                    className="upload"
+                                                                    maxSize={5242880}
+                                                                    onClick={this.handleImageDrop}
+                                                                    onDrop={this.handleImageDrop}
+                                                                >
+                                                                    <img
+                                                                        alt="重新上傳圖片"
+                                                                        className="upload-picture-button__icon"
+                                                                        src={uploadIcon}
+                                                                    />
+                                                                    <span className="upload-description">重新上傳圖片</span>
+                                                                </DropZone>
                                                                 <button
                                                                     disabled={!isEditReportButtonClickable}
                                                                     id={`starter-image-edit-cancel-button-${index}`}
@@ -520,20 +536,6 @@ export default class ActiveReports extends React.Component {
                                                                 >
                                                                     取消編輯
                                                                 </button>
-                                                                {/* components/_report-form.scss */}
-                                                                <DropZone
-                                                                    accept={"image/*"}
-                                                                    // TODO: find out why png is not accepted
-                                                                    className="upload-picture-button"
-                                                                    maxSize={5242880}
-                                                                    onClick={this.handleImageDrop}
-                                                                    onDrop={this.handleImageDrop}
-                                                                >
-                                                                    <img
-                                                                        className="upload-picture-button__icon"
-                                                                        src={uploadIcon}
-                                                                    />
-                                                                </DropZone>
                                                                 {
                                                                     isImageUploaded ?
                                                                         <div className="upload-preview">
@@ -676,28 +678,30 @@ export default class ActiveReports extends React.Component {
                                                     />
                                                     {
                                                         isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ?
-                                                            <div>
-                                                                <button
-                                                                    disabled={!isEditReportButtonClickable}
-                                                                    id={`player-image-edit-cancel-button-${index}`}
-                                                                    onClick={this.handleImageReportEditCancelClick}
-                                                                >
-                                                                    取消編輯
-                                                                </button>
-                                                                {/* components/_report-form.scss */}
+                                                            <div className="editing-image">
+                                                                {/* components/_single-report.scss */}
                                                                 <DropZone
-                                                                    accept={"image/png", "image/pjepg", "image/jpeg"}
+                                                                    accept={["image/png", "image/pjepg", "image/jpeg"]}
                                                                     // TODO: find out why png is not accepted
-                                                                    className="upload-picture-button"
+                                                                    className="upload"
                                                                     maxSize={5242880}
                                                                     onClick={this.handleImageDrop}
                                                                     onDrop={this.handleImageDrop}
                                                                 >
                                                                     <img
+                                                                        alt="重新上傳圖片"
                                                                         className="upload-picture-button__icon"
                                                                         src={uploadIcon}
                                                                     />
+                                                                    <span className="upload-description">重新上傳圖片</span>
                                                                 </DropZone>
+                                                                <button
+                                                                    disabled={!isEditReportButtonClickable}
+                                                                    id={`starter-image-edit-cancel-button-${index}`}
+                                                                    onClick={this.handleImageReportEditCancelClick}
+                                                                >
+                                                                    取消編輯
+                                                                </button>
                                                                 {
                                                                     isImageUploaded ?
                                                                         <div className="upload-preview">
