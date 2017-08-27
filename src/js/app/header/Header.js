@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { browserHistory, Link } from 'react-router';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
-import HeaderFilter from './HeaderFilter';
+// import HeaderFilter from './HeaderFilter'; // deprecated
 import HeaderFuel from './HeaderFuel';
 import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
@@ -21,8 +21,8 @@ export default class Header extends Component {
         this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
     }
 
-    handleFilterClick() {
-        this.props.getFilteredLudoList();
+    handleFilterClick(event) {
+        this.props.getFilteredLudoList(event.target.value);
         browserHistory.push('/playground');
     }
 
@@ -46,11 +46,17 @@ export default class Header extends Component {
                 <div className="header-left">
                     <HeaderLogo />
                     {
+                        /* components/_header-filter.scss */
                         isOpeningLudoListPage ?
-                            <HeaderFilter
-                                getFilteredLudoList={getFilteredLudoList}
-                                getLatestLudoList={getLatestLudoList}
-                            />
+                            <div className="filter-button-container">
+                                <button
+                                    className="filter-button"
+                                    onClick={this.handleFilterClick}
+                                    value="stage=3"
+                                >
+                                    歷史紀錄
+                                </button>
+                            </div>
                         :
                             null
                     }
