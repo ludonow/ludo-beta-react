@@ -3,7 +3,6 @@ import { browserHistory } from 'react-router';
 import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
-// import { WithContext as ReactTags } from 'react-tag-input';
 import TagsInput from 'react-tagsinput';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
