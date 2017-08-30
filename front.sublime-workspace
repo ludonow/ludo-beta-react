@@ -3,6 +3,34 @@
 	{
 		"selected_items":
 		[
+			[
+				"wi",
+				"width"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"in",
+				"introduction"
+			],
+			[
+				"pad",
+				"padding-top"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"ma",
+				"margin"
+			],
+			[
+				"pa",
+				"padding-bottom"
+			]
 		]
 	},
 	"buffers":
@@ -11,7 +39,42 @@
 			"file": "src/js/create/CreateForm.js",
 			"settings":
 			{
-				"buffer_size": 23909,
+				"buffer_size": 24260,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/stylesheets/components/_ludo-create-information.scss",
+			"settings":
+			{
+				"buffer_size": 5027,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/stylesheets/components/_tags.scss",
+			"settings":
+			{
+				"buffer_size": 4443,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/stylesheets/components/_submit-button.scss",
+			"settings":
+			{
+				"buffer_size": 1366,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/js/create/Create.js",
+			"settings":
+			{
+				"buffer_size": 631,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -53,10 +116,20 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/seango/Documents/ludo/ludo-beta/front"
+		"/Users/seango/Documents/ludo/ludo-beta/front",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/images",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/images/active",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active/active-for-player",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/create",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets/components"
 	],
 	"file_history":
 	[
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active/active-for-player/ActivePlayerForm.js",
 		"/Users/seango/Documents/ludo/ludo-beta/front/front.sublime-project",
 		"/Users/seango/Documents/ludo/ludo-beta/front/.eslintrc",
 		"/Users/seango/Desktop/5090182.xml",
@@ -64,7 +137,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -79,6 +152,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"top",
+			"icon",
+			"ic",
+			"sub",
+			"scss",
 			"\">\n",
 			"宜縣審計室",
 			"browserHistory",
@@ -101,7 +179,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -110,28 +188,150 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23909,
+						"buffer_size": 24260,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								18775,
-								18775
+								22261,
+								22272
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"auto_complete": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6368.0,
+						"translation.y": 7249.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/stylesheets/components/_ludo-create-information.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4765,
+								4765
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2124.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/stylesheets/components/_tags.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4443,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								164,
+								164
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/stylesheets/components/_submit-button.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1366,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								119,
+								119
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/js/create/Create.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 631,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								456,
+								456
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
