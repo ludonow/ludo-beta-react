@@ -523,6 +523,19 @@ export default class ActiveReports extends React.Component {
             isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex,
             isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser
         } = this.state;
+        const processString = require('react-process-string');
+        let config = [{
+            regex: /(http|https):\/\/(\S+)\.([a-z]{2,}?)(.*?)( |\,|$|\.)/gim,
+            fn: (key, result) => <span key={key}>
+                                     <a target="_blank" href={`${result[1]}://${result[2]}.${result[3]}${result[4]}`}>{result[2]}.{result[3]}{result[4]}</a>{result[5]}
+                                 </span>
+        }, {
+            regex: /(\S+)\.([a-z]{2,}?)(.*?)( |\,|$|\.)/gim,
+            fn: (key, result) => <span key={key}>
+                                     <a target="_blank" href={`http://${result[1]}.${result[2]}${result[3]}`}>{result[1]}.{result[2]}{result[3]}</a>{result[4]}
+                                 </span>
+        }];
+        let stringWithLinks = "Watch this on youtube.com";
         return (
             /* components/_report-list.scss */
             <div className="report-list">
@@ -666,7 +679,7 @@ export default class ActiveReports extends React.Component {
                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`s${index}`) != -1 ?
                                                     <Textarea
                                                         className="report-content__text-edit"
-                                                        defaultValue={reportObject.content}
+                                                        defaultValue={processString(config)(reportObject.content)}
                                                         id={`s-${index}`}
                                                         minRows={2}
                                                         onChange={this.handleReportTextChange}
@@ -675,7 +688,7 @@ export default class ActiveReports extends React.Component {
                                                 :
                                                     <div className="report-content-container">
                                                         <div className="report-content report-content__text">
-                                                            {reportObject.content}
+                                                            {processString(config)(reportObject.content)}
                                                         </div>
                                                     </div>
                                             : null
@@ -833,6 +846,7 @@ export default class ActiveReports extends React.Component {
                                                 </div>
                                             : null
                                         }
+
                                         {
                                             reportObject.content ?
                                                 isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ?
@@ -841,13 +855,14 @@ export default class ActiveReports extends React.Component {
                                                         minRows={2}
                                                         onChange={this.handleReportTextChange}
                                                         onKeyDown={this.handleFinishReportEditText}
-                                                        defaultValue={reportObject.content}
+                                                        defaultValue={processString(config)(reportObject.content)}
                                                         id={`p-${index}`}
                                                     />
                                                 :
                                                     <div className="report-content-container">
                                                         <div className="report-content report-content__text">
-                                                            {reportObject.content}
+
+                                                            {processString(config)(reportObject.content)}
                                                         </div>
                                                     </div>
                                             : null
