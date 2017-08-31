@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 
 import QuickStart from './QuickStart';
@@ -112,66 +112,63 @@ export default class PlaygroundLudoList extends React.Component {
                                     id={index}
                                     onClick={buttonClickHandler}
                                 >
-                                  <div className={`card-back ${categoryClassArray[singleLudoObject.category_id]}`}
-                                  id={index}
-                                  onClick={buttonClickHandler}>
-                                  {/*three information: star(for user to highlight this card), category, and introduction*/}
+                                    <div 
+                                        className={`card-back ${categoryClassArray[singleLudoObject.category_id]}`}
+                                        id={index}
+                                        onClick={buttonClickHandler}>
+                                    {/* three information: star(for user to highlight this card), category, and introduction*/}
                                     <div className="card-information">
-
-                                      <div className="card-star">
-                                      </div>
-                                      <div className ="card-category">
-                                      {category[singleLudoObject.category_id]}
-                                      </div>
-                                      <div className="card-introduction">{
-                                        String(singleLudoObject.introduction).length > 20 ?
-                                        String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-                                        : String(singleLudoObject.introduction)
-                                        /* String(singleLudoObject.introduction)*/
-                                        }
-                                      </div>
-                                      <div className="card-hashtags">
-                                        {
-                                        // TODO: Use presentational component and proptypes to receive ludolist data
-                                        Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                            singleLudoObject.tags.map((tagString, tagIndex) => {
-                                                return (
-                                                    /* components/_tags.scss */
-                                                    <span
-                                                        className="react-tagsinput-tag--card"
-                                                        key={`tag-${tagIndex}`}
-                                                    >
-                                                        {tagString}
-                                                    </span>
-                                                );
-                                            })
-                                        : null
-                                      }
-                                      </div>
+                                        <div className="card-star"></div>
+                                        <div className ="card-category">
+                                            {category[singleLudoObject.category_id]}
+                                        </div>
+                                        <div className="card-introduction">
+                                            { String(singleLudoObject.introduction).length > 20 ?
+                                                String(singleLudoObject.introduction).substring(0, 20) + ' ...'
+                                                : String(singleLudoObject.introduction)
+                                            }
+                                        </div>
+                                        <div className="card-hashtags">
+                                            {
+                                                // TODO: Use presentational component and proptypes to receive ludolist data
+                                                Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
+                                                    singleLudoObject.tags.map((tagString, tagIndex) => {
+                                                        return (
+                                                            /* components/_tags.scss */
+                                                            <span
+                                                                className="react-tagsinput-tag--card"
+                                                                key={`tag-${tagIndex}`}
+                                                            >
+                                                                {tagString}
+                                                            </span>
+                                                        );
+                                                    })
+                                                : null
+                                            }
+                                        </div>
                                     </div>
-                                      {/*the circle button for GO */}
-                                    <div className="card-button_circle"
-                                      >
-                                      <div className="card-button_text"
-                                        id={`go-${index}`}
-                                        onClick={this.handleCardLink}
-                                      >
-                                      Go
-                                      </div>
-                                    </div>
-                                  </div>
-                                  {/*stage: shows red/green rectangle that indicates this card is available or not*/}
-                                  <div className={`card-top__stage ${this.handleCardStage(singleLudoObject.stage)}`} ></div>
-                                  <div className="card-front-info">
-                                    <div className="card-star"></div>
-                                      <img  className="category-icon"
-                                          src={iconArray[singleLudoObject.category_id]}
-                                      />
+                                    {/* the circle button for GO */}
+                                    <Link 
+                                        className="card-button_circle"
+                                        to={`/ludo/${singleLudoObject.ludo_id}`}
+                                    >
+                                        <div className="card-button_text">
+                                            Go
+                                        </div>
+                                    </Link>
+                                </div>
 
-                                    <div className="title">{singleLudoObject.title}</div>
-                                    <div className="duration">{singleLudoObject.duration} days</div>
-                                  </div>
-                                  <div className="card-views">{singleLudoObject.views}</div>
+                                {/* stage: shows red/green rectangle that indicates this card is available or not */}
+                                <div className={`card-top__stage ${this.handleCardStage(singleLudoObject.stage)}`} ></div>
+                                    <div className="card-front-info">
+                                        <div className="card-star"></div>
+                                        <img className="category-icon"
+                                            src={iconArray[singleLudoObject.category_id]}
+                                        />
+                                        <div className="title">{singleLudoObject.title}</div>
+                                        <div className="duration">{singleLudoObject.duration} days</div>
+                                    </div>
+                                    <div className="card-views">{singleLudoObject.views}</div>
                                 </div>
                             </div>
                         );
