@@ -21,8 +21,20 @@ export default class ReportCard extends React.Component {
         };
         this.handleIsEditingImage = this.handleIsEditingImage.bind(this);
         this.handleIsEditingText = this.handleIsEditingText.bind(this);
+        this.handleIsDenounceReport = this.handleIsDenounceReport.bind(this);
         this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
+        this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
+    }
+
+    handleIsDenounceReport(boolean) {
+        this.props.handleDenounceBoxOpen({
+            currentTargetReportId: this.props.reportId,
+        });
+
+        this.setState({
+            isPopOverOfExpandMoreOpen: false
+        });
     }
 
     handleIsEditingImage(boolean) {
@@ -84,6 +96,15 @@ export default class ReportCard extends React.Component {
         });
     }
 
+    handleReportExpandMoreButtonTouchTap(event) {
+        /* This prevents ghost click. */
+        event.preventDefault();
+        this.setState({
+            anchorEl: event.currentTarget,
+            isPopOverOfExpandMoreOpen: true
+        });
+    }
+
     handleRequestClose() {
         this.setState({
             isPopOverOfEditOpen: false,
@@ -114,7 +135,13 @@ export default class ReportCard extends React.Component {
                             reportObject={reportObject}
                         />
                     :
-                        'MobileReportExpandMoreButton'
+                        <MobileReportExpandMoreButton
+                            anchorEl={this.state.anchorEl}
+                            handleIsDenounceReport={this.handleIsDenounceReport}
+                            handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                            isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                            onRequestClose={this.handleRequestClose}
+                        />
                 }
                 <ReportImage
                     handleIsEditingImage={this.handleIsEditingImage}

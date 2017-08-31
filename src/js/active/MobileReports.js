@@ -26,6 +26,7 @@ export default class MobileReports extends React.Component {
         const { 
             currentLudoReportData,
             currentUserId,
+            handleDenounceBoxOpen,
             handleShouldReportUpdate,
             router_currentFormValue
         } = this.props;
@@ -59,6 +60,7 @@ export default class MobileReports extends React.Component {
 
                 <TabPanel>
                     <ReportList
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
                         reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.starter_id)}
@@ -70,6 +72,7 @@ export default class MobileReports extends React.Component {
                 </TabPanel>
                 <TabPanel>
                     <ReportList
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
                         reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.player_id)}

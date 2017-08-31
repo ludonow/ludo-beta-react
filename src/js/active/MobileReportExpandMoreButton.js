@@ -18,37 +18,41 @@ export default class MobileReportExpandMoreButton extends Component {
     }
 
     render() {
-        const { index, isEditingWhichReportIndex, reportList, whichList } = this.props;
+        const { 
+            anchorEl,
+            handleIsDenounceReport,
+            handleReportExpandMoreButtonTouchTap,
+            isPopOverOfExpandMoreOpen,
+            onRequestClose
+        } = this.props;
         return (
             <div>
                 {/* components/_single-report.scss */}
                 <div className="report-icon-button">
-                    <ReportDate
+                    {/* <ReportDate
                         index={index}
                         reportList={reportList}
-                    />
+                    /> */}
                     <IconButton
-                        id={`${whichList}-report-expand-more-${index}`}
-                        onTouchTap={this.props.handleReportExpandMoreButtonTouchTap}
+                        onTouchTap={handleReportExpandMoreButtonTouchTap}
                         tooltip="更多"
                     >
                         <ExpandMore />
                     </IconButton>
                 </div>
                 {
-                    reportList[index] ?
+                    isPopOverOfExpandMoreOpen ?
                         <Popover
-                            anchorEl={this.props.anchorEl}
+                            anchorEl={anchorEl}
                             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                            onRequestClose={this.props.onRequestClose}
-                            open={this.props.isPopOverOfExpandMoreOpen}
+                            onRequestClose={onRequestClose}
+                            open={isPopOverOfExpandMoreOpen}
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                         >
                             <Menu>
                                 <MenuItem
-                                    id={`${whichList}-report-denounce-${index}`}
                                     innerDivStyle={style}
-                                    onTouchTap={this.props.handleReportDenounce}
+                                    onTouchTap={handleIsDenounceReport}
                                     primaryText="檢舉此回報"
                                 />
                             </Menu>
