@@ -12,7 +12,7 @@ const style = {
     'fontSize': '14px'
 };
 
-export default class CommentEditButton extends Component {
+export default class MobileCommentExpandMoreButton extends Component {
     constructor(props) {
         super(props);
         this.handleCommentDenounce = this.handleCommentDenounce.bind(this);
@@ -35,26 +35,34 @@ export default class CommentEditButton extends Component {
     }
 
     render() {
-        const { index, isOldOrNew } = this.props;
+        const {
+            anchorEl,
+            handleCommentDenounce,
+            handleCommentExpandMoreButtonTouchTap,
+            handleRequestClose,
+            index,
+            isOldOrNew,
+            isPopOverOfExpandMoreOpen,
+        } = this.props;
         return (
             <div className="comment-button">
                 <IconButton 
                     id={`${isOldOrNew}-comment-expand-more-button-${index}`}
-                    onTouchTap={this.props.handleCommentExpandMoreButtonTouchTap}
+                    onTouchTap={handleCommentExpandMoreButtonTouchTap}
                     tooltip="更多"
                 >
                     <ExpandMore />
                 </IconButton>
                 <Popover
-                    open={this.props.isPopOverOfExpandMoreOpen}
-                    anchorEl={this.props.anchorEl}
+                    open={isPopOverOfExpandMoreOpen}
+                    anchorEl={anchorEl}
                     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                     targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                    onRequestClose={this.props.handleRequestClose}
+                    onRequestClose={handleRequestClose}
                 >
                     <Menu>
                         <MenuItem
-                            id={this.props.anchorEl.id}
+                            id={anchorEl.id}
                             innerDivStyle={style}
                             onTouchTap={this.handleCommentDenounce}
                             primaryText="檢舉此留言" 

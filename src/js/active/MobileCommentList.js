@@ -12,8 +12,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Textarea from 'react-textarea-autosize';
 
-import CommentEditButton from './CommentEditButton';
-import CommentExpandMoreButton from './CommentExpandMoreButton';
+import MobileCommentEditButton from './MobileCommentEditButton';
+import MobileCommentExpandMoreButton from './MobileCommentExpandMoreButton';
 
 import { animalImageArray, colorArray } from './avatarImage';
 
@@ -209,7 +209,14 @@ export default class CommentList extends React.Component {
     }
 
     render() {
-        const { commentListFromDatabase, tempCommentList } = this.props;
+        const { 
+            commentListFromDatabase,
+            currentUserId,
+            router_currentFormValue,
+            shouldShowCommentListFromDatabase,
+            tempCommentList,
+            userBasicData
+        } = this.props;
         const { isEditingComment, isEditingCommentIndex } = this.state;
         return (
             /* components/_comment.scss */
@@ -217,13 +224,13 @@ export default class CommentList extends React.Component {
                 {
                     /* display temp comments right after user create a new comment */
                     commentListFromDatabase
-                    && this.props.shouldShowCommentListFromDatabase
-                    && this.props.router_currentFormValue
-                    && this.props.router_currentFormValue.comments_nick
+                    && shouldShowCommentListFromDatabase
+                    && router_currentFormValue
+                    && router_currentFormValue.comments_nick
                     ?
                         commentListFromDatabase.map((commentObject, index) => {
-                            animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
-                            colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
+                            animalIndex = router_currentFormValue.comments_nick[commentObject.user_id][0];
+                            colorIndex = router_currentFormValue.comments_nick[commentObject.user_id][1];
                             return (
                                 <div
                                     className="single-comment-container"
@@ -232,10 +239,10 @@ export default class CommentList extends React.Component {
                                     <div className="comment-avatar-container">
                                         {
                                             /* show specific animal avatar image if comment user is not current user */
-                                            commentObject.user_id === this.props.currentUserId ?
+                                            commentObject.user_id === currentUserId ?
                                             <img
                                                 className="comment__avatar"
-                                                src={this.props.userBasicData.photo}
+                                                src={userBasicData.photo}
                                             />
                                             :
                                             <img
@@ -262,7 +269,7 @@ export default class CommentList extends React.Component {
                                     </div>
                                     {
                                         commentObject.user_id == this.props.currentUserId ?
-                                            <CommentEditButton
+                                            <MobileCommentEditButton
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentDelete={this.handleCommentDelete}

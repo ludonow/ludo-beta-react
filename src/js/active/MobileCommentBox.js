@@ -51,6 +51,7 @@ export default class CommentBox extends React.Component {
 
     render() {
         const { shouldShowCommentListFromDatabase, tempCommentList } = this.state;
+        const { currentUserId, reportId, router_currentLudoId, userBasicData } = this.props;
         return (
             /* components/_single-report.scss */
             <div className="player-report-comment-box-container">
@@ -62,11 +63,13 @@ export default class CommentBox extends React.Component {
                     {...this.props}
                 />
                 {
-                    this.props.currentUserId ?
+                    currentUserId ?
                         <MobileCommentForm
+                            reportId={reportId}
+                            router_currentLudoId={router_currentLudoId}
                             updateTempCommentList={this.updateTempCommentList}
                             updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                            {...this.props}
+                            userBasicData={userBasicData}
                         />
                     :
                         null

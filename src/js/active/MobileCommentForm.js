@@ -57,23 +57,15 @@ export default class CommentForm extends React.Component {
     }
 
     render() {
+        const { currentUserId, userBasicData } = this.props;
+        /* components/_comment.scss */
         return (
-            /* components/_comment.scss */
             <div className="single-comment-container">
                 <div className="comment-avatar-container">
-                    {
-                        /* show user's photo */
-                        this.props.currentUserId ?
-                            <img
-                                className="comment__avatar"
-                                src={this.props.userBasicData.photo}
-                            />
-                        :
-                            <img
-                                className="comment__avatar"
-                                src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
-                            />
-                    }
+                    <img
+                        className="comment__avatar"
+                        src={userBasicData.photo}
+                    />
                 </div>
                 <Textarea
                     className="comment__message"
