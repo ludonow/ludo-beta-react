@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import ReportAvatar from './ReportAvatar';
+import Avatar from './Avatar';
 import ReportList from './ReportList';
 import ReportText from './ReportText';
 
@@ -28,7 +28,8 @@ export default class MobileReports extends React.Component {
             currentUserId,
             handleDenounceBoxOpen,
             handleShouldReportUpdate,
-            router_currentFormValue
+            router_currentFormValue,
+            userBasicData
         } = this.props;
         const { comments_nick, player_id, starter_id } = router_currentFormValue;
         return (
@@ -38,7 +39,7 @@ export default class MobileReports extends React.Component {
                         className="react-tabs__tab mobile-avatar"
                         selectedClassName="react-tabs__tab--selected mobile-avatar"
                     >
-                        <ReportAvatar
+                        <Avatar
                             avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                             avatarImageIndex={comments_nick[starter_id][0]}
                             isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
@@ -49,7 +50,7 @@ export default class MobileReports extends React.Component {
                         className="react-tabs__tab mobile-avatar"
                         selectedClassName="react-tabs__tab--selected mobile-avatar"
                     >
-                         <ReportAvatar
+                         <Avatar
                             avatarBackgroundColorIndex={comments_nick[player_id][1]}
                             avatarImageIndex={comments_nick[player_id][0]}
                             isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
@@ -60,10 +61,13 @@ export default class MobileReports extends React.Component {
 
                 <TabPanel>
                     <ReportList
+                        currentUserId={currentUserId}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
                         reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.starter_id)}
+                        router_currentFormValue={router_currentFormValue}
+                        userBasicData={userBasicData}
                     />
                     {router_currentFormValue.starter_id == currentUserId
                         ? <div>reportButton</div>
@@ -72,10 +76,13 @@ export default class MobileReports extends React.Component {
                 </TabPanel>
                 <TabPanel>
                     <ReportList
+                        currentUserId={currentUserId}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
                         reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.player_id)}
+                        router_currentFormValue={router_currentFormValue}
+                        userBasicData={userBasicData}
                     />
                     {router_currentFormValue.player_id == currentUserId
                         ? <div>reportButton</div>

@@ -12,7 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Textarea from 'react-textarea-autosize';
 
-export default class CommentForm extends React.Component {
+export default class MobileCommentForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,7 +32,7 @@ export default class CommentForm extends React.Component {
 
             const commentPost = {
                 'content': commentContent,
-                'ludo_id': this.props.router_currentLudoId,
+                'ludo_id': this.props.currentUserId,
                 'report_id': this.props.reportId,
                 'type': 'report'
             };
@@ -57,14 +57,13 @@ export default class CommentForm extends React.Component {
     }
 
     render() {
-        const { currentUserId, userBasicData } = this.props;
         /* components/_comment.scss */
         return (
             <div className="single-comment-container">
-                <div className="comment-avatar-container">
+                <div className="avatar-container">
                     <img
-                        className="comment__avatar"
-                        src={userBasicData.photo}
+                        className="avatar-container__photo"
+                        src={this.props.userBasicData.photo}
                     />
                 </div>
                 <Textarea

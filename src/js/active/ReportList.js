@@ -3,11 +3,14 @@ import React from 'react';
 import ReportCard from './ReportCard';
 import MobileCommentBox from './MobileCommentBox';
 
-const ReportList = ({ 
+const ReportList = ({
+    currentUserId,
     handleDenounceBoxOpen,
     handleShouldReportUpdate,
     isThisBelongToCurrentUser,
-    reportList
+    reportList,
+    router_currentFormValue,
+    userBasicData
 }) => (
     <div>
         { 
@@ -23,7 +26,12 @@ const ReportList = ({
                     />
                     <MobileCommentBox
                         commentListFromDatabase={reportObject.comments}
+                        currentUserId={currentUserId}
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
                         reportId={reportObject.report_id}
+                        router_currentFormValue={router_currentFormValue}
+                        userBasicData={userBasicData}
                     />
                 </div>
             ) 

@@ -12,6 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Textarea from 'react-textarea-autosize';
 
+import Avatar from './Avatar';
 import MobileCommentEditButton from './MobileCommentEditButton';
 import MobileCommentExpandMoreButton from './MobileCommentExpandMoreButton';
 
@@ -20,7 +21,7 @@ import { animalImageArray, colorArray } from './avatarImage';
 let animalIndex = 0;
 let colorIndex = 0;
 
-export default class CommentList extends React.Component {
+export default class MobileCommentList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -209,49 +210,40 @@ export default class CommentList extends React.Component {
     }
 
     render() {
-        const { 
+        const { isEditingComment, isEditingCommentIndex } = this.state;
+        const {
+            commentsNick,
             commentListFromDatabase,
             currentUserId,
-            router_currentFormValue,
+            handleDenounceBoxOpen,
+            reportId,
             shouldShowCommentListFromDatabase,
             tempCommentList,
             userBasicData
         } = this.props;
-        const { isEditingComment, isEditingCommentIndex } = this.state;
         return (
             /* components/_comment.scss */
             <div className="comment-list">
                 {
                     /* display temp comments right after user create a new comment */
-                    commentListFromDatabase
-                    && shouldShowCommentListFromDatabase
-                    && router_currentFormValue
-                    && router_currentFormValue.comments_nick
-                    ?
+                    shouldShowCommentListFromDatabase && commentListFromDatabase ?
                         commentListFromDatabase.map((commentObject, index) => {
-                            animalIndex = router_currentFormValue.comments_nick[commentObject.user_id][0];
-                            colorIndex = router_currentFormValue.comments_nick[commentObject.user_id][1];
+                            if (commentsNick) {
+                                animalIndex = commentsNick[commentObject.user_id][0];
+                                colorIndex = commentsNick[commentObject.user_id][1];
+                            }
+                            let isThisBelongToCurrentUser = commentObject.user_id == currentUserId;
                             return (
                                 <div
                                     className="single-comment-container"
                                     key={`comment-${index}`}
                                 >
-                                    <div className="comment-avatar-container">
-                                        {
-                                            /* show specific animal avatar image if comment user is not current user */
-                                            commentObject.user_id === currentUserId ?
-                                            <img
-                                                className="comment__avatar"
-                                                src={userBasicData.photo}
-                                            />
-                                            :
-                                            <img
-                                                className="comment__avatar"
-                                                src={animalImageArray[animalIndex]}
-                                                style={{backgroundColor: colorArray[colorIndex]}}
-                                            />
-                                        }
-                                    </div>
+                                    <Avatar
+                                        avatarBackgroundColorIndex={colorIndex}
+                                        avatarImageIndex={animalIndex}
+                                        isThisBelongToCurrentUser={isThisBelongToCurrentUser}
+                                        userPhotoUrl={userBasicData ? userBasicData.photo : null}
+                                    />
                                     <div className="comment__message">
                                         {
                                             isEditingComment && isEditingCommentIndex.indexOf(`o${index}`) != -1 ?
@@ -268,7 +260,7 @@ export default class CommentList extends React.Component {
                                         }
                                     </div>
                                     {
-                                        commentObject.user_id == this.props.currentUserId ?
+                                        isThisBelongToCurrentUser ?
                                             <MobileCommentEditButton
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
@@ -281,16 +273,16 @@ export default class CommentList extends React.Component {
                                                 isOldOrNew="old"
                                             />
                                         :
-                                            <CommentExpandMoreButton
+                                            <MobileCommentExpandMoreButton
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
-                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
+                                                handleDenounceBoxOpen={handleDenounceBoxOpen}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
                                                 isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
                                                 isOldOrNew="old"
-                                                reportId={this.props.reportId}
+                                                reportId={reportId}
                                             />
                                     }
                                 </div>
@@ -301,37 +293,24 @@ export default class CommentList extends React.Component {
                     }
                     {
                         /* show temp comments right after user create a new comment */
-                        tempCommentList
-                        && !(this.props.shouldShowCommentListFromDatabase)
-                        && this.props.router_currentFormValue
-                        && this.props.router_currentFormValue.comments_nick
-                        ?
+                        !(shouldShowCommentListFromDatabase) && tempCommentList ?
                         tempCommentList.map((commentObject, index) => {
-                            if (this.props.router_currentFormValue && this.props.router_currentFormValue.comments_nick) {
-                                animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
-                                colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
+                            if (commentsNick) {
+                                animalIndex = commentsNick[commentObject.user_id][0];
+                                colorIndex = commentsNick[commentObject.user_id][1];
                             }
+                            let isThisBelongToCurrentUser = commentObject.user_id == currentUserId;
                             return (
                                 <div
                                     className="single-comment-container"
                                     key={`new-comment-${index}`}
                                 >
-                                    <div className="comment-avatar-container">
-                                        {
-                                            /* show specific animal avatar image if comment user is not current user */
-                                            commentObject.user_id === this.props.currentUserId ?
-                                            <img
-                                                className="comment__avatar"
-                                                src={this.props.userBasicData.photo}
-                                            />
-                                            :
-                                            <img
-                                                className="comment__avatar"
-                                                src={animalImageArray[animalIndex]}
-                                                style={{backgroundColor: colorArray[colorIndex]}}
-                                            />
-                                        }
-                                    </div>
+                                    <Avatar
+                                        avatarBackgroundColorIndex={colorIndex}
+                                        avatarImageIndex={animalIndex}
+                                        isThisBelongToCurrentUser={isThisBelongToCurrentUser}
+                                        userPhotoUrl={userBasicData ? userBasicData.photo : null}
+                                    />
                                     <div className="comment__message">
                                         {
                                             isEditingComment && isEditingCommentIndex.indexOf(`n${index}`) != -1 ?
@@ -348,8 +327,8 @@ export default class CommentList extends React.Component {
                                         }
                                     </div>
                                     {
-                                        commentObject.user_id == this.props.currentUserId ?
-                                            <CommentEditButton
+                                        isThisBelongToCurrentUser ?
+                                            <MobileCommentEditButton
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentDelete={this.handleCommentDelete}
@@ -361,16 +340,16 @@ export default class CommentList extends React.Component {
                                                 isOldOrNew="new"
                                             />
                                         :
-                                            <CommentExpandMoreButton
+                                            <MobileCommentExpandMoreButton
                                                 anchorEl={this.state.anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
-                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
+                                                handleDenounceBoxOpen={handleDenounceBoxOpen}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
                                                 isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
                                                 isOldOrNew="new"
-                                                reportId={this.props.reportId}
+                                                reportId={reportId}
                                             />
                                     }
                                 </div>

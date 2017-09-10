@@ -13,7 +13,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MobileCommentForm from './MobileCommentForm';
 import MobileCommentList from './MobileCommentList';
 
-export default class CommentBox extends React.Component {
+export default class MobileCommentBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,28 +51,43 @@ export default class CommentBox extends React.Component {
 
     render() {
         const { shouldShowCommentListFromDatabase, tempCommentList } = this.state;
-        const { currentUserId, reportId, router_currentLudoId, userBasicData } = this.props;
+        const {
+            commentListFromDatabase,
+            currentUserId,
+            handleDenounceBoxOpen,
+            handleShouldReportUpdate,
+            reportId,
+            router_currentFormValue,
+            router_currentLudoId,
+            userBasicData
+        } = this.props;
         return (
             /* components/_single-report.scss */
             <div className="player-report-comment-box-container">
-                <MobileCommentList
-                    getCommentListAfterEdit={this.getCommentListAfterEdit}
-                    shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
-                    tempCommentList={tempCommentList}
-                    updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                    {...this.props}
-                />
-                {
-                    currentUserId ?
-                        <MobileCommentForm
-                            reportId={reportId}
-                            router_currentLudoId={router_currentLudoId}
-                            updateTempCommentList={this.updateTempCommentList}
-                            updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                            userBasicData={userBasicData}
-                        />
-                    :
-                        null
+                {router_currentFormValue ?
+                    <MobileCommentList
+                        commentsNick={router_currentFormValue.comments_nick}
+                        commentListFromDatabase={commentListFromDatabase}
+                        currentUserId={currentUserId}
+                        getCommentListAfterEdit={this.getCommentListAfterEdit}
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
+                        tempCommentList={tempCommentList}
+                        updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
+                        userBasicData={userBasicData}
+                    />
+                    : null
+                }
+                { currentUserId ?
+                    <MobileCommentForm
+                        reportId={reportId}
+                        currentUserId={currentUserId}
+                        updateTempCommentList={this.updateTempCommentList}
+                        updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
+                        userBasicData={userBasicData}
+                    />
+                    : null
                 }
             </div>
         );

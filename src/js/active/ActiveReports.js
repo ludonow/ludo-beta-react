@@ -11,8 +11,8 @@ import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
+import Avatar from './Avatar';
 import CommentBox from './CommentBox';
-import ReportAvatar from './ReportAvatar';
 import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';
 
@@ -457,7 +457,7 @@ export default class ActiveReports extends React.Component {
                 }
                 <div className="report-list-container">
                     <div className="player-container">
-                        <ReportAvatar
+                        <Avatar
                             avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                             avatarImageIndex={comments_nick[starter_id][0]}
                             isThisBelongToCurrentUser={(router_currentFormValue.starter_id == currentUserId)}
@@ -623,7 +623,7 @@ export default class ActiveReports extends React.Component {
                 {/* components/_report-list.scss */}
                 <div className="report-list-container">
                     <div className="player-container">
-                        <ReportAvatar
+                        <Avatar
                             avatarBackgroundColorIndex={comments_nick[player_id][1]}
                             avatarImageIndex={comments_nick[player_id][0]}
                             isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}

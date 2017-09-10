@@ -1,4 +1,4 @@
-.player-avatar-container {
+.avatar-container {
     @extend %flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
         border: 2px solid rgba(0, 0, 0, 0.7);
     }
 
-    .player-avatar-container__photo {
+    .avatar-container__photo {
         width: 60px;
         height: 60px;
         border: 2px solid rgba(0, 0, 0, 0.7);

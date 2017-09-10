@@ -3,7 +3,6 @@ import React from 'react';
 import CommentBox from './CommentBox';
 import MobileReportEditButton from './MobileReportEditButton';
 import MobileReportExpandMoreButton from './MobileReportExpandMoreButton';
-import ReportAvatar from './ReportAvatar';
 import ReportImage from './ReportImage';
 import ReportTags from './ReportTags';
 import ReportText from './ReportText';
