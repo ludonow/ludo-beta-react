@@ -1,7 +1,8 @@
 # ludo-beta
 協助培養習慣的線上平台
+網站連結：http://beta.ludonow.com
 
-## 功能 DEMO 影片
+## 各功能 DEMO 影片
 https://www.youtube.com/watch?v=QEKRN1OrCzY&feature=youtu.be&list=PL46DLmXUXXlxm6BvN7e7jGKstsws0uMQ0
 
 ## 檔案命名
