@@ -2,7 +2,7 @@
 協助培養習慣的線上平台
 
 ## 功能 DEMO 影片
-https://github.com/ludonow/ludo-beta-react/blob/master/DEMO.md
+https://www.youtube.com/watch?v=QEKRN1OrCzY&feature=youtu.be&list=PL46DLmXUXXlxm6BvN7e7jGKstsws0uMQ0
 
 ## 檔案命名
 - 資料夾名稱都是小寫，單字間以-做分隔
