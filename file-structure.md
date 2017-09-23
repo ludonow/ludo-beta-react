@@ -1,0 +1,150 @@
+### src資料夾檔案結構 (依字母順序排列)
+- data (放測試的假資料)
+- images
+- js (主要程式碼)
+    - active
+        - active-for-bystander
+            - ActiveBystanderForm.js
+            - ActiveForBystander.js
+        - active-for-player
+            - ActiveForPlayer.js
+            - ActivePlayerForm.js
+        - ActiveReports.js
+        - CommentBox.js
+        - CommentEditButton.js
+        - CommentExpandMoreButton.js
+        - CommentForm.js
+        - CommentList.js
+        - ReportEditButton.js
+        - ReportExpandMoreButton.js
+    - app
+        - header
+            - Header.js
+            - HeaderClock.js
+            - HeaderFBPhoto.js
+            - HeaderFuel.js
+            - HeaderLevel.js
+            - HeaderLogin.js
+            - HeaderLogo.js
+            - HeaderMarbles.js
+            - HeaderRate.js
+        - search ([未來刪除]此資料夾之後應該用不到了)
+            - Search.js
+            - SearchCard.js
+        - sidebar 
+            - Sidebar.js
+            - SidebarCreate.js
+            - SidebarFriend.js
+            - SidebarPlayground.js
+            - SidebarProfile.js
+            - SidebarReadPlayground.js
+            - SidebarSportsPlayground.js
+        - App.js (API串接大多都在這個檔案裡，僅次於AppRouter，為第二層的component)
+        - AppRouter.js (決定哪個網址連到哪個component，最上層的component)
+        - DenounceBox.js (檢舉的小框框)
+        - index.js (產生index.html的js)
+        - Login.js (登入頁面)
+        - LudoList.js (OpenedForStarter和OpenedForBystander右邊的ludolist)
+    - create
+        - Create.js
+        - CreateForm.js
+    - friend ([未來使用]此資料夾底下的程式碼目前還沒用到)
+        - Friend.js
+        - FriendList.js
+    - ludo-edit
+        - LudoEdit.js
+        - LudoEditForm.js
+    - opened
+        - opened-for-bystander
+            - OpendBystanderForm.js
+            - OpendForBystander.js
+        - opened-for-starter
+            - OpendForStarter.js
+            - OpendStarterForm.js
+    - playground
+        - Playground.js
+        - PlaygroundLudoList.js (跟app資料夾裡的LudoList非常類似，之後重構應該可以合併)
+        - QuickStart.js
+    - profile
+        - Profile.js
+        - ProfileCategoryTabs.js
+        - ProfileContent.js
+        - ProfileHistory.js
+        - ProfileLudoCard.js
+        - ProfileLudoList.js
+        - ProfilePrize.js ([未來使用]現在個人頁面還沒有放成就)
+        - ProfileStatistic.js 
+    - axios-config.js
+    - axios-fakedata-config.js (連接data資料夾假資料的axios設定，後端功能未完成時使用)
+- stylesheets (放CSS和SASS)
+    - components
+        - _card.scss
+        - _comment.scss
+        - _denounce-box.scss
+        - _form.scss
+        - _friend-list.scss ([未來使用])
+        - _header-clock.scss ([未來刪除])
+        - _header-fuel.scss
+        - _header-level.scss
+        - _header-logo.scss
+        - _header-marbles.scss
+        - _header-profile.scss
+        - _header-rate.scss
+        - _login.scss
+        - _ludo-create-information.scss
+        - _ludo-detail-information.scss
+        - _marbles.scss
+        - _playground-quick-start.scss
+        - _profile-card-single-ludo.scss
+        - _profile-card.scss
+        - _profile-content.scss
+        - _profile-history.scss
+        - _profile-ludo.scss
+        - _profile-prize.scss
+        - _profile-statistic.scss
+        - _report-form.scss
+        - _report-list.scss
+        - _single-report.scss
+        - _submit-button.scss
+        - _tags.scss
+    - helpers
+        - _default.scss
+        - _media_query.scss
+        - _mixins.scss
+        - _placeholders.scss
+        - _reset.scss
+        - _variables.scss
+    - layout
+        - _create.scss
+        - _friend.scss
+        - _header.scss
+        - _main-container.scss
+        - _playground.scss
+        - _profile.scss
+        - _right-sidebar.scss
+    - vendor (第三方套件的css)
+        - fonts
+            - rw-widgets.eot
+            - rw-widgets.svg
+            - rw-widgets.ttf
+            - rw-widgets.woff
+        - img
+            - loader-big.gif
+            - loading.gif
+        - react-widgets
+            - bootstrap-theme.scss
+            - core.scss
+            - datepicker.scss
+            - icons.scss
+            - mixins.scss
+            - multiselect.scss
+            - normalize.scss
+            - popoup.scss
+            - react-widgets.scss
+            - selectlist.scss
+            - varaibles.scss
+        - react-component-slider.css
+    - ie.scss
+    - main.scss (import其他scss)
+    - print.scss
+    - screen.scss
