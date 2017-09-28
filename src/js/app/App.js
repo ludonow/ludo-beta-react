@@ -441,6 +441,16 @@ export default class App extends React.Component {
     render() {
         const { isHoveringSidebar } = this.state;
         const { router_currentFormValue } = this.props;
+        let mainContainerClass = '';
+        if (isHoveringSidebar) {
+            mainContainerClass = 'main-container hoveringSidebar';
+        } else {
+            mainContainerClass = 'main-container';
+        }
+        if (this.state.isOpeningLudoListPage) {
+            mainContainerClass += ' playground';
+        }
+
         return (
             <div>
                 <Header
@@ -458,7 +468,7 @@ export default class App extends React.Component {
                 />
                 {/* layout/main-container */}
                 <div
-                    className={isHoveringSidebar ? 'main-container hoveringSidebar' : 'main-container'}
+                    className={mainContainerClass}
                     onScroll={this.handleScrollEvent}
                     ref="mainContainer"
                 >

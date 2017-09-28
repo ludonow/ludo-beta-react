@@ -18,6 +18,12 @@
     animation: slide 0.35s forwards;
 }
 
+@media (max-width: 560px) {
+    .main-container.playground {
+        width: 226px
+    }
+}
+
 .right-sidebar-hover-area{
   z-index: 10;
 }
