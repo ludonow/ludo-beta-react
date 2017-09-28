@@ -213,3 +213,24 @@
             @extend %as_tall_as_parent;
         }
     }
+
+.report-button-bar {
+    @extend %fixed;
+    @extend %bottom;
+    @extend %closer;
+    @extend %as_wide_as_parent;
+    @extend %text_center;
+    padding: 0.8rem 0;
+    background-color: rgba(255,255,255, 0.7);
+
+    .report-button {
+        @extend .ludo-button;
+        @extend %half_width_of_parent;
+        @extend %flex;
+        justify-content: center;
+        @extend %margin_center_x;
+        padding: 0.3rem 0;
+        background-color: orange;
+        color: white;
+    }
+}

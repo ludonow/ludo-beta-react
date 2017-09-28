@@ -3,6 +3,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Avatar from './Avatar';
+import ReportButton from './ReportButton';
 import ReportList from './ReportList';
 import ReportText from './ReportText';
 
@@ -70,7 +71,7 @@ export default class MobileReports extends React.Component {
                         userBasicData={userBasicData}
                     />
                     {router_currentFormValue.starter_id == currentUserId
-                        ? <div>reportButton</div>
+                        ? <ReportButton />
                         : null
                     }
                 </TabPanel>
@@ -85,7 +86,7 @@ export default class MobileReports extends React.Component {
                         userBasicData={userBasicData}
                     />
                     {router_currentFormValue.player_id == currentUserId
-                        ? <div>reportButton</div>
+                        ? <ReportButton />
                         : null
                     }
                 </TabPanel>
