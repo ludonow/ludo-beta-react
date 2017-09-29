@@ -1,0 +1,7 @@
+.header-left-arrow-container {
+    width: 10%;
+    @extend %as_tall_as_parent;
+    @extend %absolute;
+    display: flex;
+    align-items: center;
+}

@@ -1,18 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory, Link } from 'react-router';
+import MediaQuery from 'react-responsive';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFilter from './HeaderFilter';
 import HeaderFuel from './HeaderFuel';
 import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
+import HeaderPrevPageArrow from './HeaderPrevPageArrow';
 import HeaderRate from './HeaderRate';
 
-import facebookIcon from '../../../images/login/facebook-icon.png';
 import Playground from '../../playground/Playground';
 import Profile from '../../profile/Profile';
 import Create from '../../create/Create';
 import Friend from '../../friend/Friend';
+
+import facebookIcon from '../../../images/login/facebook-icon.png';
 
 export default class Header extends Component {
     constructor(props) {
@@ -44,6 +47,9 @@ export default class Header extends Component {
             /* layout/_header.scss */
             <div className="header">
                 <div className="header-left">
+                    <MediaQuery maxDeviceWidth={768}>
+                        <HeaderPrevPageArrow />
+                    </MediaQuery>
                     <HeaderLogo />
                     {
                         isOpeningLudoListPage ?
