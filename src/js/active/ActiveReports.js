@@ -535,7 +535,6 @@ export default class ActiveReports extends React.Component {
                                      <a target="_blank" href={`http://${result[1]}.${result[2]}${result[3]}`}>{result[1]}.{result[2]}{result[3]}</a>{result[4]}
                                  </span>
         }];
-        let stringWithLinks = "Watch this on youtube.com";
         return (
             /* components/_report-list.scss */
             <div className="report-list">

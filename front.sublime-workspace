@@ -36,47 +36,22 @@
 	"buffers":
 	[
 		{
-			"file": "src/js/create/CreateForm.js",
+			"file": "src/js/active/CommentList.js",
 			"settings":
 			{
-				"buffer_size": 24260,
+				"buffer_size": 22351,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/stylesheets/components/_ludo-create-information.scss",
+			"contents": "",
 			"settings":
 			{
-				"buffer_size": 5027,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/stylesheets/components/_tags.scss",
-			"settings":
-			{
-				"buffer_size": 4443,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/stylesheets/components/_submit-button.scss",
-			"settings":
-			{
-				"buffer_size": 1366,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/js/create/Create.js",
-			"settings":
-			{
-				"buffer_size": 631,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"buffer_size": 0,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
 			}
 		}
 	],
@@ -124,11 +99,18 @@
 		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active",
 		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active/active-for-player",
 		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/create",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/ludo-edit",
 		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets",
 		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets/components"
 	],
 	"file_history":
 	[
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active/ActiveReports.js",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/create/Create.js",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets/components/_submit-button.scss",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets/components/_tags.scss",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/stylesheets/components/_ludo-create-information.scss",
+		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/create/CreateForm.js",
 		"/Users/seango/Documents/ludo/ludo-beta/front/src/js/active/active-for-player/ActivePlayerForm.js",
 		"/Users/seango/Documents/ludo/ludo-beta/front/front.sublime-project",
 		"/Users/seango/Documents/ludo/ludo-beta/front/.eslintrc",
@@ -152,6 +134,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"eportObject.content",
+			"report-content",
 			"top",
 			"icon",
 			"ic",
@@ -179,159 +163,71 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/js/create/CreateForm.js",
+					"file": "src/js/active/CommentList.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 24260,
+						"buffer_size": 22351,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								22261,
-								22272
+								19404,
+								19418
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 7249.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/stylesheets/components/_ludo-create-information.scss",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5027,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4765,
-								4765
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2124.0,
+						"translation.y": 5943.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/stylesheets/components/_tags.scss",
+					"buffer": 1,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4443,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								164,
-								164
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/CSS/CSS.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/stylesheets/components/_submit-button.scss",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1366,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								119,
-								119
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/js/create/Create.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 631,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								456,
-								456
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
