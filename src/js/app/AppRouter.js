@@ -10,6 +10,7 @@ import Friend from '../friend/Friend';
 import Invite from '../create/Invite';
 import LogIn from './LogIn.js';
 import LudoEdit from '../ludo-edit/LudoEdit';
+import MobileReportForm from '../active/MobileReportForm';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
@@ -31,8 +32,20 @@ import Template from '../create/Template';
     9           stage 0 not login (same as 0, may be modified in the future)
 */
 
-const ludoPageArray = [OpenedForBystander, OpenedForStarter, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForPlayer, ActiveForPlayer, Template, Template, Template];
-const ludoPageArrayForEdit = [OpenedForBystander, LudoEdit, OpenedForBystander, ActiveForPlayer, ActiveForPlayer, ActiveForBystander, ActiveForBystander, Template, Template, Template];
+const ludoPageArray = [
+    OpenedForBystander,
+    OpenedForStarter,
+    OpenedForBystander,
+    ActiveForPlayer,
+    ActiveForPlayer,
+    ActiveForBystander,
+    ActiveForPlayer,
+    Template,
+    Template,
+    Template
+];
+// TODO: modify auth 6 to ActiveForBystander
+const ludoPageArrayForEdit = ludoPageArray.slice(0, 1).concat([LudoEdit], ludoPageArray.slice(2));
 
 const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
@@ -133,6 +146,7 @@ export default class AppRouter extends React.Component {
                         onEnter={ludoRedirect}
                     >
                     </Route>
+                    <Route path="ludo/:ludo_id/mobile-report-form" component={MobileReportForm}></Route>
                     <Route
                         path="ludo-edit/:ludo_id"
                         getComponent={(nextState, cb) => {
@@ -144,7 +158,7 @@ export default class AppRouter extends React.Component {
                                     router_currentLudoId={router_currentLudoId}
                                 />);
                         }} 
-                        onEnter={isLoggedIn, ludoEditRedirect}
+                        onEnter={[isLoggedIn, ludoEditRedirect]}
                         OnLeave={ludoRedirect}
                     >
                     </Route>

@@ -29,6 +29,7 @@ export default class MobileReports extends React.Component {
             currentUserId,
             handleDenounceBoxOpen,
             handleShouldReportUpdate,
+            params,
             router_currentFormValue,
             userBasicData
         } = this.props;
@@ -71,7 +72,7 @@ export default class MobileReports extends React.Component {
                         userBasicData={userBasicData}
                     />
                     {router_currentFormValue.starter_id == currentUserId
-                        ? <ReportButton />
+                        ? <ReportButton ludoId={params.ludo_id} />
                         : null
                     }
                 </TabPanel>
@@ -86,7 +87,7 @@ export default class MobileReports extends React.Component {
                         userBasicData={userBasicData}
                     />
                     {router_currentFormValue.player_id == currentUserId
-                        ? <ReportButton />
+                        ? <ReportButton ludoId={params.ludo_id} />
                         : null
                     }
                 </TabPanel>

@@ -232,5 +232,13 @@
         padding: 0.3rem 0;
         background-color: orange;
         color: white;
+
+        & > a {
+            text-decoration: none;
+        }
     }
+}
+
+.mobile-report-form {
+    padding: 8%;
 }
