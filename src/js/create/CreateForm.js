@@ -38,7 +38,7 @@ export default class CreateForm extends React.Component {
             isMarblesSelected: false,
             isSuccesfullyCreateLudo: false,
             maxDuration: 14,
-            maxLengthOfIntroduction: 140,
+            maxLengthOfIntroduction: 300,
             maxMarbles: 50,
             suggestions: ["Banana", "Mango", "Pear", "Apricot"]
         };
@@ -168,11 +168,11 @@ export default class CreateForm extends React.Component {
         });
         if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
             this.setState({
-                maxLengthOfIntroduction: 140
+                maxLengthOfIntroduction: 300
             });
         } else {
             this.setState({
-                maxLengthOfIntroduction: 140*3
+                maxLengthOfIntroduction: 300*3
             });
         }
     }
