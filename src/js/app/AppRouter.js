@@ -10,7 +10,7 @@ import Friend from '../friend/Friend';
 import Invite from '../create/Invite';
 import LogIn from './LogIn.js';
 import LudoEdit from '../ludo-edit/LudoEdit';
-import MobileReportForm from '../active/MobileReportForm';
+import MobileReportForm from '../active/mobile-report-form/MobileReportForm';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
@@ -146,7 +146,19 @@ export default class AppRouter extends React.Component {
                         onEnter={ludoRedirect}
                     >
                     </Route>
-                    <Route path="ludo/:ludo_id/mobile-report-form" component={MobileReportForm}></Route>
+                    <Route
+                        getComponent={(nextState, cb) => {
+                            cb(null, props => 
+                                <MobileReportForm 
+                                    {...props} 
+                                    router_currentFormValue={router_currentFormValue}
+                                    router_currentLudoId={router_currentLudoId}
+                                />);
+                        }}
+                        path="ludo/:ludo_id/mobile-report-form"
+                        onEnter={ludoRedirect}
+                    >
+                    </Route>
                     <Route
                         path="ludo-edit/:ludo_id"
                         getComponent={(nextState, cb) => {

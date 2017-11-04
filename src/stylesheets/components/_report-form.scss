@@ -225,6 +225,7 @@
 
     .report-button {
         @extend .ludo-button;
+        @extend .disabled-button;
         @extend %half_width_of_parent;
         @extend %flex;
         justify-content: center;
@@ -237,8 +238,4 @@
             text-decoration: none;
         }
     }
-}
-
-.mobile-report-form {
-    padding: 8%;
 }
