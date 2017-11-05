@@ -1,18 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router';
 
-export default class ReportButton extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+/* components/report-from.scss */
+const ReportButton = ({
+    disabled,
+    label,
+    url
+}) => (
+    <div className="report-button-bar">
+        <button
+            className="report-button"
+            disabled={disabled}
+        >
+            <Link to={url}>{label}</Link>
+        </button>
+    </div>
+);
 
-    /* components/report-from.scss */
-    render() {
-        return (
-            <div className="report-button-bar">
-                <div className="report-button">
-                    report button
-                </div>
-            </div>
-        );
-    }
-}
+export default ReportButton;

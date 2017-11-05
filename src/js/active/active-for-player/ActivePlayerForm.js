@@ -291,7 +291,7 @@ export default class ActivePlayerForm extends React.Component {
                             <div className="upload-content-and-tags">
                                 <textarea
                                     className="upload-text-container"
-                                    maxLength="140"
+                                    maxLength="300"
                                     onChange={this.handleReportTextChange}
                                     // placeholder="Report here"
                                     placeholder="分享你養成習慣的心得以及圖片吧！"

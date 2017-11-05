@@ -12,8 +12,8 @@ const ReportList = ({
     router_currentFormValue,
     userBasicData
 }) => (
-    <div>
-        { 
+    <div className="mobile-report-list">
+        {
             reportList && reportList.map((reportObject, index) => 
                 <div>
                     <ReportCard

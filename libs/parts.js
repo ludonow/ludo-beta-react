@@ -92,7 +92,7 @@ exports.extractBundle = function(options) {
         plugins: [
             // Extract bundle and manifest files. Manifest is needed for reliable caching.
             new webpack.optimize.CommonsChunkPlugin({
-                names: [options.name, 'manifest']
+                names: [options.name, 'runtime']
             })
         ]
     };

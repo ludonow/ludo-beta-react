@@ -38,7 +38,7 @@ export default class TemplateForm extends React.Component {
             isMarblesSelected: true,
             isSubmitButtonClickable: false,
             maxDuration: 14,
-            maxLengthOfIntroduction: 140,
+            maxLengthOfIntroduction: 300,
             maxMarbles: 50,
         };
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
@@ -175,11 +175,11 @@ export default class TemplateForm extends React.Component {
         });
         if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
             this.setState({
-                maxLengthOfIntroduction: 140
+                maxLengthOfIntroduction: 300
             });
         } else {
             this.setState({
-                maxLengthOfIntroduction: 140*3
+                maxLengthOfIntroduction: 300*3
             });
         }
     }
@@ -448,7 +448,7 @@ export default class TemplateForm extends React.Component {
                             className="text-field--introduction"
                             // placeholder="Introduction"
                             maxLength={maxLengthOfIntroduction}
-                            placeholder={`詳細的說明(中文最多140字)`}
+                            placeholder={`詳細的說明(中文最多300字)`}
                             onChange={this.handleIntroductionChange}
                             value={ludoCreateForm.introduction}
                         />

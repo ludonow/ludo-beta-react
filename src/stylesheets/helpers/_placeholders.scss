@@ -69,3 +69,11 @@
     border-top: none;
     // border: none;
 }
+
+.disabled-button {
+    &:disabled {
+        @extend %unclickable;
+        background-color: $gray;
+        border: none;
+    }
+}

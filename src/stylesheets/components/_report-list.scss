@@ -14,3 +14,7 @@
     .player-container {
         @extend %as_wide_as_parent;
     }
+
+.mobile-report-list {
+    margin-bottom: 60px;
+}
