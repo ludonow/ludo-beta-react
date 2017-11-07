@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from '../axios-config';
 
 import CommentBox from './CommentBox';
 import MobileReportEditButton from './MobileReportEditButton';
@@ -24,6 +25,7 @@ export default class ReportCard extends React.Component {
         this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.handleReportDelete = this.handleReportDelete.bind(this);
     }
 
     handleIsDenounceReport(boolean) {
@@ -53,36 +55,27 @@ export default class ReportCard extends React.Component {
     handleReportDelete(event) {
         const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
         if (isSureToDelelteReport) {
-            // const SPIndex = (event.currentTarget.id).slice(0, 1);
-            const SPIndex = (this.state.anchorEl.id).slice(0, 1);
-            const arrayIndex = Number(event.currentTarget.id.slice(-1));
-            let report_id = null;
-            if (SPIndex == 's') {
-                report_id = this.state.starterReportList[arrayIndex].report_id;
-            } else if (SPIndex == 'p') {
-                report_id = this.state.playerReportList[arrayIndex].report_id;
-            }
+
             this.setState({
                 isPopOverOfEditOpen: false
             });
-            if (report_id) {
-              const { router_currentFormValue } = this.props;
-              const { ludo_id } = router_currentFormValue;
-              axios.delete(`apis/report/${report_id}/${ludo_id}`)
-                .then(response => {
-                    if(response.data.status === '200'){
-                        this.props.handleShouldReportUpdate(true);
-                    } else {
-                        window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                        console.error(' handleReportDelete else response: ', response);
-                        console.error(' handleReportDelete else message: ', response.data.message);
-                    }
-                })
-                .catch(error => {
+
+            const { reportObject ,reportId } = this.props;
+            axios.delete(`apis/report/${reportId}/${reportObject.ludo_id}`)
+            .then(response => {
+                if(response.data.status === '200'){
+                    this.props.handleShouldReportUpdate(true);
+                } else {
                     window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                    console.error(' handleReportDelete error: ', error);
-                });
-            }
+                    console.error(' handleReportDelete else response: ', response);
+                    console.error(' handleReportDelete else message: ', response.data.message);
+                }
+            })
+            .catch(error => {
+                window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
+                console.error(' handleReportDelete error: ', error);
+            });
+            
         }
     }
 
