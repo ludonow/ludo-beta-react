@@ -4217,6 +4217,12 @@ react-router@^2.5.2:
     loose-envify "^1.2.0"
     warning "^3.0.0"
 
+react-stepzilla@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/react-stepzilla/-/react-stepzilla-4.6.3.tgz#187a6f8a67df386876f9c19152b5b7f5b63e0eb8"
+  dependencies:
+    babel-loader "^6.2.4"
+
 react-tabs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-1.1.0.tgz#f1e3d6136e1d89f70f5ef8835468a2f03a54777a"

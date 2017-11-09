@@ -10,6 +10,7 @@ import Friend from '../friend/Friend';
 import Invite from '../create/Invite';
 import LogIn from './LogIn.js';
 import LudoEdit from '../ludo-edit/LudoEdit';
+import MobileCreateForm from '../create/mobile-create-form/MobileCreateForm';
 import MobileReportForm from '../active/mobile-report-form/MobileReportForm';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
@@ -174,6 +175,7 @@ export default class AppRouter extends React.Component {
                         OnLeave={ludoRedirect}
                     >
                     </Route>
+                    <Route path="mobile-create-form" component={MobileCreateForm} onEnter={isLoggedIn}></Route>
                     <Route path="playground" component={Playground}></Route>
                     <Route path="profile(/:userId)" component={Profile} onEnter={isLoggedIn}></Route>
                     <Route path="signup" component={SignUp}></Route>
