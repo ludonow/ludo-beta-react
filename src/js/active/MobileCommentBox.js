@@ -58,7 +58,6 @@ export default class MobileCommentBox extends React.Component {
             handleShouldReportUpdate,
             reportId,
             router_currentFormValue,
-            router_currentLudoId,
             userBasicData
         } = this.props;
         return (
@@ -72,6 +71,7 @@ export default class MobileCommentBox extends React.Component {
                         getCommentListAfterEdit={this.getCommentListAfterEdit}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleShouldReportUpdate={handleShouldReportUpdate}
+                        reportId={reportId}
                         shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
                         tempCommentList={tempCommentList}
                         updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
@@ -81,8 +81,10 @@ export default class MobileCommentBox extends React.Component {
                 }
                 { currentUserId ?
                     <MobileCommentForm
-                        reportId={reportId}
                         currentUserId={currentUserId}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        ludoId={router_currentFormValue.ludo_id}
+                        reportId={reportId}
                         updateTempCommentList={this.updateTempCommentList}
                         updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
                         userBasicData={userBasicData}

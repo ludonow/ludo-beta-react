@@ -32,7 +32,7 @@ export default class MobileCommentForm extends React.Component {
 
             const commentPost = {
                 'content': commentContent,
-                'ludo_id': this.props.currentUserId,
+                'ludo_id': this.props.ludoId,
                 'report_id': this.props.reportId,
                 'type': 'report'
             };
@@ -40,6 +40,7 @@ export default class MobileCommentForm extends React.Component {
             .then((response) => {
                 if (response.data.status === '200') {
                     this.props.updateTempCommentListAfterPost(response.data.comment.comments);
+                    this.props.handleShouldReportUpdate(true);
                 } else {
                     console.error('CommentForm post response from server: ', response);
                     console.error('CommentForm post message from server: ', response.data.message);
