@@ -13,10 +13,14 @@
 @import "components/ludo-create-information";
 @import "components/ludo-detail-information";
 @import "components/marbles";
+@import "components/mobile-create-form";
+@import "components/mobile-report-form";
+@import "components/report-avatar";
 @import "components/report-form";
 @import "components/report-list";
 @import "components/submit-button";
 @import "components/slider";
+@import "components/tabs";
 @import "components/tags";
 
 @import "layout/header";
@@ -27,5 +31,7 @@
 @import "layout/create";
 @import "layout/friend";
 
+@import "vendor/font-awesome/font-awesome";
 @import "vendor/react-widgets/react-widgets";
 @import "vendor/react-component-slider";
+@import "vendor/react-tabs";

@@ -12,7 +12,7 @@ const style = {
     'fontSize': '14px'
 };
 
-export default class CommentEditButton extends Component {
+export default class CommentExpandMoreButton extends Component {
     constructor(props) {
         super(props);
         this.handleCommentDenounce = this.handleCommentDenounce.bind(this);

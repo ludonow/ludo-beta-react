@@ -38,7 +38,7 @@ export default class CommentForm extends React.Component {
             };
             axios.post('/apis/comment', commentPost)
             .then((response) => {
-                if(response.data.status === '200') {
+                if (response.data.status === '200') {
                     this.props.updateTempCommentListAfterPost(response.data.comment.comments);
                 } else {
                     console.error('CommentForm post response from server: ', response);
