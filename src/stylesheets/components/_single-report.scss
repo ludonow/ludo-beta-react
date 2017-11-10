@@ -6,9 +6,33 @@
         @extend %flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
         max-width: 100%;
         padding: 5px;
         border-bottom: 1px dashed $gray;
+        .editing-image {
+            display: inline-flex;
+            text-align: center;
+
+            .upload {
+                display: inline-flex;
+                border: solid 1px $gray;
+
+                .upload-description {
+                    align-self: center;
+                    font-size: 12px;
+                }
+    
+                .upload-picture-button__icon {
+                    width: 30px;
+                    height: 30px;
+                    padding-bottom: 5px;
+                }
+            }
+            .cancel-button {
+                margin-left: 30px;
+            }
+        }
     }
     .report-content {
         max-width: 100%;

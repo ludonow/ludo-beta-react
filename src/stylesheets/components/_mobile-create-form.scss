@@ -1,0 +1,10 @@
+.category-buttons-container {
+    $colorsOfCategory: yellow, orange, green, cyan, blue, purple, magenta;
+    $repeat: 7;
+    
+    @for $i from 1 through $repeat {
+        button:nth-child(#{length($colorsOfCategory)}n+#{$i}) {
+            background: lighten(nth($colorsOfCategory, random(length($colorsOfCategory))), 20%);
+        }
+    }
+}

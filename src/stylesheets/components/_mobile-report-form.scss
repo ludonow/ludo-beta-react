@@ -1,0 +1,33 @@
+.mobile-report-form {
+    padding: 5%;
+}
+
+.mobile-report-form-text-container {
+    @extend %relative;
+    @extend %as_wide_as_parent;
+    margin: 10px 0;
+    border: 1px solid black;
+    background-color: white;
+}
+.mobile-report-form-textarea {
+    @extend %as_wide_as_parent;
+    border: 0;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.mobile-report-form-image-dropzone {
+    @extend %relative;
+    border: 1px solid black;
+    padding: 10px;
+    background-color: white;
+}
+.mobile-preview {
+    margin: 5px 0;
+}
+
+.mobile-report-form-status {
+    @extend %absolute;
+    @extend %right;
+    @extend %bottom;
+}

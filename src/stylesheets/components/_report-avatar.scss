@@ -1,0 +1,26 @@
+.avatar-container {
+    @extend %flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    
+    @media all and (min-width: 768px) {
+        background-color: white;
+        border: 2px solid rgba(0, 0, 0, 0.7);
+    }
+
+    .avatar-container__photo {
+        width: 60px;
+        height: 60px;
+        border: 2px solid rgba(0, 0, 0, 0.7);
+        border-radius: 50%;
+        background-color: gray;
+    }
+}
+
+.player-health-point {
+    @extend %flex;
+    align-items: center;
+    justify-content: center;
+}
