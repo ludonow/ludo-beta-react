@@ -5,3 +5,4 @@ build/
 desktop.ini
 front.sublime-project
 front.sublime-workspace
+.DS_Store
