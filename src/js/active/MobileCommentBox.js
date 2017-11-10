@@ -58,6 +58,7 @@ export default class MobileCommentBox extends React.Component {
             handleShouldReportUpdate,
             reportId,
             router_currentFormValue,
+            router_currentLudoId,
             userBasicData
         } = this.props;
         return (
