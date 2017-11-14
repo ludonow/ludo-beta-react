@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey200 } from 'material-ui/styles/colors';
 
 const Tag = ({
     handleTagDelete,
     id,
     tag
 }) => (
-    <span
-        className="tag"
-    >
-        #{tag}
-        <DeleteIcon
-            color={grey500}
-            data-id={id}
-            onTouchTap={handleTagDelete}
-        />
+    <span className="tag">
+        <span className="tag-text">
+            #{tag}
+        </span>
+        <div className="delete-button-container">
+            <DeleteIcon
+                color={grey200}
+                data-id={id}
+                onTouchTap={handleTagDelete}
+            />
+        </div>
     </span>
 );
 

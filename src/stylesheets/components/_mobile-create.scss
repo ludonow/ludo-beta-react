@@ -16,14 +16,30 @@
     }
 
     .tag-container {
+        @extend %flex;
+        flex-flow: row wrap;
         margin-top: 20px;
     }
 
     .tag {
-        margin: 0 5px;
+        @extend %relative;
+        @extend %flex;
+        align-items: center;
+        margin: 5px;
         border-radius: 20px;
         padding: 8px 24px;
         color: white;
         background-color: $orange;
+
+        .tag-text {
+            margin-right: 5px;
+        }
+
+        .delete-button-container {
+            @extend %absolute;
+            right: 5px;
+            top: 5px;
+        }
     }
+
 }

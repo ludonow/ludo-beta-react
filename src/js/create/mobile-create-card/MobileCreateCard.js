@@ -47,9 +47,10 @@ export default class MobileCreateCard extends Component {
 
     handleTagAdd(tag) {
         const { tags } = this.state;
+        const tagWithoutHash = tag.replace(/^#/g, '');
         const newTags = [
             ...tags,
-            tag
+            tagWithoutHash
         ];
         this.setState({
             tags: newTags
