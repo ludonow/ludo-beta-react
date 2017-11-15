@@ -22,6 +22,7 @@ export default class Header extends Component {
         super(props);
         this.handleFilterClick = this.handleFilterClick.bind(this);
         this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
+        this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
     }
 
     handleFilterClick(event) {
@@ -31,6 +32,11 @@ export default class Header extends Component {
 
     handleTemplateFilterClick() {
         this.props.getFilteredLudoList('stage=0');
+        browserHistory.push('/playground');
+    }
+
+    handleHistoryFilterClick() {
+        this.props.getFilteredLudoList('stage=3');
         browserHistory.push('/playground');
     }
 
@@ -51,21 +57,6 @@ export default class Header extends Component {
                         <HeaderPrevPageArrow />
                     </MediaQuery>
                     <HeaderLogo />
-                    {
-                        /* components/_header-filter.scss */
-                        isOpeningLudoListPage ?
-                            <div className="filter-button-container">
-                                <button
-                                    className="filter-button"
-                                    onClick={this.handleFilterClick}
-                                    value="stage=3"
-                                >
-                                    歷史紀錄
-                                </button>
-                            </div>
-                        :
-                            null
-                    }
                 </div>
                 <div className="header-right">
                     <HeaderFuel heart={heart} />
@@ -86,11 +77,13 @@ export default class Header extends Component {
                     <div className="menu-box">
                         <div className="menu-circle"></div>
                         <ul className="menu-items">
+
                             <li><span onClick={this.handleFilterClick}>Playground</span></li>
                             <li><span onClick={this.handleTemplateFilterClick}>Template</span></li>
                             <li><Link to="/profile">Profile</Link></li>
                             <li><Link to="/create">Create</Link></li>
                             <li><Link to="/friend">Friends</Link></li>
+                            <li><span onClick={this.handleHistoryFilterClick}>History</span></li>
                             {/* TODO: RWD for fab-menu in log in page */}
                             <li>
                                 {

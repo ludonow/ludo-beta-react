@@ -17,6 +17,7 @@ import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
+import processString from 'react-process-string';
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
@@ -437,7 +438,7 @@ export default class ActiveReports extends React.Component {
             isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex,
             isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser
         } = this.state;
-        const processString = require('react-process-string');
+       
         let config = [{
             regex: /(http|https):\/\/(\S+)\.([a-z]{2,}?)(.*?)( |\,|$|\.)/gim,
             fn: (key, result) => <span key={key}>
@@ -449,7 +450,6 @@ export default class ActiveReports extends React.Component {
                                      <a target="_blank" href={`http://${result[1]}.${result[2]}${result[3]}`}>{result[1]}.{result[2]}{result[3]}</a>{result[4]}
                                  </span>
         }];
-        let stringWithLinks = "Watch this on youtube.com";
 
         const { currentUserId, router_currentFormValue, userBasicData } = this.props;
         const { comments_nick, player_id, starter_id } = router_currentFormValue;
