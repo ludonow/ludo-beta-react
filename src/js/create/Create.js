@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
+import MediaQuery from 'react-responsive';
 
 import CreateForm from './CreateForm';
-import LudoList from '../app/LudoList';
+import MobileCreateCard from './mobile-create-card/MobileCreateCard';
 
-export default class Create extends React.Component {
+export default class Create extends Component {
     constructor(props) {
         super(props);
     }
@@ -11,13 +12,13 @@ export default class Create extends React.Component {
     render() {
         return (
             /* components/_form.scss */
-            <div className="form-and-list">
-                {/*<div className="form">*/}
+            <div>
+                <MediaQuery minDeviceWidth={768} className="form-and-list">
                     <CreateForm {...this.props} />
-                {/*</div>*/}
-                {/*<div className="form-ludo-list-container">
-                    <LudoList {...this.props} />
-                </div>*/}
+                </MediaQuery>
+                <MediaQuery maxDeviceWidth={768}>
+                    <MobileCreateCard {...this.props} />
+                </MediaQuery>
             </div>
         );
     }

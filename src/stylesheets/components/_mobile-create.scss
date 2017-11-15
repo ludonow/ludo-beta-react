@@ -2,8 +2,9 @@
     @extend %relative;
     top: 10px;
     margin: 0 10px;
+    padding: 10px;
     background-color: white;
-    
+
     .card-title {
         padding: 20px;
         text-align: center;
@@ -24,12 +25,12 @@
     .tag {
         @extend %relative;
         @extend %flex;
+        @extend .round-radius-button;
         align-items: center;
-        margin: 5px;
-        border-radius: 20px;
-        padding: 8px 24px;
-        color: white;
         background-color: $orange;
+        margin: 5px;
+        padding: 8px 20px;
+        font-size: 0.8rem;
 
         .tag-text {
             margin-right: 5px;
@@ -37,9 +38,16 @@
 
         .delete-button-container {
             @extend %absolute;
-            right: 5px;
-            top: 5px;
+            right: 3px;
+            top: 3px;
         }
     }
 
+    .button-container {
+        @extend %text_center;
+
+        button {
+            @extend .round-radius-button;
+        }
+    }
 }

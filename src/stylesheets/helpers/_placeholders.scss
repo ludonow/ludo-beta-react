@@ -77,3 +77,12 @@
         border: none;
     }
 }
+
+.round-radius-button {
+    border-radius: 20px;
+    padding: 8px 35px;
+    background-color: $cyan;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}

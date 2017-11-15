@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 
 import axios from '../../axios-config';
 
-import MobileCreateForm from './MobileCreateForm';
+import ButtonContainer from './ButtonContainer';
 import CardTitle from './CardTitle';
-import PrevButton from './PrevButton';
-import NextButton from './NextButton';
+import MobileCreateForm from './MobileCreateForm';
 
-const maxStep = 1;
 const stepTitles = [
     '創建卡片',
     '遊戲條件'
@@ -93,18 +91,10 @@ export default class MobileCreateCard extends Component {
                     step={step}
                     tags={tags}
                 />
-                {
-                    step == 0 ? 
-                        null
-                    :
-                        <PrevButton handleStepChange={this.handleStepChange} />
-                }
-                {
-                    step == maxStep ?
-                        null
-                    :
-                        <NextButton handleStepChange={this.handleStepChange} />
-                }
+                <ButtonContainer
+                    handleStepChange={this.handleStepChange}
+                    step={step}
+                />
             </div>
         );
     }

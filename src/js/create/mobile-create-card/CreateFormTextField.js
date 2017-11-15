@@ -56,6 +56,7 @@ export default class CreateFormTextField extends Component {
                 <TextField
                     // errorStyle={styles.errorStyle}
                     // errorText="必填"
+                    fullWidth
                     hintText="標題名稱"
                     onChange={this.handleTitleChange}
                     underlineFocusStyle={styles.underlineStyle}
@@ -64,6 +65,7 @@ export default class CreateFormTextField extends Component {
                 <TextField
                     // errorStyle={styles.errorStyle}
                     // errorText="必填"
+                    fullWidth
                     hintText="簡介"
                     multiLine
                     onChange={this.handleIntroductionChange}
@@ -73,6 +75,7 @@ export default class CreateFormTextField extends Component {
                 <TextField
                     // errorStyle={styles.errorStyle}
                     // errorText="必填"
+                    fullWidth
                     hintText="標籤"
                     onChange={this.handleTagInputChange}
                     onKeyUp={this.handleTagInputKeyUp}
