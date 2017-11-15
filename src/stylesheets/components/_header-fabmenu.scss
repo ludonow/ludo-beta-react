@@ -27,12 +27,13 @@ label.fab-menu {
 
 .menu-box {
     @extend %relative;
-    border: 2px dashed orange;
-    @include circle(40px,transparent);
+    /*border: 2px dashed orange;*/
+    @include circle(46px,transparent);
     transition: 0.3s;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
     -o-transition: 0.3s;
+    background: url(../images/header/menubox.svg);
 }
 
 .menu-circle {
@@ -42,7 +43,10 @@ label.fab-menu {
     left: 0;
     right: 0;
     margin: auto;
-    @include circle(20px, orange);
+    /*@include circle(28px, white);
+    opacity: 0.84;
+    filter: alpha(opacity=84); 
+    box-shadow: 0 3px 6px #000000;*/
     transition: 0.3s;
     -webkit-trnasition: 0.3s;
     -moz-transtition: 0.3s;
@@ -56,11 +60,11 @@ label.fab-menu {
 
 .menu-items {
     @extend %relative;
-    width: 110px;
+    width: 116px;
     right: 35px;
     margin: 0;
     padding: 0;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: transparent;
     text-align: center;
     transform: translateY(-40%) scale(0) translateX(-30%);
     -webkit-transform: translateY(-40%) scale(0) translateX(-30%);
@@ -74,9 +78,11 @@ label.fab-menu {
 
 .menu-items li {
     width: 100px;
+    margin-top: 14px; 
     padding: 5px;
     list-style: none;
     color: white;
+    background: #4A4A4A;
 }
 
 .menu-items li:hover {
@@ -85,8 +91,8 @@ label.fab-menu {
 
 .menu-items{
   a span {
-      color: #fff;
-      line-height: 1.5;
+      color: #4A4A4A;
+      font-size: 16px;
   }
 }
 
@@ -97,7 +103,7 @@ label.fab-menu {
 }
 
 input:checked.fab-menu-checkbox + .menu-box {
-    border: 2px dashed rgba(0,0,0,0.9);
+    /*border: 2px dashed rgba(0,0,0,0.9);*/
     transition: 0.3s;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
@@ -105,7 +111,7 @@ input:checked.fab-menu-checkbox + .menu-box {
 }
 
 input:checked.fab-menu-checkbox + .menu-box .menu-circle {
-    background-color: rgba(0,0,0,0.95);
+    /*background-color: rgba(0,0,0,0.95);*/
     transition: 0.3s;
     -webkit-transition: 0.3s;
     -moz-transition: 0.3s;
