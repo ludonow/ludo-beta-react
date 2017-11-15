@@ -1,4 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import RcSlider from 'rc-slider';
+
+const maxDuration = 14;
 
 export default class DaySlider extends Component {
     constructor(props) {
@@ -6,10 +9,26 @@ export default class DaySlider extends Component {
     }
 
     render() {
+        const {
+            duration,
+            handleDurationChange
+        } = this.props;
+
         return (
             <div>
-                DaySlider
+                <RcSlider
+                    max={maxDuration}
+                    min={3}
+                    defaultValue={duration}
+                    onChange={handleDurationChange}
+                    value={duration}
+                />
             </div>
         );
     }
 }
+
+DaySlider.propTypes = {
+    duration: PropTypes.number.isRequired,
+    handleDurationChange: PropTypes.func.isRequired
+};

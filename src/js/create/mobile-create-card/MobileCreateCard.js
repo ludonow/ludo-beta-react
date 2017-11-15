@@ -12,8 +12,8 @@ const stepTitles = [
 ];
 
 export default class MobileCreateCard extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             category_id: 0,
             checkpoint: [3],
@@ -24,11 +24,18 @@ export default class MobileCreateCard extends Component {
             tags: [],
             title: ''
         };
+        this.handleDurationChange = this.handleDurationChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleStepChange = this.handleStepChange.bind(this);
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
+    }
+
+    handleDurationChange(currentSliderValue) {
+        this.setState({
+            duration: currentSliderValue
+        });
     }
 
     handleIntroductionChange(introduction) {
@@ -75,6 +82,7 @@ export default class MobileCreateCard extends Component {
 
     render() {
         const {
+            duration,
             step,
             tags,
             title
@@ -84,6 +92,8 @@ export default class MobileCreateCard extends Component {
             <div className="mobile-create-card">
                 <CardTitle title={stepTitles[step]} />
                 <MobileCreateForm
+                    duration={duration}
+                    handleDurationChange={this.handleDurationChange}
                     handleIntroductionChange={this.handleIntroductionChange}
                     handleTagAdd={this.handleTagAdd}
                     handleTagDelete={this.handleTagDelete}
