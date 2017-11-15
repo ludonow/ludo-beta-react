@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import axios from '../../axios-config';
 
-import ButtonContainer from './ButtonContainer';
+import StepButtonContainer from './StepButtonContainer';
 import CardTitle from './CardTitle';
 import MobileCreateForm from './MobileCreateForm';
 
@@ -101,7 +101,7 @@ export default class MobileCreateCard extends Component {
                     step={step}
                     tags={tags}
                 />
-                <ButtonContainer
+                <StepButtonContainer
                     handleStepChange={this.handleStepChange}
                     step={step}
                 />

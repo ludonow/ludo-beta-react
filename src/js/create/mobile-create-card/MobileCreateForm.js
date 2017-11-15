@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import CreateFormTextField from './CreateFormTextField';
-import DaySlider from './DaySlider';
+import DayForm from './DayForm';
 
 const MobileCreateForm = ({
     duration,
@@ -26,7 +26,7 @@ const MobileCreateForm = ({
             );
         case 1:
             return (
-                <DaySlider 
+                <DayForm
                     duration={duration}
                     handleDurationChange={handleDurationChange}
                 />

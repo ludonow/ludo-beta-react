@@ -5,6 +5,10 @@
     padding: 10px;
     background-color: white;
 
+    button {
+        @extend .round-radius-button;
+    }
+
     .card-title {
         padding: 20px;
         text-align: center;
@@ -43,11 +47,38 @@
         }
     }
 
+    .day-form {
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    /* overwrite style of material-ui radio button */
+    .radio-button-group {
+        input + div {
+            justify-content: center;
+            label {
+                background-color: white;
+                color: $orange !important;
+            }
+        }
+        input:checked + div {
+            label {
+                background-color: $orange;
+                color: white !important;
+            }
+        }
+    }
+
+
+    .slider-container {
+        margin-bottom: 40px;
+    }
+    .slider-label {
+        @extend %text_center;
+        margin: 20px 0;
+    }
+
     .button-container {
         @extend %text_center;
-
-        button {
-            @extend .round-radius-button;
-        }
     }
 }
