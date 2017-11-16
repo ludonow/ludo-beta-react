@@ -55,6 +55,7 @@ export default class DayForm extends Component {
     render() {
         const {
             duration,
+            handleCheckPointChange,
             handleDurationChange
         } = this.props;
 
@@ -68,6 +69,7 @@ export default class DayForm extends Component {
                     className="radio-button-group"
                     defaultSelected="1"
                     name="frequency"
+                    onChange={handleCheckPointChange}
                 >
                     <RadioButton
                         iconStyle={styles.hidden}
@@ -98,5 +100,6 @@ export default class DayForm extends Component {
 
 DayForm.propTypes = {
     duration: PropTypes.number.isRequired,
+    handleCheckPointChange: PropTypes.func.isRequired,
     handleDurationChange: PropTypes.func.isRequired
 };

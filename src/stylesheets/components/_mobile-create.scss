@@ -69,7 +69,6 @@
         }
     }
 
-
     .slider-container {
         margin-bottom: 40px;
     }
@@ -80,5 +79,9 @@
 
     .button-container {
         @extend %text_center;
+
+        & > button {
+            margin: 0 10px;
+        }
     }
 }

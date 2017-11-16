@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
+import CardPreview from './CardPreview';
+import CategorySelector from './CategorySelector';
 import CreateFormTextField from './CreateFormTextField';
 import DayForm from './DayForm';
 
 const MobileCreateForm = ({
     duration,
+    handleCheckPointChange,
     handleDurationChange,
     handleIntroductionChange,
     handleTagAdd,
@@ -28,7 +31,18 @@ const MobileCreateForm = ({
             return (
                 <DayForm
                     duration={duration}
+                    handleCheckPointChange={handleCheckPointChange}
                     handleDurationChange={handleDurationChange}
+                />
+            );
+        case 2:
+            return (
+                <CategorySelector
+                />
+            );
+        case 3:
+            return (
+                <CardPreview
                 />
             );
     }

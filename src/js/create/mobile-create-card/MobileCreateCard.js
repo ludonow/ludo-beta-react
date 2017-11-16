@@ -6,6 +6,8 @@ import StepButtonContainer from './StepButtonContainer';
 import CardTitle from './CardTitle';
 import MobileCreateForm from './MobileCreateForm';
 
+const maxStep = 3;
+
 const stepTitles = [
     '創建卡片',
     '遊戲條件'
@@ -18,12 +20,14 @@ export default class MobileCreateCard extends Component {
             category_id: 0,
             checkpoint: [3],
             duration: 3,
+            interval: 1,
             introduction: '',
             marbles: 0,
             step: 0,
             tags: [],
             title: ''
         };
+        this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleDurationChange = this.handleDurationChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleStepChange = this.handleStepChange.bind(this);
@@ -32,8 +36,29 @@ export default class MobileCreateCard extends Component {
         this.handleTitleChange = this.handleTitleChange.bind(this);
     }
 
-    handleDurationChange(currentSliderValue) {
+    handleCheckPointChange(event) {
+        const interval = event.currentTarget.value;
+        const { duration } = this.state;
+        const checkpoint = Array.from(Array(duration+1).keys()).slice(1);
+        const minCheckPoint = duration % interval;
+        const newCheckpoint = checkpoint.filter((element) => {
+            return (element - minCheckPoint) % interval === 0;
+        });
         this.setState({
+            checkpoint: newCheckpoint,
+            interval
+        });
+    }
+
+    handleDurationChange(currentSliderValue) {
+        const { interval } = this.state;
+        const checkpoint = Array.from(Array(currentSliderValue+1).keys()).slice(1);
+        const minCheckPoint = currentSliderValue % interval;
+        const newCheckpoint = checkpoint.filter((element) => {
+            return (element - minCheckPoint) % interval === 0;
+        });
+        this.setState({
+            checkpoint: newCheckpoint,
             duration: currentSliderValue
         });
     }
@@ -93,6 +118,7 @@ export default class MobileCreateCard extends Component {
                 <CardTitle title={stepTitles[step]} />
                 <MobileCreateForm
                     duration={duration}
+                    handleCheckPointChange={this.handleCheckPointChange}
                     handleDurationChange={this.handleDurationChange}
                     handleIntroductionChange={this.handleIntroductionChange}
                     handleTagAdd={this.handleTagAdd}
@@ -103,6 +129,7 @@ export default class MobileCreateCard extends Component {
                 />
                 <StepButtonContainer
                     handleStepChange={this.handleStepChange}
+                    maxStep={maxStep}
                     step={step}
                 />
             </div>

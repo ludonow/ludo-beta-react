@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { cyan400 } from 'material-ui/styles/colors';
 
-const maxStep = 1;
-
 class StepButton extends Component {
     constructor(props) {
         super(props);
@@ -41,29 +39,57 @@ export default class StepButtonContainer extends Component {
     render() {
         const {
             handleStepChange,
+            maxStep,
             step
         } = this.props;
+
+        let nextStepLabel = '';
+
+        switch (step) {
+            case maxStep:
+                nextStepLabel = '發佈卡片';
+                break;
+            case (maxStep - 1):
+                nextStepLabel = '預覽卡片';
+                break;
+            default:
+                nextStepLabel = '下一步';
+                break;
+        }
+
+        console.log();
+
         return (
             <div className="button-container">
                 {
-                    step == 0 ? 
-                        null
-                    :
+                    step !== 0 ? 
                         <StepButton
                             handleStepChange={handleStepChange}
                             label="上一步"
                             stepVariation={-1}
                         />
+                    :
+                        null
                 }
                 {
-                    step == maxStep ?
-                        null
-                    :
+                    step < maxStep ? 
                         <StepButton
                             handleStepChange={handleStepChange}
-                            label="下一步"
+                            label={nextStepLabel}
                             stepVariation={1}
                         />
+                    :
+                        null
+                }
+                {
+                    step === maxStep ? 
+                        <StepButton
+                            handleStepChange={handleStepChange}
+                            label={nextStepLabel}
+                            stepVariation={1}
+                        />
+                    :
+                        null
                 }
             </div>
         );
