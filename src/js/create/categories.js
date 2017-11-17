@@ -40,4 +40,14 @@ categories['zh'] = [
     '其它'
 ];
 
-export { categories, categoryIcons };
+const categoryClasses = [
+    'lifestyle',
+    'read',
+    'exercise',
+    'study',
+    'new_skill',
+    'unmentionables',
+    'others'
+];
+
+export { categories, categoryClasses, categoryIcons };

@@ -86,7 +86,7 @@ export default class StepButtonContainer extends Component {
                         <StepButton
                             handleStepChange={handleStepChange}
                             label={nextStepLabel}
-                            stepVariation={1}
+                            stepVariation={0}
                         />
                     :
                         null

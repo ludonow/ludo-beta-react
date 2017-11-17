@@ -87,6 +87,12 @@
         }
     }
 
+    .card-preview {
+        @extend %flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .button-container {
         @extend %text_center;
 

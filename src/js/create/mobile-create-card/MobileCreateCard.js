@@ -10,7 +10,9 @@ const maxStep = 3;
 
 const stepTitles = [
     '創建卡片',
-    '遊戲條件'
+    '遊戲條件',
+    '種類選擇',
+    '卡片預覽'
 ];
 
 export default class MobileCreateCard extends Component {
@@ -117,6 +119,7 @@ export default class MobileCreateCard extends Component {
         const {
             categoryId,
             duration,
+            introduction,
             step,
             tags,
             title
@@ -135,8 +138,10 @@ export default class MobileCreateCard extends Component {
                     handleTagAdd={this.handleTagAdd}
                     handleTagDelete={this.handleTagDelete}
                     handleTitleChange={this.handleTitleChange}
+                    introduction={introduction}
                     step={step}
                     tags={tags}
+                    title={title}
                 />
                 <StepButtonContainer
                     handleStepChange={this.handleStepChange}

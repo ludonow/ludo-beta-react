@@ -15,8 +15,10 @@ const MobileCreateForm = ({
     handleTagAdd,
     handleTagDelete,
     handleTitleChange,
+    introduction,
     step,
-    tags
+    tags,
+    title
 }) => {
     switch (step) {
         case 0:
@@ -47,6 +49,11 @@ const MobileCreateForm = ({
         case 3:
             return (
                 <CardPreview
+                    categoryId={categoryId}
+                    duration={duration}
+                    introduction={introduction}
+                    tags={tags}
+                    title={title}
                 />
             );
     }
