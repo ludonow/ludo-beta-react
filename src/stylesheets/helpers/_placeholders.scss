@@ -24,7 +24,7 @@
 %half_height_of_parent { height: 50%; }
 
 // offset
-%header_height_offset {     
+%header_height_offset {
     @include md-max {
         top: $g_header_height_md_max;
     }

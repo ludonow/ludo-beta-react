@@ -6,7 +6,9 @@ import CreateFormTextField from './CreateFormTextField';
 import DayForm from './DayForm';
 
 const MobileCreateForm = ({
+    categoryId,
     duration,
+    handleCategoryChange,
     handleCheckPointChange,
     handleDurationChange,
     handleIntroductionChange,
@@ -38,6 +40,8 @@ const MobileCreateForm = ({
         case 2:
             return (
                 <CategorySelector
+                    categoryId={categoryId}
+                    handleCategoryChange={handleCategoryChange}
                 />
             );
         case 3:

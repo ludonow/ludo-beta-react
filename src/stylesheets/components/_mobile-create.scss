@@ -77,6 +77,16 @@
         margin: 20px 0;
     }
 
+    .category-step {
+        .category-icon {
+            @extend %text_center;
+            margin: 20px 0;
+            img {
+                @extend %half_width_of_parent;
+            }
+        }
+    }
+
     .button-container {
         @extend %text_center;
 

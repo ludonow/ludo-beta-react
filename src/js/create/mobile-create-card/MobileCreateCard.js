@@ -17,7 +17,7 @@ export default class MobileCreateCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            category_id: 0,
+            categoryId: 0,
             checkpoint: [3],
             duration: 3,
             interval: 1,
@@ -27,6 +27,7 @@ export default class MobileCreateCard extends Component {
             tags: [],
             title: ''
         };
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleDurationChange = this.handleDurationChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
@@ -34,6 +35,12 @@ export default class MobileCreateCard extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
+    }
+
+    handleCategoryChange(event, index, value) {
+        this.setState({
+            categoryId: value
+        });
     }
 
     handleCheckPointChange(event) {
@@ -105,8 +112,10 @@ export default class MobileCreateCard extends Component {
         });
     }
 
+    /* components/_mobile-create.scss */
     render() {
         const {
+            categoryId,
             duration,
             step,
             tags,
@@ -117,7 +126,9 @@ export default class MobileCreateCard extends Component {
             <div className="mobile-create-card">
                 <CardTitle title={stepTitles[step]} />
                 <MobileCreateForm
+                    categoryId={categoryId}
                     duration={duration}
+                    handleCategoryChange={this.handleCategoryChange}
                     handleCheckPointChange={this.handleCheckPointChange}
                     handleDurationChange={this.handleDurationChange}
                     handleIntroductionChange={this.handleIntroductionChange}
