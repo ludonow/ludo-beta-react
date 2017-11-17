@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 
 import axios from '../../axios-config';
 
@@ -29,6 +30,7 @@ export default class MobileCreateCard extends Component {
             tags: [],
             title: ''
         };
+        this.handleCardSubmit = this.handleCardSubmit.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleDurationChange = this.handleDurationChange.bind(this);
@@ -37,6 +39,72 @@ export default class MobileCreateCard extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
+    }
+
+    handleCardSubmit(event) {
+        event.preventDefault();
+        const {
+            categoryId,
+            checkpoint,
+            duration,
+            introduction,
+            marbles,
+            tags,
+            title
+        } = this.state;
+        const ludoCreateForm = {
+            category_id: categoryId + 1,
+            checkpoint,
+            duration,
+            introduction,
+            marbles,
+            tags,
+            title
+        };
+        axios.post('/apis/ludo', ludoCreateForm)
+        .then((response) => {
+            if (response.data.status === '200') {
+                const { ludo_id } = response.data;
+                /* get ludo information after create ludo post */
+                axios.get(`/apis/ludo/${ludo_id}`)
+                .then((response) => {
+                    {
+                        /*
+                            response.data.status
+                            200: everything's fine;
+                            400: user's data issue;
+                            401: no login;
+                            403: no authority 
+                        */
+                    }
+                    if (response.data.status === '200') {
+                        const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                        getUserBasicData();
+                        handleShouldProfileUpdate(true);
+                        updateCurrentFormValue(response.data.ludo);
+                        browserHistory.push(`/ludo/${ludo_id}`);
+                    } else {
+                        window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
+                        console.error('get after create post response from server: ', response);
+                        console.error('get after create post message from server: ', response.data.message);
+                    }
+                })
+                .catch((error) => {
+                    window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.error('get after create post error', error);
+                });
+            } else if (response.data.status === '400') {
+                window.alert('燃料或彈珠數不足: ' + response.data.message);
+                console.error('create post message from server: ', response.data.message + response.data.status);
+            } else {
+                window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                console.error('create post message from server: ', response.data.message);
+            }
+        })
+        .catch((error) => {
+            window.alert('建立Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+            console.error('create post error', error);
+        });
     }
 
     handleCategoryChange(event, index, value) {
@@ -144,6 +212,7 @@ export default class MobileCreateCard extends Component {
                     title={title}
                 />
                 <StepButtonContainer
+                    handleCardSubmit={this.handleCardSubmit}
                     handleStepChange={this.handleStepChange}
                     maxStep={maxStep}
                     step={step}

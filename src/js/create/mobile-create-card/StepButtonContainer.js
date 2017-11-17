@@ -25,6 +25,18 @@ class StepButton extends Component {
     }
 }
 
+const SubmitButton = ({
+    handleTouchTap,
+    label
+}) => (
+    <button
+        className="ludo-button"
+        onTouchTap={handleTouchTap}
+    >
+        {label}
+    </button>
+);
+
 export default class StepButtonContainer extends Component {
     constructor(props) {
         super(props);
@@ -38,6 +50,7 @@ export default class StepButtonContainer extends Component {
 
     render() {
         const {
+            handleCardSubmit,
             handleStepChange,
             maxStep,
             step
@@ -46,9 +59,6 @@ export default class StepButtonContainer extends Component {
         let nextStepLabel = '';
 
         switch (step) {
-            case maxStep:
-                nextStepLabel = '發佈卡片';
-                break;
             case (maxStep - 1):
                 nextStepLabel = '預覽卡片';
                 break;
@@ -56,8 +66,6 @@ export default class StepButtonContainer extends Component {
                 nextStepLabel = '下一步';
                 break;
         }
-
-        console.log();
 
         return (
             <div className="button-container">
@@ -83,10 +91,9 @@ export default class StepButtonContainer extends Component {
                 }
                 {
                     step === maxStep ? 
-                        <StepButton
-                            handleStepChange={handleStepChange}
-                            label={nextStepLabel}
-                            stepVariation={0}
+                        <SubmitButton
+                            label="發佈卡片"
+                            handleTouchTap={handleCardSubmit}
                         />
                     :
                         null
