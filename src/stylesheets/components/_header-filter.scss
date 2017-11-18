@@ -11,7 +11,7 @@
     align-self: center;
     .filter-button {
         @extend .ludo-button;
-        white-space: nowrap;
-        height: 50%;
+        @extend .round-radius-button;
+        font-size: 0.9rem;
     }
 }

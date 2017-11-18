@@ -57,6 +57,23 @@ export default class Header extends Component {
                         <HeaderPrevPageArrow />
                     </MediaQuery>
                     <HeaderLogo />
+                    <MediaQuery minDeviceWidth={768}>
+                    {
+                        /* components/_header-filter.scss */
+                        isOpeningLudoListPage ?
+                            <div className="filter-button-container">
+                                <button
+                                    className="filter-button"
+                                    onClick={this.handleFilterClick}
+                                    value="stage=3"
+                                >
+                                    歷史紀錄
+                                </button>
+                            </div>
+                        :
+                            null
+                    }
+                    </MediaQuery>
                 </div>
                 <div className="header-right">
                     <HeaderFuel heart={heart} />
@@ -77,7 +94,6 @@ export default class Header extends Component {
                     <div className="menu-box">
                         <div className="menu-circle"></div>
                         <ul className="menu-items">
-
                             <li><span onClick={this.handleFilterClick}>Playground</span></li>
                             <li><span onClick={this.handleTemplateFilterClick}>Template</span></li>
                             <li><Link to="/profile">Profile</Link></li>
