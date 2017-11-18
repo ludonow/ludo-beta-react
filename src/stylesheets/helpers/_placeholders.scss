@@ -35,6 +35,9 @@
 
 // margin
 %margin_center_x { margin: 0 auto; }
+.margin-offset {
+    margin-top: 7px;
+}
 
 // border
 %round_border { border-radius: 50%; }
