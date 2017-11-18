@@ -298,41 +298,19 @@ export default class ActivePlayerForm extends React.Component {
                                     rows="6"
                                     value={isReportTextBlank ? '' : this.state.reportText}
                                 />
-                                {
-                                    isImageUploaded ?
-                                        <div className="upload-preview">
-                                            <div className="upload-preview__image-container">
-                                                <img
-                                                    className="upload-preview__image"
-                                                    onClick={this.handleImageEnlarge}
-                                                    src={files[uploadImageIndex].preview}
-                                                />
-                                                <div className="upload-preview-instruction-container">
-                                                    <button
-                                                        className="upload-preview-instruction__remove"
-                                                        onClick={this.handleImageRemove}
-                                                        value="0"
-                                                    >
-                                                        ×
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    : null
-                                }
                                 {/*<div className="upload-report-tags-container">
                                     <TagsInput
                                         inputProps={{maxLength: 30, placeholder:"標籤"}}
                                         onChange={this.handleTagsChange}
                                         value={this.state.reportTags}
                                     />
-                            </div>*/}
+                                </div>*/}
                             </div>
                             <div className="upload-picture-button-container">
                                 <DropZone
                                     accept={"image/*"}
                                     className="upload-picture-button"
-                                    maxSize={2000000}
+                                    maxSize={10*1024*1024}
                                     onClick={this.handleImageDrop}
                                     onDrop={this.handleImageDrop}
                                 >
@@ -341,6 +319,28 @@ export default class ActivePlayerForm extends React.Component {
                             </div>
                         </div>
                     </div>
+                    {
+                        isImageUploaded ?
+                            <div className="upload-preview">
+                                <div className="upload-preview__image-container">
+                                    <img
+                                        className="upload-preview__image"
+                                        onClick={this.handleImageEnlarge}
+                                        src={files[uploadImageIndex].preview}
+                                    />
+                                    <div className="upload-preview-instruction-container">
+                                        <button
+                                            className="upload-preview-instruction__remove"
+                                            onClick={this.handleImageRemove}
+                                            value="0"
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        : null
+                    }
                     {/* components/_submit-button.scss */}
                     <div className="submit-button-container">
                         <button
