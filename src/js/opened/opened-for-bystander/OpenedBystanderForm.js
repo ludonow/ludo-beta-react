@@ -170,7 +170,7 @@ export default class OpenedBystanderForm extends React.Component {
             <div className="form">
                 {/* components/_ludo-detail-information.scss */}
                 <form
-                    className="ludo-detail-information-container"
+                    className="ludo-detail-information-container margin-offset"
                     onSubmit={this.handleSubmit}
                 >
                     <div className="ludo-detail-information-top-container">

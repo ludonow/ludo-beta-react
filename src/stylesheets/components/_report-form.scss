@@ -130,42 +130,6 @@
             padding: 0;
         }
 
-        .upload-preview {
-            background-color: $gray_text-field;
-            border-top: dashed 1px white;
-        }
-            .upload-preview__image-container {
-                @extend %relative;
-                width: 100px;
-                height: 100px;
-
-                .upload-preview__image {
-                    cursor: zoom-in;
-                    width: 100px;
-                    height: 100px;
-                }
-
-                &:hover .upload-preview__image {
-                    opacity: 1;
-                }
-
-                &:hover .upload-preview-instruction__remove {
-                    opacity: 1;
-                    color: white;
-                    background-color: rgba(0,0,0,0.3);
-                }
-
-                .upload-preview-instruction__remove {
-                    @extend %clickable;
-                    @extend %absolute;
-                    @extend %top;
-                    @extend %right;
-                    border: none;
-                    color: transparent;
-                    background-color: transparent;
-                }
-            }
-
         .upload-report-tags-container {
             @extend %flex;
             border-top: dashed 1px white;
@@ -211,6 +175,42 @@
         .upload-picture-button__icon {
             @extend %as_wide_as_parent;
             @extend %as_tall_as_parent;
+        }
+    }
+
+.upload-preview {
+    background-color: $gray_text-field;
+    border-top: dashed 1px white;
+}
+    .upload-preview__image-container {
+        @extend %relative;
+        width: 100px;
+        height: 100px;
+
+        .upload-preview__image {
+            cursor: zoom-in;
+            width: 100px;
+            height: 100px;
+        }
+
+        &:hover .upload-preview__image {
+            opacity: 1;
+        }
+
+        &:hover .upload-preview-instruction__remove {
+            opacity: 1;
+            color: white;
+            background-color: rgba(0,0,0,0.3);
+        }
+
+        .upload-preview-instruction__remove {
+            @extend %clickable;
+            @extend %absolute;
+            @extend %top;
+            @extend %right;
+            border: none;
+            color: transparent;
+            background-color: transparent;
         }
     }
 

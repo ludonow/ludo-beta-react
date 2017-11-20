@@ -1,6 +1,7 @@
 @import "components/single-report";
 
 .report-list {
+    @extend %flex;
     width: $grid-item_total-width*2;
     margin: 0 5px;
 }

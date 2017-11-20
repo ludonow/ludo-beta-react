@@ -1,0 +1,103 @@
+.mobile-create-card {
+    @extend %relative;
+    top: 10px;
+    margin: 0 10px;
+    padding: 10px;
+    background-color: white;
+
+    button {
+        @extend .round-radius-button;
+    }
+
+    .card-title {
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8rem;
+    }
+
+    .mobile-create-form {
+        padding: 20px;
+        caret-color: $orange;
+    }
+
+    .tag-container {
+        @extend %flex;
+        flex-flow: row wrap;
+        margin-top: 20px;
+    }
+
+    .tag {
+        @extend %relative;
+        @extend %flex;
+        @extend .round-radius-button;
+        align-items: center;
+        background-color: $orange;
+        margin: 5px;
+        padding: 8px 20px;
+        font-size: 0.8rem;
+
+        .tag-text {
+            margin-right: 5px;
+        }
+
+        .delete-button-container {
+            @extend %absolute;
+            right: 3px;
+            top: 3px;
+        }
+    }
+
+    .day-form {
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    /* overwrite style of material-ui radio button */
+    .radio-button-group {
+        input + div {
+            justify-content: center;
+            label {
+                background-color: white;
+                color: $orange !important;
+            }
+        }
+        input:checked + div {
+            label {
+                background-color: $orange;
+                color: white !important;
+            }
+        }
+    }
+
+    .slider-container {
+        margin-bottom: 40px;
+    }
+    .slider-label {
+        @extend %text_center;
+        margin: 20px 0;
+    }
+
+    .category-step {
+        .category-icon {
+            @extend %text_center;
+            margin: 20px 0;
+            img {
+                @extend %half_width_of_parent;
+            }
+        }
+    }
+
+    .card-preview {
+        @extend %flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button-container {
+        @extend %text_center;
+
+        & > button {
+            margin: 0 10px;
+        }
+    }
+}
