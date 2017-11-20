@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-2816 -3838 153.709 59">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2e968c;
+        stroke: #2e968c;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        stroke: none;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+
+      .cls-4 {
+        filter: url(#登入按鍵框);
+      }
+    </style>
+    <filter id="登入按鍵框" x="-2816" y="-3838" width="153.709" height="59" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="忘記密碼按鈕" transform="translate(-2943 -4414)">
+    <g class="cls-4" transform="matrix(1, 0, 0, 1, 2943, 4414)">
+      <g id="登入按鍵框-2" data-name="登入按鍵框" class="cls-1" transform="translate(-2807 -3832)">
+        <rect class="cls-2" width="135.709" height="41" rx="20.5"/>
+        <rect class="cls-3" x="1" y="1" width="133.709" height="39" rx="19.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

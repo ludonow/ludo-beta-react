@@ -221,7 +221,7 @@
     @extend %as_wide_as_parent;
     @extend %text_center;
     padding: 0.8rem 0;
-    background-color: rgba(255,255,255, 0.7);
+    /*background-color: rgba(255,255,255, 0.7);*/
 
     .report-button {
         @extend .ludo-button;
@@ -230,12 +230,21 @@
         @extend %flex;
         justify-content: center;
         @extend %margin_center_x;
-        padding: 0.3rem 0;
-        background-color: orange;
-        color: white;
-
+        align-items: center;
+        
+        width: 136px;
+        height: 41px;
+        background: #2E968C;
+        border-radius: 50px;
+        border-width: 2px;
+        background-size: cover;
+        box-shadow: 0px 3px 6px rgba(0,0,0,0.16); 
+        
         & > a {
+
             text-decoration: none;
+            font-size: 20px;
+            color: white;
         }
     }
 }
