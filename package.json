@@ -46,7 +46,8 @@
     "react-tap-event-plugin": "^2.0.0",
     "react-textarea-autosize": "^4.0.5",
     "react-ux-password-field": "^0.9.12",
-    "react-widgets": "^3.4.4"
+    "react-widgets": "^3.4.4",
+    "styled-components": "^2.2.3"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
