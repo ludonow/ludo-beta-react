@@ -56,7 +56,9 @@ export default class Header extends Component {
                     <MediaQuery maxDeviceWidth={768}>
                         <HeaderPrevPageArrow />
                     </MediaQuery>
-                    <HeaderLogo />
+                    <HeaderLogo 
+                        getFilteredLudoList={this.props.getFilteredLudoList}
+                        />
                     <MediaQuery minDeviceWidth={768}>
                     {
                         /* components/_header-filter.scss */

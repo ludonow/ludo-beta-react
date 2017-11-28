@@ -14,11 +14,18 @@ const logoLeft = contentPaddingX;
 
 
 export default class HeaderLogo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleLogoLink = this.handleLogoLink.bind(this);
+    }
+
     handleLogoLink() {
+        this.props.getFilteredLudoList();
         browserHistory.push('/playground');
     }
 
     render() {
+        const { getFilteredLudoList} = this.props;
         return (
             /* components/_header-logo.scss */
             <div

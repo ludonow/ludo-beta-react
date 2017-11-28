@@ -1,19 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-/* components/report-from.scss */
+/* components/report-form.scss */
 const ReportButton = ({
     disabled,
     label,
     url
 }) => (
     <div className="report-button-bar">
-        <button
+        <div
             className="report-button"
             disabled={disabled}
         >
             <Link to={url}>{label}</Link>
-        </button>
+        </div>
     </div>
 );
 
