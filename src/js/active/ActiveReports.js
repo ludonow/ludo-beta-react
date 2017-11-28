@@ -11,7 +11,7 @@ import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
 import Textarea from 'react-textarea-autosize';
 
-import Avatar from './Avatar';
+import Avatar from '../components/Avatar';
 import CommentBox from './CommentBox';
 import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';

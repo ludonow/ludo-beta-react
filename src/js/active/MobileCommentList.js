@@ -12,11 +12,11 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Textarea from 'react-textarea-autosize';
 
-import Avatar from './Avatar';
+import Avatar from '../components/Avatar';
 import MobileCommentEditButton from './MobileCommentEditButton';
 import MobileCommentExpandMoreButton from './MobileCommentExpandMoreButton';
 
-import { animalImageArray, colorArray } from './avatarImage';
+import { animalImageArray, colorArray } from '../components/avatarImage';
 
 let animalIndex = 0;
 let colorIndex = 0;

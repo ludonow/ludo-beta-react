@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
+import axios from '../axios-config';
+
 import Avatar from '../components/Avatar';
 import CardContent from '../components/CardContent';
-import ReportButton from './ReportButton';
-import ReportList from './ReportList';
-import ReportText from './ReportText';
 
 const userPhotoUrl = '../../images/animals/bat.png';
 
@@ -27,14 +27,60 @@ const DarkBackGround = styled.div`
     visibility: ${props => props.display ? 'visible' : 'hidden'};
 `;
 
-export default class MobileReports extends Component {
+const JoinButton = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 136px;
+    height: 41px;
+    background: #ff6060;
+    background-size: cover;
+    margin: 0 auto;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-radius: 50px;
+    border-width: 2px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    cursor: pointer;
+    color: white;
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: rgb(240, 240, 240);
+        border: none;
+    }
+
+    & > a {
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+    }
+`;
+
+const JoinButtonContainer = styled.div`
+    position: fixed;
+    bottom: 0;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+    padding: 0.8rem 0;
+`;
+
+const TextCenter = styled.div`
+    text-align: center;
+    color: white;
+`;
+
+export default class MobileOpenedLudo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShowingDarkBackGround: false
+            isShowingDarkBackGround: true
         };
         this.handleCardContentTabClick = this.handleCardContentTabClick.bind(this);
         this.handlePlayerTabClick = this.handlePlayerTabClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -58,6 +104,43 @@ export default class MobileReports extends Component {
         });
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+        /* TODO: Use notification confirming join */
+        // const isSureToJoin = window.confirm('Are you sure to join?');
+        const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
+        if (isSureToJoin) {
+            const { ludo_id } = this.props.params;
+            const currentFormValue = this.props.router_currentFormValue;
+            const joinLudoPutbody = {
+                'duration': currentFormValue.duration,
+                'marbles': currentFormValue.marbles,
+                'stage': currentFormValue.stage,
+                'type': 'match'
+            };
+            axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
+            .then(response => {
+                if (response.data.status === '200') {
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    /* TODO: Figure out how to use same url redirect to other component */
+                    browserHistory.push(`/ludo-edit/${ludo_id}`);
+                } else if (response.data.message === 'Your fuel is out.') {
+                    window.alert('你的燃料用完囉！');
+                } else {
+                    window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.error('MobileOpenedLudo join else response from server: ', response);
+                    console.error('MobileOpenedLudo join else message from server: ', response.data.message);
+                }
+            })
+            .catch(error => {
+                window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                console.error('MobileOpenedLudo join put error', error);
+            });
+        }
+    }
+
     render() {
         const { 
             currentLudoReportData,
@@ -71,7 +154,6 @@ export default class MobileReports extends Component {
         const {
             comments_nick,
             introduction,
-            player_id,
             starter_id,
             tags,
             title
@@ -81,11 +163,11 @@ export default class MobileReports extends Component {
                 <DarkBackGround
                     display={this.state.isShowingDarkBackGround}
                 />
-                <Tabs>
+                <Tabs defaultIndex={1}>
                     <TabList className="react-tabs__tab-list mobile-avatar">
                         <Tab 
                             className="react-tabs__tab mobile-avatar"
-                            onClick={this.handlePlayerTabClick}
+                            onClick={this.handleCardContentTabClick}
                             selectedClassName="react-tabs__tab--selected mobile-avatar"
                         >
                             <Avatar
@@ -106,36 +188,19 @@ export default class MobileReports extends Component {
                         </Tab>
                         <Tab 
                             className="react-tabs__tab mobile-avatar"
-                            onClick={this.handlePlayerTabClick}
+                            onClick={this.handleCardContentTabClick}
                             selectedClassName="react-tabs__tab--selected mobile-avatar"
                         >
-                            <Avatar
-                                avatarBackgroundColorIndex={comments_nick[player_id][1]}
-                                avatarImageIndex={comments_nick[player_id][0]}
-                                isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
-                                userPhotoUrl={userPhotoUrl}
-                            /> 
+                            <CardContentTab>
+                                尚無對手
+                            </CardContentTab>
                         </Tab>
                     </TabList>
 
                     <TabPanel>
-                        <ReportList
-                            currentUserId={currentUserId}
-                            handleDenounceBoxOpen={handleDenounceBoxOpen}
-                            handleShouldReportUpdate={handleShouldReportUpdate}
-                            isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
-                            reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.starter_id)}
-                            router_currentFormValue={router_currentFormValue}
-                            userBasicData={userBasicData}
-                        />
-                        {router_currentFormValue.starter_id == currentUserId
-                            ?
-                                <ReportButton
-                                    label="我要回報！"
-                                    url={`/ludo/${params.ludo_id}/mobile-report-form`}
-                                />
-                            : null
-                        }
+                        <TextCenter>
+                            尚未開始遊戲
+                        </TextCenter>
                     </TabPanel>
                     <TabPanel>
                         <CardContent
@@ -144,25 +209,21 @@ export default class MobileReports extends Component {
                             tags={tags}
                             title={title}
                         />
+                        <JoinButtonContainer>
+                            <JoinButton onClick={this.handleSubmit}>
+                                加入戰局
+                            </JoinButton>
+                        </JoinButtonContainer>
                     </TabPanel>
                     <TabPanel>
-                        <ReportList
-                            currentUserId={currentUserId}
-                            handleDenounceBoxOpen={handleDenounceBoxOpen}
-                            handleShouldReportUpdate={handleShouldReportUpdate}
-                            isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
-                            reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.player_id)}
-                            router_currentFormValue={router_currentFormValue}
-                            userBasicData={userBasicData}
-                        />
-                        {router_currentFormValue.player_id == currentUserId
-                            ?
-                                <ReportButton
-                                    label="我要回報！"
-                                    url={`/ludo/${params.ludo_id}/mobile-report-form`}
-                                />
-                            : null
-                        }
+                        <TextCenter>
+                            尚未開始遊戲
+                        </TextCenter>
+                        <JoinButtonContainer>
+                            <JoinButton onClick={this.handleSubmit}>
+                                加入戰局
+                            </JoinButton>
+                        </JoinButtonContainer>
                     </TabPanel>
                 </Tabs>
             </div>
@@ -170,7 +231,7 @@ export default class MobileReports extends Component {
     }
 }
 
-MobileReports.propTypes = {
+MobileOpenedLudo.propTypes = {
     currentLudoReportData: PropTypes.arrayOf(
         PropTypes.shape({
             CreatedAt: PropTypes.string.isRequired,
@@ -193,13 +254,12 @@ MobileReports.propTypes = {
     userBasicData: PropTypes.object.isRequired
 };
 
-MobileReports.defaultProps = {
+MobileOpenedLudo.defaultProps = {
     'router_currentFormValue': {
         'comments_nick': {
             'a': [0, 0],
             'b': [0, 0]
         },
-        'player_id': 'a',
         'starter_id': 'b'
     }
 };

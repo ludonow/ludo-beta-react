@@ -1,12 +1,11 @@
-import React from 'react';
-
+import React, { Component } from 'react';
 import MediaQuery from 'react-responsive';
 
 import ActivePlayerForm from './ActivePlayerForm';
 import ActiveReports from '../ActiveReports';
 import MobileReports from '../MobileReports';
 
-export default class ActiveForPlayer extends React.Component {
+export default class ActiveForPlayer extends Component {
     constructor(props) {
         super(props);
     }
@@ -19,9 +18,9 @@ export default class ActiveForPlayer extends React.Component {
         this.props.handleIsOpeningActivePage(false);
     }
 
+    /* components/_report-form.scss */
     render() {
         return (
-            /* components/_report-form.scss */
             <div>
                 <MediaQuery minDeviceWidth={768} className="form-and-report">
                     <ActivePlayerForm  {...this.props} />
