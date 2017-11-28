@@ -1,5 +1,5 @@
-import React from "react";
-import { browserHistory } from "react-router";
+import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 
 import imageLogo from '../../../images/Ludo_logo.png';
 
@@ -11,9 +11,7 @@ const mainWidth = screenWidth - rightSidebarWidth;
 const contentPaddingX = Math.round( (mainWidth - 5 * gridItemWidth)/2 );
 const logoLeft = contentPaddingX;
 
-
-
-export default class HeaderLogo extends React.Component {
+export default class HeaderLogo extends Component {
     constructor(props) {
         super(props);
         this.handleLogoLink = this.handleLogoLink.bind(this);
@@ -25,7 +23,6 @@ export default class HeaderLogo extends React.Component {
     }
 
     render() {
-        const { getFilteredLudoList} = this.props;
         return (
             /* components/_header-logo.scss */
             <div

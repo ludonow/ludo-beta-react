@@ -41,7 +41,13 @@ export default class Header extends Component {
     }
 
     render() {
-        const { getFilteredLudoList, getLatestLudoList, isOpeningLudoListPage, isOpeningProfilePage, userBasicData } = this.props;
+        const {
+            getFilteredLudoList,
+            getLatestLudoList,
+            isOpeningLudoListPage,
+            isOpeningProfilePage,
+            userBasicData 
+        } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
         let headerProfile;
         if (userBasicData.name) {    // user has login
@@ -57,8 +63,8 @@ export default class Header extends Component {
                         <HeaderPrevPageArrow />
                     </MediaQuery>
                     <HeaderLogo 
-                        getFilteredLudoList={this.props.getFilteredLudoList}
-                        />
+                        getFilteredLudoList={getFilteredLudoList}
+                    />
                     <MediaQuery minDeviceWidth={768}>
                     {
                         /* components/_header-filter.scss */
