@@ -31,7 +31,7 @@ export default class MobileReports extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShowingDarkBackGround: false
+            isShowingDarkBackGround: true
         };
         this.handleCardContentTabClick = this.handleCardContentTabClick.bind(this);
         this.handlePlayerTabClick = this.handlePlayerTabClick.bind(this);
