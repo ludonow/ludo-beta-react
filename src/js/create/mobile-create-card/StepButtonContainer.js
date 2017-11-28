@@ -52,6 +52,8 @@ export default class StepButtonContainer extends Component {
         const {
             handleCardSubmit,
             handleStepChange,
+            handleTemplateSubmit,
+            isAtTemplatePage,
             maxStep,
             step
         } = this.props;
@@ -80,7 +82,7 @@ export default class StepButtonContainer extends Component {
                         null
                 }
                 {
-                    step < maxStep ? 
+                    step <= (maxStep - 1) ? 
                         <StepButton
                             handleStepChange={handleStepChange}
                             label={nextStepLabel}
@@ -90,7 +92,16 @@ export default class StepButtonContainer extends Component {
                         null
                 }
                 {
-                    step === maxStep ? 
+                    step === maxStep && !isAtTemplatePage ? 
+                        <SubmitButton
+                            label="建立模板"
+                            handleTouchTap={handleTemplateSubmit}
+                        />
+                    :
+                        null
+                }
+                {
+                    step === maxStep && isAtTemplatePage ? 
                         <SubmitButton
                             label="發佈卡片"
                             handleTouchTap={handleCardSubmit}
