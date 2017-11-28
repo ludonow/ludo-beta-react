@@ -68,7 +68,7 @@ export default class DayForm extends Component {
                 />
                 <RadioButtonGroup
                     className="radio-button-group"
-                    defaultSelected={interval}
+                    defaultSelected={interval || 1}
                     name="frequency"
                     onChange={handleCheckPointChange}
                 >
@@ -77,21 +77,21 @@ export default class DayForm extends Component {
                         inputStyle={styles.inputStyle}
                         label="每一天回報"
                         labelStyle={styles.labelStyle}
-                        value="1"
+                        value={1}
                     />
                     <RadioButton
                         iconStyle={styles.hidden}
                         inputStyle={styles.inputStyle}
                         label="每兩天回報"
                         labelStyle={styles.labelStyle}
-                        value="2"
+                        value={2}
                     />
                     <RadioButton
                         iconStyle={styles.hidden}
                         inputStyle={styles.inputStyle}
                         label="每三天回報"
                         labelStyle={styles.labelStyle}
-                        value="3"
+                        value={3}
                     />
                 </RadioButtonGroup>
             </div>
