@@ -196,7 +196,7 @@ export default class MobileCreateCard extends Component {
     }
 
     handleTagAdd(tag) {
-        const { tags } = this.state;
+        const { tags } = this.state.ludoCreateForm;
         const tagWithoutHash = tag.replace(/^#/g, '');
         const newTags = [
             ...tags,

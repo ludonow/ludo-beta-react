@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import axios from '../axios-config';
 
 import CommentBox from './CommentBox';
@@ -8,7 +9,11 @@ import ReportImage from './ReportImage';
 import ReportTags from './ReportTags';
 import ReportText from './ReportText';
 
-export default class ReportCard extends React.Component {
+const Report = styled.div`
+    margin: 0;
+`;
+
+export default class ReportCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -113,7 +118,7 @@ export default class ReportCard extends React.Component {
             reportObject
         } = this.props;
         return (
-            <div className="player-report-container">
+            <Report className="player-report-container">
                 {
                     isThisBelongToCurrentUser ?
                         <MobileReportEditButton
@@ -149,7 +154,7 @@ export default class ReportCard extends React.Component {
                     reportObject={reportObject}
                 />
                 <ReportTags reportObject={reportObject} />
-            </div>
+            </Report>
         );
     }
 }

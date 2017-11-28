@@ -1,9 +1,13 @@
 /* overwrite css of react-tabs */
 .react-tabs {
     &__tab-list.mobile-avatar {
+        @extend %as_wide_as_parent;
+        position: fixed;
         display: flex;
         flex-wrap: nowrap;
-        border-bottom: 1px solid black;
+        box-shadow: 0 0 2px #424242;
+        background-color: rgba(240, 240, 240, 1);
+        z-index: 1;
     }
 
     &__tab.mobile-avatar {
@@ -11,33 +15,13 @@
     }
 
     &__tab--selected.mobile-avatar {
-        bottom: 0;
+        background-color: rgba(240, 240, 240, 1);
+        border: none;
+        border-bottom: 2px solid black;
+    }
 
-        @media all and (max-width: 768px) {
-            &:after, &:before {
-                content: '';
-                display: block;
-                position: absolute;
-                left: 50%;
-                bottom: -1px;
-                width: 0;
-                height: 0;
-                border-style: solid;
-                z-index: 1;
-            }
-
-            /* this border color controlls the color of the triangle (what looks like the fill of the triangle) */
-            &:after {
-                border-color: transparent transparent $orange transparent;
-                border-width: 5px;
-            }
-
-            /* this border color controlls the outside, thin border */
-            &:before {
-                border-color: transparent transparent black transparent;
-                border-width: 6px;
-                margin-left: -1px;
-            }
-        }
+    &__tab-panel {
+        @extend %relative;
+        top: 60px;
     }
 }

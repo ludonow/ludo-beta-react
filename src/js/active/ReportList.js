@@ -1,7 +1,11 @@
 import React from 'react';
-
+import styled from 'styled-components';
 import ReportCard from './ReportCard';
 import MobileCommentBox from './MobileCommentBox';
+
+const ReportWithComments = styled.div`
+    margin: 20px 0;
+`;
 
 const ReportList = ({
     currentUserId,
@@ -14,8 +18,11 @@ const ReportList = ({
 }) => (
     <div className="mobile-report-list">
         {
-            reportList && reportList.map((reportObject, index) => 
-                <div>
+            reportList && reportList.map(
+                (reportObject, index) =>
+                <ReportWithComments
+                    key={`report-${index}`}
+                >
                     <ReportCard
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleShouldReportUpdate={handleShouldReportUpdate}
@@ -33,8 +40,8 @@ const ReportList = ({
                         router_currentFormValue={router_currentFormValue}
                         userBasicData={userBasicData}
                     />
-                </div>
-            ) 
+                </ReportWithComments>
+            )
         }
     </div>
 );
