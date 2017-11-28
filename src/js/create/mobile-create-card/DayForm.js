@@ -55,6 +55,7 @@ export default class DayForm extends Component {
     render() {
         const {
             duration,
+            interval,
             handleCheckPointChange,
             handleDurationChange
         } = this.props;
@@ -67,7 +68,7 @@ export default class DayForm extends Component {
                 />
                 <RadioButtonGroup
                     className="radio-button-group"
-                    defaultSelected="1"
+                    defaultSelected={interval}
                     name="frequency"
                     onChange={handleCheckPointChange}
                 >

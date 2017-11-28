@@ -22,12 +22,12 @@ export default class MobileCreateCard extends Component {
                 category_id: 0,
                 checkpoint: [3],
                 duration: 3,
+                interval: 1,
                 introduction: '',
                 marbles: 0,
                 tags: [],
                 title: ''
             },
-            interval: 1,
             isAtTemplatePage: false,
             step: 0
         };
@@ -66,6 +66,7 @@ export default class MobileCreateCard extends Component {
             category_id,
             checkpoint,
             duration,
+            interval,
             introduction,
             marbles,
             tags,
@@ -75,6 +76,7 @@ export default class MobileCreateCard extends Component {
             category_id,
             checkpoint,
             duration,
+            interval,
             introduction,
             marbles,
             tags,
@@ -148,15 +150,15 @@ export default class MobileCreateCard extends Component {
             (prevState) => ({
                 ludoCreateForm: {
                     ...prevState.ludoCreateForm,
-                    checkpoint: newCheckpoint
+                    checkpoint: newCheckpoint,
+                    interval
                 },
-                interval
             })
         );
     }
 
     handleDurationChange(currentSliderValue) {
-        const { interval } = this.state;
+        const { interval } = this.state.ludoCreateForm;
         const checkpoint = Array.from(Array(currentSliderValue+1).keys()).slice(1);
         const minCheckPoint = currentSliderValue % interval;
         const newCheckpoint = checkpoint.filter((element) => {
@@ -233,6 +235,7 @@ export default class MobileCreateCard extends Component {
             category_id,
             checkpoint,
             duration,
+            interval,
             introduction,
             marbles,
             tags,
@@ -242,6 +245,7 @@ export default class MobileCreateCard extends Component {
             category_id,
             checkpoint,
             duration,
+            interval,
             introduction,
             marbles,
             tags,
@@ -315,11 +319,11 @@ export default class MobileCreateCard extends Component {
         const {
             category_id,
             duration,
+            interval,
             introduction,
             tags,
             title
         } = ludoCreateForm;
-
 
         return (
             <div className="mobile-create-card">
@@ -334,6 +338,7 @@ export default class MobileCreateCard extends Component {
                     handleTagAdd={this.handleTagAdd}
                     handleTagDelete={this.handleTagDelete}
                     handleTitleChange={this.handleTitleChange}
+                    interval={interval}
                     introduction={introduction}
                     step={step}
                     tags={tags}

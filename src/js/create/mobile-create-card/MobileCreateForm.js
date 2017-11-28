@@ -15,6 +15,7 @@ const MobileCreateForm = ({
     handleTagAdd,
     handleTagDelete,
     handleTitleChange,
+    interval,
     introduction,
     step,
     tags,
@@ -37,6 +38,7 @@ const MobileCreateForm = ({
             return (
                 <DayForm
                     duration={duration}
+                    interval={interval}
                     handleCheckPointChange={handleCheckPointChange}
                     handleDurationChange={handleDurationChange}
                 />
