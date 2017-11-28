@@ -4,9 +4,11 @@
     @extend %absolute;
     display: flex;
     align-items: center;
-    font-size: 1.8em;
-
     &:active {
-        background-color: rgba(0, 0, 0, 0.4);
+        // background-color: rgba(0, 0, 0, 0.4);
+    }
+    img {
+        height: 50%;
+        padding-left: 10px;
     }
 }

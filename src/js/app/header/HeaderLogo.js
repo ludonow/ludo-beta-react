@@ -40,11 +40,3 @@ export default class HeaderLogo extends React.Component {
         );
     }
 }
-
-HeaderLogo.propTypes = {
-    getFilteredLudoList: PropTypes.func,
-    getLatestLudoList: PropTypes.func,
-    isOpeningLudoListPage: PropTypes.bool,
-    isOpeningProfilePage: PropTypes.bool,
-    userBasicData: PropTypes.object
-};
