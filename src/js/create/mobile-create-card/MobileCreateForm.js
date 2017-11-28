@@ -28,6 +28,8 @@ const MobileCreateForm = ({
                     handleTagAdd={handleTagAdd}
                     handleTagDelete={handleTagDelete}
                     handleTitleChange={handleTitleChange}
+                    introduction={introduction}
+                    title={title}
                     tags={tags}
                 />
             );

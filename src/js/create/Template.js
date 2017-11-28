@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
+import MediaQuery from 'react-responsive';
 
 import TemplateForm from './TemplateForm';
 import LudoList from '../app/LudoList';
+import MobileCreateCard from './mobile-create-card/MobileCreateCard';
 
-export default class Template extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            /* components/_form.scss */
-            <div className="form-and-list">
-                <div className="form">
-                    <TemplateForm {...this.props} />
-                </div>
-                <div className="form-ludo-list-container">
-                    <LudoList {...this.props} />
-                </div>
+/* components/_form.scss */
+const Template = (props) => (
+    <div>
+        <MediaQuery minDeviceWidth={768} className="form-and-list">
+            <div className="form">
+                <TemplateForm {...props} />
             </div>
-        );
-    }
-}
+            <div className="form-ludo-list-container">
+                <LudoList {...props} />
+            </div>
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={768}>
+            <MobileCreateCard {...props} />
+        </MediaQuery>
+    </div>
+);
+
+export default Template;

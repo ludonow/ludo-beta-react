@@ -48,7 +48,9 @@ export default class CreateFormTextField extends Component {
 
     render() {
         const {
-            handleTagDelete, 
+            handleTagDelete,
+            introduction,
+            title,
             tags
         } = this.props;
         return (
@@ -61,6 +63,7 @@ export default class CreateFormTextField extends Component {
                     onChange={this.handleTitleChange}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
+                    value={title}
                 />
                 <TextField
                     // errorStyle={styles.errorStyle}
@@ -71,6 +74,7 @@ export default class CreateFormTextField extends Component {
                     onChange={this.handleIntroductionChange}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
+                    value={introduction}
                 />
                 <TextField
                     // errorStyle={styles.errorStyle}
