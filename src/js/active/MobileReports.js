@@ -81,7 +81,7 @@ export default class MobileReports extends Component {
                 <DarkBackGround
                     display={this.state.isShowingDarkBackGround}
                 />
-                <Tabs>
+                <Tabs defaultIndex={1}>
                     <TabList className="react-tabs__tab-list mobile-avatar">
                         <Tab 
                             className="react-tabs__tab mobile-avatar"
