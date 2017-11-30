@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 
 import axios from '../../axios-config';
 
@@ -100,9 +101,7 @@ export default class MobileCreateCard extends Component {
                         const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
                         getUserBasicData();
                         handleShouldProfileUpdate(true);
-                        this.setState({
-                            step: maxStep
-                        });
+                        browserHistory.push(`/ludo/${ludo_id}`);
                     } else {
                         window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
                         console.error('get after post template response from server: ', response);
