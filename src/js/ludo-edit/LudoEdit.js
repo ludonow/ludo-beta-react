@@ -2,24 +2,23 @@ import React from 'react';
 
 import LudoEditForm from './LudoEditForm';
 import LudoList from '../app/LudoList';
+import MobileOpenedLudo from '../opened/MobileOpenedLudo';
 
-export default class LudoEdit extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            /* components/_form.scss */
-            <div className="form-and-list">
-                <div className="form">
-                    <LudoEditForm {...this.props} />
-                </div>
-                <div className="form-ludo-list-container">
-                    <LudoList {...this.props} />
-                </div>
+/* components/_form.scss */
+const LudoEdit = (props) => (
+    <div>
+        <MediaQuery minDeviceWidth={768} className="form-and-report">
+            <div className="form">
+                <LudoEditForm {...props} />
             </div>
-        );
-    }
-}
+            <div className="form-ludo-list-container">
+                <LudoList {...props} />
+            </div>
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={768}>
+            <MobileOpenedLudo {...props} starter />
+        </MediaQuery>
+    </div>
+);
 
+export default LudoEdit;
