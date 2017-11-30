@@ -79,8 +79,9 @@ export default class MobileOpenedLudo extends Component {
             isShowingDarkBackGround: true
         };
         this.handleCardContentTabClick = this.handleCardContentTabClick.bind(this);
+        this.handleDeleteClick = this.handleDeleteClick.bind(this);
+        this.handleJoinClick = this.handleJoinClick.bind(this);
         this.handlePlayerTabClick = this.handlePlayerTabClick.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -98,13 +99,42 @@ export default class MobileOpenedLudo extends Component {
         });
     }
 
-    handlePlayerTabClick() {
-        this.setState({
-            isShowingDarkBackGround: false
-        });
+    handleDeleteClick(event) {
+        event.preventDefault();
+        // const isSureToDelete = window.confirm('Are you sure to join?');
+        const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
+        if (isSureToDelete) {
+            axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
+            .then(response => {
+                if(response.data.status == '200') {
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    browserHistory.push('/playground');
+                } else {
+                    window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                    console.error('OpenedStarterForm delete else response from server: ', response);
+                    console.error('OpenedStarterForm delete else message from server: ', response.data.message);
+                    this.setState({
+                        isDeleteButtonClickable: true
+                    });
+                }
+            })
+            .catch(error => {
+                window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
+                console.error('OpenedStarterForm delete error', error);
+                this.setState({
+                    isDeleteButtonClickable: true
+                });
+            });
+        } else {
+            this.setState({
+                isDeleteButtonClickable: true
+            });
+        }
     }
 
-    handleSubmit(event) {
+    handleJoinClick(event) {
         event.preventDefault();
         /* TODO: Use notification confirming join */
         // const isSureToJoin = window.confirm('Are you sure to join?');
@@ -125,7 +155,8 @@ export default class MobileOpenedLudo extends Component {
                     getUserBasicData();
                     handleShouldProfileUpdate(true);
                     /* TODO: Figure out how to use same url redirect to other component */
-                    browserHistory.push(`/ludo-edit/${ludo_id}`);
+                    browserHistory.push('/playground');
+                    browserHistory.push(`/ludo/${ludo_id}`);
                 } else if (response.data.message === 'Your fuel is out.') {
                     window.alert('你的燃料用完囉！');
                 } else {
@@ -141,6 +172,12 @@ export default class MobileOpenedLudo extends Component {
         }
     }
 
+    handlePlayerTabClick() {
+        this.setState({
+            isShowingDarkBackGround: false
+        });
+    }
+
     render() {
         const { 
             currentLudoReportData,
@@ -149,6 +186,7 @@ export default class MobileOpenedLudo extends Component {
             handleShouldReportUpdate,
             params,
             router_currentFormValue,
+            starter,
             userBasicData
         } = this.props;
         const {
@@ -201,6 +239,20 @@ export default class MobileOpenedLudo extends Component {
                         <TextCenter>
                             尚未開始遊戲
                         </TextCenter>
+                        {
+                            starter ?
+                                <JoinButtonContainer>
+                                    <JoinButton onClick={this.handleDeleteClick}>
+                                        刪除戰局
+                                    </JoinButton>
+                                </JoinButtonContainer>
+                            :
+                                <JoinButtonContainer>
+                                    <JoinButton onClick={this.handleJoinClick}>
+                                        加入戰局
+                                    </JoinButton>
+                                </JoinButtonContainer>
+                        }
                     </TabPanel>
                     <TabPanel>
                         <CardContent
@@ -209,21 +261,39 @@ export default class MobileOpenedLudo extends Component {
                             tags={tags}
                             title={title}
                         />
-                        <JoinButtonContainer>
-                            <JoinButton onClick={this.handleSubmit}>
-                                加入戰局
-                            </JoinButton>
-                        </JoinButtonContainer>
+                        {
+                            starter ?
+                                <JoinButtonContainer>
+                                    <JoinButton onClick={this.handleDeleteClick}>
+                                        刪除戰局
+                                    </JoinButton>
+                                </JoinButtonContainer>
+                            :
+                                <JoinButtonContainer>
+                                    <JoinButton onClick={this.handleJoinClick}>
+                                        加入戰局
+                                    </JoinButton>
+                                </JoinButtonContainer>
+                        }
                     </TabPanel>
                     <TabPanel>
                         <TextCenter>
                             尚未開始遊戲
                         </TextCenter>
-                        <JoinButtonContainer>
-                            <JoinButton onClick={this.handleSubmit}>
-                                加入戰局
-                            </JoinButton>
-                        </JoinButtonContainer>
+                        {
+                            starter ?
+                                <JoinButtonContainer>
+                                    <JoinButton onClick={this.handleDeleteClick}>
+                                        刪除戰局
+                                    </JoinButton>
+                                </JoinButtonContainer>
+                            :
+                                <JoinButtonContainer>
+                                    <JoinButton onClick={this.handleJoinClick}>
+                                        加入戰局
+                                    </JoinButton>
+                                </JoinButtonContainer>
+                        }
                     </TabPanel>
                 </Tabs>
             </div>
