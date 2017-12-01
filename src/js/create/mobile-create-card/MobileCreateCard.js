@@ -45,6 +45,7 @@ export default class MobileCreateCard extends Component {
     }
 
     componentDidMount() {
+        this.props.handleIsOpeningCreateFormPage(true);
         if (this.props.params.ludo_id) {
             const { ludo_id } = this.props.params;
             axios.get(`/apis/ludo/${ludo_id}`)
@@ -59,6 +60,10 @@ export default class MobileCreateCard extends Component {
                 console.error(`MobileCreateCard componentDidMount get ludo ${ludo_id} error: `, error);
             });
         }
+    }
+
+    componentWillUnmount() {
+        this.props.handleIsOpeningCreateFormPage(false);
     }
 
     handleCardSubmit(event) {

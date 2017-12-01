@@ -30,6 +30,7 @@ export default class App extends React.Component {
             isInfiniteLoading: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
+            isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
             lastEvaluatedKey: {},
@@ -59,6 +60,7 @@ export default class App extends React.Component {
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
         this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
+        this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
@@ -380,6 +382,12 @@ export default class App extends React.Component {
         });
     }
 
+    handleIsOpeningCreateFormPage(boolean) {
+        this.setState({
+            isOpeningCreateFormPage: boolean
+        });
+    }
+
     handleIsOpeningLudoListPage(boolean) {
         this.setState({
             isOpeningLudoListPage: boolean
@@ -456,6 +464,7 @@ export default class App extends React.Component {
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
                     isLoggedIn={this.state.isLoggedIn}
+                    isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
                     userBasicData={this.state.userBasicData}
@@ -489,6 +498,7 @@ export default class App extends React.Component {
                                 handleHasGotNewReport: this.handleHasGotNewReport,
                                 handleIsHoveringSidebar: this.handleIsHoveringSidebar,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
+                                handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                                 handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
                                 handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,

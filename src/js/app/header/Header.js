@@ -44,6 +44,7 @@ export default class Header extends Component {
         const {
             getFilteredLudoList,
             getLatestLudoList,
+            isOpeningCreateFormPage,
             isOpeningLudoListPage,
             isOpeningProfilePage,
             userBasicData 
@@ -60,7 +61,12 @@ export default class Header extends Component {
             <div className="header">
                 <div className="header-left">
                     <MediaQuery maxDeviceWidth={768}>
-                        <HeaderPrevPageArrow />
+                        {
+                            isOpeningCreateFormPage ?
+                                null
+                            :
+                                <HeaderPrevPageArrow />
+                        }
                     </MediaQuery>
                     <HeaderLogo 
                         getFilteredLudoList={getFilteredLudoList}
