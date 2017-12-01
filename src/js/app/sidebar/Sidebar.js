@@ -17,9 +17,9 @@ import SidebarTemplate from './SidebarTemplate';
 import arrowIcon from '../../../images/sidebar/arrow.png';
 
 // const sidebarInstructionTextArray = ['Playground', 'Profile', 'Create', 'Friend', 'Sports', 'Read'];
-const sidebarInstructionTextArray = ['個人資料', '遊樂園', '模板', '創建', '朋友', '閱讀'];
+const sidebarInstructionTextArray = ['個人資料', '遊樂園', '模板', '創建', '歷史紀錄', '閱讀'];
 
-export default class Sidebar extends React.Component {
+export default class Sidebar extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,6 +27,7 @@ export default class Sidebar extends React.Component {
             instructionText: 0,
             isHoverSidebar: false
         };
+        this.handleHistoryLink = this.handleHistoryLink.bind(this);
         this.handleMouseLeave = this.handleMouseLeave.bind(this);
         this.handleMouseOver = this.handleMouseOver.bind(this);
         this.handlePlaygroundLink = this.handlePlaygroundLink.bind(this);
@@ -34,6 +35,11 @@ export default class Sidebar extends React.Component {
         this.handleSidebarMouseLeave = this.handleSidebarMouseLeave.bind(this);
         this.handleSidebarMouseOver = this.handleSidebarMouseOver.bind(this);
         this.handleTemplateFilterLink = this.handleTemplateFilterLink.bind(this);
+    }
+
+    handleHistoryLink(event) {
+        this.props.getFilteredLudoList('stage=3');
+        browserHistory.push('/playground');
     }
 
     handleMouseLeave(event) {
@@ -166,7 +172,7 @@ export default class Sidebar extends React.Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to="/friend">
+                            <span onTouchTap={this.handleHistoryLink}>
                                 {
                                     hoverSidebarIndex == 4 ?
                                         <div className="right-sidebar-item__instruction">
@@ -175,7 +181,7 @@ export default class Sidebar extends React.Component {
                                     : null
                                 }
                                 <SidebarFriend />
-                            </Link>
+                            </span>
                         </div>
                         {/*read*/}
                         <div
@@ -205,5 +211,5 @@ export default class Sidebar extends React.Component {
 };
 
 Sidebar.propTypes = {
-    getFilteredLudoList: PropTypes.func
+    getFilteredLudoList: PropTypes.func.isRequired
 };

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory, Link } from 'react-router';
 import MediaQuery from 'react-responsive';
+import styled from 'styled-components';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
-// import HeaderFilter from './HeaderFilter'; // deprecated
 import HeaderFuel from './HeaderFuel';
 import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
@@ -16,10 +16,30 @@ import Create from '../../create/Create';
 import Friend from '../../friend/Friend';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
+import magnifierIcon from '../../../images/magnifier.svg';
+
+const SearchIconContainer = styled.div`
+    position: absolute;
+    right: 0;
+    padding: 20px;
+    & > img {
+        width: 30px;
+        height: 30px;
+    }
+`;
+
+const SearchIcon = () => (
+    <SearchIconContainer>
+        <img src={magnifierIcon} />
+    </SearchIconContainer>
+);
 
 export default class Header extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isSearching: false
+        }
         this.handleFilterClick = this.handleFilterClick.bind(this);
         this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
@@ -50,6 +70,9 @@ export default class Header extends Component {
             userBasicData 
         } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
+
+        const { isSearching } = this.state;
+
         let headerProfile;
         if (userBasicData.name) {    // user has login
             headerProfile = <HeaderFBPhoto userBasicData={userBasicData}/>
@@ -59,48 +82,45 @@ export default class Header extends Component {
         return (
             /* layout/_header.scss */
             <div className="header">
-                <div className="header-left">
-                    <MediaQuery maxDeviceWidth={768}>
-                        {
-                            isOpeningCreateFormPage ?
-                                null
-                            :
-                                <HeaderPrevPageArrow />
-                        }
-                    </MediaQuery>
+                <MediaQuery 
+                    className="header-left"
+                    maxDeviceWidth={768}
+                >
+                    {
+                        isOpeningCreateFormPage ?
+                            null
+                        :
+                            <HeaderPrevPageArrow />
+                    }
+                    {
+                        isSearching ?
+                            null
+                        :
+                            <HeaderLogo 
+                                getFilteredLudoList={getFilteredLudoList}
+                            />
+                    }
+                    <SearchIcon />
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={768}>
                     <HeaderLogo 
                         getFilteredLudoList={getFilteredLudoList}
                     />
-                    <MediaQuery minDeviceWidth={768}>
-                    {
-                        /* components/_header-filter.scss */
-                        isOpeningLudoListPage ?
-                            <div className="filter-button-container">
-                                <button
-                                    className="filter-button"
-                                    onClick={this.handleFilterClick}
-                                    value="stage=3"
-                                >
-                                    歷史紀錄
-                                </button>
-                            </div>
-                        :
-                            null
-                    }
-                    </MediaQuery>
-                </div>
+                </MediaQuery>
                 <div className="header-right">
-                    <HeaderFuel heart={heart} />
-                        {
-                            isOpeningProfilePage ?
-                                null
-                            :
-                                <HeaderRate success_rate={success_rate} win_rate={win_rate} />
-                        }
-                    {/* components/_header-profile.scss */}
-                    <div className="header-profile">
-                        {headerProfile}
-                    </div>
+                    <MediaQuery minDeviceWidth={768}>
+                        <HeaderFuel heart={heart} />
+                            {
+                                isOpeningProfilePage ?
+                                    null
+                                :
+                                    <HeaderRate success_rate={success_rate} win_rate={win_rate} />
+                            }
+                        {/* components/_header-profile.scss */}
+                        <div className="header-profile">
+                            {headerProfile}
+                        </div>
+                    </MediaQuery>
                 </div>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
