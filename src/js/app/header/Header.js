@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { browserHistory, Link } from 'react-router';
 import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
+import TextField from 'material-ui/TextField';
+import { grey300, grey700 } from 'material-ui/styles/colors';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFuel from './HeaderFuel';
@@ -17,32 +19,127 @@ import Friend from '../../friend/Friend';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
 import magnifierIcon from '../../../images/magnifier.svg';
+import CancelIcon from 'material-ui/svg-icons/navigation/cancel';
+import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
 
-const SearchIconContainer = styled.div`
+/**
+ * hacky usage of styled-component to use react-tap-event-plugin
+ * ref: https://github.com/styled-components/styled-components/issues/527#issuecomment-281931998
+ */
+const A = (props) => (
+    <a {...props} />
+);
+
+const CancelIconContainer  = styled(A)`
+    padding: 5px;
+`;
+
+const SearchBar = styled.div`
+    width: 260px;
+    background-color: #999999;
+    border-radius: 50px;
+    display: inline-flex;
+
+    & > img {
+        position: relative;
+        padding: 5px 10px;
+        width: 20px;
+        height: 20px;
+    }
+
+    & input {
+        border: none;
+        outline: none;
+        background-color: #999999;
+        caret-color: white;
+        color: white;
+        font-size: 0.8rem;
+    }
+`;
+
+const SearchBarContainer = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+`;
+
+const SearchIconContainer = styled(A)`
     position: absolute;
     right: 0;
     padding: 20px;
-    & > img {
+
+    img {
         width: 30px;
         height: 30px;
     }
 `;
 
-const SearchIcon = () => (
-    <SearchIconContainer>
+const MobileSearchBar = ({
+    handleSearchingTextChange,
+    handleSearchingTextClear,
+    searchingText
+}) => (
+    <SearchBarContainer>
+        <SearchBar>
+            <img src={magnifierIcon} />
+            <input
+                autoFocus
+                onChange={handleSearchingTextChange}
+                type="text"
+                value={searchingText}
+            />
+            {
+                searchingText ?
+                    <CancelIconContainer
+                        onTouchTap={handleSearchingTextClear}
+                    >
+                        <CancelIcon
+                            color={grey700}
+                            style={{height: '20px', width: '20px'}}
+                        />
+                    </CancelIconContainer>
+                :
+                    null
+            }
+        </SearchBar>
+    </SearchBarContainer>
+);
+
+const SearchIcon = ({ handleMobileSearchTouchTap }) => (
+    <SearchIconContainer
+        onTouchTap={handleMobileSearchTouchTap}
+    >
         <img src={magnifierIcon} />
     </SearchIconContainer>
 );
+
+const SeachtCloseIcon = ({ handleMobileSearchCancelTouchTap }) => (
+    <SearchIconContainer
+        onTouchTap={handleMobileSearchCancelTouchTap}
+    >
+        <CompareArrowsIcon
+            color={grey300}
+            style={{height: '30px', width: '30px'}}
+        />
+    </SearchIconContainer>
+);
+
 
 export default class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSearching: false
+            isSearching: false,
+            searchingText: ''
         }
         this.handleFilterClick = this.handleFilterClick.bind(this);
-        this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
+        this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
+        this.handleMobileSearchTouchTap = this.handleMobileSearchTouchTap.bind(this);
+        this.handleSearchingTextChange = this.handleSearchingTextChange.bind(this);
+        this.handleSearchingTextClear = this.handleSearchingTextClear.bind(this);
+        this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
     }
 
     handleFilterClick(event) {
@@ -50,13 +147,43 @@ export default class Header extends Component {
         browserHistory.push('/playground');
     }
 
-    handleTemplateFilterClick() {
-        this.props.getFilteredLudoList('stage=0');
+    handleHistoryFilterClick() {
+        this.props.getFilteredLudoList('stage=3');
         browserHistory.push('/playground');
     }
 
-    handleHistoryFilterClick() {
-        this.props.getFilteredLudoList('stage=3');
+    handleMobileSearchCancelTouchTap(event) {
+        event.preventDefault();
+        this.setState(
+            prevState => ({
+                isSearching: false
+            })
+        );
+    }
+
+    handleMobileSearchTouchTap(event) {
+        event.preventDefault();
+        this.setState(
+            prevState => ({
+                isSearching: true
+            })
+        );
+    }
+
+    handleSearchingTextChange(event) {
+        this.setState({
+            searchingText: event.currentTarget.value
+        });
+    }
+
+    handleSearchingTextClear() {
+        this.setState({
+            searchingText: ''
+        });
+    }
+
+    handleTemplateFilterClick() {
+        this.props.getFilteredLudoList('stage=0');
         browserHistory.push('/playground');
     }
 
@@ -71,7 +198,10 @@ export default class Header extends Component {
         } = this.props;
         const { heart, marbles, success_rate, win_rate } = userBasicData;
 
-        const { isSearching } = this.state;
+        const {
+            isSearching,
+            searchingText
+        } = this.state;
 
         let headerProfile;
         if (userBasicData.name) {    // user has login
@@ -94,34 +224,50 @@ export default class Header extends Component {
                     }
                     {
                         isSearching ?
-                            null
+                            <MobileSearchBar
+                                handleSearchingTextChange={this.handleSearchingTextChange}
+                                handleSearchingTextClear={this.handleSearchingTextClear}
+                                searchingText={searchingText}
+                            />
                         :
                             <HeaderLogo 
                                 getFilteredLudoList={getFilteredLudoList}
                             />
                     }
-                    <SearchIcon />
+                    {
+                        isSearching ?
+                            <SeachtCloseIcon
+                                handleMobileSearchCancelTouchTap={this.handleMobileSearchCancelTouchTap}
+                            />
+                        :
+                            <SearchIcon
+                                handleMobileSearchTouchTap={this.handleMobileSearchTouchTap}
+                            />
+                    }
                 </MediaQuery>
-                <MediaQuery minDeviceWidth={768}>
+                <MediaQuery
+                    minDeviceWidth={768}
+                >
                     <HeaderLogo 
                         getFilteredLudoList={getFilteredLudoList}
                     />
                 </MediaQuery>
-                <div className="header-right">
-                    <MediaQuery minDeviceWidth={768}>
-                        <HeaderFuel heart={heart} />
-                            {
-                                isOpeningProfilePage ?
-                                    null
-                                :
-                                    <HeaderRate success_rate={success_rate} win_rate={win_rate} />
-                            }
-                        {/* components/_header-profile.scss */}
-                        <div className="header-profile">
-                            {headerProfile}
-                        </div>
-                    </MediaQuery>
-                </div>
+                <MediaQuery
+                    className="header-right"
+                    minDeviceWidth={768}
+                >
+                    <HeaderFuel heart={heart} />
+                        {
+                            isOpeningProfilePage ?
+                                null
+                            :
+                                <HeaderRate success_rate={success_rate} win_rate={win_rate} />
+                        }
+                    {/* components/_header-profile.scss */}
+                    <div className="header-profile">
+                        {headerProfile}
+                    </div>
+                </MediaQuery>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
                     <input className="fab-menu-checkbox" type="checkbox"/>

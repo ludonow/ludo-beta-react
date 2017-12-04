@@ -1,9 +1,7 @@
 @import "components/header-fabmenu";
 @import "components/header-filter";
 @import "components/header-fuel";
-@import "components/header-left-arrow";
 @import "components/header-level";
-@import "components/header-logo";
 @import "components/header-marbles";
 @import "components/header-profile";
 @import "components/header-rate";
@@ -49,13 +47,5 @@ $gray_border: rgba(182, 188, 193, 1);
         }
         .header-filter {
             display: none;
-        }
-        .header-Ludo-logo {
-            left: auto;
-            margin: 0 auto;
-
-            .header-Ludo-logo__icon {
-                margin:0 auto;
-            }
         }
     }

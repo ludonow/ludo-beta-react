@@ -1,14 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { browserHistory } from 'react-router';
+import styled from 'styled-components';
+
 import imageBack from '../../../images/header/back.png';
 
-export default class HeaderPrevPageArrow extends Component {
-    render() {
-        return(
-            <div className="header-left-arrow-container" onClick={browserHistory.goBack}>
-                
-                <img src={imageBack}/>
-            </div>
-        );
+const HeaderLeftArrowContainer = styled.div`
+    width: 10%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    & > img {
+        height: 50%;
+        padding-left: 10px;
     }
-}
+`;
+
+const HeaderPrevPageArrow = () => (
+    <HeaderLeftArrowContainer
+        onTouchTap={browserHistory.goBack}
+    >
+        <img src={imageBack}/>
+    </HeaderLeftArrowContainer>
+);
+
+export default HeaderPrevPageArrow;
