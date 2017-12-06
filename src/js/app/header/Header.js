@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import { grey300, grey700 } from 'material-ui/styles/colors';
 
+import axios from '../../axios-config';
+
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFuel from './HeaderFuel';
 import HeaderLogo from './HeaderLogo';
@@ -76,6 +78,7 @@ const SearchIconContainer = styled(A)`
 `;
 
 const MobileSearchBar = ({
+    handleSearchSubmit,
     handleSearchingTextChange,
     handleSearchingTextClear,
     searchingText
@@ -86,6 +89,7 @@ const MobileSearchBar = ({
             <input
                 autoFocus
                 onChange={handleSearchingTextChange}
+                onKeyUp={handleSearchSubmit}
                 type="text"
                 value={searchingText}
             />
@@ -125,7 +129,6 @@ const SeachtCloseIcon = ({ handleMobileSearchCancelTouchTap }) => (
     </SearchIconContainer>
 );
 
-
 export default class Header extends Component {
     constructor(props) {
         super(props);
@@ -137,6 +140,7 @@ export default class Header extends Component {
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
         this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
         this.handleMobileSearchTouchTap = this.handleMobileSearchTouchTap.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleSearchingTextChange = this.handleSearchingTextChange.bind(this);
         this.handleSearchingTextClear = this.handleSearchingTextClear.bind(this);
         this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
@@ -168,6 +172,17 @@ export default class Header extends Component {
                 isSearching: true
             })
         );
+    }
+
+    handleSearchSubmit(event) {
+        if (event.key === 'Enter') {
+            const searchParams = {
+                "tag": event.currentTarget.value,
+                "title": event.currentTarget.value
+            };
+            const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
+            this.props.getFilteredLudoList(filterCondition);
+        }
     }
 
     handleSearchingTextChange(event) {
@@ -214,7 +229,7 @@ export default class Header extends Component {
             <div className="header">
                 <MediaQuery 
                     className="header-left"
-                    maxDeviceWidth={768}
+                    maxDeviceWidth={767}
                 >
                     {
                         isOpeningCreateFormPage ?
@@ -225,6 +240,7 @@ export default class Header extends Component {
                     {
                         isSearching ?
                             <MobileSearchBar
+                                handleSearchSubmit={this.handleSearchSubmit}
                                 handleSearchingTextChange={this.handleSearchingTextChange}
                                 handleSearchingTextClear={this.handleSearchingTextClear}
                                 searchingText={searchingText}
