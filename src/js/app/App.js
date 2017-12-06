@@ -24,6 +24,7 @@ export default class App extends React.Component {
             currentTargetReportId: '',
             currentUserId: '',
             denounceType: 100,
+            filterCondition: '',
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
             isHoveringSidebar: false,
@@ -68,6 +69,7 @@ export default class App extends React.Component {
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
+        this.setFilterCondition = this.setFilterCondition.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
@@ -93,15 +95,22 @@ export default class App extends React.Component {
     }
 
     componentDidUpdate() {
-        const { currentUserId, isLoggedIn, isOpeningLudoListPage, isOpeningProfilePage,
-            shouldLudoListUpdate, shouldProfileUpdate, shouldUserBasicDataUpdate
+        const {
+            currentUserId,
+            filterCondition,
+            isLoggedIn,
+            isOpeningLudoListPage,
+            isOpeningProfilePage,
+            shouldLudoListUpdate,
+            shouldProfileUpdate,
+            shouldUserBasicDataUpdate
         } = this.state;
         if (isOpeningLudoListPage && shouldLudoListUpdate) {
-            this.getFilteredLudoList();
+            this.getFilteredLudoList(filterCondition);
             this.handleShouldLudoListUpdate(false);
         }
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
-            /*
+            /**
              * Update profile data after the user did some ludo action and is going to open profile page
              */
             if (isOpeningProfilePage) {
@@ -440,6 +449,12 @@ export default class App extends React.Component {
         });
     }
 
+    setFilterCondition(filterCondition) {
+        this.setState({
+            filterCondition
+        })
+    }
+
     updateCurrentFormValue(ludoForm) {
         this.setState({
             currentFormValue: ludoForm
@@ -467,6 +482,7 @@ export default class App extends React.Component {
                     isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
+                    setFilterCondition={this.setFilterCondition}
                     userBasicData={this.state.userBasicData}
                 />
                 <Sidebar

@@ -5,6 +5,10 @@ import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import { grey300, grey700 } from 'material-ui/styles/colors';
 
+import ActionSearchIcon from 'material-ui/svg-icons/action/search';
+import CancelIcon from 'material-ui/svg-icons/navigation/cancel';
+import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
+
 import axios from '../../axios-config';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
@@ -21,8 +25,6 @@ import Friend from '../../friend/Friend';
 
 import facebookIcon from '../../../images/login/facebook-icon.png';
 import magnifierIcon from '../../../images/magnifier.svg';
-import CancelIcon from 'material-ui/svg-icons/navigation/cancel';
-import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
 
 /**
  * hacky usage of styled-component to use react-tap-event-plugin
@@ -32,8 +34,34 @@ const A = (props) => (
     <a {...props} />
 );
 
+const ActionSearchIconContainer  = styled(A)`
+    cursor: pointer;
+    padding: 2px;
+
+    &:hover {
+        background: rgba(99, 99, 99, 0.4);
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+`;
+
 const CancelIconContainer  = styled(A)`
     padding: 5px;
+`;
+
+const DesktopSearchBarContainer = styled.div`
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+`;
+
+const MobileSearchBarContainer = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 `;
 
 const SearchBar = styled.div`
@@ -59,13 +87,6 @@ const SearchBar = styled.div`
     }
 `;
 
-const SearchBarContainer = styled.div`
-    position: relative;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-`;
-
 const SearchIconContainer = styled(A)`
     position: absolute;
     right: 0;
@@ -77,19 +98,52 @@ const SearchIconContainer = styled(A)`
     }
 `;
 
-const MobileSearchBar = ({
-    handleSearchSubmit,
+const DesktopSearchBar = ({
+    handleSearchSubmitKeyUp,
+    handleSearchSubmitTouchTap,
     handleSearchingTextChange,
     handleSearchingTextClear,
     searchingText
 }) => (
-    <SearchBarContainer>
+    <DesktopSearchBarContainer>
         <SearchBar>
             <img src={magnifierIcon} />
             <input
                 autoFocus
                 onChange={handleSearchingTextChange}
-                onKeyUp={handleSearchSubmit}
+                onKeyUp={handleSearchSubmitKeyUp}
+                type="text"
+                value={searchingText}
+            />
+            {
+                searchingText ?
+                <ActionSearchIconContainer
+                    onTouchTap={handleSearchSubmitTouchTap}
+                    title="搜尋"
+                >
+                    <ActionSearchIcon />
+                </ActionSearchIconContainer>
+                :
+                    null
+            }
+        </SearchBar>
+
+    </DesktopSearchBarContainer>
+);
+
+const MobileSearchBar = ({
+    handleSearchSubmitKeyUp,
+    handleSearchingTextChange,
+    handleSearchingTextClear,
+    searchingText
+}) => (
+    <MobileSearchBarContainer>
+        <SearchBar>
+            <img src={magnifierIcon} />
+            <input
+                autoFocus
+                onChange={handleSearchingTextChange}
+                onKeyUp={handleSearchSubmitKeyUp}
                 type="text"
                 value={searchingText}
             />
@@ -107,7 +161,7 @@ const MobileSearchBar = ({
                     null
             }
         </SearchBar>
-    </SearchBarContainer>
+    </MobileSearchBarContainer>
 );
 
 const SearchIcon = ({ handleMobileSearchTouchTap }) => (
@@ -140,10 +194,12 @@ export default class Header extends Component {
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
         this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
         this.handleMobileSearchTouchTap = this.handleMobileSearchTouchTap.bind(this);
-        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleSearchSubmitKeyUp = this.handleSearchSubmitKeyUp.bind(this);
+        this.handleSearchSubmitTouchTap = this.handleSearchSubmitTouchTap.bind(this);
         this.handleSearchingTextChange = this.handleSearchingTextChange.bind(this);
         this.handleSearchingTextClear = this.handleSearchingTextClear.bind(this);
         this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
     }
 
     handleFilterClick(event) {
@@ -174,15 +230,19 @@ export default class Header extends Component {
         );
     }
 
-    handleSearchSubmit(event) {
+    handleSearchSubmitKeyUp(event) {
         if (event.key === 'Enter') {
-            const searchParams = {
-                "tag": event.currentTarget.value,
-                "title": event.currentTarget.value
-            };
-            const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
-            this.props.getFilteredLudoList(filterCondition);
+            console.log('handleSearchSubmitKeyUp');
+            console.log(this.state.searchingText);
+            this.searchSubmit(this.state.searchingText);
         }
+    }
+
+    handleSearchSubmitTouchTap(event) {
+        event.preventDefault();
+        console.log('handleSearchSubmitTouchTap');
+        console.log(this.state.searchingText);
+        this.searchSubmit(this.state.searchingText);
     }
 
     handleSearchingTextChange(event) {
@@ -200,6 +260,20 @@ export default class Header extends Component {
     handleTemplateFilterClick() {
         this.props.getFilteredLudoList('stage=0');
         browserHistory.push('/playground');
+    }
+
+    searchSubmit(searchText) {
+        const searchParams = {
+            "title": searchText
+        };
+        /**
+         * How to serialize an Object into a list of parameters?
+         * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
+         */
+        const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
+        this.props.setFilterCondition(filterCondition);
+        browserHistory.push('/playground');
+        this.props.getFilteredLudoList(filterCondition);
     }
 
     render() {
@@ -240,7 +314,8 @@ export default class Header extends Component {
                     {
                         isSearching ?
                             <MobileSearchBar
-                                handleSearchSubmit={this.handleSearchSubmit}
+                                handleSearchSubmitKeyUp={this.handleSearchSubmitKeyUp}
+                                handleSearchSubmitTouchTap={this.handleSearchSubmitTouchTap}
                                 handleSearchingTextChange={this.handleSearchingTextChange}
                                 handleSearchingTextClear={this.handleSearchingTextClear}
                                 searchingText={searchingText}
@@ -261,11 +336,18 @@ export default class Header extends Component {
                             />
                     }
                 </MediaQuery>
-                <MediaQuery
-                    minDeviceWidth={768}
-                >
+                <MediaQuery minDeviceWidth={768}>
                     <HeaderLogo 
                         getFilteredLudoList={getFilteredLudoList}
+                    />
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={768}>
+                    <DesktopSearchBar
+                        handleSearchSubmitKeyUp={this.handleSearchSubmitKeyUp}
+                        handleSearchSubmitTouchTap={this.handleSearchSubmitTouchTap}
+                        handleSearchingTextChange={this.handleSearchingTextChange}
+                        handleSearchingTextClear={this.handleSearchingTextClear}
+                        searchingText={searchingText}
                     />
                 </MediaQuery>
                 <MediaQuery
@@ -277,7 +359,10 @@ export default class Header extends Component {
                             isOpeningProfilePage ?
                                 null
                             :
-                                <HeaderRate success_rate={success_rate} win_rate={win_rate} />
+                                <HeaderRate
+                                    success_rate={success_rate}
+                                    win_rate={win_rate}
+                                />
                         }
                     {/* components/_header-profile.scss */}
                     <div className="header-profile">
