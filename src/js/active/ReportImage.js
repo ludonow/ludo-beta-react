@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DropZone from 'react-dropzone';
+import Lightbox from 'react-image-lightbox';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
@@ -14,11 +15,18 @@ export default class ReportImage extends React.Component {
             isImageLightBoxOpen: false,
             isImageUploaded: false
         };
+        this.handleLightboxClose = this.handleLightboxClose.bind(this);
         this.handleImageDrop = this.handleImageDrop.bind(this);
         this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
         this.handleImageEditingCancelClick = this.handleImageEditingCancelClick.bind(this);
         this.handleImageEditingConfirmClick = this.handleImageEditingConfirmClick.bind(this);
         this.handleImageRemove = this.handleImageRemove.bind(this);
+    }
+
+    handleLightboxClose() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
     }
 
     handleImageDrop(files) {
@@ -107,14 +115,34 @@ export default class ReportImage extends React.Component {
     }
 
     render() {
-        const { isEditingImage, reportObject } = this.props;
+        const {
+            isEditingImage,
+            reportObject
+        } = this.props;
+
+        const {
+            enlargeImageLocation,
+            files,
+            isImageLightBoxOpen,
+            isImageUploaded
+        } = this.state;
+
         return (
             <div className="report-content-container">
                 <img
                     className="report-content report-content__image"
+                    onTouchTap={this.handleImageEnlarge}
                     src={reportObject.image_location}
-                    onClick={this.handleImageEnlarge}
                 />
+                {
+                    isImageLightBoxOpen ?
+                        <Lightbox
+                            mainSrc={enlargeImageLocation}
+                            onCloseRequest={this.handleLightboxClose}
+                        />
+                    :
+                        null
+                }
                 {
                     isEditingImage ?
                         <div className="editing-image">
@@ -141,14 +169,14 @@ export default class ReportImage extends React.Component {
                                 取消編輯
                             </button>
                             {
-                                this.state.isImageUploaded ?
+                                isImageUploaded ?
                                     <div className="upload-preview">
                                         <span className="upload-preview__text">準備變更的圖片: </span>
                                         <div className="upload-preview__image-container">
                                             <img
                                                 className="upload-preview__image"
                                                 onClick={this.handleImageEnlarge}
-                                                src={this.state.files[0].preview}
+                                                src={files[0].preview}
                                             />
                                             <div className="upload-preview-instruction-container">
                                                 <button
