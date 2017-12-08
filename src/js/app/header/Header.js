@@ -165,9 +165,7 @@ const MobileSearchBar = ({
 );
 
 const SearchIcon = ({ handleMobileSearchTouchTap }) => (
-    <SearchIconContainer
-        onTouchTap={handleMobileSearchTouchTap}
-    >
+    <SearchIconContainer onTouchTap={handleMobileSearchTouchTap}>
         <img src={magnifierIcon} />
     </SearchIconContainer>
 );
@@ -232,16 +230,12 @@ export default class Header extends Component {
 
     handleSearchSubmitKeyUp(event) {
         if (event.key === 'Enter') {
-            console.log('handleSearchSubmitKeyUp');
-            console.log(this.state.searchingText);
             this.searchSubmit(this.state.searchingText);
         }
     }
 
     handleSearchSubmitTouchTap(event) {
         event.preventDefault();
-        console.log('handleSearchSubmitTouchTap');
-        console.log(this.state.searchingText);
         this.searchSubmit(this.state.searchingText);
     }
 
