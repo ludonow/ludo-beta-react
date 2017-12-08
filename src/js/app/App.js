@@ -107,6 +107,9 @@ export default class App extends React.Component {
         } = this.state;
         if (isOpeningLudoListPage && shouldLudoListUpdate) {
             this.getFilteredLudoList(filterCondition);
+            this.setState({
+                filterCondition: ''
+            });
             this.handleShouldLudoListUpdate(false);
         }
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
