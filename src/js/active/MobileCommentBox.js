@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import styled from 'styled-components';
+
 import axios from '../axios-config';
 
 import IconButton from 'material-ui/IconButton';
@@ -13,7 +16,21 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MobileCommentForm from './MobileCommentForm';
 import MobileCommentList from './MobileCommentList';
 
-export default class MobileCommentBox extends React.Component {
+const LoginButtonWrapper = styled.div`
+    padding: 8px 0;
+    text-align: center;
+    background-color: white;
+`;
+
+const LoginButton = () => (
+    <LoginButtonWrapper>
+        <Link to="/login">
+            登入後即可留言
+        </Link>
+    </LoginButtonWrapper>
+);
+
+export default class MobileCommentBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -80,17 +97,19 @@ export default class MobileCommentBox extends React.Component {
                     />
                     : null
                 }
-                { currentUserId ?
-                    <MobileCommentForm
-                        currentUserId={currentUserId}
-                        handleShouldReportUpdate={handleShouldReportUpdate}
-                        ludoId={router_currentFormValue.ludo_id}
-                        reportId={reportId}
-                        updateTempCommentList={this.updateTempCommentList}
-                        updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                        userBasicData={userBasicData}
-                    />
-                    : null
+                {
+                    currentUserId ?
+                        <MobileCommentForm
+                            currentUserId={currentUserId}
+                            handleShouldReportUpdate={handleShouldReportUpdate}
+                            ludoId={router_currentFormValue.ludo_id}
+                            reportId={reportId}
+                            updateTempCommentList={this.updateTempCommentList}
+                            updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
+                            userBasicData={userBasicData}
+                        />
+                    :
+                        <LoginButton />
                 }
             </div>
         );

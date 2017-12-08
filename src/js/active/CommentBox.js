@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import styled from 'styled-components';
+
 import axios from '../axios-config';
 
 import IconButton from 'material-ui/IconButton';
@@ -13,7 +16,20 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
-export default class CommentBox extends React.Component {
+const LoginButtonWrapper = styled.div`
+    padding: 8px 0;
+    text-align: center;
+`;
+
+const LoginButton = () => (
+    <LoginButtonWrapper>
+        <Link to="/login">
+            登入後即可留言
+        </Link>
+    </LoginButtonWrapper>
+);
+
+export default class CommentBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -69,7 +85,7 @@ export default class CommentBox extends React.Component {
                             {...this.props}
                         />
                     :
-                        null
+                        <LoginButton />
                 }
             </div>
         );
