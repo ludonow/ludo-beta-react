@@ -97,6 +97,15 @@ const SearchBar = styled.div`
         color: white;
         font-size: 0.8rem;
     }
+
+    input::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    input:focus::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
 `;
 
 const SearchBarLeftPlaceholder = styled.div`
