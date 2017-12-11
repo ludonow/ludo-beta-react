@@ -250,12 +250,7 @@ export default class ActivePlayerForm extends React.Component {
                                     遊戲天數:
                                 </div>
                                 <div className="horizotal-slider duration">
-                                    <RcSlider
-                                        disabled
-                                        marks={timeLineMarks}
-                                        max={duration}
-                                        value={duration}
-                                    />
+                                    {duration}
                                 </div>
                             </div>
                         </div>
