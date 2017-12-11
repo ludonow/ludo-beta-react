@@ -99,6 +99,13 @@ const SearchBar = styled.div`
     }
 `;
 
+const SearchBarLeftPlaceholder = styled.div`
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+`;
+
 const SearchIconContainer = styled(A)`
     position: absolute;
     right: 0;
@@ -119,11 +126,12 @@ const DesktopSearchBar = ({
 }) => (
     <DesktopSearchBarContainer>
         <SearchBar>
-            <img src={magnifierIcon} />
+            <SearchBarLeftPlaceholder />
             <input
                 autoFocus
                 onChange={handleSearchingTextChange}
                 onKeyUp={handleSearchSubmitKeyUp}
+                placeholder="搜尋"
                 type="text"
                 value={searchingText}
             />
