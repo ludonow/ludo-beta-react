@@ -45,7 +45,19 @@ const ActionSearchIconContainer  = styled(A)`
     }
 `;
 
+const ActionSearchIconPlaceHolder = styled.div`
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+`;
+
 const CancelIconContainer  = styled(A)`
+    padding: 5px;
+`;
+
+const CancelIconPlaceHolder = styled.div`
+    width: 20px;
+    height: 20px;
     padding: 5px;
 `;
 
@@ -58,14 +70,13 @@ const DesktopSearchBarContainer = styled.div`
 `;
 
 const MobileSearchBarContainer = styled.div`
-    position: relative;
     display: flex;
     justify-content: center;
+    margin: 0 auto;
     padding: 20px;
 `;
 
 const SearchBar = styled.div`
-    width: 260px;
     background-color: #999999;
     border-radius: 50px;
     display: inline-flex;
@@ -78,6 +89,7 @@ const SearchBar = styled.div`
     }
 
     & input {
+        width: 140px;
         border: none;
         outline: none;
         background-color: #999999;
@@ -117,17 +129,16 @@ const DesktopSearchBar = ({
             />
             {
                 searchingText ?
-                <ActionSearchIconContainer
-                    onTouchTap={handleSearchSubmitTouchTap}
-                    title="搜尋"
-                >
-                    <ActionSearchIcon />
-                </ActionSearchIconContainer>
+                    <ActionSearchIconContainer
+                        onTouchTap={handleSearchSubmitTouchTap}
+                        title="搜尋"
+                    >
+                        <ActionSearchIcon />
+                    </ActionSearchIconContainer>
                 :
-                    null
+                    <ActionSearchIconPlaceHolder />
             }
         </SearchBar>
-
     </DesktopSearchBarContainer>
 );
 
@@ -158,7 +169,7 @@ const MobileSearchBar = ({
                         />
                     </CancelIconContainer>
                 :
-                    null
+                    <CancelIconPlaceHolder />
             }
         </SearchBar>
     </MobileSearchBarContainer>

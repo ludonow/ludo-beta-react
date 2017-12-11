@@ -7,7 +7,7 @@ import imageBack from '../../../images/header/back.png';
 const HeaderLeftArrowContainer = styled.div`
     width: 10%;
     height: 100%;
-    position: relative;
+    position: absolute;
     display: flex;
     align-items: center;
 
