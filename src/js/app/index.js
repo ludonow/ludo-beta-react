@@ -35,8 +35,6 @@ faveIcon.setAttribute('rel', 'shortcut icon');
 faveIcon.setAttribute('href', '../../images/favicon.png');
 const headFav = document.getElementsByTagName('head')[0].appendChild(faveIcon);
 
-
-
 const div = document.createElement("div");
 div.setAttribute("id", "app");
 document.body.appendChild(div);

@@ -3,6 +3,7 @@ import axios from '../axios-config';
 
 import Header from './header/Header';
 import Sidebar from './sidebar/Sidebar';
+import Guide from './Guide';
 import DenounceBox from './DenounceBox';
 
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -466,7 +467,12 @@ export default class App extends React.Component {
 
     render() {
         const { isHoveringSidebar } = this.state;
-        const { router_currentFormValue } = this.props;
+        const {
+            route,
+            router_currentFormValue
+        } = this.props;
+
+        const { path } = route;
         let mainContainerClass = '';
         if (isHoveringSidebar) {
             mainContainerClass = 'main-container hoveringSidebar';
@@ -493,6 +499,9 @@ export default class App extends React.Component {
                     getFilteredLudoList={this.getFilteredLudoList}
                     handleIsHoveringSidebar={this.handleIsHoveringSidebar}
                     isHoveringSidebar={isHoveringSidebar}
+                />
+                <Guide
+                    path={path}
                 />
                 {/* layout/main-container */}
                 <div
