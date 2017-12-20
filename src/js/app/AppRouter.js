@@ -1,6 +1,8 @@
 import React from 'react';
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
+import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
+
 import axios from '../axios-config';
 
 import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
@@ -181,10 +183,12 @@ export default class AppRouter extends React.Component {
                         <Route path="signup" component={SignUp}></Route>
                     </Route>
                 </Router>
-                <MessengerCustomerChat
-                    appId="1769213746482471"
-                    pageId="462757044121581"
-                />
+                <MediaQuery maxDeviceWidth={768}>
+                    <MessengerCustomerChat
+                        appId="1075325352502513"
+                        pageId="1557980337838066"
+                    />
+                </MediaQuery>
             </div>
         );
     }
