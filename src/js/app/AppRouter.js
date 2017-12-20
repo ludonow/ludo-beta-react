@@ -183,7 +183,7 @@ export default class AppRouter extends React.Component {
                         <Route path="signup" component={SignUp}></Route>
                     </Route>
                 </Router>
-                <MediaQuery maxDeviceWidth={768}>
+                <MediaQuery minDeviceWidth={768}>
                     <MessengerCustomerChat
                         appId="1075325352502513"
                         pageId="1557980337838066"
