@@ -4,6 +4,7 @@ import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import TagsInput from 'react-tagsinput';
+import Textarea from "react-textarea-autosize";
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -166,15 +167,15 @@ export default class CreateForm extends React.Component {
                 introduction: event.target.value
             })
         });
-        if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
-            this.setState({
-                maxLengthOfIntroduction: 300
-            });
-        } else {
-            this.setState({
-                maxLengthOfIntroduction: 300*3
-            });
-        }
+        // if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
+        //     this.setState({
+        //         maxLengthOfIntroduction: 300
+        //     });
+        // } else {
+        //     this.setState({
+        //         maxLengthOfIntroduction: 300*3
+        //     });
+        // }
     }
 
     handleMarblesChange(marbles) {
@@ -328,16 +329,16 @@ export default class CreateForm extends React.Component {
         );
     }
 
-    handleTitleMaxLength() {
-        const { title } = this.state.ludoCreateForm;
-        let length = 0;
-        if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
-            length = 19;
-        } else {
-            length = 60;
-        }
-        return length;
-    }
+    // handleTitleMaxLength() {
+    //     const { title } = this.state.ludoCreateForm;
+    //     let length = 0;
+    //     if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
+    //         length = 19;
+    //     } else {
+    //         length = 60;
+    //     }
+    //     return length;
+    // }
 
     handleTagsChange(tags) {
         const { ludoCreateForm } = this.state;
@@ -375,7 +376,15 @@ export default class CreateForm extends React.Component {
     // }
 
     render() {
-        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
+        const {
+            category,
+            currentHoverValue,
+            ludoCreateForm,
+            isDurationSelected,
+            maxDuration,
+            maxLengthOfIntroduction,
+            maxMarbles
+        } = this.state;
         const { tags, suggestions } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
@@ -455,7 +464,7 @@ export default class CreateForm extends React.Component {
                             <input className="text-field" type="text"
                                 // placeholder="Title"
                                 placeholder="輸入想要的標題"
-                                maxLength={this.handleTitleMaxLength()}
+                                // maxLength={this.handleTitleMaxLength()}
                                 onChange={this.handleTitleChange}
                             />
                         </div>
@@ -483,12 +492,13 @@ export default class CreateForm extends React.Component {
                 <div className="ludo-create-information-bottom-container">
                     <div className="image-label"><img src={introductionIcon} /></div>
                     <div className="text-field-container text-field-container--introduction">
-                        <textarea
+                        <Textarea
                             className="text-field--introduction"
                             // placeholder="Introduction"
                             placeholder={`寫下你對遊戲的敘述吧！`}
                             onChange={this.handleIntroductionChange}
-                            maxLength={maxLengthOfIntroduction}
+                            rows={4}
+                            // maxLength={maxLengthOfIntroduction}
                         />
                     </div>
                     <div className="image-label">

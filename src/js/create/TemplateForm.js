@@ -4,6 +4,7 @@ import axios from '../axios-config';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import TagsInput from 'react-tagsinput';
+import Textarea from "react-textarea-autosize";
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
@@ -173,15 +174,15 @@ export default class TemplateForm extends React.Component {
                 introduction: event.target.value
             })
         });
-        if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
-            this.setState({
-                maxLengthOfIntroduction: 300
-            });
-        } else {
-            this.setState({
-                maxLengthOfIntroduction: 300*3
-            });
-        }
+        // if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
+        //     this.setState({
+        //         maxLengthOfIntroduction: 300
+        //     });
+        // } else {
+        //     this.setState({
+        //         maxLengthOfIntroduction: 300*3
+        //     });
+        // }
     }
 
     handleMarblesChange(marbles) {
@@ -304,16 +305,16 @@ export default class TemplateForm extends React.Component {
         );
     }
 
-    handleTitleMaxLength() {
-        const { title } = this.state.ludoCreateForm;
-        let length = 0;
-        if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
-            length = 19;
-        } else {
-            length = 60;
-        }
-        return length;
-    }
+    // handleTitleMaxLength() {
+    //     const { title } = this.state.ludoCreateForm;
+    //     let length = 0;
+    //     if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
+    //         length = 19;
+    //     } else {
+    //         length = 60;
+    //     }
+    //     return length;
+    // }
 
     handleTagsChange(tags) {
         /* Add # symbol in tag field */
@@ -337,7 +338,16 @@ export default class TemplateForm extends React.Component {
     }
 
     render() {
-        const { category, currentHoverValue, hashtags, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
+        const {
+            category, 
+            currentHoverValue, 
+            hashtags, 
+            ludoCreateForm, 
+            isDurationSelected, 
+            maxDuration, 
+            maxLengthOfIntroduction,
+            maxMarbles
+        } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
             if (i <= currentHoverValue) {
@@ -418,7 +428,7 @@ export default class TemplateForm extends React.Component {
                                 type="text"
                                 // placeholder="Title"
                                 placeholder="輸入想要的標題"
-                                maxLength={this.handleTitleMaxLength()}
+                                // maxLength={this.handleTitleMaxLength()}
                                 onChange={this.handleTitleChange}
                                 value={ludoCreateForm.title}
                             />
@@ -444,12 +454,13 @@ export default class TemplateForm extends React.Component {
                     </div>
                     <div className="text-label">介紹:</div>
                     <div className="text-field-container text-field-container--introduction">
-                        <textarea
+                        <Textarea
                             className="text-field--introduction"
                             // placeholder="Introduction"
-                            maxLength={maxLengthOfIntroduction}
-                            placeholder={`詳細的說明(中文最多300字)`}
+                            // maxLength={maxLengthOfIntroduction}
+                            // placeholder={`詳細的說明(中文最多300字)`}
                             onChange={this.handleIntroductionChange}
+                            rows={4}
                             value={ludoCreateForm.introduction}
                         />
                         <div className="text-field--hashtag">

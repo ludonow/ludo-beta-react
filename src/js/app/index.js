@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import MessengerCustomerChat  from 'react-messenger-customer-chat';
 import AppRouter from './AppRouter';
 
 // const rwdMeta = document.createElement('meta');

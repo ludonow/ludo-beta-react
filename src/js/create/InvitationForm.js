@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import RcSlider from 'rc-slider';
 import TagsInput from 'react-tagsinput';
+import Textarea from "react-textarea-autosize";
 
 import axios from '../axios-config';
 import InvitationMessage from './InvitationMessage.js';
@@ -40,7 +41,7 @@ export default class InvitationForm extends React.Component {
             isMessageDialogOpen: false,
             isSuccesfullyCreateLudo: false,
             maxDuration: 14,
-            maxLengthOfIntroduction: 140,
+            maxLengthOfIntroduction: 300,
             maxMarbles: 50,
             suggestions: ["Banana", "Mango", "Pear", "Apricot"]
         };
@@ -164,15 +165,15 @@ export default class InvitationForm extends React.Component {
                 introduction: event.target.value
             })
         });
-        if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
-            this.setState({
-                maxLengthOfIntroduction: 140
-            });
-        } else {
-            this.setState({
-                maxLengthOfIntroduction: 140*3
-            });
-        }
+        // if (this.state.ludoCreateForm.introduction.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in introduction */
+        //     this.setState({
+        //         maxLengthOfIntroduction: 300
+        //     });
+        // } else {
+        //     this.setState({
+        //         maxLengthOfIntroduction: 300*3
+        //     });
+        // }
     }
 
     handleMarblesChange(marbles) {
@@ -227,16 +228,16 @@ export default class InvitationForm extends React.Component {
         );
     }
 
-    handleTitleMaxLength() {
-        const { title } = this.state.ludoCreateForm;
-        let length = 0;
-        if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
-            length = 19;
-        } else {
-            length = 60;
-        }
-        return length;
-    }
+    // handleTitleMaxLength() {
+    //     const { title } = this.state.ludoCreateForm;
+    //     let length = 0;
+    //     if (title.match(/[\u3400-\u9FBF]/) ) {   /* there is chinese character in title */
+    //         length = 19;
+    //     } else {
+    //         length = 60;
+    //     }
+    //     return length;
+    // }
 
     handleTagsChange(tags) {
         /* Add # symbol in tag field */
@@ -260,7 +261,15 @@ export default class InvitationForm extends React.Component {
     }
 
     render() {
-        const { category, currentHoverValue, ludoCreateForm, isDurationSelected, maxDuration, maxLengthOfIntroduction, maxMarbles } = this.state;
+        const {
+            category,
+            currentHoverValue,
+            ludoCreateForm,
+            isDurationSelected,
+            maxDuration,
+            maxLengthOfIntroduction,
+            maxMarbles
+        } = this.state;
         const { hashtags, suggestions } = this.state;
         const dayPickerButtons = [];
         for(let i = 1; i <= maxDuration; i++) {
@@ -341,7 +350,7 @@ export default class InvitationForm extends React.Component {
                                 <input className="text-field" type="text"
                                     // placeholder="Title"
                                     placeholder="輸入想要的標題"
-                                    maxLength={this.handleTitleMaxLength()}
+                                    // maxLength={this.handleTitleMaxLength()}
                                     onChange={this.handleTitleChange}
                                 />
                             </div>
@@ -386,12 +395,13 @@ export default class InvitationForm extends React.Component {
                         </div>
                         <div className="text-label">介紹:</div>
                         <div className="text-field-container text-field-container--introduction">
-                            <textarea 
+                            <Textarea 
                                 className="text-field--introduction" 
                                 // placeholder="Introduction" 
-                                placeholder={`詳細的說明(中文最多140字)`}
+                                // placeholder={`詳細的說明(中文最多300字)`}
                                 onChange={this.handleIntroductionChange}
-                                maxLength={maxLengthOfIntroduction}
+                                rows={4}
+                                // maxLength={maxLengthOfIntroduction}
                             />
                             <div className="text-field--hashtag">
                                 <TagsInput
