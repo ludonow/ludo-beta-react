@@ -1,7 +1,9 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import axios from '../../axios-config';
 import RcSlider from 'rc-slider';
+import styled from 'styled-components';
+
+import axios from '../../axios-config';
 
 import lifestyleIcon from '../../../images/category_icon/lifestyle.svg';
 import readIcon from '../../../images/category_icon/read.svg';
@@ -11,7 +13,42 @@ import newSkillIcon from '../../../images/category_icon/new_skill.svg';
 import unmentionablesIcon from '../../../images/category_icon/unmentionables.png';
 import othersIcon from '../../../images/category_icon/others.svg';
 
-const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
+const iconArray = [
+    othersIcon,
+    lifestyleIcon,
+    readIcon,
+    exerciseIcon,
+    studyIcon,
+    newSkillIcon,
+    unmentionablesIcon,
+    othersIcon
+];
+
+const IntroductionParagraph = styled.div`
+    align-items: center;
+    background-color: #f0f0f0;
+    font-size: 1.1vw;
+    justify-content: center;
+    min-height: 70px;
+    padding: 10px;
+    text-align: left;
+    white-space: pre-line;
+`;
+
+const TagsWrapper = styled.div`
+    border: none;
+    margin: 0;
+    width: 100%;
+`;
+
+const Title = styled.div`
+    align-items: center;
+    background-color: #f0f0f0;
+    font-size: 1vw;
+    height: 30px;
+    line-height: 30px;
+    width: 80%;
+`;
 
 export default class OpenedBystanderForm extends React.Component {
     constructor(props) {
@@ -189,9 +226,9 @@ export default class OpenedBystanderForm extends React.Component {
                             </div>
                             <div className="text-field-container">
                                 <span className="text-field-label">標題:</span>
-                                <span className="text-field-value">
+                                <Title>
                                     {title}
-                                </span>
+                                </Title>
                             </div>
                         </div>
                     </div>
@@ -209,27 +246,25 @@ export default class OpenedBystanderForm extends React.Component {
                         </div>
                         <div className="text-label">介紹:</div>
                         <div className="text-field-container text-field-container--introduction">
-                            <div className="text-field__introduction">
+                            <IntroductionParagraph>
                                 {introduction}
-                            </div>
+                            </IntroductionParagraph>
                             {/* components/_tags.scss */}
-                            <div className="text-field--hashtag">
-                                <div className="react-tagsinput">
-                                    <span className="react-tagsinput-span">
-                                        {
-                                            tags.length ?
-                                            tags.map((tagString, index) => {
-                                                return (
-                                                    <span className="react-tagsinput-tag" key={`tag-${index}`}>
-                                                        {tagString}
-                                                    </span>
-                                                );
-                                            })
-                                            : null
-                                        }
-                                    </span>
-                                </div>
-                            </div>
+                            <TagsWrapper className="react-tagsinput">
+                                <span className="react-tagsinput-span">
+                                    {
+                                        tags.length ?
+                                        tags.map((tagString, index) => {
+                                            return (
+                                                <span className="react-tagsinput-tag" key={`tag-${index}`}>
+                                                    {tagString}
+                                                </span>
+                                            );
+                                        })
+                                        : null
+                                    }
+                                </span>
+                            </TagsWrapper>
                         </div>
                         {/* components/_submit-button.scss */}
                         <button
