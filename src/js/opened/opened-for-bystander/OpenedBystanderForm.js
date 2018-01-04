@@ -33,6 +33,7 @@ const IntroductionParagraph = styled.div`
     padding: 10px;
     text-align: left;
     white-space: pre-line;
+    width: 100%;
 `;
 
 const TagsWrapper = styled.div`
