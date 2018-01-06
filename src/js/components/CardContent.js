@@ -24,11 +24,12 @@ const CardInterval = styled.div`
 `;
 
 const CardIntroduction = styled.div`
-    white-space: pre-line;
     color: white;
     font-size: 0.8rem;
     font-weight: bold;
     line-height: 1.3;
+    margin-bottom: 70px;
+    white-space: pre-line;
 `;
 
 const CardTitle = styled.div`
