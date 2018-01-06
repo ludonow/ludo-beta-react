@@ -119,12 +119,13 @@ export default class OpenedBystanderForm extends React.Component {
                     handleShouldProfileUpdate(true);
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push(`/ludo-edit/${ludo_id}`);
-                } else if (response.data.message === 'Your fuel is out.') {
+                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                     window.alert('你的燃料用完囉！');
                     this.setState({
                         isJoinButtonClickable: true
                     });
                 } else {
+                    console.log(response.data);
                     window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.error('OpenedBystanderForm join else response from server: ', response);
                     console.error('OpenedBystanderForm join else message from server: ', response.data.message);

@@ -19,7 +19,7 @@ const CardContentTab = styled.div`
 `;
 
 const DarkBackGround = styled.div`
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, .3);
@@ -157,7 +157,7 @@ export default class MobileOpenedLudo extends Component {
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push('/playground');
                     browserHistory.push(`/ludo/${ludo_id}`);
-                } else if (response.data.message === 'Your fuel is out.') {
+                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                     window.alert('你的燃料用完囉！');
                 } else {
                     window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
