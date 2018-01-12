@@ -19,7 +19,7 @@ const CardContentTab = styled.div`
 `;
 
 const DarkBackGround = styled.div`
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, .3);
