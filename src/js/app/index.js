@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRouter from './AppRouter';
 
-// const rwdMeta = document.createElement('meta');
-// rwdMeta.name = 'viewport';
-// rwdMeta.content = 'width=device-width, initial-scale=1.0';
-// const head = document.getElementsByTagName('head')[0].appendChild(rwdMeta);
+const rwdMeta = document.createElement('meta');
+rwdMeta.name = 'viewport';
+rwdMeta.content = 'width=device-width, initial-scale=1.0';
+const head = document.getElementsByTagName('head')[0].appendChild(rwdMeta);
 
 /* add Metatag */
 // const Metatitle = document.createElement('meta');

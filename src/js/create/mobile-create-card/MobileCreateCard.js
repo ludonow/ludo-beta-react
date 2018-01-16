@@ -79,7 +79,7 @@ export default class MobileCreateCard extends Component {
             title
         } = this.state.ludoCreateForm;
         const ludoCreateForm = {
-            category_id,
+            category_id: category_id + 1,
             checkpoint,
             duration,
             interval,
@@ -117,10 +117,13 @@ export default class MobileCreateCard extends Component {
                     window.alert('建立Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.error('get after post template error', error);
                 });
-            } else if (response.data.status === '400') {
+            } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                 window.alert('燃料或彈珠數不足: ' + response.data.message);
                 console.error('post template message from server: ', response.data.message + response.data.status);
-            } else {
+            } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                window.alert('有部分欄位為空白');
+                console.error('post template message from server: ', response.data.message + response.data.status);
+            }  else {
                 window.alert('建立Ludo模板時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                 console.error('post template message from server: ', response.data.message);
             }
@@ -246,7 +249,7 @@ export default class MobileCreateCard extends Component {
             title
         } = this.state.ludoCreateForm;
         const ludoTemplateForm = {
-            category_id,
+            category_id: category_id + 1,
             checkpoint,
             duration,
             interval,
@@ -274,9 +277,8 @@ export default class MobileCreateCard extends Component {
                         const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
                         getUserBasicData();
                         handleShouldProfileUpdate(true);
-                        this.setState({
-                            step: maxStep
-                        });
+                        this.props.getFilteredLudoList('stage=0');
+                        browserHistory.push('/playground');
                     } else {
                         window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
                         console.error('get after post template response from server: ', response);
@@ -287,8 +289,11 @@ export default class MobileCreateCard extends Component {
                     window.alert('建立Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
                     console.error('get after post template error', error);
                 });
-            } else if (response.data.status === '400') {
+            } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                 window.alert('燃料或彈珠數不足: ' + response.data.message);
+                console.error('post template message from server: ', response.data.message + response.data.status);
+            } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                window.alert('有部分欄位為空白');
                 console.error('post template message from server: ', response.data.message + response.data.status);
             } else {
                 window.alert('建立Ludo模板時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');

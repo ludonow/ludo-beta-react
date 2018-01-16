@@ -128,7 +128,7 @@ export default class MobileReports extends Component {
                             router_currentFormValue={router_currentFormValue}
                             userBasicData={userBasicData}
                         />
-                        {router_currentFormValue.starter_id == currentUserId
+                        {router_currentFormValue.starter_id == currentUserId || router_currentFormValue.player_id == currentUserId
                             ?
                                 <ReportButton
                                     label="我要回報！"
@@ -144,6 +144,14 @@ export default class MobileReports extends Component {
                             tags={tags}
                             title={title}
                         />
+                        {router_currentFormValue.starter_id == currentUserId ||router_currentFormValue.player_id == currentUserId
+                            ?
+                                <ReportButton
+                                    label="我要回報！"
+                                    url={`/ludo/${params.ludo_id}/mobile-report-form`}
+                                />
+                            : null
+                        }
                     </TabPanel>
                     <TabPanel>
                         <ReportList
@@ -155,7 +163,7 @@ export default class MobileReports extends Component {
                             router_currentFormValue={router_currentFormValue}
                             userBasicData={userBasicData}
                         />
-                        {router_currentFormValue.player_id == currentUserId
+                        {router_currentFormValue.starter_id == currentUserId ||router_currentFormValue.player_id == currentUserId
                             ?
                                 <ReportButton
                                     label="我要回報！"

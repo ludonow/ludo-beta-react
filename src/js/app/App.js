@@ -512,6 +512,7 @@ export default class App extends React.Component {
                                 router_currentFormValue,
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getCurrentLudoData: this.getCurrentLudoData,
+                                getFilteredLudoList: this.getFilteredLudoList,
                                 getProfileData: this.getProfileData,
                                 getProfileWillLudoData: this.getProfileWillLudoData,
                                 getProfileLudoingData: this.getProfileLudoingData,
