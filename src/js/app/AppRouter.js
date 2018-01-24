@@ -20,7 +20,7 @@ import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 import SignUp from './SignUp';
 import Template from '../create/Template';
-
+import LoadingPage from '../LoadingPage';
 /*
     auth        statement：
     0           not login
@@ -77,6 +77,7 @@ const ludoRedirect = (nextState, replace, callback) => {
             router_ludoPageIndex = response.data.auth;
             router_currentFormValue = response.data.ludo;
             router_currentLudoId = response.data.ludo.ludo_id;
+            console.log("get data succeed");
             callback();
         } else {
             window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
@@ -136,6 +137,8 @@ export default class AppRouter extends React.Component {
                         <Route path="friend" component={Friend} onEnter={isLoggedIn}></Route>
                         <Route path="invite/:friend_id" component={Invite} onEnter={isLoggedIn}></Route>
                         <Route path="login" component={LogIn}></Route>
+                        <Route path="loading/:ludo_id" component={LoadingPage}></Route>
+                        <Route path="loading" component={LoadingPage}></Route>
                         <Route
                             path="ludo/:ludo_id"
                             getComponent={(nextState, cb) => {
