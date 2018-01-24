@@ -258,7 +258,6 @@ export default class TemplateForm extends React.Component {
 
     handleTemplateDelete(event) {
         event.preventDefault();
-        console.log('Delete template!');
         /* TODO: Use notification confirming delete ludo */
         this.setState({
             isSubmitButtonClickable: false
