@@ -139,6 +139,7 @@ export default class AppRouter extends React.Component {
                         <Route path="login" component={LogIn}></Route>
                         <Route path="loading/:ludo_id" component={LoadingPage}></Route>
                         <Route path="loading" component={LoadingPage}></Route>
+                        <Route path="redirect/:temp_ludo_id" component={LoadingPage}></Route>
                         <Route
                             path="ludo/:ludo_id"
                             getComponent={(nextState, cb) => {
