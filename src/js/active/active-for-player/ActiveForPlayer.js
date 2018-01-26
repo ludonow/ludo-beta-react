@@ -3,7 +3,7 @@ import MediaQuery from 'react-responsive';
 
 import ActivePlayerForm from './ActivePlayerForm';
 import ActiveReports from '../ActiveReports';
-import DesktopReportButton from '../DesktopReportButton';
+import DesktopReportPost from '../desktop-report-post/DesktopReportPost';
 import MobileReports from '../MobileReports';
 
 export default class ActiveForPlayer extends Component {
@@ -26,7 +26,7 @@ export default class ActiveForPlayer extends Component {
                 <MediaQuery minDeviceWidth={768} className="form-and-report">
                     <ActivePlayerForm  {...this.props} />
                     <ActiveReports {...this.props} />
-                    <DesktopReportButton />
+                    <DesktopReportPost />
                 </MediaQuery>
                 <MediaQuery maxDeviceWidth={768}>
                     <MobileReports {...this.props} />
