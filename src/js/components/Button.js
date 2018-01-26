@@ -28,12 +28,14 @@ const ButtonWithStyle = styled.button`
 
 const Button = ({
     backgroundColor,
+    data,
     disabled,
     label,
     onClick
 }) => (
     <ButtonWithStyle
         backgroundColor={backgroundColor}
+        data-attr={data}
         disabled={disabled}
         onClick={onClick}
     >
