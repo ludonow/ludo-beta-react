@@ -114,7 +114,7 @@ export default class MobileReports extends Component {
                                 avatarImageIndex={comments_nick[player_id][0]}
                                 isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
                                 userPhotoUrl={userPhotoUrl}
-                            /> 
+                            />
                         </Tab>
                     </TabList>
 

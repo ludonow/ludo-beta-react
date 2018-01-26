@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import styled from 'styled-components';
 
-import Button from '../../components/Button';
 import Content from './Content';
 import ToggleButton from './ToggleButton';
+import StepButtonList from './StepButtonList';
 import closeIconSrc from '../../../images/active/close-icon.png';
 
 // style components
@@ -21,12 +21,6 @@ const CloseIconWrapper = styled.div`
 
 const DesktopReportPostWrapper = styled.div`
     position: fixed;
-`;
-
-const SkipButtonWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-bottom: 4vw;
 `;
 
 // override material-ui style
@@ -51,12 +45,14 @@ class DesktopReportPost extends Component {
             step: 0,
             text: '',
             reportType: '',
-            videoUrl: ''
+            video: ''
         };
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
+        this.handleIsReportingToggle = this.handleIsReportingToggle.bind(this);
         this.handleStepNext = this.handleStepNext.bind(this);
         this.handleStepPrev = this.handleStepPrev.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
     }
 
     handleDialogClose() {
@@ -68,6 +64,31 @@ class DesktopReportPost extends Component {
             open: true,
             step: 0
         });
+    }
+
+    handleImageChange(event) {
+        const image = event.currentTarget.value;
+        if (!image) {
+            this.setState({
+                image,
+                isReporting: false,
+                step: 2
+            });
+        } else {
+            this.setState({
+                image,
+                isReporting: true,
+                step: 1
+            });
+        }
+    }
+
+    handleIsReportingToggle() {
+        this.setState(
+            prevState => ({
+                isReporting: !prevState.isReporting
+            })
+        );
     }
 
     handleStepNext(event) {
@@ -88,8 +109,43 @@ class DesktopReportPost extends Component {
         );
     }
 
+    handleTextChange(event) {
+        const text = event.currentTarget.value;
+        if (!text) {
+            this.setState({
+                isReporting: false,
+                step: 1,
+                text
+            });
+        } else {
+            this.setState({
+                isReporting: true,
+                step: 2,
+                text
+            });
+        }
+    }
+
+    handleVideoChange(event) {
+        const video = event.currentTarget.value;
+        if (!video) {
+            this.setState({
+                isReporting: false,
+                step: 1,
+                video
+            });
+        } else {
+            this.setState({
+                isReporting: true,
+                step: 2,
+                video
+            });
+        }
+    }
+
     render() {
         const {
+            isReporting,
             open,
             step,
             reportType
@@ -116,19 +172,21 @@ class DesktopReportPost extends Component {
                     </CloseIconWrapper>
                     <Content
                         handleDialogClose={this.handleDialogClose}
+                        handleImageChange={this.handleImageChange}
+                        handleIsReportingToggle={this.handleIsReportingToggle}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
+                        handleTextChange={this.handleTextChange}
+                        handleVideoChange={this.handleVideoChange}
                         step={step}
                         reportType={reportType}
                     />
-                    <SkipButtonWrapper>
-                        <Button
-                            backgroundColor={'#B1B1B1'}
-                            data="text"
-                            label="跳至文字回報"
-                            onClick={this.handleStepNext}
-                        />
-                    </SkipButtonWrapper>
+                    <StepButtonList
+                        handleStepNext={this.handleStepNext}
+                        handleStepPrev={this.handleStepPrev}
+                        isReporting={isReporting}
+                        step={step}
+                    />
                 </Dialog>
             </DesktopReportPostWrapper>
         );

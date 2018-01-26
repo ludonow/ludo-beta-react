@@ -1,17 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import TextField from 'material-ui/TextField';
+
+// styled-components
+const EmptyDraftWrapper = styled.div`
+    display: inline-flex;
+`;
+
+const StyledTextAreaWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+// override material-ui
+const textFieldStyle = {
+    width: '50%'
+};
+
+
+const TextReportArea = ({ onChange }) => (
+    <StyledTextAreaWrapper>
+        <TextField
+            hintText="輸入文字回報"
+            multiLine
+            onChange={onChange}
+            rowsMax={5}
+            style={textFieldStyle}
+        />
+    </StyledTextAreaWrapper>
+);
 
 const EmptyDraft = ({
     handleStepNext,
+    handleTextChange,
     reportType
 }) => {
     switch(reportType) {
         case 'image':
             return (
                 <div>
-                    <div>
-                        empty image
-                    </div>
+                    <TextReportArea
+                        onChange={handleTextChange}
+                    />
                     <div>
                         empty text
                     </div>
@@ -19,9 +49,9 @@ const EmptyDraft = ({
             );
         case 'text':
             return (
-                <div>
-                    empty text
-                </div>
+                <TextReportArea
+                    onChange={handleTextChange}
+                />
             );
         case 'video':
             return (
@@ -29,9 +59,9 @@ const EmptyDraft = ({
                     <div>
                         empty video
                     </div>
-                    <div>
-                        empty text
-                    </div>
+                    <TextReportArea
+                        onChange={handleTextChange}
+                    />
                 </div>
             );
         default:

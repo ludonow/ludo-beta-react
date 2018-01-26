@@ -31,8 +31,11 @@ const IconButtonWrapper = styled.div`
 
 const Content = ({
     handleDialogClose,
+    handleImageChange,
     handleStepNext,
     handleStepPrev,
+    handleTextChange,
+    handleVideoChange,
     reportType,
     step
 }) => {
@@ -61,6 +64,8 @@ const Content = ({
         case 1:
             return (
                 <EmptyDraft
+                    handleStepNext={handleStepNext}
+                    handleTextChange={handleTextChange}
                     reportType={reportType}
                 />
             );
