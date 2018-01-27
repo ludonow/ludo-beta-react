@@ -14,9 +14,11 @@ const ButtonListWrapper = styled.div`
 `;
 
 const StepButtonList = ({
+    handleDialogClose,
+    handleReportTypeClick,
     handleStepNext,
     handleStepPrev,
-    isReporting,
+    isPreviewButtonDisabled,
     step
 }) => {
     switch(step) {
@@ -27,7 +29,7 @@ const StepButtonList = ({
                         backgroundColor={'#B1B1B1'}
                         data="text"
                         label="跳至文字回報"
-                        onClick={handleStepNext}
+                        onClick={handleReportTypeClick}
                     />
                 </ButtonListWrapper>
             );
@@ -41,9 +43,34 @@ const StepButtonList = ({
                     />
                     <Button
                         backgroundColor={'#717171'}
-                        disabled={step <= 1}
+                        disabled={isPreviewButtonDisabled}
                         label="預覽"
                         onClick={handleStepNext}
+                    />
+                </ButtonListWrapper>
+            );
+        case 2:
+            return (
+                <ButtonListWrapper>
+                    <Button
+                        backgroundColor={'#B1B1B1'}
+                        label="修改"
+                        onClick={handleStepPrev}
+                    />
+                    <Button
+                        backgroundColor={'#717171'}
+                        label="發布"
+                        onClick={handleStepNext}
+                    />
+                </ButtonListWrapper>
+            );
+        default:
+            return (
+                <ButtonListWrapper>
+                    <Button
+                        backgroundColor={'#717171'}
+                        label="關閉"
+                        onClick={handleDialogClose}
                     />
                 </ButtonListWrapper>
             );

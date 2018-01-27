@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import EmptyDraft from './EmptyDraft';
+import Draft from './Draft';
+import ErrorMessage from './ErrorMessage';
+import Preview from './Preview';
 
 import cameraIconSrc from '../../../images/active/camera-icon.png';
 import videoIconSrc from '../../../images/active/video-icon.png';
@@ -32,12 +34,16 @@ const IconButtonWrapper = styled.div`
 const Content = ({
     handleDialogClose,
     handleImageChange,
+    handleReportTypeClick,
     handleStepNext,
     handleStepPrev,
     handleTextChange,
     handleVideoChange,
+    image,
     reportType,
-    step
+    step,
+    text,
+    video
 }) => {
     switch (step) {
         case 0:
@@ -45,16 +51,16 @@ const Content = ({
                 <IconButtonListWrapper>
                     <IconButtonWrapper firstItem>
                         <img
-                            data-attr="image"
-                            onClick={handleStepNext}
+                            data-payload="image"
+                            onClick={handleReportTypeClick}
                             src={cameraIconSrc}
                             title="圖片回報"
                         />
                     </IconButtonWrapper>
                     <IconButtonWrapper lastItem>
                         <img
-                            data-attr="video"
-                            onClick={handleStepNext}
+                            data-payload="video"
+                            onClick={handleReportTypeClick}
                             src={videoIconSrc}
                             title="影片回報"
                         />
@@ -63,11 +69,25 @@ const Content = ({
             );
         case 1:
             return (
-                <EmptyDraft
+                <Draft
                     handleStepNext={handleStepNext}
                     handleTextChange={handleTextChange}
                     reportType={reportType}
+                    text={text}
                 />
+            );
+        case 2:
+            return (
+                <Preview
+                    image={image}
+                    reportType={reportType}
+                    text={text}
+                    video={video}
+                />
+            );
+        default:
+            return (
+                <ErrorMessage />
             );
     }
 } 

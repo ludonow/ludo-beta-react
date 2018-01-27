@@ -11,7 +11,7 @@ const ButtonWithStyle = styled.button`
     border-left: none;
     border-top: none;
     box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
-    color: white;
+    color: ${props => props.textColor ? props.textColor : '#FFFFFF'};;
     cursor: pointer; 
     display: flex;
     font-family: Microsoft JhengHei;
@@ -31,13 +31,15 @@ const Button = ({
     data,
     disabled,
     label,
-    onClick
+    onClick,
+    textColor
 }) => (
     <ButtonWithStyle
         backgroundColor={backgroundColor}
-        data-attr={data}
+        data-payload={data}
         disabled={disabled}
         onClick={onClick}
+        textColor={textColor}
     >
         {label}
     </ButtonWithStyle>
