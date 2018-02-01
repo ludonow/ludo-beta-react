@@ -62,6 +62,7 @@ class DesktopReportPost extends Component {
         this.handleReportTypeClick = this.handleReportTypeClick.bind(this);
         this.handleStepNext = this.handleStepNext.bind(this);
         this.handleStepPrev = this.handleStepPrev.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
     }
@@ -139,6 +140,38 @@ class DesktopReportPost extends Component {
                 step: prevState.step - 1
             })
         );
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        const {
+            currentUserId,
+            ludoId,
+            router_currentFormValue
+        } = this.props;
+        const {
+            images,
+            reportType,
+            text,
+            video
+        } = this.state;
+        let whoIsUser = '';
+        (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
+        const ludoReportPost = new FormData();
+        ludoReportPost.append('content', text);
+        ludoReportPost.append('ludo_id', ludoId);
+        ludoReportPost.append('player', whoIsUser);
+        if (reportType === 'image') {
+            ludoReportPost.append('image', images[0]);
+        } else if (reportType === 'video') {
+            ludoReportPost.append('video', video);
+        }
+
+        // DEBUG
+        for (var pair of ludoReportPost.entries()) {
+            console.log(pair[0]+ ': ');
+            console.log(pair[1]);
+        }
     }
 
     handleTextChange(event) {
@@ -253,6 +286,7 @@ class DesktopReportPost extends Component {
                         handleReportTypeClick={this.handleReportTypeClick}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
+                        handleSubmit={this.handleSubmit}
                         isPreviewButtonDisabled={isPreviewButtonDisabled}
                         step={step}
                     />

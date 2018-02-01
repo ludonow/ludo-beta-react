@@ -18,6 +18,7 @@ const StepButtonList = ({
     handleReportTypeClick,
     handleStepNext,
     handleStepPrev,
+    handleSubmit,
     isPreviewButtonDisabled,
     step
 }) => {
@@ -60,7 +61,7 @@ const StepButtonList = ({
                     <Button
                         backgroundColor={'#FF704E'}
                         label="送出回報"
-                        onClick={handleStepNext}
+                        onClick={handleSubmit}
                     />
                 </ButtonListWrapper>
             );

@@ -21,12 +21,21 @@ export default class ActiveForPlayer extends Component {
 
     /* components/_report-form.scss */
     render() {
+        const {
+            currentUserId,
+            params,
+            router_currentFormValue
+        } = this.props;
         return (
             <div>
                 <MediaQuery minDeviceWidth={768} className="form-and-report">
                     <ActivePlayerForm  {...this.props} />
                     <ActiveReports {...this.props} />
-                    <DesktopReportPost />
+                    <DesktopReportPost
+                        currentUserId={currentUserId}
+                        ludoId={params.ludo_id}
+                        router_currentFormValue={router_currentFormValue}
+                    />
                 </MediaQuery>
                 <MediaQuery maxDeviceWidth={768}>
                     <MobileReports {...this.props} />
