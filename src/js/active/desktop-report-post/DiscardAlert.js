@@ -17,6 +17,7 @@ const ButtonListWrapper = styled.div`
 const bodyStyle = {
     backgroundColor: '#374867',
     border: '1px solid #374867',
+    overflowX: 'hidden'
 };
 
 const contentStyle = {

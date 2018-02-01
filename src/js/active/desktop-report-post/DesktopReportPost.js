@@ -39,7 +39,6 @@ class DesktopReportPost extends Component {
     constructor() {
         super();
         this.state = {
-            enlargeImageLocation: '',
             imagePreviewUrl: '',
             images: [],
             isDiscardAlertOpen: false,

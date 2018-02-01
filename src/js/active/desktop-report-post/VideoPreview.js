@@ -11,7 +11,7 @@ const IconWrapper = styled.div`
 `;
 
 const VideoPreviewWrapper = styled.div`
-    margin: 0 1vw;
+    margin: 0 2vw;
     max-height: 40vh;
     width: 40vw;
 `;
@@ -25,7 +25,9 @@ const VideoPreview = ({
             video ?
                 <PreviewWrapper>
                     <ReactPlayer
+                        height="100%"
                         url={video}
+                        width="100%"
                     />
                 </PreviewWrapper>
             :
