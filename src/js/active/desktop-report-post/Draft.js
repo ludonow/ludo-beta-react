@@ -1,52 +1,74 @@
-import React, { Component } from 'react';
+import React from 'react';
+import DropZone from 'react-dropzone';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
-import { StyledTextAreaWrapper } from './baseStyle';
+import ImageUploadAndPreview from './ImageUploadAndPreview';
+import VideoPreview from './VideoPreview';
+import { CustomScrollBarCSS } from './baseStyle';
 
 // styled-components
-const DraftWrapper = styled.div`
+const ImageDraftWrapper = styled.div`
     display: inline-flex;
+    width: 100%;
 `;
 
-// override material-ui
-const textFieldStyle = {
-    width: '50%'
-};
+const TextAreaWrapper = styled.div`
+    width: 100%;
 
+    textarea {
+        ${CustomScrollBarCSS}
+    }
+`
+
+// child components
 const TextReportArea = ({
     onChange,
     text
 }) => (
-    <StyledTextAreaWrapper>
+    <TextAreaWrapper>
         <TextField
+            fullWidth
             hintText="輸入文字回報"
             multiLine
             onChange={onChange}
-            rowsMax={5}
-            style={textFieldStyle}
+            rowsMax={10}
             defaultValue={text}
         />
-    </StyledTextAreaWrapper>
+    </TextAreaWrapper>
 );
 
 const Draft = ({
+    handleImageChange,
+    handleImageResize,
     handleStepNext,
     handleTextChange,
+    handleVideoChange,
+    imagePreviewUrl,
+    images,
     reportType,
-    text
+    resizedHeight,
+    resizedWidth,
+    text,
+    video
 }) => {
     switch(reportType) {
         case 'image':
             return (
-                <div>
-                    <div>
-                        empty image
-                    </div>
+                <ImageDraftWrapper>
+                    <ImageUploadAndPreview
+                        handleImageChange={handleImageChange}
+                        handleImageResize={handleImageResize}
+                        imagePreviewUrl={imagePreviewUrl}
+                        images={images}
+                        resizedHeight={resizedHeight}
+                        resizedWidth={resizedWidth}
+                    />
                     <TextReportArea
                         onChange={handleTextChange}
+                        text={text}
                     />
-                </div>
+                </ImageDraftWrapper>
             );
         case 'text':
             return (
@@ -57,14 +79,16 @@ const Draft = ({
             );
         case 'video':
             return (
-                <div>
-                    <div>
-                        empty video
-                    </div>
+                <ImageDraftWrapper>
+                    <VideoPreview
+                        handleVideoChange={handleVideoChange}
+                        video={video}
+                    />
                     <TextReportArea
                         onChange={handleTextChange}
+                        text={text}
                     />
-                </div>
+                </ImageDraftWrapper>
             );
         default:
             return (

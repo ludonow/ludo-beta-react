@@ -10,9 +10,9 @@ import closeIconSrc from '../../../images/active/close-icon.png';
 
 // style components
 const CloseIconWrapper = styled.div`
-    left: 0;
     padding: 1vw;
     position: absolute;
+    right: 0;
     top: 0;
 
     img {
@@ -39,24 +39,32 @@ class DesktopReportPost extends Component {
     constructor() {
         super();
         this.state = {
-            imageUrl: '',
+            enlargeImageLocation: '',
+            imagePreviewUrl: '',
+            images: [],
             isDiscardAlertOpen: false,
+            isImageLightBoxOpen: false,
             isPreviewButtonDisabled: true,
             isReporting: false,
             open: false,
             step: 0,
             text: '',
             reportType: '',
+            resizedHeight: 250,
+            resizedWidth: 250,
             video: ''
         };
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
         this.handleDiscardAlertClose = this.handleDiscardAlertClose.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
+        this.handleImageResize = this.handleImageResize.bind(this);
         this.handleReportTypeClick = this.handleReportTypeClick.bind(this);
         this.handleStepNext = this.handleStepNext.bind(this);
         this.handleStepPrev = this.handleStepPrev.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleVideoChange = this.handleVideoChange.bind(this);
     }
 
     handleCloseClick() {
@@ -70,7 +78,8 @@ class DesktopReportPost extends Component {
 
     handleDialogClose() {
         this.setState({
-            imageUrl: '',
+            imagePreviewUrl: '',
+            images: [],
             isDiscardAlertOpen: false,
             isPreviewButtonDisabled: true,
             isReporting: false,
@@ -78,6 +87,8 @@ class DesktopReportPost extends Component {
             step: 0,
             text: '',
             reportType: '',
+            resizedHeight: 250,
+            resizedWidth: 250,
             video: ''
         });
     }
@@ -90,27 +101,20 @@ class DesktopReportPost extends Component {
         this.setState({ isDiscardAlertOpen: false });
     }
 
-    handleImageChange(event) {
-        const image = event.currentTarget.value;
-        if (!image) {
-            this.setState({
-                image,
-                isReporting: false
-            });
-        } else {
-            const {
-                reportType,
-                text
-            } = this.state;
-    
-            if (text && reportType === 'text') {
-                this.setState({
-                    isPreviewButtonDisabled: false,
-                    isReporting: true,
-                    image
-                });
-            }
-        }
+    handleImageChange(images, imagePreviewUrl) {
+        this.setState({
+            imagePreviewUrl,
+            images,
+            isPreviewButtonDisabled: false,
+            isReporting: true
+        });
+    }
+
+    handleImageResize(resizedWidth, resizedHeight) {
+        this.setState({
+            resizedHeight,
+            resizedWidth
+        });
     }
 
     handleReportTypeClick(event) {
@@ -148,12 +152,12 @@ class DesktopReportPost extends Component {
             });
         } else {
             const {
-                image,
+                images,
                 reportType,
-                video,
+                video
             } = this.state;
-    
-            if (image && reportType === 'image') {
+
+            if (images && reportType === 'image') {
                 this.setState({
                     isPreviewButtonDisabled: false,
                     isReporting: true,
@@ -185,28 +189,24 @@ class DesktopReportPost extends Component {
                 video
             });
         } else {
-            const {
-                reportType,
-                text
-            } = this.state;
-    
-            if (text && reportType === 'text') {
-                this.setState({
-                    isPreviewButtonDisabled: false,
-                    isReporting: true,
-                    video
-                });
-            }
+            this.setState({
+                isPreviewButtonDisabled: false,
+                isReporting: true,
+                video
+            });
         }
     }
 
     render() {
         const {
-            image,
+            imagePreviewUrl,
+            images,
             isDiscardAlertOpen,
             isPreviewButtonDisabled,
             open,
             reportType,
+            resizedHeight,
+            resizedWidth,
             step,
             text,
             video
@@ -234,15 +234,19 @@ class DesktopReportPost extends Component {
                     <Content
                         handleDialogClose={this.handleDialogClose}
                         handleImageChange={this.handleImageChange}
+                        handleImageResize={this.handleImageResize}
                         handleReportTypeClick={this.handleReportTypeClick}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
                         handleTextChange={this.handleTextChange}
                         handleVideoChange={this.handleVideoChange}
-                        image={image}
+                        imagePreviewUrl={imagePreviewUrl}
+                        images={images}
                         step={step}
                         text={text}
                         reportType={reportType}
+                        resizedHeight={resizedHeight}
+                        resizedWidth={resizedWidth}
                         video={video}
                     />
                     <StepButtonList

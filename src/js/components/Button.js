@@ -16,8 +16,11 @@ const ButtonWithStyle = styled.button`
     display: flex;
     font-family: Microsoft JhengHei;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: ${props => props.fontSize ? props.fontSize : '1rem'};
+    justify-content: center;
+    margin: 0 auto;
     padding: 8px 30px;
+    width: ${props => props.width ? props.width : '140px'};
 
     &:disabled {
         cursor: not-allowed;
@@ -30,6 +33,7 @@ const Button = ({
     backgroundColor,
     data,
     disabled,
+    fontSize,
     label,
     onClick,
     textColor
@@ -38,6 +42,7 @@ const Button = ({
         backgroundColor={backgroundColor}
         data-payload={data}
         disabled={disabled}
+        fontSize={fontSize}
         onClick={onClick}
         textColor={textColor}
     >

@@ -6,10 +6,10 @@ import Button from '../../components/Button';
 const ButtonListWrapper = styled.div`
     display: flex;
     justify-content: center;
-    margin: 4vw 0;
+    margin: 2vw 0;
 
     button {
-        margin: 0 2vw;
+        margin: 0 30px;
     }
 `;
 
@@ -28,7 +28,7 @@ const StepButtonList = ({
                     <Button
                         backgroundColor={'#B1B1B1'}
                         data="text"
-                        label="跳至文字回報"
+                        label="文字回報"
                         onClick={handleReportTypeClick}
                     />
                 </ButtonListWrapper>
@@ -58,8 +58,8 @@ const StepButtonList = ({
                         onClick={handleStepPrev}
                     />
                     <Button
-                        backgroundColor={'#717171'}
-                        label="發布"
+                        backgroundColor={'#FF704E'}
+                        label="送出回報"
                         onClick={handleStepNext}
                     />
                 </ButtonListWrapper>

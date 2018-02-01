@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Draft from './Draft';
 import ErrorMessage from './ErrorMessage';
-import Preview from './Preview';
+import ReportPreview from './ReportPreview';
 
 import cameraIconSrc from '../../../images/active/camera-icon.png';
 import videoIconSrc from '../../../images/active/video-icon.png';
@@ -34,13 +34,17 @@ const IconButtonWrapper = styled.div`
 const Content = ({
     handleDialogClose,
     handleImageChange,
+    handleImageResize,
     handleReportTypeClick,
     handleStepNext,
     handleStepPrev,
     handleTextChange,
     handleVideoChange,
-    image,
+    imagePreviewUrl,
+    images,
     reportType,
+    resizedHeight,
+    resizedWidth,
     step,
     text,
     video
@@ -70,17 +74,27 @@ const Content = ({
         case 1:
             return (
                 <Draft
+                    handleImageChange={handleImageChange}
+                    handleImageResize={handleImageResize}
                     handleStepNext={handleStepNext}
                     handleTextChange={handleTextChange}
+                    handleVideoChange={handleVideoChange}
+                    imagePreviewUrl={imagePreviewUrl}
+                    images={images}
                     reportType={reportType}
+                    resizedHeight={resizedHeight}
+                    resizedWidth={resizedWidth}
                     text={text}
+                    video={video}
                 />
             );
         case 2:
             return (
-                <Preview
-                    image={image}
+                <ReportPreview
+                    imagePreviewUrl={imagePreviewUrl}
                     reportType={reportType}
+                    resizedHeight={resizedHeight}
+                    resizedWidth={resizedWidth}
                     text={text}
                     video={video}
                 />
