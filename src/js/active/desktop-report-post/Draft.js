@@ -30,6 +30,7 @@ const TextReportArea = ({
         <TextField
             fullWidth
             hintText="輸入文字回報"
+            maxLength={1000}
             multiLine
             onChange={onChange}
             rowsMax={10}

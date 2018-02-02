@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import styled from 'styled-components';
 
+import axios from '../../axios-config';
 import Content from './Content';
 import DiscardAlert from './DiscardAlert';
 import ToggleButton from './ToggleButton';
@@ -31,7 +32,7 @@ const contentStyle = {
 };
 
 const titleStyle = {
-    fontFamily: 'Microsoft JhenHei',
+    fontFamily: 'Microsoft JhengHei',
     textAlign: 'center'
 };
 
@@ -45,6 +46,7 @@ class DesktopReportPost extends Component {
             isImageLightBoxOpen: false,
             isPreviewButtonDisabled: true,
             isReporting: false,
+            isSubmitting: false,
             open: false,
             step: 0,
             text: '',
@@ -167,11 +169,39 @@ class DesktopReportPost extends Component {
             ludoReportPost.append('video', video);
         }
 
-        // DEBUG
-        for (var pair of ludoReportPost.entries()) {
-            console.log(pair[0]+ ': ');
-            console.log(pair[1]);
-        }
+        this.setState({
+            isSubmitting: true
+        });
+
+        axios.post('apis/report', ludoReportPost)
+        .then((response) => {
+            if (response.data.status === '200') {
+                this.props.handleShouldProfileUpdate(true);
+                this.props.handleShouldReportUpdate(true);
+                console.log(response);
+                this.handleDialogClose();
+            } else {
+                if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                console.error('ActivePlayerForm Report else message from server: ', response.data.message);
+                if (response.data.err) {
+                    console.error('ActivePlayerForm Report else error from server: ', response.data.err);
+                }
+            }
+            this.setState({
+                isSubmitting: false
+            });
+        })
+        .catch((error) => {
+            if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            console.error('ActivePlayerForm Report error', error);
+            this.setState({
+                isSubmitting: false
+            });
+        });
     }
 
     handleTextChange(event) {
@@ -235,6 +265,7 @@ class DesktopReportPost extends Component {
             images,
             isDiscardAlertOpen,
             isPreviewButtonDisabled,
+            isSubmitting,
             open,
             reportType,
             resizedHeight,
@@ -288,6 +319,7 @@ class DesktopReportPost extends Component {
                         handleStepPrev={this.handleStepPrev}
                         handleSubmit={this.handleSubmit}
                         isPreviewButtonDisabled={isPreviewButtonDisabled}
+                        isSubmitting={isSubmitting}
                         step={step}
                     />
                 </Dialog>

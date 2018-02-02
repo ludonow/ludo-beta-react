@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player';
 import { CustomScrollBarCSS, PreviewImage, PreviewWrapper } from './baseStyle';
 
 const ReportPreviewWrapper = styled.div`
+    font-family: "Microsoft JhengHei";
     margin: 3vw 15vw;
     max-height: 40vh;
     overflow-y: auto;

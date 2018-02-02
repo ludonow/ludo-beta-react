@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 import Button from '../../components/Button';
 
+// styled components
 const ButtonListWrapper = styled.div`
     display: flex;
     justify-content: center;
@@ -13,6 +15,20 @@ const ButtonListWrapper = styled.div`
     }
 `;
 
+const LoadingIconWrapper = styled.div`
+    position: relative;
+    margin-left: 70px;
+    margin-right: 90px;
+    text-align: center;
+`;
+
+// override material-ui
+const loadingStyle = {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    position: 'relative'
+};
+
 const StepButtonList = ({
     handleDialogClose,
     handleReportTypeClick,
@@ -20,6 +36,7 @@ const StepButtonList = ({
     handleStepPrev,
     handleSubmit,
     isPreviewButtonDisabled,
+    isSubmitting,
     step
 }) => {
     switch(step) {
@@ -55,14 +72,28 @@ const StepButtonList = ({
                 <ButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
+                        disabled={isSubmitting}
                         label="修改"
                         onClick={handleStepPrev}
                     />
-                    <Button
-                        backgroundColor={'#FF704E'}
-                        label="送出回報"
-                        onClick={handleSubmit}
-                    />
+                    {
+                        !isSubmitting ?
+                            <Button
+                                backgroundColor={'#FF704E'}
+                                label="送出回報"
+                                onClick={handleSubmit}
+                            />
+                        :
+                            <LoadingIconWrapper>
+                                <RefreshIndicator
+                                    left={10}
+                                    size={40}
+                                    status="loading"
+                                    style={loadingStyle}
+                                    top={0}
+                                />
+                            </LoadingIconWrapper>
+                    }
                 </ButtonListWrapper>
             );
         default:

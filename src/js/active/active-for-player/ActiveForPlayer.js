@@ -31,11 +31,17 @@ export default class ActiveForPlayer extends Component {
                 <MediaQuery minDeviceWidth={768} className="form-and-report">
                     <ActivePlayerForm  {...this.props} />
                     <ActiveReports {...this.props} />
-                    <DesktopReportPost
-                        currentUserId={currentUserId}
-                        ludoId={params.ludo_id}
-                        router_currentFormValue={router_currentFormValue}
-                    />
+                    {
+                        // router_currentFormValue.stage === 1 || router_currentFormValue.stage === 2 ?
+                            <DesktopReportPost
+                                currentUserId={currentUserId}
+                                handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
+                                handleShouldReportUpdate={this.props.handleShouldReportUpdate}
+                                ludoId={params.ludo_id}
+                                router_currentFormValue={router_currentFormValue}
+                            />
+                        // : null
+                    }
                 </MediaQuery>
                 <MediaQuery maxDeviceWidth={768}>
                     <MobileReports {...this.props} />
