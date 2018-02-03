@@ -27,7 +27,7 @@ export default class App extends React.Component {
             filterCondition: '',
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
-            isHoveringSidebar: false,
+            isShowingSidebar: false,
             isInfiniteLoading: false,
             isLoggedIn: false,
             isOpeningActivePage: false,
@@ -59,7 +59,7 @@ export default class App extends React.Component {
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
         this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
-        this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
+        this.handleIsShowingSidebar = this.handleIsShowingSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
@@ -382,9 +382,9 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsHoveringSidebar(boolean) {
+    handleIsShowingSidebar(boolean) {
         this.setState({
-            isHoveringSidebar: boolean
+            isShowingSidebar: boolean
         });
     }
 
@@ -465,7 +465,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { isHoveringSidebar } = this.state;
+        const { isShowingSidebar } = this.state;
         const {
             route,
             router_currentFormValue
@@ -473,7 +473,7 @@ export default class App extends React.Component {
 
         const { path } = route;
         let mainContainerClass = '';
-        if (isHoveringSidebar) {
+        if (isShowingSidebar) {
             mainContainerClass = 'main-container hoveringSidebar';
         } else {
             mainContainerClass = 'main-container';
@@ -486,6 +486,7 @@ export default class App extends React.Component {
             <div>
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
+                    handleIsShowingSidebar={this.handleIsShowingSidebar}
                     isLoggedIn={this.state.isLoggedIn}
                     isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
@@ -496,8 +497,8 @@ export default class App extends React.Component {
                 <Sidebar
                     currentUserId={this.state.currentUserId}
                     getFilteredLudoList={this.getFilteredLudoList}
-                    handleIsHoveringSidebar={this.handleIsHoveringSidebar}
-                    isHoveringSidebar={isHoveringSidebar}
+                    handleIsShowingSidebar={this.handleIsShowingSidebar}
+                    isShowingSidebar={isShowingSidebar}
                 />
                 {/* layout/main-container */}
                 <div
@@ -521,7 +522,7 @@ export default class App extends React.Component {
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
-                                handleIsHoveringSidebar: this.handleIsHoveringSidebar,
+                                handleIsShowingSidebar: this.handleIsShowingSidebar,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,

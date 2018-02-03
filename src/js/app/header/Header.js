@@ -3,119 +3,51 @@ import { browserHistory, Link } from 'react-router';
 import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
-import { grey300, grey700 } from 'material-ui/styles/colors';
-
-import ActionSearchIcon from 'material-ui/svg-icons/action/search';
-import CancelIcon from 'material-ui/svg-icons/navigation/cancel';
-import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
+import { grey300 } from 'material-ui/styles/colors';
 
 import axios from '../../axios-config';
 
+import DesktopSearchBar from './SearchBar/DesktopSearchBar';
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFuel from './HeaderFuel';
 import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
 import HeaderPrevPageArrow from './HeaderPrevPageArrow';
 import HeaderRate from './HeaderRate';
-
+import MobileSearchBar from './SearchBar/MobileSearchBar';
 import Playground from '../../playground/Playground';
 import Profile from '../../profile/Profile';
 import Create from '../../create/Create';
 import Friend from '../../friend/Friend';
 
+import { A } from './SearchBar/common';
+import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
+import HamburgerIcon from './HamburgerIcon';
 import facebookIcon from '../../../images/login/facebook-icon.png';
 import magnifierIcon from '../../../images/magnifier.svg';
 
-/**
- * hacky usage of styled-component to use react-tap-event-plugin
- * ref: https://github.com/styled-components/styled-components/issues/527#issuecomment-281931998
- */
-const A = (props) => (
-    <a {...props} />
-);
-
-const ActionSearchIconContainer  = styled(A)`
-    cursor: pointer;
-    padding: 2px;
-
-    &:hover {
-        background: rgba(99, 99, 99, 0.4);
-        border-top-right-radius: 50px;
-        border-bottom-right-radius: 50px;
-    }
-`;
-
-const ActionSearchIconPlaceHolder = styled.div`
-    width: 20px;
-    height: 20px;
-    padding: 5px;
-`;
-
-const CancelIconContainer  = styled(A)`
-    padding: 5px;
-`;
-
-const CancelIconPlaceHolder = styled.div`
-    width: 20px;
-    height: 20px;
-    padding: 5px;
-`;
-
-const DesktopSearchBarContainer = styled.div`
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
-`;
-
-const MobileSearchBarContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    padding: 20px;
-`;
-
-const SearchBar = styled.div`
-    background-color: #999999;
-    border-radius: 50px;
+// styled components
+const HeaderLeftWrapper = styled.div`
     display: inline-flex;
-
-    & > img {
-        position: relative;
-        padding: 5px 10px;
-        width: 20px;
-        height: 20px;
-    }
-
-    & input {
-        width: 140px;
-        border: none;
-        outline: none;
-        background-color: #999999;
-        caret-color: white;
-        color: white;
-        font-size: 0.8rem;
-    }
-
-    input::-webkit-input-placeholder {
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    input:focus::-webkit-input-placeholder {
-        color: rgba(255, 255, 255, 0.5);
-    }
-}
 `;
 
-const SearchBarLeftPlaceholder = styled.div`
-    width: 30px;
-    height: 30px;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
+const HeaderWrapper = styled.div`
+    display: flex;
+    position: fixed;
+    background-color: #717070;
+    border-bottom-color: #B6BCC1;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    top: 0;
+    width: 100vw;
+    z-index: 3;
+
+    @media (min-width: 768px) {
+        height: 40px;
+    }
 `;
 
-const SearchIconContainer = styled(A)`
+const SearchIconWrapper = styled(A)`
     position: absolute;
     right: 0;
     padding: 20px;
@@ -126,87 +58,44 @@ const SearchIconContainer = styled(A)`
     }
 `;
 
-const DesktopSearchBar = ({
+// child components
+const HeaderLeft = ({
+    getFilteredLudoList,
+    handleSearchingTextChange,
+    handleSearchingTextClear,
     handleSearchSubmitKeyUp,
     handleSearchSubmitTouchTap,
-    handleSearchingTextChange,
-    handleSearchingTextClear,
     searchingText
 }) => (
-    <DesktopSearchBarContainer>
-        <SearchBar>
-            <SearchBarLeftPlaceholder />
-            <input
-                autoFocus
-                onChange={handleSearchingTextChange}
-                onKeyUp={handleSearchSubmitKeyUp}
-                placeholder="搜尋"
-                type="text"
-                value={searchingText}
-            />
-            {
-                searchingText ?
-                    <ActionSearchIconContainer
-                        onTouchTap={handleSearchSubmitTouchTap}
-                        title="搜尋"
-                    >
-                        <ActionSearchIcon />
-                    </ActionSearchIconContainer>
-                :
-                    <ActionSearchIconPlaceHolder />
-            }
-        </SearchBar>
-    </DesktopSearchBarContainer>
-);
-
-const MobileSearchBar = ({
-    handleSearchSubmitKeyUp,
-    handleSearchingTextChange,
-    handleSearchingTextClear,
-    searchingText
-}) => (
-    <MobileSearchBarContainer>
-        <SearchBar>
-            <img src={magnifierIcon} />
-            <input
-                autoFocus
-                onChange={handleSearchingTextChange}
-                onKeyUp={handleSearchSubmitKeyUp}
-                type="text"
-                value={searchingText}
-            />
-            {
-                searchingText ?
-                    <CancelIconContainer
-                        onTouchTap={handleSearchingTextClear}
-                    >
-                        <CancelIcon
-                            color={grey700}
-                            style={{height: '20px', width: '20px'}}
-                        />
-                    </CancelIconContainer>
-                :
-                    <CancelIconPlaceHolder />
-            }
-        </SearchBar>
-    </MobileSearchBarContainer>
+    <HeaderLeftWrapper>
+        <HamburgerIcon
+        />
+        <HeaderLogo 
+            getFilteredLudoList={getFilteredLudoList}
+        />
+        <DesktopSearchBar
+            handleSearchSubmitKeyUp={handleSearchSubmitKeyUp}
+            handleSearchSubmitTouchTap={handleSearchSubmitTouchTap}
+            handleSearchingTextChange={handleSearchingTextChange}
+            handleSearchingTextClear={handleSearchingTextClear}
+            searchingText={searchingText}
+        />
+    </HeaderLeftWrapper>
 );
 
 const SearchIcon = ({ handleMobileSearchTouchTap }) => (
-    <SearchIconContainer onTouchTap={handleMobileSearchTouchTap}>
+    <SearchIconWrapper onTouchTap={handleMobileSearchTouchTap}>
         <img src={magnifierIcon} />
-    </SearchIconContainer>
+    </SearchIconWrapper>
 );
 
-const SeachtCloseIcon = ({ handleMobileSearchCancelTouchTap }) => (
-    <SearchIconContainer
-        onTouchTap={handleMobileSearchCancelTouchTap}
-    >
+const SearchCloseIcon = ({ handleMobileSearchCancelTouchTap }) => (
+    <SearchIconWrapper onTouchTap={handleMobileSearchCancelTouchTap}>
         <CompareArrowsIcon
             color={grey300}
             style={{height: '30px', width: '30px'}}
         />
-    </SearchIconContainer>
+    </SearchIconWrapper>
 );
 
 export default class Header extends Component {
@@ -302,6 +191,7 @@ export default class Header extends Component {
         const {
             getFilteredLudoList,
             getLatestLudoList,
+            handleIsShowingSidebar,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
             isOpeningProfilePage,
@@ -322,7 +212,7 @@ export default class Header extends Component {
         }
         return (
             /* layout/_header.scss */
-            <div className="header">
+            <HeaderWrapper>
                 <MediaQuery 
                     className="header-left"
                     maxDeviceWidth={767}
@@ -343,13 +233,11 @@ export default class Header extends Component {
                                 searchingText={searchingText}
                             />
                         :
-                            <HeaderLogo 
-                                getFilteredLudoList={getFilteredLudoList}
-                            />
+                            <HeaderLogo getFilteredLudoList={getFilteredLudoList} />
                     }
                     {
                         isSearching ?
-                            <SeachtCloseIcon
+                            <SearchCloseIcon
                                 handleMobileSearchCancelTouchTap={this.handleMobileSearchCancelTouchTap}
                             />
                         :
@@ -359,12 +247,8 @@ export default class Header extends Component {
                     }
                 </MediaQuery>
                 <MediaQuery minDeviceWidth={768}>
-                    <HeaderLogo 
+                    <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}
-                    />
-                </MediaQuery>
-                <MediaQuery minDeviceWidth={768}>
-                    <DesktopSearchBar
                         handleSearchSubmitKeyUp={this.handleSearchSubmitKeyUp}
                         handleSearchSubmitTouchTap={this.handleSearchSubmitTouchTap}
                         handleSearchingTextChange={this.handleSearchingTextChange}
@@ -417,8 +301,7 @@ export default class Header extends Component {
                         </ul>
                     </div>
               </label>
-            </div>
-            // {isOpeningProfilePage ? <HeaderLevel />: null }
+            </HeaderWrapper>
         );
     }
 };

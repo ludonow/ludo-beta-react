@@ -67,14 +67,14 @@ export default class Sidebar extends Component {
     }
 
     handleSidebarMouseLeave(event) {
-        if(this.props.isHoveringSidebar) {
-            this.props.handleIsHoveringSidebar(false);
+        if(this.props.isShowingSidebar) {
+            this.props.handleIsShowingSidebar(false);
         }
     }
 
     handleSidebarMouseOver(event) {
-        if(!this.props.isHoveringSidebar) {
-            this.props.handleIsHoveringSidebar(true);
+        if(!this.props.isShowingSidebar) {
+            this.props.handleIsShowingSidebar(true);
         }
     }
 
@@ -84,7 +84,7 @@ export default class Sidebar extends Component {
     }
 
     render() {
-        const {getFilteredLudoList, hoverSidebarIndex, instructionText } = this.state;
+        const { getFilteredLudoList, hoverSidebarIndex, instructionText } = this.state;
         return (
             /* layout/_right-sidebar.scss */
             <div
@@ -92,7 +92,7 @@ export default class Sidebar extends Component {
                 onMouseLeave={this.handleSidebarMouseLeave}
                 onMouseOver={this.handleSidebarMouseOver}
             >
-                    <div className={`right-sidebar${this.props.isHoveringSidebar ? ` sidebar-flip` : ``}`}>
+                    <div className={`right-sidebar${this.props.isShowingSidebar ? ` sidebar-flip` : ``}`}>
                         {/*UserID*/}
                         <div
                             className="right-sidebar-item color-sidebar1"
@@ -202,7 +202,7 @@ export default class Sidebar extends Component {
                             </span>
                         </div>
                     </div>
-                    <div className={`right-sidebar-arrow-container${this.props.isHoveringSidebar ? '' : ' sidebar-flip'}`}>
+                    <div className={`right-sidebar-arrow-container${this.props.isShowingSidebar ? '' : ' sidebar-flip'}`}>
                         <img src={arrowIcon} />
                     </div>
             </div>

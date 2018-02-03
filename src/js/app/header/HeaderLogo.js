@@ -13,10 +13,10 @@ const contentPaddingX = Math.round( (mainWidth - 5 * gridItemWidth)/2 );
 const logoLeft = contentPaddingX;
 
 const HeeaderLudoLogo = styled.div`
-    height: 100%;
-    display: flex;
     align-items: center;
     cursor: pointer;
+    display: flex;
+    height: 100%;
 
     @media (max-width: 767px) {
         width: 100%;
@@ -31,8 +31,10 @@ const HeeaderLudoLogo = styled.div`
 
     @media (min-width: 992px) {
         position: relative;
-        margin-left: 125px;
-	}
+        & > img {
+            width: 52px;
+        }
+    }
     
     & > img {
         position: relative;
