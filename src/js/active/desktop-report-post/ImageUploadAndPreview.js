@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import Button from '../../components/Button';
 import cameraIconSrc from '../../../images/active/camera-icon.png';
+import axios from '../../axios-config';
 
 const DropZoneWrapper = styled.div`
     cursor: pointer;

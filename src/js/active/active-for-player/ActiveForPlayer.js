@@ -32,7 +32,7 @@ export default class ActiveForPlayer extends Component {
                     <ActivePlayerForm  {...this.props} />
                     <ActiveReports {...this.props} />
                     {
-                        // router_currentFormValue.stage === 1 || router_currentFormValue.stage === 2 ?
+                        router_currentFormValue.stage === 1 || router_currentFormValue.stage === 2 ?
                             <DesktopReportPost
                                 currentUserId={currentUserId}
                                 handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
@@ -40,7 +40,7 @@ export default class ActiveForPlayer extends Component {
                                 ludoId={params.ludo_id}
                                 router_currentFormValue={router_currentFormValue}
                             />
-                        // : null
+                        : null
                     }
                 </MediaQuery>
                 <MediaQuery maxDeviceWidth={768}>

@@ -47,6 +47,7 @@ const Draft = ({
     handleVideoChange,
     imagePreviewUrl,
     images,
+    ludoId,
     reportType,
     resizedHeight,
     resizedWidth,
@@ -62,6 +63,7 @@ const Draft = ({
                         handleImageResize={handleImageResize}
                         imagePreviewUrl={imagePreviewUrl}
                         images={images}
+                        ludoId={ludoId}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}
                     />

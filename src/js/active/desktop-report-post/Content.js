@@ -42,6 +42,7 @@ const Content = ({
     handleVideoChange,
     imagePreviewUrl,
     images,
+    ludoId,
     reportType,
     resizedHeight,
     resizedWidth,
@@ -81,6 +82,7 @@ const Content = ({
                     handleVideoChange={handleVideoChange}
                     imagePreviewUrl={imagePreviewUrl}
                     images={images}
+                    ludoId={ludoId}
                     reportType={reportType}
                     resizedHeight={resizedHeight}
                     resizedWidth={resizedWidth}

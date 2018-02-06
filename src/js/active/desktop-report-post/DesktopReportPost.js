@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import styled from 'styled-components';
+import promiseFinally from 'promise.prototype.finally';
 
 import axios from '../../axios-config';
 import Content from './Content';
@@ -8,6 +9,8 @@ import DiscardAlert from './DiscardAlert';
 import ToggleButton from './ToggleButton';
 import StepButtonList from './StepButtonList';
 import closeIconSrc from '../../../images/active/close-icon.png';
+
+promiseFinally.shim();
 
 // style components
 const CloseIconWrapper = styled.div`
@@ -159,49 +162,59 @@ class DesktopReportPost extends Component {
         } = this.state;
         let whoIsUser = '';
         (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
-        const ludoReportPost = new FormData();
-        ludoReportPost.append('content', text);
-        ludoReportPost.append('ludo_id', ludoId);
-        ludoReportPost.append('player', whoIsUser);
-        if (reportType === 'image') {
-            ludoReportPost.append('image', images[0]);
-        } else if (reportType === 'video') {
-            ludoReportPost.append('video', video);
-        }
 
         this.setState({
             isSubmitting: true
         });
-
-        axios.post('apis/report', ludoReportPost)
-        .then((response) => {
-            if (response.data.status === '200') {
-                this.props.handleShouldProfileUpdate(true);
-                this.props.handleShouldReportUpdate(true);
-                console.log(response);
-                this.handleDialogClose();
-            } else {
+        const imagePost = new FormData();
+        imagePost.append('file', images[0]);
+        axios.post('/apis/report-image', imagePost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    return response.data.location
+                } else {
+                    console.error('DesktopReportPost handleSubmit response status from server is not OK, which is: ', response);
+                    console.error('DesktopReportPost handleSubmit response message from server: ', response.data.message);
+                    throw new Error(response.data.message);
+                }
+            })
+            .then(imageLocation => {
+                const ludoReportPost = {
+                    content: text,
+                    image_location: imageLocation,
+                    ludo_id: ludoId,
+                    player: whoIsUser,
+                    video
+                };
+                return axios.post('/apis/report', ludoReportPost)
+            })
+            .then(response => {
+                if (response.data.status === '200') {
+                    this.props.handleShouldProfileUpdate(true);
+                    this.props.handleShouldReportUpdate(true);
+                    this.handleDialogClose();
+                } else {
+                    if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    console.error('DesktopReportPost handleSubmit response data is not OK. The message from server is: ', response.data.message);
+                    if (response.data.err) {
+                        console.error('DesktopReportPost handleSubmit response data is not OK. The error from server is: ', response.data.err);
+                        throw new Error(response.data.err);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('DesktopReportPost handleSubmit catch an error: ', error);
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                console.error('ActivePlayerForm Report else message from server: ', response.data.message);
-                if (response.data.err) {
-                    console.error('ActivePlayerForm Report else error from server: ', response.data.err);
-                }
-            }
-            this.setState({
-                isSubmitting: false
+            })
+            .finally(() => {
+                this.setState({
+                    isSubmitting: false
+                });
             });
-        })
-        .catch((error) => {
-            if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-            console.error('ActivePlayerForm Report error', error);
-            this.setState({
-                isSubmitting: false
-            });
-        });
     }
 
     handleTextChange(event) {
@@ -274,6 +287,9 @@ class DesktopReportPost extends Component {
             text,
             video
         } = this.state;
+        const {
+            ludoId
+        } = this.props;
         return (
             <DesktopReportPostWrapper>
                 <ToggleButton
@@ -305,6 +321,7 @@ class DesktopReportPost extends Component {
                         handleVideoChange={this.handleVideoChange}
                         imagePreviewUrl={imagePreviewUrl}
                         images={images}
+                        ludoId={ludoId}
                         step={step}
                         text={text}
                         reportType={reportType}
