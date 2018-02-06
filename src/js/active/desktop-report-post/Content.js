@@ -40,12 +40,13 @@ const Content = ({
     handleStepPrev,
     handleTextChange,
     handleVideoChange,
-    imagePreviewUrl,
+    imageLocation,
     images,
     ludoId,
     reportType,
     resizedHeight,
     resizedWidth,
+    setImageLocation,
     step,
     text,
     video
@@ -80,12 +81,13 @@ const Content = ({
                     handleStepNext={handleStepNext}
                     handleTextChange={handleTextChange}
                     handleVideoChange={handleVideoChange}
-                    imagePreviewUrl={imagePreviewUrl}
+                    imageLocation={imageLocation}
                     images={images}
                     ludoId={ludoId}
                     reportType={reportType}
                     resizedHeight={resizedHeight}
                     resizedWidth={resizedWidth}
+                    setImageLocation={setImageLocation}
                     text={text}
                     video={video}
                 />
@@ -93,7 +95,7 @@ const Content = ({
         case 2:
             return (
                 <ReportPreview
-                    imagePreviewUrl={imagePreviewUrl}
+                    imagePreviewUrl={images[0].preview}
                     reportType={reportType}
                     resizedHeight={resizedHeight}
                     resizedWidth={resizedWidth}

@@ -45,12 +45,13 @@ const Draft = ({
     handleStepNext,
     handleTextChange,
     handleVideoChange,
-    imagePreviewUrl,
+    imageLocation,
     images,
     ludoId,
     reportType,
     resizedHeight,
     resizedWidth,
+    setImageLocation,
     text,
     video
 }) => {
@@ -61,11 +62,12 @@ const Draft = ({
                     <ImageUploadAndPreview
                         handleImageChange={handleImageChange}
                         handleImageResize={handleImageResize}
-                        imagePreviewUrl={imagePreviewUrl}
+                        imageLocation={imageLocation}
                         images={images}
                         ludoId={ludoId}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}
+                        setImageLocation={setImageLocation}
                     />
                     <TextReportArea
                         onChange={handleTextChange}

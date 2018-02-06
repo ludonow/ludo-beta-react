@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 import Button from '../../components/Button';
+import LoadingIcon from './LoadingIcon';
 
 // styled components
 const ButtonListWrapper = styled.div`
@@ -14,20 +14,6 @@ const ButtonListWrapper = styled.div`
         margin: 0 30px;
     }
 `;
-
-const LoadingIconWrapper = styled.div`
-    position: relative;
-    margin-left: 70px;
-    margin-right: 90px;
-    text-align: center;
-`;
-
-// override material-ui
-const loadingStyle = {
-    backgroundColor: 'transparent',
-    boxShadow: 'none',
-    position: 'relative'
-};
 
 const StepButtonList = ({
     handleDialogClose,
@@ -84,15 +70,7 @@ const StepButtonList = ({
                                 onClick={handleSubmit}
                             />
                         :
-                            <LoadingIconWrapper>
-                                <RefreshIndicator
-                                    left={10}
-                                    size={40}
-                                    status="loading"
-                                    style={loadingStyle}
-                                    top={0}
-                                />
-                            </LoadingIconWrapper>
+                            <LoadingIcon />
                     }
                 </ButtonListWrapper>
             );

@@ -46,21 +46,55 @@ class ImageUploadAndPreview extends Component {
     constructor(props) {
         super(props);
         this.handleDrop = this.handleDrop.bind(this);
+        // this.handleImageUpload = this.handleImageUpload.bind(this);
+        this.handleImagePreview = this.handleImagePreview.bind(this);
         this.resizePreviewImage = this.resizePreviewImage.bind(this);
     }
 
-    handleDrop(images) {
-        const reader = new FileReader();
-        const image = images[0];
-        reader.readAsDataURL(image);
-        reader.onload = (event) => {
-            const dataUrl = event.target.result;
-            const image = new Image();
-            image.src = dataUrl;
-            image.onload = () => {
-                this.resizePreviewImage(image, MAX_WIDTH, MAX_HEIGHT, 0.7);
-                this.props.handleImageChange(images, dataUrl);
-            };
+    handleDrop(files) {
+        if (files.length > 1) {
+            window.alert('一次只能上傳一張圖片');
+        } else if (files.length == 1) {
+            const image = files[0];
+            if (image.size >= 1*1024*1024) {
+                window.alert('你上傳的圖片已超過上限 1 MB！');
+            } else {
+                // this.handleImageUpload(image);
+                this.props.handleImageChange(image);
+                const imageUrl = image.preview;
+                this.handleImagePreview(imageUrl);
+            }
+        }
+    }
+
+    /**
+     * @TODO: 等到後端資料庫檔案管理完成後，圖片上傳機制改為選取圖片完後立即上傳資料庫
+     */
+    // handleImageUpload(image) {
+    //     const imagePost = new FormData();
+    //     imagePost.append('file', image);
+    //     axios.post('/apis/report-image', imagePost)
+    //     .then(response => {
+    //         if (response.data.status === '200') {
+    //             this.props.setImageLocation(response.data.location);
+    //         } else {
+    //             const errorMessage = 'ImageUploadAndPreview handleImageDrop response is not OK. The response is from server: ' + response;
+    //             throw new Error(errorMessage);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //         if (window.confirm('上傳圖片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+    //             window.open("https://www.facebook.com/messages/t/ludonow");
+    //         }
+    //     });
+    // }
+
+    handleImagePreview(imageUrl) {
+        const image = new Image();
+        image.src = imageUrl;
+        image.onload = () => {
+            this.resizePreviewImage(image, MAX_WIDTH, MAX_HEIGHT, 0.7);
         };
     }
 
@@ -82,24 +116,22 @@ class ImageUploadAndPreview extends Component {
                 resizedHeight = maxHeight;
             }
         }
-
         this.props.handleImageResize(resizedWidth, resizedHeight);
     }
 
     render() {
         const {
-            imagePreviewUrl,
             images,
             resizedHeight,
             resizedWidth
         } = this.props;
-        return (
-            <ImageZoneWrapper>
-                { !imagePreviewUrl ?
+
+        if (images.length === 0) {
+            return (
+                <ImageZoneWrapper>
                     <DropZoneWrapper>
                         <DropZone
-                            accept="image/jpeg, image/png"
-                            maxSize={100*1024*1024}
+                            accept="image/*"
                             multiple={false}
                             onDrop={this.handleDrop}
                             style={{}}
@@ -117,35 +149,36 @@ class ImageUploadAndPreview extends Component {
                             />
                         </DropZone>
                     </DropZoneWrapper>
-                :
+                </ImageZoneWrapper>
+            );
+        } else if (images.length === 1) {
+            const userSelectedImage = images[0];
+            return (
+                <ImageZoneWrapper>
                     <PreviewWrapper>
-                        {
-                            images.map(
-                                image =>
-                                <PreviewImage
-                                    resizedHeight={resizedHeight}
-                                    resizedWidth={resizedWidth}
-                                    src={imagePreviewUrl}
+                        <PreviewImage
+                            onClick={this.handleImageEnlargeOpen}
+                            resizedHeight={resizedHeight}
+                            resizedWidth={resizedWidth}
+                            src={userSelectedImage.preview}
+                        />
+                            <DropZone
+                                accept="image/jpeg, image/png"
+                                maxSize={100*1024*1024}
+                                multiple={false}
+                                onDrop={this.handleDrop}
+                                style={{}}
+                            >
+                                <Button
+                                    backgroundColor="#FF6E6E"
+                                    fontSize="0.7rem"
+                                    label="重新上傳"
                                 />
-                            )
-                        }
-                        <DropZone
-                            accept="image/jpeg, image/png"
-                            maxSize={100*1024*1024}
-                            multiple={false}
-                            onDrop={this.handleDrop}
-                            style={{}}
-                        >
-                            <Button
-                                backgroundColor="#FF6E6E"
-                                fontSize="0.7rem"
-                                label="重新上傳"
-                            />
-                        </DropZone>
+                            </DropZone>
                     </PreviewWrapper>
-                }
-            </ImageZoneWrapper>
-        );
+                </ImageZoneWrapper>
+            );
+        }
     }
 }
 

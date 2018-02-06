@@ -43,7 +43,7 @@ class DesktopReportPost extends Component {
     constructor() {
         super();
         this.state = {
-            imagePreviewUrl: '',
+            imageLocation: '',
             images: [],
             isDiscardAlertOpen: false,
             isImageLightBoxOpen: false,
@@ -70,6 +70,7 @@ class DesktopReportPost extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
+        this.setImageLocation = this.setImageLocation.bind(this);
     }
 
     handleCloseClick() {
@@ -83,7 +84,7 @@ class DesktopReportPost extends Component {
 
     handleDialogClose() {
         this.setState({
-            imagePreviewUrl: '',
+            imageLocation: '',
             images: [],
             isDiscardAlertOpen: false,
             isPreviewButtonDisabled: true,
@@ -106,10 +107,9 @@ class DesktopReportPost extends Component {
         this.setState({ isDiscardAlertOpen: false });
     }
 
-    handleImageChange(images, imagePreviewUrl) {
+    handleImageChange(image) {
         this.setState({
-            imagePreviewUrl,
-            images,
+            images: [image],
             isPreviewButtonDisabled: false,
             isReporting: true
         });
@@ -149,36 +149,34 @@ class DesktopReportPost extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const {
-            currentUserId,
-            ludoId,
-            router_currentFormValue
-        } = this.props;
-        const {
-            images,
-            reportType,
-            text,
-            video
-        } = this.state;
-        let whoIsUser = '';
-        (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
-
         this.setState({
             isSubmitting: true
         });
+        
         const imagePost = new FormData();
-        imagePost.append('file', images[0]);
+        imagePost.append('file', this.state.images[0]);
         axios.post('/apis/report-image', imagePost)
             .then(response => {
                 if (response.data.status === '200') {
-                    return response.data.location
+                    return response.data.location;
                 } else {
                     console.error('DesktopReportPost handleSubmit response status from server is not OK, which is: ', response);
-                    console.error('DesktopReportPost handleSubmit response message from server: ', response.data.message);
-                    throw new Error(response.data.message);
+                    const errorMessage = 'DesktopReportPost handleSubmit response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
                 }
             })
             .then(imageLocation => {
+                const {
+                    currentUserId,
+                    ludoId,
+                    router_currentFormValue
+                } = this.props;
+                const {
+                    text,
+                    video
+                } = this.state;
+                let whoIsUser = '';
+                (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
                 const ludoReportPost = {
                     content: text,
                     image_location: imageLocation,
@@ -272,9 +270,16 @@ class DesktopReportPost extends Component {
         }
     }
 
+    setImageLocation(imageLocation) {
+        this.setState({
+            imageLocation,
+            isPreviewButtonDisabled: false
+        });
+    }
+
     render() {
         const {
-            imagePreviewUrl,
+            imageLocation,
             images,
             isDiscardAlertOpen,
             isPreviewButtonDisabled,
@@ -319,7 +324,7 @@ class DesktopReportPost extends Component {
                         handleStepPrev={this.handleStepPrev}
                         handleTextChange={this.handleTextChange}
                         handleVideoChange={this.handleVideoChange}
-                        imagePreviewUrl={imagePreviewUrl}
+                        imageLocation={imageLocation}
                         images={images}
                         ludoId={ludoId}
                         step={step}
@@ -327,6 +332,7 @@ class DesktopReportPost extends Component {
                         reportType={reportType}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}
+                        setImageLocation={this.setImageLocation}
                         video={video}
                     />
                     <StepButtonList
