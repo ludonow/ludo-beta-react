@@ -95,7 +95,7 @@ const Content = ({
         case 2:
             return (
                 <ReportPreview
-                    imagePreviewUrl={images[0].preview}
+                    imagePreviewUrl={images[0] ? images[0].preview : ''}
                     reportType={reportType}
                     resizedHeight={resizedHeight}
                     resizedWidth={resizedWidth}

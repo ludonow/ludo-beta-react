@@ -12,6 +12,12 @@ import closeIconSrc from '../../../images/active/close-icon.png';
 
 promiseFinally.shim();
 
+const titles = [
+    "選擇回報種類",
+    "輸入回報內容",
+    "回報預覽"
+];
+
 // style components
 const CloseIconWrapper = styled.div`
     padding: 1vw;
@@ -305,7 +311,7 @@ class DesktopReportPost extends Component {
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
                     open={open}
-                    title="輸入回報"
+                    title={titles[step]}
                     titleStyle={titleStyle}
                 >
                     <CloseIconWrapper>
