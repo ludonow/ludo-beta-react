@@ -10,6 +10,7 @@ import axios from '../../axios-config';
 import DesktopSearchBar from './SearchBar/DesktopSearchBar';
 import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderFuel from './HeaderFuel';
+import HeaderLeft from './HeaderLeft';
 import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
 import HeaderPrevPageArrow from './HeaderPrevPageArrow';
@@ -22,19 +23,11 @@ import Friend from '../../friend/Friend';
 
 import { A } from './SearchBar/common';
 import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
-import HamburgerIcon from './HamburgerIcon';
 import facebookIcon from '../../../images/login/facebook-icon.png';
 import magnifierIcon from '../../../images/magnifier.svg';
 
 // styled components
 const AvatarWrapper = styled.div``;
-
-const HeaderLeftWrapper = styled.div`
-    align-items: center;
-    display: inline-flex;
-    height: 100%;
-    justify-content: space-between;
-`;
 
 const HeaderRightWrapper = styled.div`
     align-items: center;
@@ -76,18 +69,6 @@ const StyledMediaQuery = styled(MediaQuery)`
 `;
 
 // child components
-const HeaderLeft = ({
-    getFilteredLudoList
-}) => (
-    <HeaderLeftWrapper>
-        <HamburgerIcon
-        />
-        <HeaderLogo 
-            getFilteredLudoList={getFilteredLudoList}
-        />
-    </HeaderLeftWrapper>
-);
-
 const HeaderRight = ({
     userBasicData
 }) => (

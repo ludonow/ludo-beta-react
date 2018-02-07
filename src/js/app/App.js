@@ -3,6 +3,7 @@ import axios from '../axios-config';
 
 import Header from './header/Header';
 import Sidebar from './sidebar/Sidebar';
+import Navbar from './Navbar';
 import DenounceBox from './DenounceBox';
 
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -494,12 +495,13 @@ export default class App extends React.Component {
                     setFilterCondition={this.setFilterCondition}
                     userBasicData={this.state.userBasicData}
                 />
-                <Sidebar
+                <Navbar />
+                {/* <Sidebar
                     currentUserId={this.state.currentUserId}
                     getFilteredLudoList={this.getFilteredLudoList}
                     handleIsShowingSidebar={this.handleIsShowingSidebar}
                     isShowingSidebar={isShowingSidebar}
-                />
+                /> */}
                 {/* layout/main-container */}
                 <div
                     className={mainContainerClass}
