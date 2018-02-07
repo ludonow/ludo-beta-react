@@ -37,6 +37,7 @@ const HeaderLeftWrapper = styled.div`
 `;
 
 const HeaderRightWrapper = styled.div`
+    align-items: center;
     display: inline-flex;
     height: 100%;
 `;

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 const AvatarPhotoWrapper = styled.div`
     img {
         height: 20px;
+        margin-right: 15px;
         width: 20px;
     }
 `;
