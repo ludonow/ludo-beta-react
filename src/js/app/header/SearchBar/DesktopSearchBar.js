@@ -6,16 +6,19 @@ import Button from '../../../components/Button';
 
 import { CancelIconButton, CancelIconPlaceHolder, SearchBar } from './common';
 
+const ButtonPlaceholder = styled.div`
+    margin-left: 5px;
+    width: 40px;
+`;
+
 const DesktopSearchBarWrapper = styled.div`
-    display: flex;
-    margin-left: 500px;
+    display: inline-flex;
     padding: 10px 0;
-    position: relative;
 `;
 
 const SearchBarLeftPlaceholder = styled.div`
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
 `;
@@ -55,7 +58,7 @@ const DesktopSearchBar = ({
                 padding="0"
                 width="40px"
             />
-            : null
+            : <ButtonPlaceholder />
         }
     </DesktopSearchBarWrapper>
 );

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router';
 
 import Popover from 'material-ui/Popover';
@@ -6,10 +7,22 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Tooltip from 'material-ui/internal/Tooltip';
 
-import headerProfileIcon from '../../../images/header/profile.png';
+import defaultAvatartIcon from '../../../images/header/default_avatar.png';
 
-const style = {
-    'fontSize': '12px'
+// styled components
+const DefaultAvatarImg = styled.img`
+    cursor: pointer;
+    height: 24px;
+    margin-right: 15px;
+    width: 24px;
+`;
+
+// override material ui style
+const tootipStyle = {
+    fontSize: 12,
+    right: 15,
+    top: 40,
+    zIndex: 5
 };
 
 export default class HeaderLogIn extends Component {
@@ -65,16 +78,13 @@ export default class HeaderLogIn extends Component {
                 onMouseOver={this.handleTooltipShow}
             >
                 <Link to="login">
-                    <img
-                        className="header-profile-icon"
-                        src={headerProfileIcon}
-                    />
+                    <DefaultAvatarImg src={defaultAvatartIcon} />
                 </Link>
                 <Tooltip
                     horizontalPosition="left"
                     label="登入"
                     show={this.state.showTooltip}
-                    style={{fontSize: 12, right: 15, top: 40, zIndex: 5}}
+                    style={tootipStyle}
                     touch
                     verticalPosition="bottom"
                 />

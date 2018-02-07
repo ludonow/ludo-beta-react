@@ -27,19 +27,29 @@ import facebookIcon from '../../../images/login/facebook-icon.png';
 import magnifierIcon from '../../../images/magnifier.svg';
 
 // styled components
+const AvatarWrapper = styled.div``;
+
 const HeaderLeftWrapper = styled.div`
+    align-items: center;
     display: inline-flex;
+    height: 100%;
+    justify-content: space-between;
+`;
+
+const HeaderRightWrapper = styled.div`
+    display: inline-flex;
+    height: 100%;
 `;
 
 const HeaderWrapper = styled.div`
     display: flex;
-    position: fixed;
     background-color: #717070;
     border-bottom-color: #B6BCC1;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    position: fixed;
     top: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 3;
 
     @media (min-width: 768px) {
@@ -58,14 +68,15 @@ const SearchIconWrapper = styled(A)`
     }
 `;
 
+const StyledMediaQuery = styled(MediaQuery)`
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+`;
+
 // child components
 const HeaderLeft = ({
-    getFilteredLudoList,
-    handleSearchingTextChange,
-    handleSearchingTextClear,
-    handleSearchSubmitKeyUp,
-    handleSearchSubmitTouchTap,
-    searchingText
+    getFilteredLudoList
 }) => (
     <HeaderLeftWrapper>
         <HamburgerIcon
@@ -73,14 +84,22 @@ const HeaderLeft = ({
         <HeaderLogo 
             getFilteredLudoList={getFilteredLudoList}
         />
-        <DesktopSearchBar
-            handleSearchSubmitKeyUp={handleSearchSubmitKeyUp}
-            handleSearchSubmitTouchTap={handleSearchSubmitTouchTap}
-            handleSearchingTextChange={handleSearchingTextChange}
-            handleSearchingTextClear={handleSearchingTextClear}
-            searchingText={searchingText}
-        />
     </HeaderLeftWrapper>
+);
+
+const HeaderRight = ({
+    userBasicData
+}) => (
+    <HeaderRightWrapper>
+        <AvatarWrapper>
+            {
+                userBasicData.name ?
+                    <HeaderFBPhoto userBasicData={userBasicData} />
+                :
+                    <HeaderLogIn />
+            }
+        </AvatarWrapper>
+    </HeaderRightWrapper>
 );
 
 const SearchIcon = ({ handleMobileSearchTouchTap }) => (
@@ -104,7 +123,7 @@ export default class Header extends Component {
         this.state = {
             isSearching: false,
             searchingText: ''
-        }
+        };
         this.handleFilterClick = this.handleFilterClick.bind(this);
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
         this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
@@ -197,19 +216,12 @@ export default class Header extends Component {
             isOpeningProfilePage,
             userBasicData 
         } = this.props;
-        const { heart, marbles, success_rate, win_rate } = userBasicData;
 
         const {
             isSearching,
             searchingText
         } = this.state;
 
-        let headerProfile;
-        if (userBasicData.name) {    // user has login
-            headerProfile = <HeaderFBPhoto userBasicData={userBasicData}/>
-        } else {    // user has not login
-            headerProfile = <HeaderLogIn />
-        }
         return (
             /* layout/_header.scss */
             <HeaderWrapper>
@@ -246,35 +258,21 @@ export default class Header extends Component {
                             />
                     }
                 </MediaQuery>
-                <MediaQuery minDeviceWidth={768}>
+                <StyledMediaQuery minDeviceWidth={768}>
                     <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}
+                    />
+                    <DesktopSearchBar
                         handleSearchSubmitKeyUp={this.handleSearchSubmitKeyUp}
                         handleSearchSubmitTouchTap={this.handleSearchSubmitTouchTap}
                         handleSearchingTextChange={this.handleSearchingTextChange}
                         handleSearchingTextClear={this.handleSearchingTextClear}
                         searchingText={searchingText}
                     />
-                </MediaQuery>
-                <MediaQuery
-                    className="header-right"
-                    minDeviceWidth={768}
-                >
-                    <HeaderFuel heart={heart} />
-                        {
-                            isOpeningProfilePage ?
-                                null
-                            :
-                                <HeaderRate
-                                    success_rate={success_rate}
-                                    win_rate={win_rate}
-                                />
-                        }
-                    {/* components/_header-profile.scss */}
-                    <div className="header-profile">
-                        {headerProfile}
-                    </div>
-                </MediaQuery>
+                    <HeaderRight
+                        userBasicData={userBasicData}
+                    />
+                </StyledMediaQuery>
                 {/*fab menu icon for RWD design*/}
                 <label className ="fab-menu">
                     <input className="fab-menu-checkbox" type="checkbox"/>

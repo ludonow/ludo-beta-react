@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const HamburgerIconWrapper = styled.div`
     display: inline-block;
-    margin: 13px 15px;
+    margin: 0 15px;
     position: relative;
 
     span {

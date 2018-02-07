@@ -11,7 +11,10 @@ export const A = (props) => (
     <a {...props} />
 );
 
-const CancelIconPadding = `padding: 1px;`;
+const CancelIconPadding = `
+    padding-right: 3px;
+    padding-top: 1px;
+`;
 
 const CancelIconWrapper = styled(A)`
     ${CancelIconPadding}
