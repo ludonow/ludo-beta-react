@@ -43,7 +43,10 @@ const ButtonWithStyle = styled.button`
     }
 `;
 
-const ReportButtonComponent = ({ disabled, onClick }) => (
+const ReportButtonComponent = ({
+    disabled,
+    onClick
+}) => (
     <ReportButtonWrapper onClick={onClick}>
         <ButtonWithStyle disabled={disabled}>
             發送回報
@@ -112,10 +115,18 @@ export default class MobileReportForm extends Component {
     }
 
     handleTextChange(event) {
-        this.setState({
-            content: event.target.value,
-            isReportButtonClickable: true
-        });
+        const content = event.target.value;
+        if (!content) {
+            this.setState({
+                content,
+                isReportButtonClickable: false
+            });
+        } else {
+            this.setState({
+                content,
+                isReportButtonClickable: true
+            });
+        }
     }
 
     setImageLocation(imageUrl) {
