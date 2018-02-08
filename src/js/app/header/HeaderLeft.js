@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import HamburgerIcon from './HamburgerIcon';
-import Logo from './HeaderLogo';
+import Logo from './Logo';
 
 const HeaderLeftWrapper = styled.div`
     align-items: center;

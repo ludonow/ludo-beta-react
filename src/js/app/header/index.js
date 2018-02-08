@@ -9,12 +9,10 @@ import axios from '../../axios-config';
 
 import DesktopSearchBar from './SearchBar/DesktopSearchBar';
 import HeaderFBPhoto from './HeaderFBPhoto';
-import HeaderFuel from './HeaderFuel';
 import HeaderLeft from './HeaderLeft';
-import HeaderLogo from './HeaderLogo';
 import HeaderLogIn from './HeaderLogIn';
 import HeaderPrevPageArrow from './HeaderPrevPageArrow';
-import HeaderRate from './HeaderRate';
+import Logo from './Logo';
 import MobileSearchBar from './SearchBar/MobileSearchBar';
 import Playground from '../../playground/Playground';
 import Profile from '../../profile/Profile';
@@ -23,7 +21,6 @@ import Friend from '../../friend/Friend';
 
 import { A } from './SearchBar/common';
 import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
-import facebookIcon from '../../../images/login/facebook-icon.png';
 import magnifierIcon from '../../../images/magnifier.svg';
 
 // styled components
@@ -227,7 +224,7 @@ export default class Header extends Component {
                                 searchingText={searchingText}
                             />
                         :
-                            <HeaderLogo getFilteredLudoList={getFilteredLudoList} />
+                            <Logo getFilteredLudoList={getFilteredLudoList} />
                     }
                     {
                         isSearching ?

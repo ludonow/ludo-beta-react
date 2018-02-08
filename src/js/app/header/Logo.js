@@ -2,17 +2,9 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import styled from 'styled-components';
 
-import imageLogo from '../../../images/Ludo_logo.png';
+import logoImage from '../../../images/Ludo_logo.png';
 
-const screenWidth = window.innerWidth;
-const rightSidebarWidth = 0;
-const cardPadding = 7;
-const gridItemWidth = 210 + 2*cardPadding;
-const mainWidth = screenWidth - rightSidebarWidth;
-const contentPaddingX = Math.round( (mainWidth - 5 * gridItemWidth)/2 );
-const logoLeft = contentPaddingX;
-
-const HeeaderLudoLogo = styled.div`
+const StyledLogo = styled.div`
     align-items: center;
     cursor: pointer;
     display: flex;
@@ -42,7 +34,7 @@ const HeeaderLudoLogo = styled.div`
     }
 `;
 
-export default class HeaderLogo extends Component {
+export default class Logo extends Component {
     constructor(props) {
         super(props);
         this.handleLogoLink = this.handleLogoLink.bind(this);
@@ -56,11 +48,11 @@ export default class HeaderLogo extends Component {
     render() {
         return (
             /* components/_header-logo.scss */
-            <HeeaderLudoLogo
+            <StyledLogo
                 onClick={this.handleLogoLink}
             >
-                <img src={imageLogo} />
-            </HeeaderLudoLogo>
+                <img src={logoImage} />
+            </StyledLogo>
         );
     }
 }

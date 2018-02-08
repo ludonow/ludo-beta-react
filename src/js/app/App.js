@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from '../axios-config';
 
-import Header from './header/Header';
+import Header from './Header';
 import Sidebar from './sidebar/Sidebar';
 import Navbar from './Navbar';
 import DenounceBox from './DenounceBox';
