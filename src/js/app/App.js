@@ -28,9 +28,9 @@ export default class App extends React.Component {
             filterCondition: '',
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
-            isShowingSidebar: false,
             isInfiniteLoading: false,
             isLoggedIn: false,
+            isNavbarVisible: false,
             isOpeningActivePage: false,
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
@@ -60,11 +60,11 @@ export default class App extends React.Component {
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
         this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
-        this.handleIsShowingSidebar = this.handleIsShowingSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
@@ -383,9 +383,9 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsShowingSidebar(boolean) {
+    handleNavbarToggle(boolean) {
         this.setState({
-            isShowingSidebar: boolean
+            isNavbarVisible: boolean
         });
     }
 
@@ -466,45 +466,35 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { isShowingSidebar } = this.state;
+        const { isNavbarVisible } = this.state;
         const {
             route,
             router_currentFormValue
         } = this.props;
 
         const { path } = route;
-        let mainContainerClass = '';
-        if (isShowingSidebar) {
-            mainContainerClass = 'main-container hoveringSidebar';
-        } else {
-            mainContainerClass = 'main-container';
-        }
-        if (this.state.isOpeningLudoListPage) {
-            mainContainerClass += ' playground';
-        }
 
         return (
             <div>
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
-                    handleIsShowingSidebar={this.handleIsShowingSidebar}
+                    handleNavbarToggle={this.handleNavbarToggle}
                     isLoggedIn={this.state.isLoggedIn}
                     isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
+                    isNavbarVisible={isNavbarVisible}
                     setFilterCondition={this.setFilterCondition}
                     userBasicData={this.state.userBasicData}
                 />
-                <Navbar />
-                {/* <Sidebar
-                    currentUserId={this.state.currentUserId}
+                <Navbar
                     getFilteredLudoList={this.getFilteredLudoList}
-                    handleIsShowingSidebar={this.handleIsShowingSidebar}
-                    isShowingSidebar={isShowingSidebar}
-                /> */}
+                    handleNavbarToggle={this.handleNavbarToggle}
+                    isNavbarVisible={isNavbarVisible}
+                />
                 {/* layout/main-container */}
                 <div
-                    className={mainContainerClass}
+                    className="main-container"
                     onScroll={this.handleScrollEvent}
                     ref="mainContainer"
                 >
@@ -524,7 +514,7 @@ export default class App extends React.Component {
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
-                                handleIsShowingSidebar: this.handleIsShowingSidebar,
+                                handleNavbarToggle: this.handleNavbarToggle,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,

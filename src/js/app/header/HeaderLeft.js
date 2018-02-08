@@ -12,10 +12,15 @@ const HeaderLeftWrapper = styled.div`
 `;
 
 const HeaderLeft = ({
-    getFilteredLudoList
+    getFilteredLudoList,
+    handleNavbarToggle,
+    isNavbarVisible
 }) => (
     <HeaderLeftWrapper>
-        <HamburgerIcon />
+        <HamburgerIcon
+            handleNavbarToggle={handleNavbarToggle}
+            isNavbarVisible={isNavbarVisible}
+        />
         <Logo 
             getFilteredLudoList={getFilteredLudoList}
         />

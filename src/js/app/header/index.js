@@ -189,7 +189,8 @@ export default class Header extends Component {
         const {
             getFilteredLudoList,
             getLatestLudoList,
-            handleIsShowingSidebar,
+            handleNavbarToggle,
+            isNavbarVisible,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
             isOpeningProfilePage,
@@ -240,6 +241,8 @@ export default class Header extends Component {
                 <StyledMediaQuery minDeviceWidth={768}>
                     <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}
+                        handleNavbarToggle={handleNavbarToggle}
+                        isNavbarVisible={isNavbarVisible}
                     />
                     <DesktopSearchBar
                         handleSearchSubmitKeyUp={this.handleSearchSubmitKeyUp}

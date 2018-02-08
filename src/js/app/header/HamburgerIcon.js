@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const HamburgerIconWrapper = styled.div`
+    cursor: pointer;
     display: inline-block;
     margin: 0 15px;
     position: relative;
@@ -22,12 +23,26 @@ const HamburgerIconWrapper = styled.div`
     }
 `;
 
-const HamburgerIcon = () => (
-    <HamburgerIconWrapper>
-        <span></span>
-        <span></span>
-        <span></span>
-    </HamburgerIconWrapper>
-)
+class HamburgerIcon extends Component {
+    constructor() {
+        super();
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        const { isNavbarVisible } = this.props;
+        this.props.handleNavbarToggle(!isNavbarVisible);
+    }
+
+    render() {
+        return(
+            <HamburgerIconWrapper onClick={this.handleClick}>
+                <span></span>
+                <span></span>
+                <span></span>
+            </HamburgerIconWrapper>
+        );
+    }
+}
 
 export default HamburgerIcon;

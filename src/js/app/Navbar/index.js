@@ -39,11 +39,24 @@ const LinkListWrapper = styled.ul`
 `;
 
 const ListItem = styled.li`
-    margin: 15px auto;
+    border: 1px transparent solid;
+    cursor: pointer;
+    margin: 15px 0;
+    padding: 2px 0;
+
+    &:active {
+      background-color: black;
+    }
+
+    &:hover {
+      border: 1px white solid;
+      border-radius: 1rem;
+    }
 `;
 
 const Modal = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
+    display: ${props => props.isNavbarVisible ? 'block' : 'none'};
     height: 100vh;
     position: fixed;
     top: 40px;
@@ -98,26 +111,29 @@ const SettingLinkList = ({ SettingLinkTextList }) => (
     </LinkListWrapper>
 );
 
-class Navbar extends Component {
-    render() {
-        return (
-            <Modal>
-                <NavbarWrapper>
-                    <HeaderLeft />
-                    <CardSystemLinkList
-                        CardSystemLinkTextList={CardSystemLinkTextList}
-                    />
-                    <ProfileLinkList
-                        ProfileLabel={ProfileLabel}
-                        ProfileLinkTextList={ProfileLinkTextList}
-                    />
-                    <SettingLinkList
-                        SettingLinkTextList={SettingLinkTextList}
-                    />
-                </NavbarWrapper>
-            </Modal>
-        );
-    }
-}
+const Navbar = ({
+    getFilteredLudoList,
+    handleNavbarToggle,
+    isNavbarVisible
+}) => (
+    <Modal isNavbarVisible={isNavbarVisible}>
+        <NavbarWrapper>
+            <HeaderLeft
+                handleNavbarToggle={handleNavbarToggle}
+                isNavbarVisible={isNavbarVisible}
+            />
+            <CardSystemLinkList
+                CardSystemLinkTextList={CardSystemLinkTextList}
+            />
+            <ProfileLinkList
+                ProfileLabel={ProfileLabel}
+                ProfileLinkTextList={ProfileLinkTextList}
+            />
+            <SettingLinkList
+                SettingLinkTextList={SettingLinkTextList}
+            />
+        </NavbarWrapper>
+    </Modal>
+);
 
 export default Navbar;
