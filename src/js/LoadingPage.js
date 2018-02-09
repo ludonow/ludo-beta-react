@@ -1,8 +1,10 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
+
 import axios from './axios-config';
 
+// override material ui style
 const style = {
     container: {
       position: 'absolute',
@@ -13,27 +15,27 @@ const style = {
       display: 'inline-block',
       position: 'relative',
     },
-  };
-  
+};
+
 const RefreshIndicatorExampleLoading = () => (
     <div style={style.container}>
         <RefreshIndicator
-        size={100}
-        left={0}
-        top={0}
-        loadingColor="#FF9800"
-        status="loading"
-        style={style.refresh}
+            left={0}
+            loadingColor="#FF9800"
+            size={100}
+            status="loading"
+            style={style.refresh}
+            top={0}
         />
     </div>
 );
+
 export default class LoadingPage extends React.Component {
     constructor(props) {
         super(props);
-        
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const { ludo_id } = this.props.params;
         const { temp_ludo_id } = this.props.params;
         const joinLudoPutbody = this.props.location.state;
@@ -41,7 +43,7 @@ export default class LoadingPage extends React.Component {
         // console.log(joinLudoPutbody);
         if (temp_ludo_id) {
             console.log("跳轉頁面"+temp_ludo_id)
-            /* TODO ask pochun to create temp luod  */
+            /* TODO ask pochun to create temp ludo */
             // axios.put(`/apis/ludo/temp/${temp_ludo_id}`, joinLudoPutbody)
             // .then(response => {
             //     if (response.data.status === '200') {
@@ -63,7 +65,7 @@ export default class LoadingPage extends React.Component {
             //     console.error('OpenedBystanderForm join put error', error);
             // });
         }
-        if(ludo_id) {
+        if (ludo_id) {
             axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
             .then(response => {
                 if (response.data.status === '200') {
@@ -89,10 +91,10 @@ export default class LoadingPage extends React.Component {
             // browserHistory.push(`/`);
         }
     }
-    
+
     render () {
         return (
-            <RefreshIndicatorExampleLoading/>
-        )
-      }
+            <RefreshIndicatorExampleLoading />
+        );
+    }
 };
