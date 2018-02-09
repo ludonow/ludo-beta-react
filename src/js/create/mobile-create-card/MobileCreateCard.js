@@ -114,19 +114,28 @@ export default class MobileCreateCard extends Component {
                     if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
+                    this.setState({
+                        isLudoSubmitButtonDisabled: false
+                    });
                 });
             } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                 window.alert('燃料或彈珠數不足: ' + response.data.message);
+                this.setState({
+                    isLudoSubmitButtonDisabled: false
+                });
             } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
                 window.alert('有部分欄位為空白');
+                this.setState({
+                    isLudoSubmitButtonDisabled: false
+                });
             } else {
                 if (window.confirm('建立Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
+                this.setState({
+                    isLudoSubmitButtonDisabled: false
+                });
             }
-            this.setState({
-                isLudoSubmitButtonDisabled: false
-            });
         })
         .catch((error) => {
             if (window.confirm('建立Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
@@ -306,19 +315,28 @@ export default class MobileCreateCard extends Component {
                     if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
                 });
             } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                 window.alert('燃料或彈珠數不足: ' + response.data.message);
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
             } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
                 window.alert('有部分欄位為空白');
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
             } else {
                 if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
             }
-            this.setState({
-                isTemplateSubmitButtonDisabled: false
-            });
         })
         .catch((error) => {
             if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
