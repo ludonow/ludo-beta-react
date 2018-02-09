@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { cyan400 } from 'material-ui/styles/colors';
 
+const DeleteButtonStyle = {
+    backgroundColor: '#f24150',
+    marginTop: '10px'
+};
+
+// child components
 class StepButton extends Component {
     constructor(props) {
         super(props);
@@ -30,6 +36,7 @@ class StepButton extends Component {
 }
 
 const SubmitButton = ({
+    deleteButton,
     disabled,
     handleTouchTap,
     label
@@ -38,6 +45,7 @@ const SubmitButton = ({
         className="ludo-button disabled-button"
         disabled={disabled}
         onTouchTap={handleTouchTap}
+        style={deleteButton ? DeleteButtonStyle : {}}
     >
         {label}
     </button>
@@ -58,10 +66,12 @@ export default class StepButtonContainer extends Component {
         const {
             handleCardSubmit,
             handleStepChange,
+            handleTemplateDelete,
             handleTemplateSubmit,
             isAtTemplatePage,
             isLudoSubmitButtonDisabled,
             isNextStepButtonDisabled,
+            isTemplateDeleteButtonDisabled,
             isTemplateSubmitButtonDisabled,
             maxStep,
             step
@@ -87,8 +97,7 @@ export default class StepButtonContainer extends Component {
                             label="上一步"
                             stepVariation={-1}
                         />
-                    :
-                        null
+                    : null
                 }
                 {
                     step <= (maxStep - 1) ? 
@@ -98,28 +107,35 @@ export default class StepButtonContainer extends Component {
                             label={nextStepLabel}
                             stepVariation={1}
                         />
-                    :
-                        null
+                    : null
                 }
                 {
-                    step === maxStep && !isAtTemplatePage ? 
+                    step === maxStep && !isAtTemplatePage ?
                         <SubmitButton
                             disabled={isTemplateSubmitButtonDisabled}
                             label="建立模板"
                             handleTouchTap={handleTemplateSubmit}
                         />
-                    :
-                        null
+                    : null
                 }
                 {
-                    step === maxStep && isAtTemplatePage ? 
+                    step === maxStep && isAtTemplatePage ?
                         <SubmitButton
                             disabled={isLudoSubmitButtonDisabled}
                             label="發佈卡片"
                             handleTouchTap={handleCardSubmit}
                         />
-                    :
-                        null
+                    : null
+                }
+                {
+                    step === maxStep && isAtTemplatePage ?
+                        <SubmitButton
+                            deleteButton
+                            disabled={isTemplateDeleteButtonDisabled}
+                            label="刪除模板"
+                            handleTouchTap={handleTemplateDelete}
+                        />
+                    : null
                 }
             </div>
         );

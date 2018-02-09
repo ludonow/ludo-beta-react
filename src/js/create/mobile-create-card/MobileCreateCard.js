@@ -32,6 +32,7 @@ export default class MobileCreateCard extends Component {
             isAtTemplatePage: false,
             isLudoSubmitButtonDisabled: true,
             isNextStepButtonDisabled: true,
+            isTemplateDeleteButtonDisabled: true,
             isTemplateSubmitButtonDisabled: true,
             step: 0
         };
@@ -43,6 +44,7 @@ export default class MobileCreateCard extends Component {
         this.handleStepChange = this.handleStepChange.bind(this);
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
+        this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
     }
@@ -53,12 +55,19 @@ export default class MobileCreateCard extends Component {
             const { ludo_id } = this.props.params;
             axios.get(`/apis/ludo/${ludo_id}`)
             .then((response) => {
-                this.setState({
-                    isAtTemplatePage: true,
-                    isLudoSubmitButtonDisabled: false,
-                    isNextStepButtonDisabled: false,
-                    ludoCreateForm: response.data.ludo
-                });
+                this.setState(
+                    prevState => ({
+                        isAtTemplatePage: true,
+                        isLudoSubmitButtonDisabled: false,
+                        isNextStepButtonDisabled: false,
+                        isTemplateDeleteButtonDisabled: false,
+                        ludoCreateForm: {
+                            ...prevState.ludoCreateForm,
+                            ...response.data.ludo
+                        },
+                        step: maxStep
+                    })
+                );
             })
             .catch((error) => {
                 if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
@@ -97,7 +106,7 @@ export default class MobileCreateCard extends Component {
                         403: no authority 
                     */
                     if (response.data.status === '200') {
-                        const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                        const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                         getUserBasicData();
                         handleShouldProfileUpdate(true);
                         browserHistory.push(`/ludo/${ludo_id}`);
@@ -256,7 +265,7 @@ export default class MobileCreateCard extends Component {
 
     handleTagDelete(event) {
         const currentTagIndex = Number(event.currentTarget.dataset.id);
-        const { tags } = this.state;
+        const { tags } = this.state.ludoCreateForm;
         const newTags = [
             ...tags.slice(0, currentTagIndex),
             ...tags.slice(currentTagIndex + 1)
@@ -269,6 +278,46 @@ export default class MobileCreateCard extends Component {
                 }
             })
         );
+    }
+
+    handleTemplateDelete(event) {
+        event.preventDefault();
+        /* TODO: Use notification confirming delete ludo */
+        this.setState({
+            isTemplateDeleteButtonDisabled: true
+        });
+        const isSureToDelete = window.confirm('你確定要刪除這個Ludo模板嗎？');
+        // const isSureToDelete = window.confirm('Are you sure to delete this template ludo?');
+        if (isSureToDelete) {
+            axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
+            .then(response => {
+                if (response.data.status == '200') {
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    browserHistory.push('/playground');
+                } else {
+                    if (window.confirm('刪除Ludo模板時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isTemplateDeleteButtonDisabled: false
+                    });
+                }
+            })
+            .catch(error => {
+                if (window.confirm('刪除Ludo模板時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateDeleteButtonDisabled: false
+                });
+            });
+        } else {
+            this.setState({
+                isTemplateDeleteButtonDisabled: false
+            });
+        }
     }
 
     handleTemplateSubmit(event) {
@@ -297,11 +346,10 @@ export default class MobileCreateCard extends Component {
                         403: no authority 
                     */
                     if (response.data.status === '200') {
-                        const { getUserBasicData, handleShouldProfileUpdate, updateCurrentFormValue } = this.props;
+                        const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                         getUserBasicData();
                         handleShouldProfileUpdate(true);
-                        this.props.getFilteredLudoList('stage=0');
-                        browserHistory.push('/playground');
+                        browserHistory.push(`/ludo/${ludo_id}`);
                     } else {
                         if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
@@ -385,6 +433,7 @@ export default class MobileCreateCard extends Component {
             isAtTemplatePage,
             isLudoSubmitButtonDisabled,
             isNextStepButtonDisabled,
+            isTemplateDeleteButtonDisabled,
             isTemplateSubmitButtonDisabled,
             ludoCreateForm,
             step
@@ -421,10 +470,12 @@ export default class MobileCreateCard extends Component {
                 <StepButtonContainer
                     handleCardSubmit={this.handleCardSubmit}
                     handleStepChange={this.handleStepChange}
+                    handleTemplateDelete={this.handleTemplateDelete}
                     handleTemplateSubmit={this.handleTemplateSubmit}
                     isAtTemplatePage={isAtTemplatePage}
                     isLudoSubmitButtonDisabled={isLudoSubmitButtonDisabled}
                     isNextStepButtonDisabled={isNextStepButtonDisabled}
+                    isTemplateDeleteButtonDisabled={isTemplateDeleteButtonDisabled}
                     isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
                     maxStep={maxStep}
                     step={step}
