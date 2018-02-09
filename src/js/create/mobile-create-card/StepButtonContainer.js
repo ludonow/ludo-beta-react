@@ -69,6 +69,7 @@ export default class StepButtonContainer extends Component {
             handleTemplateDelete,
             handleTemplateSubmit,
             isAtTemplatePage,
+            isCreatedByCurrentUser,
             isLudoSubmitButtonDisabled,
             isNextStepButtonDisabled,
             isTemplateDeleteButtonDisabled,
@@ -128,7 +129,7 @@ export default class StepButtonContainer extends Component {
                     : null
                 }
                 {
-                    step === maxStep && isAtTemplatePage ?
+                    step === maxStep && isAtTemplatePage && isCreatedByCurrentUser ?
                         <SubmitButton
                             deleteButton
                             disabled={isTemplateDeleteButtonDisabled}

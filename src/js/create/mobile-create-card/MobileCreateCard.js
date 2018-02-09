@@ -443,6 +443,8 @@ export default class MobileCreateCard extends Component {
             title
         } = ludoCreateForm;
 
+        const isCreatedByCurrentUser = ludoCreateForm.starter_id === this.props.currentUserId;
+
         return (
             <div className="mobile-create-card">
                 <CardTitle title={stepTitles[step]} />
@@ -468,6 +470,7 @@ export default class MobileCreateCard extends Component {
                     handleTemplateDelete={this.handleTemplateDelete}
                     handleTemplateSubmit={this.handleTemplateSubmit}
                     isAtTemplatePage={isAtTemplatePage}
+                    isCreatedByCurrentUser={isCreatedByCurrentUser}
                     isLudoSubmitButtonDisabled={isLudoSubmitButtonDisabled}
                     isNextStepButtonDisabled={isNextStepButtonDisabled}
                     isTemplateDeleteButtonDisabled={isTemplateDeleteButtonDisabled}
