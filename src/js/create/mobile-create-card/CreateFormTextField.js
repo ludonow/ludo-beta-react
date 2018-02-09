@@ -61,7 +61,7 @@ export default class CreateFormTextField extends Component {
             <div className="mobile-create-form">
                 <TextField
                     fullWidth
-                    hintText="標題名稱"
+                    hintText="標題名稱(必填)"
                     onChange={this.handleTitleChange}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
@@ -69,7 +69,7 @@ export default class CreateFormTextField extends Component {
                 />
                 <TextField
                     fullWidth
-                    hintText="簡介"
+                    hintText="簡介(必填)"
                     multiLine
                     onChange={this.handleIntroductionChange}
                     underlineFocusStyle={styles.underlineStyle}
