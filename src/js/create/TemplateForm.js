@@ -267,7 +267,7 @@ export default class TemplateForm extends React.Component {
         if (isSureToDelete) {
             axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
             .then(response => {
-                if(response.data.status == '200') {
+                if (response.data.status == '200') {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                     getUserBasicData();
                     handleShouldProfileUpdate(true);
