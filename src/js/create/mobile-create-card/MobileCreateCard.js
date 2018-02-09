@@ -20,7 +20,7 @@ export default class MobileCreateCard extends Component {
         super(props);
         this.state = {
             ludoCreateForm: {
-                category_id: 0,
+                category_id: 1,
                 checkpoint: [3],
                 duration: 3,
                 interval: 1,
@@ -83,11 +83,7 @@ export default class MobileCreateCard extends Component {
 
     handleCardSubmit(event) {
         event.preventDefault();
-        const { category_id } = this.state.ludoCreateForm;
-        const ludoCreateForm = {
-            ...this.state.ludoCreateForm,
-            category_id: category_id + 1
-        };
+        const { ludoCreateForm } = this.state;
         this.setState({
             isLudoSubmitButtonDisabled: true
         });
@@ -161,7 +157,7 @@ export default class MobileCreateCard extends Component {
             (prevState) => ({
                 ludoCreateForm: {
                     ...prevState.ludoCreateForm,
-                    category_id: value
+                    category_id: value+1
                 }
             })
         );
@@ -322,10 +318,9 @@ export default class MobileCreateCard extends Component {
 
     handleTemplateSubmit(event) {
         event.preventDefault();
-        const { category_id } = this.state.ludoCreateForm;
+        const { ludoCreateForm } = this.state;
         const ludoTemplateForm = {
-            ...this.state.ludoCreateForm,
-            category_id: category_id + 1,
+            ...ludoCreateForm,
             type: 'blank',
         };
         this.setState({
