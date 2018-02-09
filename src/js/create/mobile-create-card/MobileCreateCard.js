@@ -365,6 +365,7 @@ export default class MobileCreateCard extends Component {
     render() {
         const {
             isAtTemplatePage,
+            isLudoSubmitButtonDisabled,
             isNextStepButtonDisabled,
             isTemplateSubmitButtonDisabled,
             ludoCreateForm,
@@ -404,6 +405,7 @@ export default class MobileCreateCard extends Component {
                     handleStepChange={this.handleStepChange}
                     handleTemplateSubmit={this.handleTemplateSubmit}
                     isAtTemplatePage={isAtTemplatePage}
+                    isLudoSubmitButtonDisabled={isLudoSubmitButtonDisabled}
                     isNextStepButtonDisabled={isNextStepButtonDisabled}
                     isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
                     maxStep={maxStep}

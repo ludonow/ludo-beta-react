@@ -60,6 +60,7 @@ export default class StepButtonContainer extends Component {
             handleStepChange,
             handleTemplateSubmit,
             isAtTemplatePage,
+            isLudoSubmitButtonDisabled,
             isNextStepButtonDisabled,
             isTemplateSubmitButtonDisabled,
             maxStep,
@@ -113,6 +114,7 @@ export default class StepButtonContainer extends Component {
                 {
                     step === maxStep && isAtTemplatePage ? 
                         <SubmitButton
+                            disabled={isLudoSubmitButtonDisabled}
                             label="發佈卡片"
                             handleTouchTap={handleCardSubmit}
                         />
