@@ -13,10 +13,14 @@ class StepButton extends Component {
     }
 
     render() {
-        const { label } = this.props;
+        const {
+            disabled,
+            label
+        } = this.props;
         return (
             <button
-                className="ludo-button"
+                className="ludo-button disabled-button"
+                disabled={disabled}
                 onTouchTap={this.handleTouchTap}
             >
                 {label}
@@ -26,11 +30,13 @@ class StepButton extends Component {
 }
 
 const SubmitButton = ({
+    disabled,
     handleTouchTap,
     label
 }) => (
     <button
-        className="ludo-button"
+        className="ludo-button disabled-button"
+        disabled={disabled}
         onTouchTap={handleTouchTap}
     >
         {label}
@@ -54,6 +60,8 @@ export default class StepButtonContainer extends Component {
             handleStepChange,
             handleTemplateSubmit,
             isAtTemplatePage,
+            isNextStepButtonDisabled,
+            isTemplateSubmitButtonDisabled,
             maxStep,
             step
         } = this.props;
@@ -84,6 +92,7 @@ export default class StepButtonContainer extends Component {
                 {
                     step <= (maxStep - 1) ? 
                         <StepButton
+                            disabled={isNextStepButtonDisabled}
                             handleStepChange={handleStepChange}
                             label={nextStepLabel}
                             stepVariation={1}
@@ -94,6 +103,7 @@ export default class StepButtonContainer extends Component {
                 {
                     step === maxStep && !isAtTemplatePage ? 
                         <SubmitButton
+                            disabled={isTemplateSubmitButtonDisabled}
                             label="建立模板"
                             handleTouchTap={handleTemplateSubmit}
                         />

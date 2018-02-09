@@ -56,8 +56,6 @@ export default class CreateFormTextField extends Component {
         return (
             <div className="mobile-create-form">
                 <TextField
-                    // errorStyle={styles.errorStyle}
-                    // errorText="必填"
                     fullWidth
                     hintText="標題名稱"
                     onChange={this.handleTitleChange}
@@ -66,8 +64,6 @@ export default class CreateFormTextField extends Component {
                     value={title}
                 />
                 <TextField
-                    // errorStyle={styles.errorStyle}
-                    // errorText="必填"
                     fullWidth
                     hintText="簡介"
                     multiLine
@@ -77,8 +73,6 @@ export default class CreateFormTextField extends Component {
                     value={introduction}
                 />
                 <TextField
-                    // errorStyle={styles.errorStyle}
-                    // errorText="必填"
                     fullWidth
                     hintText="標籤"
                     onChange={this.handleTagInputChange}

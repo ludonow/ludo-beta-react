@@ -30,6 +30,9 @@ export default class MobileCreateCard extends Component {
                 title: ''
             },
             isAtTemplatePage: false,
+            isLudoSubmitButtonDisabled: true,
+            isNextStepButtonDisabled: true,
+            isTemplateSubmitButtonDisabled: true,
             step: 0
         };
         this.handleCardSubmit = this.handleCardSubmit.bind(this);
@@ -52,12 +55,15 @@ export default class MobileCreateCard extends Component {
             .then((response) => {
                 this.setState({
                     isAtTemplatePage: true,
+                    isLudoSubmitButtonDisabled: false,
+                    isNextStepButtonDisabled: false,
                     ludoCreateForm: response.data.ludo
                 });
             })
             .catch((error) => {
-                window.alert('取得 Ludo 時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error(`MobileCreateCard componentDidMount get ludo ${ludo_id} error: `, error);
+                if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             });
         }
     }
@@ -68,26 +74,14 @@ export default class MobileCreateCard extends Component {
 
     handleCardSubmit(event) {
         event.preventDefault();
-        const {
-            category_id,
-            checkpoint,
-            duration,
-            interval,
-            introduction,
-            marbles,
-            tags,
-            title
-        } = this.state.ludoCreateForm;
+        const { category_id } = this.state.ludoCreateForm;
         const ludoCreateForm = {
-            category_id: category_id + 1,
-            checkpoint,
-            duration,
-            interval,
-            introduction,
-            marbles,
-            tags,
-            title
+            ...this.state.ludoCreateForm,
+            category_id: category_id + 1
         };
+        this.setState({
+            isLudoSubmitButtonDisabled: true
+        });
         axios.post('/apis/ludo', ludoCreateForm)
         .then((response) => {
             if (response.data.status === '200') {
@@ -108,29 +102,39 @@ export default class MobileCreateCard extends Component {
                         handleShouldProfileUpdate(true);
                         browserHistory.push(`/ludo/${ludo_id}`);
                     } else {
-                        window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
-                        console.error('get after post template response from server: ', response);
-                        console.error('get after post template message from server: ', response.data.message);
+                        if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isLudoSubmitButtonDisabled: false
+                        });
                     }
                 })
                 .catch((error) => {
-                    window.alert('建立Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('get after post template error', error);
+                    if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
                 });
             } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                 window.alert('燃料或彈珠數不足: ' + response.data.message);
-                console.error('post template message from server: ', response.data.message + response.data.status);
             } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
                 window.alert('有部分欄位為空白');
-                console.error('post template message from server: ', response.data.message + response.data.status);
-            }  else {
-                window.alert('建立Ludo模板時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error('post template message from server: ', response.data.message);
+            } else {
+                if (window.confirm('建立Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             }
+            this.setState({
+                isLudoSubmitButtonDisabled: false
+            });
         })
         .catch((error) => {
-            window.alert('建立Ludo模板時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-            console.error('post template error', error);
+            if (window.confirm('建立Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isLudoSubmitButtonDisabled: false
+            });
         });
     }
 
@@ -147,17 +151,19 @@ export default class MobileCreateCard extends Component {
 
     handleCheckPointChange(event) {
         const interval = event.currentTarget.value;
-        const { duration } = this.state;
-        const checkpoint = Array.from(Array(duration+1).keys()).slice(1);
+        const { duration } = this.state.ludoCreateForm;
+        const numbersFromZeroToDuration = duration + 1;
+        const numberListFromZeroToDuration = [...Array(numbersFromZeroToDuration).keys()];
+        const checkpointList = numberListFromZeroToDuration.slice(1);
         const minCheckPoint = duration % interval;
-        const newCheckpoint = checkpoint.filter((element) => {
+        const newCheckpointList = checkpointList.filter((element) => {
             return (element - minCheckPoint) % interval === 0;
         });
         this.setState(
             (prevState) => ({
                 ludoCreateForm: {
                     ...prevState.ludoCreateForm,
-                    checkpoint: newCheckpoint,
+                    checkpoint: newCheckpointList,
                     interval
                 },
             })
@@ -183,14 +189,34 @@ export default class MobileCreateCard extends Component {
     }
 
     handleIntroductionChange(introduction) {
-        this.setState(
-            (prevState) => ({
-                ludoCreateForm: {
-                    ...prevState.ludoCreateForm,
-                    introduction
-                }
-            })
-        );
+        if (!introduction) {
+            this.setState(
+                prevState => ({
+                    isNextStepButtonDisabled: true,
+                    isTemplateSubmitButtonDisabled: true,
+                    ludoCreateForm: {
+                        ...prevState.ludoCreateForm,
+                        introduction
+                    }
+                })
+            );
+        } else {
+            this.setState(
+                prevState => ({
+                    ludoCreateForm: {
+                        ...prevState.ludoCreateForm,
+                        introduction
+                    }
+                })
+            );
+            const { title } = this.state.ludoCreateForm;
+            if (title) {
+                this.setState({
+                    isNextStepButtonDisabled: false,
+                    isTemplateSubmitButtonDisabled: false,
+                });
+            }
+        }
     }
 
     handleStepChange(variation) {
@@ -238,27 +264,15 @@ export default class MobileCreateCard extends Component {
 
     handleTemplateSubmit(event) {
         event.preventDefault();
-        const {
-            category_id,
-            checkpoint,
-            duration,
-            interval,
-            introduction,
-            marbles,
-            tags,
-            title
-        } = this.state.ludoCreateForm;
+        const { category_id } = this.state.ludoCreateForm;
         const ludoTemplateForm = {
+            ...this.state.ludoCreateForm,
             category_id: category_id + 1,
-            checkpoint,
-            duration,
-            interval,
-            introduction,
-            marbles,
-            tags,
-            title,
-            type: 'blank'
+            type: 'blank',
         };
+        this.setState({
+            isTemplateSubmitButtonDisabled: true
+        });
         axios.post('/apis/ludo', ludoTemplateForm)
         .then((response) => {
             if (response.data.status === '200') {
@@ -280,47 +294,79 @@ export default class MobileCreateCard extends Component {
                         this.props.getFilteredLudoList('stage=0');
                         browserHistory.push('/playground');
                     } else {
-                        window.alert('取得Ludo資訊時發生錯誤，請重新整理一次；若問題還是發生，請聯絡開發團隊');
-                        console.error('get after post template response from server: ', response);
-                        console.error('get after post template message from server: ', response.data.message);
+                        if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isTemplateSubmitButtonDisabled: false
+                        });
                     }
                 })
                 .catch((error) => {
-                    window.alert('建立Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('get after post template error', error);
+                    if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
                 });
             } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                 window.alert('燃料或彈珠數不足: ' + response.data.message);
-                console.error('post template message from server: ', response.data.message + response.data.status);
             } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
                 window.alert('有部分欄位為空白');
-                console.error('post template message from server: ', response.data.message + response.data.status);
             } else {
-                window.alert('建立Ludo模板時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error('post template message from server: ', response.data.message);
+                if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             }
+            this.setState({
+                isTemplateSubmitButtonDisabled: false
+            });
         })
         .catch((error) => {
-            window.alert('建立Ludo模板時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-            console.error('post template error', error);
+            if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isTemplateSubmitButtonDisabled: false
+            });
         });
     }
 
     handleTitleChange(title) {
-        this.setState(
-            (prevState) => ({
-                ludoCreateForm: {
-                    ...prevState.ludoCreateForm,
-                    title
-                }
-            })
-        );
+        if (!title) {
+            this.setState(
+                prevState => ({
+                    isNextStepButtonDisabled: true,
+                    isTemplateSubmitButtonDisabled: true,
+                    ludoCreateForm: {
+                        ...prevState.ludoCreateForm,
+                        title
+                    }
+                })
+            );
+        } else {
+            this.setState(
+                prevState => ({
+                    ludoCreateForm: {
+                        ...prevState.ludoCreateForm,
+                        title
+                    }
+                })
+            );
+            const { introduction } = this.state.ludoCreateForm;
+            if (introduction) {
+                this.setState({
+                    isNextStepButtonDisabled: false,
+                    isTemplateSubmitButtonDisabled: false,
+                });
+            }
+        }
     }
 
     /* components/_mobile-create.scss */
     render() {
         const {
             isAtTemplatePage,
+            isNextStepButtonDisabled,
+            isTemplateSubmitButtonDisabled,
             ludoCreateForm,
             step
         } = this.state;
@@ -358,6 +404,8 @@ export default class MobileCreateCard extends Component {
                     handleStepChange={this.handleStepChange}
                     handleTemplateSubmit={this.handleTemplateSubmit}
                     isAtTemplatePage={isAtTemplatePage}
+                    isNextStepButtonDisabled={isNextStepButtonDisabled}
+                    isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
                     maxStep={maxStep}
                     step={step}
                 />
