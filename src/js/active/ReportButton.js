@@ -14,6 +14,8 @@ const Button = styled.button`
     border-top: none;
     border-width: 2px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    font-family: "Exo", "Microsoft JhengHei";
+    font-size: 20px;
     height: 41px;
     justify-content: center;
     margin: 0 auto;
