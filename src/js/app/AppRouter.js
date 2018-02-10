@@ -73,23 +73,21 @@ const ludoRedirect = (nextState, replace, callback) => {
     const { ludo_id }= nextState.params;
     axios.get(`/apis/ludo/${ludo_id}`)
     .then((response) => {
-        if(response.data.status === '200') {
+        if (response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
             router_currentFormValue = response.data.ludo;
             router_currentLudoId = response.data.ludo.ludo_id;
             callback();
         } else {
-            window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-            console.error('AppRouter ludoRedirect getCurrentLudoData else response from server: ', response);
-            console.error('AppRouter ludoRedirect getCurrentLudoData else message from server: ', response.data.message);
-            if (response.data.err) {
-                console.error('AppRouter ludoRedirect getCurrentLudoData else error from server: ', response.data.err);
+            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
             }
         }
     })
     .catch((error) => {
-        window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-        console.error('AppRouter ludoRedirect getCurrentLudoData error', error);
+        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            window.open("https://www.facebook.com/messages/t/ludonow");
+        }
     });
 };
 
@@ -109,20 +107,17 @@ const ludoEditRedirect = (nextState, replace, callback) => {
                 callback();
             }
         } else {
-            window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-            console.error('AppRouter ludoRedirect getCurrentLudoData else response from server: ', response);
-            console.error('AppRouter ludoRedirect getCurrentLudoData else message from server: ', response.data.message);
-            if (response.data.err) {
-                console.error('AppRouter ludoRedirect getCurrentLudoData else error from server: ', response.data.err);
+            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
             }
         }
     })
     .catch((error) => {
-        window.alert('取得Ludo時發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-        console.error('AppRouter ludoRedirect getCurrentLudoData error', error);
+        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            window.open("https://www.facebook.com/messages/t/ludonow");
+        }
     });
 };
-
 
 /* TODO: find out usage of getComponent callback */
 export default class AppRouter extends React.Component {
@@ -130,57 +125,99 @@ export default class AppRouter extends React.Component {
         return (
             <div>
                 <Router history={browserHistory}>
-                    <Route path="/" component={App}>
-                        <IndexRedirect to="playground"></IndexRedirect>
-                        <Route path="create" component={Create} onEnter={isLoggedIn}></Route>
-                        <Route path="friend" component={Friend} onEnter={isLoggedIn}></Route>
-                        <Route path="invite/:friend_id" component={Invite} onEnter={isLoggedIn}></Route>
-                        <Route path="login" component={LogIn}></Route>
+                    <Route
+                        component={App}
+                        path="/"
+                    >
+                        <IndexRedirect to="playground" />
                         <Route
-                            path="ludo/:ludo_id"
+                            component={Playground}
+                            path="cardList(?:filterCondition)"
+                        />
+                        <Route
+                            component={Create}
+                            onEnter={isLoggedIn}
+                            path="create"
+                        />
+                        <Route
+                            component={Friend}
+                            onEnter={isLoggedIn}
+                            path="friend"
+                        />
+                        <Route
+                            component={Invite}
+                            onEnter={isLoggedIn}
+                            path="invite/:friend_id"
+                        />
+                        <Route
+                            component={LogIn}
+                            path="login"
+                        />
+                        <Route
                             getComponent={(nextState, cb) => {
                                 const Component = ludoPageArray[router_ludoPageIndex];
-                                cb(null, props => 
-                                    <Component 
-                                        {...props} 
-                                        router_currentFormValue={router_currentFormValue}
-                                        router_currentLudoId={router_currentLudoId}
-                                    />);
+                                cb(
+                                    null,
+                                    props =>
+                                        <Component
+                                            {...props}
+                                            router_currentFormValue={router_currentFormValue}
+                                            router_currentLudoId={router_currentLudoId}
+                                        />
+                                );
                             }} 
                             onEnter={ludoRedirect}
-                        >
-                        </Route>
+                            path="ludo/:ludo_id"
+                        />
                         <Route
                             getComponent={(nextState, cb) => {
-                                cb(null, props => 
-                                    <MobileReportForm 
-                                        {...props} 
-                                        router_currentFormValue={router_currentFormValue}
-                                        router_currentLudoId={router_currentLudoId}
-                                    />);
+                                cb(
+                                    null,
+                                    props =>
+                                        <MobileReportForm
+                                            {...props}
+                                            router_currentFormValue={router_currentFormValue}
+                                            router_currentLudoId={router_currentLudoId}
+                                        />
+                                );
                             }}
-                            path="ludo/:ludo_id/mobile-report-form"
                             onEnter={ludoRedirect}
-                        >
-                        </Route>
+                            path="ludo/:ludo_id/mobile-report-form"
+                        />
                         <Route
-                            path="ludo-edit/:ludo_id"
                             getComponent={(nextState, cb) => {
                                 const Component = ludoPageArrayForEdit[router_ludoPageIndex];
-                                cb(null, props => 
-                                    <Component 
-                                        {...props}
-                                        router_currentFormValue={router_currentFormValue}
-                                        router_currentLudoId={router_currentLudoId}
-                                    />);
+                                cb(
+                                    null,
+                                    props =>
+                                        <Component
+                                            {...props}
+                                            router_currentFormValue={router_currentFormValue}
+                                            router_currentLudoId={router_currentLudoId}
+                                        />
+                                );
                             }} 
                             onEnter={[isLoggedIn, ludoEditRedirect]}
-                            OnLeave={ludoRedirect}
-                        >
-                        </Route>
-                        <Route path="playground" component={Playground}></Route>
-                        <Route path="profile(/:userId)" component={Profile} onEnter={isLoggedIn}></Route>
-                        <Route path="signup" component={SignUp}></Route>
+                            onLeave={ludoRedirect}
+                            path="ludo-edit/:ludo_id"
+                        />
+                        <Route
+                            component={Playground}
+                            path="playground"
+                        />
+                        <Route
+                            component={Profile}
+                            onEnter={isLoggedIn}
+                            path="profile(/:userId)"
+                        />
+                        <Route
+                            component={SignUp}
+                            path="signup"
+                        />
+                        <Route
+                            component={Template}
+                            path="template/:templateId"
+                        />
                     </Route>
                 </Router>
                 <MediaQuery minDeviceWidth={768}>
