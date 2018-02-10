@@ -87,69 +87,79 @@ export default class MobileCreateCard extends Component {
         this.setState({
             isLudoSubmitButtonDisabled: true
         });
-        axios.post('/apis/ludo', ludoCreateForm)
-        .then((response) => {
-            if (response.data.status === '200') {
-                const { ludo_id } = response.data;
-                /* get ludo information after create ludo post */
-                axios.get(`/apis/ludo/${ludo_id}`)
-                .then((response) => {
-                    /*
-                        response.data.status
-                        200: everything's fine;
-                        400: user's data issue;
-                        401: no login;
-                        403: no authority 
-                    */
-                    if (response.data.status === '200') {
-                        const { getUserBasicData, handleShouldProfileUpdate } = this.props;
-                        getUserBasicData();
-                        handleShouldProfileUpdate(true);
-                        browserHistory.push(`/ludo/${ludo_id}`);
-                    } else {
-                        if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+        if (!this.props.currentUserId) {
+            if (window.confirm('登入後即可發佈卡片！點選「確定」後進入登入頁面。')) {
+                browserHistory.push('/login');
+            } else {
+                this.setState({
+                    isLudoSubmitButtonDisabled: false
+                });
+            }
+        } else {
+            axios.post('/apis/ludo', ludoCreateForm)
+            .then((response) => {
+                if (response.data.status === '200') {
+                    const { ludo_id } = response.data;
+                    /* get ludo information after create ludo post */
+                    axios.get(`/apis/ludo/${ludo_id}`)
+                    .then((response) => {
+                        /*
+                            response.data.status
+                            200: everything's fine;
+                            400: user's data issue;
+                            401: no login;
+                            403: no authority 
+                        */
+                        if (response.data.status === '200') {
+                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            getUserBasicData();
+                            handleShouldProfileUpdate(true);
+                            browserHistory.push(`/ludo/${ludo_id}`);
+                        } else {
+                            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                                window.open("https://www.facebook.com/messages/t/ludonow");
+                            }
+                            this.setState({
+                                isLudoSubmitButtonDisabled: false
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
                         this.setState({
                             isLudoSubmitButtonDisabled: false
                         });
-                    }
-                })
-                .catch((error) => {
-                    if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    });
+                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                    window.alert('燃料或彈珠數不足: ' + response.data.message);
+                    this.setState({
+                        isLudoSubmitButtonDisabled: false
+                    });
+                } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                    window.alert('有部分欄位為空白');
+                    this.setState({
+                        isLudoSubmitButtonDisabled: false
+                    });
+                } else {
+                    if (window.confirm('建立Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
                     this.setState({
                         isLudoSubmitButtonDisabled: false
                     });
-                });
-            } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
-                window.alert('燃料或彈珠數不足: ' + response.data.message);
-                this.setState({
-                    isLudoSubmitButtonDisabled: false
-                });
-            } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                window.alert('有部分欄位為空白');
-                this.setState({
-                    isLudoSubmitButtonDisabled: false
-                });
-            } else {
-                if (window.confirm('建立Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('建立Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
                 this.setState({
                     isLudoSubmitButtonDisabled: false
                 });
-            }
-        })
-        .catch((error) => {
-            if (window.confirm('建立Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-            this.setState({
-                isLudoSubmitButtonDisabled: false
             });
-        });
+        }
     }
 
     handleCategoryChange(event, index, value) {
