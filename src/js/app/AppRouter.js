@@ -54,13 +54,15 @@ const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
     axios.get('/apis/user')
     .then((response) => {
-        if(response.data.status != '200') {
-            replace('/login');
+        if (response.data.status != '200') {
+            if (window.confirm('登入後才可執行此動作！點選「確定」後進入登入頁面。')) {
+                replace('/login');
+            }
+        } else {
+            callback();
         }
-        callback();
     })
     .catch((error) => {
-        console.error('AppRouter isloggedin error');
         callback(error);
     })
 };
