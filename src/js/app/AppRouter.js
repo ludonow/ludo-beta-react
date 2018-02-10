@@ -55,7 +55,7 @@ const isLoggedIn = (nextState, replace, callback) => {
     axios.get('/apis/user')
     .then((response) => {
         if (response.data.status != '200') {
-            if (window.confirm('登入後才可執行此動作！點選「確定」後進入登入頁面。')) {
+            if (window.confirm('登入後即可使用該功能！點選「確定」後進入登入頁面。')) {
                 replace('/login');
             }
         } else {
