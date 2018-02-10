@@ -7,13 +7,21 @@ import CardTitle from './CardTitle';
 import MobileCreateForm from './MobileCreateForm';
 import StepButtonContainer from './StepButtonContainer';
 
-const stepTitles = [
+const ludoStepTitles = [
     '創建卡片',
     '遊戲條件',
     '種類選擇',
     '卡片預覽'
 ];
-const maxStep = stepTitles.length - 1;
+
+const templateStepTitles = [
+    '創建模板',
+    '遊戲條件',
+    '種類選擇',
+    '模板預覽'
+];
+
+const maxStep = ludoStepTitles.length - 1;
 
 export default class MobileCreateCard extends Component {
     constructor(props) {
@@ -453,11 +461,14 @@ export default class MobileCreateCard extends Component {
             title
         } = ludoCreateForm;
 
+        const ludoId = this.props.params.ludo_id;
+        const cardTitle = ludoId ? ludoStepTitles[step] : templateStepTitles[step];
+
         const isCreatedByCurrentUser = ludoCreateForm.starter_id === this.props.currentUserId;
 
         return (
             <div className="mobile-create-card">
-                <CardTitle title={stepTitles[step]} />
+                <CardTitle title={cardTitle} />
                 <MobileCreateForm
                     categoryId={category_id}
                     duration={duration}
