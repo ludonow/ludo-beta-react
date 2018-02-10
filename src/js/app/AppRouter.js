@@ -20,7 +20,7 @@ import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 import SignUp from './SignUp';
 import Template from '../create/Template';
-
+import LoadingPage from '../LoadingPage';
 /*
     auth        statement：
     0           not login
@@ -47,6 +47,7 @@ const ludoPageArray = [
     Template,
     Template
 ];
+
 // TODO: modify auth 6 to ActiveForBystander
 const ludoPageArrayForEdit = ludoPageArray.slice(0, 1).concat([LudoEdit], ludoPageArray.slice(2));
 
@@ -54,13 +55,15 @@ const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
     axios.get('/apis/user')
     .then((response) => {
-        if(response.data.status != '200') {
-            replace('/login');
+        if (response.data.status != '200') {
+            if (window.confirm('登入後即可使用該功能！點選「確定」後進入登入頁面。')) {
+                browserHistory.push('/login');
+            }
+        } else {
+            callback();
         }
-        callback();
     })
     .catch((error) => {
-        console.error('AppRouter isloggedin error');
         callback(error);
     })
 };
@@ -95,8 +98,8 @@ const ludoEditRedirect = (nextState, replace, callback) => {
     const { ludo_id }= nextState.params;
     axios.get(`/apis/ludo/${ludo_id}`)
     .then((response) => {
-        if(response.data.status === '200') {
-            if(response.data.auth != 1) {
+        if (response.data.status === '200') {
+            if (response.data.auth != 1) {
                 /* TODO: Figure out how to use same url redirect to other component */
                 callback();
                 browserHistory.push(`/ludo/${ludo_id}`);
@@ -165,7 +168,7 @@ export default class AppRouter extends React.Component {
                                             router_currentLudoId={router_currentLudoId}
                                         />
                                 );
-                            }} 
+                            }}
                             onEnter={ludoRedirect}
                             path="ludo/:ludo_id"
                         />

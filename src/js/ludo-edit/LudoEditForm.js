@@ -232,7 +232,7 @@ export default class LudoEditForm extends React.Component {
             .then((response) => {
                 if (response.data.status === '200') {
                     this.props.handleShouldUserBasicDataUpdate(true);
-                    browserHistory.push(`/ludo/${ludo_id}`);
+                    browserHistory.push(`/loading/${ludo_id}`);
                 } else {
                     this.setState({
                         isModifyButtonClickable: true

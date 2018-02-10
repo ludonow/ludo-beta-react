@@ -4,18 +4,17 @@ import RcSlider from 'rc-slider';
 
 const maxDuration = 14;
 
+// override material ui style
 const styles = {
     hidden: {
         display: 'none'
-    },
-    inputStyle: {
     },
     labelStyle: {
         border: '1px solid #FFC645',
         borderRadius: '20px',
         display: 'flex',
-        fontWeight: 'bold',
         fontSize: '1rem',
+        fontWeight: 'bold',
         margin: '5px 0',
         padding: '8px 35px',
         textAlign: 'center',
@@ -23,6 +22,7 @@ const styles = {
     }
 };
 
+// child components
 const DaySlider = ({
     duration,
     handleDurationChange
@@ -68,27 +68,24 @@ export default class DayForm extends Component {
                 />
                 <RadioButtonGroup
                     className="radio-button-group"
-                    defaultSelected={interval || 1}
+                    defaultSelected={Number(interval) ? Number(interval) : 1}
                     name="frequency"
                     onChange={handleCheckPointChange}
                 >
                     <RadioButton
                         iconStyle={styles.hidden}
-                        inputStyle={styles.inputStyle}
                         label="每一天回報"
                         labelStyle={styles.labelStyle}
                         value={1}
                     />
                     <RadioButton
                         iconStyle={styles.hidden}
-                        inputStyle={styles.inputStyle}
                         label="每兩天回報"
                         labelStyle={styles.labelStyle}
                         value={2}
                     />
                     <RadioButton
                         iconStyle={styles.hidden}
-                        inputStyle={styles.inputStyle}
                         label="每三天回報"
                         labelStyle={styles.labelStyle}
                         value={3}

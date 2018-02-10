@@ -11,71 +11,103 @@ import CardContent from '../components/CardContent';
 const userPhotoUrl = '../../images/animals/bat.png';
 
 const CardContentTab = styled.div`
-    display: flex;
     align-items: center;
-    justify-content: center;
-    height: 100%;
+    display: flex;
     font-size: 0.8rem;
+    height: 100%;
+    justify-content: center;
 `;
 
 const DarkBackGround = styled.div`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
     background: rgba(0, 0, 0, .3);
-    z-index: -1;
+    height: 100vh;
+    position: fixed;
     visibility: ${props => props.display ? 'visible' : 'hidden'};
+    width: 100vw;
+    z-index: -1;
 `;
 
-const JoinButton = styled.div`
-    display: flex;
-    justify-content: center;
+const StyledSubmitButton = styled.button`
     align-items: center;
-    width: 136px;
-    height: 41px;
     background: #ff6060;
     background-size: cover;
-    margin: 0 auto;
-    border-top: none;
-    border-right: none;
     border-left: none;
+    border-right: none;
     border-radius: 50px;
+    border-top: none;
     border-width: 2px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    cursor: pointer;
     color: white;
+    cursor: pointer;
+    display: flex;
+    font-family: "Exo", "Microsoft JhengHei";
+    font-size: 20px;
+    height: 41px;
+    justify-content: center;
+    margin: 0 auto;
+    width: 136px;
 
     &:disabled {
-        cursor: not-allowed;
         background-color: rgb(240, 240, 240);
         border: none;
+        cursor: not-allowed;
     }
 
     & > a {
-        text-decoration: none;
-        font-size: 20px;
         color: white;
+        font-size: 20px;
+        text-decoration: none;
     }
 `;
 
-const JoinButtonContainer = styled.div`
-    position: fixed;
+const SubmitButtonWrapper = styled.div`
     bottom: 0;
-    z-index: 2;
-    width: 100%;
-    text-align: center;
     padding: 0.8rem 0;
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    z-index: 2;
 `;
 
 const TextCenter = styled.div`
-    text-align: center;
     color: white;
+    text-align: center;
 `;
+
+// child components
+const SubmitButton = ({
+    handleDeleteClick,
+    handleJoinClick,
+    isCurrentUserLudoCreator,
+    isDeleteButtonDisabled,
+    isJoinButtonDisabled
+}) => (
+    <SubmitButtonWrapper>
+        {
+            isCurrentUserLudoCreator ?
+                <StyledSubmitButton
+                    disabled={isDeleteButtonDisabled}
+                    onClick={handleDeleteClick}
+                >
+                    刪除戰局
+                </StyledSubmitButton>
+            :
+                <StyledSubmitButton
+                    disabled={isJoinButtonDisabled}
+                    onClick={handleJoinClick}
+                >
+                    加入戰局
+                </StyledSubmitButton>
+        }
+    </SubmitButtonWrapper>
+);
 
 export default class MobileOpenedLudo extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isDeleteButtonDisabled: false,
+            isJoinButtonDisabled: false,
             isShowingDarkBackGround: true
         };
         this.handleCardContentTabClick = this.handleCardContentTabClick.bind(this);
@@ -101,74 +133,68 @@ export default class MobileOpenedLudo extends Component {
 
     handleDeleteClick(event) {
         event.preventDefault();
-        // const isSureToDelete = window.confirm('Are you sure to join?');
         const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
         if (isSureToDelete) {
+            this.setState({
+                isDeleteButtonDisabled: true
+            });
             axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
             .then(response => {
-                if(response.data.status == '200') {
+                if (response.data.status == '200') {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                     getUserBasicData();
                     handleShouldProfileUpdate(true);
                     browserHistory.push('/playground');
                 } else {
-                    window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('OpenedStarterForm delete else response from server: ', response);
-                    console.error('OpenedStarterForm delete else message from server: ', response.data.message);
+                    if (window.confirm('刪除Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
                     this.setState({
-                        isDeleteButtonClickable: true
+                        isDeleteButtonDisabled: false
                     });
                 }
             })
             .catch(error => {
-                window.alert('刪除Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error('OpenedStarterForm delete error', error);
+                if (window.confirm('刪除Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
                 this.setState({
-                    isDeleteButtonClickable: true
+                    isDeleteButtonDisabled: false
                 });
             });
         } else {
             this.setState({
-                isDeleteButtonClickable: true
+                isDeleteButtonDisabled: false
             });
         }
     }
 
     handleJoinClick(event) {
         event.preventDefault();
-        /* TODO: Use notification confirming join */
-        // const isSureToJoin = window.confirm('Are you sure to join?');
-        const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
-        if (isSureToJoin) {
-            const { ludo_id } = this.props.params;
-            const currentFormValue = this.props.router_currentFormValue;
-            const joinLudoPutbody = {
-                'duration': currentFormValue.duration,
-                'marbles': currentFormValue.marbles,
-                'stage': currentFormValue.stage,
-                'type': 'match'
-            };
-            axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
-            .then(response => {
-                if (response.data.status === '200') {
-                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
-                    getUserBasicData();
-                    handleShouldProfileUpdate(true);
-                    /* TODO: Figure out how to use same url redirect to other component */
-                    browserHistory.push('/playground');
-                    browserHistory.push(`/ludo/${ludo_id}`);
-                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
-                    window.alert('你的燃料用完囉！');
-                } else {
-                    window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('MobileOpenedLudo join else response from server: ', response);
-                    console.error('MobileOpenedLudo join else message from server: ', response.data.message);
-                }
-            })
-            .catch(error => {
-                window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error('MobileOpenedLudo join put error', error);
-            });
+        if (!this.props.currentUserId) {
+            if (window.confirm('登入後即可加入此卡片！點選「確定」後進入登入頁面。')) {
+                browserHistory.push('/login');
+            }
+        } else {
+            /* TODO: Use notification confirming join */
+            const isSureToJoin = window.confirm('你確定要加入此Ludo卡片嗎？');
+            if (isSureToJoin) {
+                this.setState({
+                    isJoinButtonDisabled: true
+                });
+                const { ludo_id } = this.props.params;
+                const currentFormValue = this.props.router_currentFormValue;
+                const joinLudoPutbody = {
+                    'duration': currentFormValue.duration,
+                    'marbles': currentFormValue.marbles,
+                    'stage': currentFormValue.stage,
+                    'type': 'match'
+                };
+                browserHistory.push({
+                    pathname:`/loading/${ludo_id}`,
+                    state: joinLudoPutbody,
+                });
+            }
         }
     }
 
@@ -186,9 +212,9 @@ export default class MobileOpenedLudo extends Component {
             handleShouldReportUpdate,
             params,
             router_currentFormValue,
-            starter,
             userBasicData
         } = this.props;
+
         const {
             comments_nick,
             introduction,
@@ -196,11 +222,18 @@ export default class MobileOpenedLudo extends Component {
             tags,
             title
         } = router_currentFormValue;
+
+        const {
+            isDeleteButtonDisabled,
+            isJoinButtonDisabled,
+            isShowingDarkBackGround
+        } = this.state;
+
+        const isCurrentUserLudoCreator = currentUserId === starter_id ? true : false;
+
         return (
             <div>
-                <DarkBackGround
-                    display={this.state.isShowingDarkBackGround}
-                />
+                <DarkBackGround display={isShowingDarkBackGround} />
                 <Tabs defaultIndex={1}>
                     <TabList className="react-tabs__tab-list mobile-avatar">
                         <Tab 
@@ -211,7 +244,7 @@ export default class MobileOpenedLudo extends Component {
                             <Avatar
                                 avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                                 avatarImageIndex={comments_nick[starter_id][0]}
-                                isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
+                                isThisBelongToCurrentUser={isCurrentUserLudoCreator}
                                 userPhotoUrl={userPhotoUrl}
                             />
                         </Tab>
@@ -239,61 +272,40 @@ export default class MobileOpenedLudo extends Component {
                         <TextCenter>
                             尚未開始遊戲
                         </TextCenter>
-                        {
-                            starter ?
-                                <JoinButtonContainer>
-                                    <JoinButton onClick={this.handleDeleteClick}>
-                                        刪除戰局
-                                    </JoinButton>
-                                </JoinButtonContainer>
-                            :
-                                <JoinButtonContainer>
-                                    <JoinButton onClick={this.handleJoinClick}>
-                                        加入戰局
-                                    </JoinButton>
-                                </JoinButtonContainer>
-                        }
+                        <SubmitButton
+                            handleDeleteClick={this.handleDeleteClick}
+                            handleJoinClick={this.handleJoinClick}
+                            isDeleteButtonDisabled={isDeleteButtonDisabled}
+                            isJoinButtonDisabled={isJoinButtonDisabled}
+                            isCurrentUserLudoCreator={isCurrentUserLudoCreator}
+                        />
                     </TabPanel>
                     <TabPanel>
                         <CardContent
                             introduction={introduction}
-                            interval={router_currentFormValue.interval ? router_currentFormValue.interval : 1}
+                            interval={router_currentFormValue.interval ? Number(router_currentFormValue.interval) : 1}
                             tags={tags}
                             title={title}
                         />
-                        {
-                            starter ?
-                                <JoinButtonContainer>
-                                    <JoinButton onClick={this.handleDeleteClick}>
-                                        刪除戰局
-                                    </JoinButton>
-                                </JoinButtonContainer>
-                            :
-                                <JoinButtonContainer>
-                                    <JoinButton onClick={this.handleJoinClick}>
-                                        加入戰局
-                                    </JoinButton>
-                                </JoinButtonContainer>
-                        }
+                        <SubmitButton
+                            handleDeleteClick={this.handleDeleteClick}
+                            handleJoinClick={this.handleJoinClick}
+                            isDeleteButtonDisabled={isDeleteButtonDisabled}
+                            isJoinButtonDisabled={isJoinButtonDisabled}
+                            isCurrentUserLudoCreator={isCurrentUserLudoCreator}
+                        />
                     </TabPanel>
                     <TabPanel>
                         <TextCenter>
                             尚未開始遊戲
                         </TextCenter>
-                        {
-                            starter ?
-                                <JoinButtonContainer>
-                                    <JoinButton onClick={this.handleDeleteClick}>
-                                        刪除戰局
-                                    </JoinButton>
-                                </JoinButtonContainer>
-                            :
-                                <JoinButtonContainer>
-                                    <JoinButton onClick={this.handleJoinClick}>
-                                        加入戰局
-                                    </JoinButton>
-                                </JoinButtonContainer>
-                        }
+                        <SubmitButton
+                            handleDeleteClick={this.handleDeleteClick}
+                            handleJoinClick={this.handleJoinClick}
+                            isDeleteButtonDisabled={isDeleteButtonDisabled}
+                            isJoinButtonDisabled={isJoinButtonDisabled}
+                            isCurrentUserLudoCreator={isCurrentUserLudoCreator}
+                        />
                     </TabPanel>
                 </Tabs>
             </div>

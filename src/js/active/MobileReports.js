@@ -131,7 +131,7 @@ export default class MobileReports extends Component {
                         {router_currentFormValue.starter_id == currentUserId || router_currentFormValue.player_id == currentUserId
                             ?
                                 <ReportButton
-                                    label="我要回報！"
+                                    label="我要回報"
                                     url={`/ludo/${params.ludo_id}/mobile-report-form`}
                                 />
                             : null
@@ -147,7 +147,7 @@ export default class MobileReports extends Component {
                         {router_currentFormValue.starter_id == currentUserId ||router_currentFormValue.player_id == currentUserId
                             ?
                                 <ReportButton
-                                    label="我要回報！"
+                                    label="我要回報"
                                     url={`/ludo/${params.ludo_id}/mobile-report-form`}
                                 />
                             : null
@@ -166,7 +166,7 @@ export default class MobileReports extends Component {
                         {router_currentFormValue.starter_id == currentUserId ||router_currentFormValue.player_id == currentUserId
                             ?
                                 <ReportButton
-                                    label="我要回報！"
+                                    label="我要回報"
                                     url={`/ludo/${params.ludo_id}/mobile-report-form`}
                                 />
                             : null
