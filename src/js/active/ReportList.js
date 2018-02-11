@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import ReportCard from './ReportCard';
 import MobileCommentBox from './MobileCommentBox';
 
+const MobileReportList = styled.div`
+    margin-bottom: 65px;
+    padding: 0 30px;
+`;
+
 const ReportWithComments = styled.div`
     margin: 20px 0;
 `;
@@ -16,7 +21,7 @@ const ReportList = ({
     router_currentFormValue,
     userBasicData
 }) => (
-    <div className="mobile-report-list">
+    <MobileReportList>
         {
             reportList && reportList.map(
                 (reportObject, index) =>
@@ -43,7 +48,7 @@ const ReportList = ({
                 </ReportWithComments>
             )
         }
-    </div>
+    </MobileReportList>
 );
 
 export default ReportList;
