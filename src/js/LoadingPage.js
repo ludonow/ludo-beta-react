@@ -1,8 +1,10 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
+
 import axios from './axios-config';
 
+// override material ui style
 const style = {
     container: {
       position: 'absolute',
@@ -15,35 +17,33 @@ const style = {
       boxShadow: 'none',
       backgroundColor: 'none',
     },
-  };
-  
+};
+
 const RefreshIndicatorExampleLoading = () => (
     <div style={style.container}>
         <RefreshIndicator
-        size={100}
-        left={0}
-        top={0}
-        loadingColor="#FF9800"
-        status="loading"
-        style={style.refresh}
+            left={0}
+            loadingColor="#FF9800"
+            size={100}
+            status="loading"
+            style={style.refresh}
+            top={0}
         />
     </div>
 );
+
 export default class LoadingPage extends React.Component {
     constructor(props) {
         super(props);
-        
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const { ludo_id } = this.props.params;
         const { temp_ludo_id } = this.props.params;
         const joinLudoPutbody = this.props.location.state;
-        // console.log(ludo_id);
-        // console.log(joinLudoPutbody);
         if (temp_ludo_id) {
             console.log("跳轉頁面"+temp_ludo_id)
-            /* TODO ask pochun to create temp luod  */
+            /* TODO ask pochun to create temp ludo */
             // axios.put(`/apis/ludo/temp/${temp_ludo_id}`, joinLudoPutbody)
             // .then(response => {
             //     if (response.data.status === '200') {
@@ -65,36 +65,34 @@ export default class LoadingPage extends React.Component {
             //     console.error('OpenedBystanderForm join put error', error);
             // });
         }
-        if(ludo_id) {
+        if (ludo_id) {
             axios.put(`/apis/ludo/${ludo_id}`, joinLudoPutbody)
             .then(response => {
                 if (response.data.status === '200') {
-                    console.log("join succeed");
                     /* TODO: Figure out how to use same url redirect to other component */
                     browserHistory.push(`/ludo/${ludo_id}`);
                 } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
                     window.alert('你的燃料用完囉！');
                     browserHistory.push(`/ludo/${ludo_id}`);
                 } else {
-                    console.log(response.data);
-                    window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                    console.error('OpenedBystanderForm join else response from server: ', response);
-                    console.error('OpenedBystanderForm join else message from server: ', response.data.message);
+                    if (window.confirm('加入Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
                 }
             })
             .catch(error => {
-                window.alert('加入Ludo發生錯誤，請重試一次；若問題還是發生，請聯絡開發團隊');
-                console.error('OpenedBystanderForm join put error', error);
+                if (window.confirm('加入Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             });
         } else {
-            console.log("no ludo id")
-            // browserHistory.push(`/`);
+            browserHistory.push('/playground');
         }
     }
-    
+
     render () {
         return (
-            <RefreshIndicatorExampleLoading/>
-        )
-      }
+            <RefreshIndicatorExampleLoading />
+        );
+    }
 };

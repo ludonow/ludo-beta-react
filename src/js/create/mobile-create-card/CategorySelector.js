@@ -13,7 +13,7 @@ const CategorySelector = ({
     <div className="category-step">
         <SelectField
             fullWidth
-            value={categoryId}
+            value={categoryId-1}
             onChange={handleCategoryChange}
         >
             {
@@ -29,7 +29,7 @@ const CategorySelector = ({
             }
         </SelectField>
         <div className="category-icon">
-            <img src={categoryIcons[categoryId]} />
+            <img src={categoryIcons[categoryId-1]} />
         </div>
     </div>
 )

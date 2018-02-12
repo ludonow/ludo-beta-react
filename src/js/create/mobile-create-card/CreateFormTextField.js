@@ -15,7 +15,7 @@ export default class CreateFormTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tag: ''
+            typingTag: ''
         };
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleTagInputChange = this.handleTagInputChange.bind(this);
@@ -28,17 +28,21 @@ export default class CreateFormTextField extends Component {
     }
 
     handleTagInputChange(event) {
+        const typingTag = event.currentTarget.value;
         this.setState({
-            tag: event.currentTarget.value
+            typingTag
         });
     }
 
     handleTagInputKeyUp(event) {
         if (event.key === 'Enter') {
-            this.props.handleTagAdd(event.currentTarget.value);
-            this.setState({
-                tag: ''
-            });
+            const typingTag = event.currentTarget.value;
+            if (typingTag) {
+                this.props.handleTagAdd(typingTag);
+                this.setState({
+                    typingTag: ''
+                });
+            }
         }
     }
 
@@ -56,20 +60,16 @@ export default class CreateFormTextField extends Component {
         return (
             <div className="mobile-create-form">
                 <TextField
-                    // errorStyle={styles.errorStyle}
-                    // errorText="必填"
                     fullWidth
-                    hintText="標題名稱"
+                    hintText="標題名稱(必填)"
                     onChange={this.handleTitleChange}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
                     value={title}
                 />
                 <TextField
-                    // errorStyle={styles.errorStyle}
-                    // errorText="必填"
                     fullWidth
-                    hintText="簡介"
+                    hintText="簡介(必填)"
                     multiLine
                     onChange={this.handleIntroductionChange}
                     underlineFocusStyle={styles.underlineStyle}
@@ -77,13 +77,11 @@ export default class CreateFormTextField extends Component {
                     value={introduction}
                 />
                 <TextField
-                    // errorStyle={styles.errorStyle}
-                    // errorText="必填"
                     fullWidth
                     hintText="標籤"
                     onChange={this.handleTagInputChange}
                     onKeyUp={this.handleTagInputKeyUp}
-                    value={this.state.tag}
+                    value={this.state.typingTag}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
                 />

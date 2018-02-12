@@ -80,7 +80,6 @@ export default class ReportCard extends Component {
                 window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
                 console.error(' handleReportDelete error: ', error);
             });
-            
         }
     }
 

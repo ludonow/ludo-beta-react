@@ -44,12 +44,12 @@ export default class CardPreview extends Component {
                         onClick={this.handleCardFlip}
                     >
                         <div 
-                            className={`card-back ${categoryClasses[categoryId]}`}
+                            className={`card-back ${categoryClasses[categoryId-1]}`}
                             onClick={this.handleCardFlip}>
                         {/* three information: star(for user to highlight this card), category, and introduction */}
                         <div className="card-information">
                             <div className ="card-category">
-                                {usingCategories[categoryId]}
+                                {usingCategories[categoryId-1]}
                             </div>
                             <div className="card-introduction">
                                 { String(introduction).length > 20 ?
@@ -89,7 +89,7 @@ export default class CardPreview extends Component {
                         <div className="card-front-info">
                             <img
                                 className="category-icon"
-                                src={categoryIcons[categoryId]}
+                                src={categoryIcons[categoryId-1]}
                             />
                             <div className="title">{title}</div>
                             <div className="duration">{duration} days</div>

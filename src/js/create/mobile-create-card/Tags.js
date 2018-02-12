@@ -37,8 +37,7 @@ const Tags = ({
                             tag={tag}
                         />
                     ))
-                :
-                    null
+                : null
             }
         </div>
     );
