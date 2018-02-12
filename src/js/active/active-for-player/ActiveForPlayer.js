@@ -22,11 +22,11 @@ export default class ActiveForPlayer extends Component {
     render() {
         return (
             <div>
-                <MediaQuery minDeviceWidth={768} className="form-and-report">
+                <MediaQuery minWidth={768} className="form-and-report">
                     <ActivePlayerForm  {...this.props} />
                     <ActiveReports {...this.props} />
                 </MediaQuery>
-                <MediaQuery maxDeviceWidth={768}>
+                <MediaQuery maxWidth={768}>
                     <MobileReports {...this.props} />
                 </MediaQuery>
             </div>

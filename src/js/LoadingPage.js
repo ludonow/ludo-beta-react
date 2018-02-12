@@ -12,6 +12,8 @@ const style = {
     refresh: {
       display: 'inline-block',
       position: 'relative',
+      boxShadow: 'none',
+      backgroundColor: 'none',
     },
   };
   
