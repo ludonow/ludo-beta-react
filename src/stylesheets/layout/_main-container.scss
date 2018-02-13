@@ -1,65 +1,28 @@
 .main-container {
+    @extend %flex;
     @extend %relative;
-//    width: $grid-item_total-width*5;
     @extend %margin_center_x;
+    justify-content: center;
     margin-top: 70px;
     word-break: break-all;
-    
-    -webkit-animation: slide-back 0.35s forwards;
-    animation: slide-back 0.35s forwards;
-}
 
-.main-container.hoveringSidebar {
-    @extend %relative;
-    width: $grid-item_total-width*5;
-    @extend %margin_center_x;
-    margin-top: 70px;
-    -webkit-animation: slide 0.35s forwards;
-    animation: slide 0.35s forwards;
-}
-
-@media (max-width: 560px) {
-    .main-container.playground {
+    @media (max-width: 560px) {
         width: 226px
     }
-}
 
-.right-sidebar-hover-area{
-  z-index: 10;
-}
-
-@media (min-width: 560px) and (max-width: 704px) {
-    .main-container {
+    @media (min-width: 560px) and (max-width: 704px) {
         width: 554px;
     }
-    .main-container.hoveringSidebar{
-        width: 554px;
-    }
-}
 
-@media (min-width: 705px) and (max-width: 944px) {
-    .main-container {
+    @media (min-width: 705px) and (max-width: 944px) {
         width: 678px;
     }
-    .main-container.hoveringSidebar{
-        width: 678px;
-    }
-}
 
-@media (min-width: 945px) and (max-width: 1174px) {
-    .main-container {
+    @media (min-width: 945px) and (max-width: 1174px) {
         width: 904px;
     }
-    .main-container.hoveringSidebar{
-        width: 904px;
-    }
-}
 
-@media (min-width: 1175px) {
-    .main-container {
-        width: 1130px;
-    }
-    .main-container.hoveringSidebar{
+    @media (min-width: 1175px) {
         width: 1130px;
     }
 }

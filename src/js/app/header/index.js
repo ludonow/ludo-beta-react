@@ -33,16 +33,19 @@ const HeaderRightWrapper = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-    display: flex;
     background-color: #717070;
     border-bottom-color: #B6BCC1;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    display: flex;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 3;
 
+    @media (max-width: 767px) {
+        height: 70px;
+    }
     @media (min-width: 768px) {
         height: 40px;
     }
@@ -180,7 +183,6 @@ export default class Header extends Component {
          * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
          */
         const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
-        this.props.setFilterCondition(filterCondition);
         browserHistory.push('/playground');
         this.props.getFilteredLudoList(filterCondition);
     }

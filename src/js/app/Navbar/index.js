@@ -1,13 +1,22 @@
-import React, { Component, PropTypes }from "react";
-import { browserHistory, Link } from "react-router";
+import React from "react";
+import { Link } from "react-router";
 import styled from 'styled-components';
 
 import HeaderLeft from '../Header/HeaderLeft';
 
-const CardSystemLinkTextList = [
-    "遊戲廣場",
-    "模板系統",
-    "創建模板"
+const CardSystemLinkInfoList = [
+    {
+        text: "遊戲廣場",
+        url: "/cardList"
+    },
+    {
+        text: "模板系統",
+        url: "/cardList?stage=0"
+    },
+    {
+        text: "創建模板",
+        url: "/create"
+    }
 ];
 
 const ProfileLabel = "個人數據";
@@ -74,13 +83,15 @@ const NavbarWrapper = styled.div`
 `;
 
 // child components
-const CardSystemLinkList = ({ CardSystemLinkTextList }) => (
+const CardSystemLinkList = ({ CardSystemLinkInfoList }) => (
     <LinkListWrapper>
         {
-            CardSystemLinkTextList.map(CardSystemLinkText => (
-                <ListItem>
-                    {CardSystemLinkText}
-                </ListItem>
+            CardSystemLinkInfoList.map(CardSystemLinkInfo => (
+                <Link to={CardSystemLinkInfo.url}>
+                    <ListItem>
+                        {CardSystemLinkInfo.text}
+                    </ListItem>
+                </Link>
             ))
         }
     </LinkListWrapper>
@@ -111,11 +122,10 @@ const SettingLinkList = ({ SettingLinkTextList }) => (
     </LinkListWrapper>
 );
 
-const Navbar = ({
-    getFilteredLudoList,
+const Navbar =({
     handleNavbarToggle,
     isNavbarVisible
-}) => (
+}) =>  (
     <Modal isNavbarVisible={isNavbarVisible}>
         <NavbarWrapper>
             <HeaderLeft
@@ -123,7 +133,7 @@ const Navbar = ({
                 isNavbarVisible={isNavbarVisible}
             />
             <CardSystemLinkList
-                CardSystemLinkTextList={CardSystemLinkTextList}
+                CardSystemLinkInfoList={CardSystemLinkInfoList}
             />
             <ProfileLinkList
                 ProfileLabel={ProfileLabel}

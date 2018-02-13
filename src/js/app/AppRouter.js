@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
@@ -132,10 +132,10 @@ export default class AppRouter extends React.Component {
                         component={App}
                         path="/"
                     >
-                        <IndexRedirect to="playground" />
+                        <IndexRoute component={Playground} />
                         <Route
                             component={Playground}
-                            path="cardList(?:filterCondition)"
+                            path="cardList"
                         />
                         <Route
                             component={Create}
