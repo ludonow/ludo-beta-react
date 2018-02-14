@@ -76,7 +76,17 @@
 .report-icon-button {
     @extend %as_wide_as_parent;
     @extend %flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    
+    .report-date{
+        margin-top: 52px;
+        margin-left: 20px;
+    }
+
+    button {
+        margin-top: 35px !important;
+        margin-left: 70px !important;
+    }
 }
 
 .report-popover-expand-more-menu-item {
