@@ -17,8 +17,10 @@
             height: 40px;
             margin: 5px;
             .comment__avatar {
-                width: 80%;
-                height: 80%;
+                width: 35px;
+                height: 35px;
+                border: solid 2px #707070;
+                border-radius: 50%;
             }
         }
         .comment__message {

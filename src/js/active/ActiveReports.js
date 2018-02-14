@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from '../axios-config';
+import styled from 'styled-components';
 
 import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/Menu';
@@ -18,6 +19,104 @@ import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
 import processString from 'react-process-string';
+
+const panel_width = 609;
+
+const CardTitle = styled.div`
+    font-size:20px;
+`;
+
+const CardDays = styled.div`
+    padding-top: 15px;
+    font-size: 15px;
+    display: inline-flex;
+`;
+
+const ReportCycle = styled.div`
+    width: 79px;
+	height: 26px;
+	background-color: #ff5757;
+    border: solid 1px #ff5757;
+    border-radius:20px;
+	font-family: MHeiHK;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1.21;
+	text-align: center;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left:14px;
+`;
+
+const ReportPanelWrapper = styled.div`
+    display:inline;
+    text-align:center;
+`;
+
+const ReportListContainer = styled.div`
+    margin-top: 15px;
+    width: ${props => props.width}px;
+    height:291px;
+    display:inline-flex;
+    justify-content:center;
+	/* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)); */
+`;
+
+const ReportList = styled.div`
+    display: flex;
+    /* align-items: center;     */
+    justify-content: center;
+    width: ${props => props.width}px;
+    flex-wrap:wrap;
+    margin:0 7px 0 7px;
+`;
+
+const NoReportText = styled.div`
+    font-family: HelveticaNeue;
+	font-size: 22.5px;
+	font-weight: 500;
+	line-height: 1.22;
+	letter-spacing: 14.5px;
+	text-align: center;
+    color: #ffffff;
+    height:291px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0));
+`;
+
+const SingleReport = styled.div`
+    background:white;
+    margin:0 0px 28px 0px;
+    display:flex;
+    width:361px;
+    flex-direction:column;
+`;
+
+const ReportTime = styled.div`
+    font-size:12px;
+    margin-top:52px;
+    margin-left:20px;
+`;
+
+const ReportContent = styled.div`
+    margin-top:25px;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    margin-bottom:50px;
+    div {
+        width:90%;
+    }
+    img{
+        width:100%;
+        display:flex;
+    }
+`;
 
 export default class ActiveReports extends React.Component {
     constructor(props) {
@@ -452,41 +551,25 @@ export default class ActiveReports extends React.Component {
         }];
 
         const { currentUserId, router_currentFormValue, userBasicData } = this.props;
-        const { comments_nick, player_id, starter_id } = router_currentFormValue;
+        const { comments_nick, player_id, starter_id , title, duration} = router_currentFormValue;
         return (
-            /* components/_report-list.scss */
-            <div className="report-list">
-                {
-                    this.state.isImageLightBoxOpen ?
-                        <Lightbox
-                            mainSrc={this.state.enlargeImageLocation}
-                            // nextSrc={files.length == 1 ? null : files[(uploadImageIndex + 1) % files.length].preview}
-                            // prevSrc={files.length == 1 ? null : files[(uploadImageIndex + files.length - 1) % files.length].preview}
-                            onCloseRequest={this.handleCloseLightbox}
-                            // onMovePrevRequest={this.movePrev}
-                            // onMoveNextRequest={this.moveNext}
-                        />
-                    : null
-                }
-                <div className="report-list-container">
-                    <div className="player-container">
+            <ReportPanelWrapper>
+                <CardTitle>{title}</CardTitle>
+                <CardDays>遊戲天數：{duration}天</CardDays>
+                <ReportCycle>每一天回報</ReportCycle>
+                <ReportListContainer width={panel_width}>
+                    <ReportList width={panel_width/2}>
                         <Avatar
                             avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                             avatarImageIndex={comments_nick[starter_id][0]}
                             isThisBelongToCurrentUser={(router_currentFormValue.starter_id == currentUserId)}
                             userPhotoUrl={userBasicData.photo}
+                            usedInReport={true}
                         />
-                        <div className="player-health-point">
-                            HP: {this.props.router_currentFormValue.starter_hp}%
-                        </div>
                         {
                             this.state.starterReportList.map((reportObject, index) => {
                                 return (
-                                    /* components/_single-report.scss */
-                                    <div
-                                        className="player-report-container"
-                                        key={`starter-report-${index}`}
-                                    >
+                                    <SingleReport key={`starter-report-${index}`} >
                                         {
                                             whoIsUser === 'starter' ?
                                                 <ReportEditButton
@@ -515,144 +598,39 @@ export default class ActiveReports extends React.Component {
                                                     whichList="starter"
                                                 />
                                         }
-                                        {
-                                            reportObject.image_location ?
-                                                <div className="report-content-container">
-                                                    <img
+                                        <ReportContent>
+                                            <div>
+                                                <img
                                                         className="report-content report-content__image"
                                                         onClick={this.handleImageEnlarge}
                                                         src={reportObject.image_location}
-                                                    />
-                                                    {
-                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`s${index}`) != -1 ?
-                                                            <div className="editing-image">
-                                                                {/* components/_single-report.scss */}
-                                                                <DropZone
-                                                                    accept={["image/png", "image/pjepg", "image/jpeg"]}
-                                                                    // TODO: find out why png is not accepted
-                                                                    className="upload"
-                                                                    maxSize={5242880}
-                                                                    onClick={this.handleImageDrop}
-                                                                    onDrop={this.handleImageDrop}
-                                                                >
-                                                                    <img
-                                                                        alt="重新上傳圖片"
-                                                                        className="upload-picture-button__icon"
-                                                                        src={uploadIcon}
-                                                                    />
-                                                                    <span className="upload-description">重新上傳圖片</span>
-                                                                </DropZone>
-                                                                <button
-                                                                    disabled={!isEditReportButtonClickable}
-                                                                    id={`starter-image-edit-cancel-button-${index}`}
-                                                                    onClick={this.handleImageReportEditCancelClick}
-                                                                >
-                                                                    取消編輯
-                                                                </button>
-                                                                {
-                                                                    isImageUploaded ?
-                                                                        <div className="upload-preview">
-                                                                            <span className="upload-preview__text">準備變更的圖片: </span>
-                                                                            <div className="upload-preview__image-container">
-                                                                                <img className="upload-preview__image"
-                                                                                    onClick={this.handleImageEnlarge}
-                                                                                    src={files[0].preview}
-                                                                                />
-                                                                                <div className="upload-preview-instruction-container">
-                                                                                    <button
-                                                                                        className="upload-preview-instruction__remove"
-                                                                                        onClick={this.handleImageRemove}
-                                                                                        value="0"
-                                                                                    >
-                                                                                        ×
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
-                                                                            <button
-                                                                                id={`starter-image-edit-confirm-button-${index}`}
-                                                                                onClick={this.handleImageReportModifyConfirmClick}
-                                                                            >
-                                                                                確定變更
-                                                                            </button>
-                                                                        </div>
-                                                                    : null
-                                                                }
-                                                            </div>
-                                                        : null
-                                                    }
-                                                </div>
-                                            : null
-                                        }
-                                        {/* components/_single-report.scss */}
-                                        {
-                                            reportObject.content ?
-                                                isEditingTextReport && isEditingTextReportIndex.indexOf(`s${index}`) != -1 ?
-                                                    <Textarea
-                                                        className="report-content__text-edit"
-                                                        defaultValue={processString(config)(reportObject.content)}
-                                                        id={`s-${index}`}
-                                                        minRows={2}
-                                                        onChange={this.handleReportTextChange}
-                                                        onKeyDown={this.handleFinishReportEditText}
-                                                    />
-                                                :
-                                                    <div className="report-content-container">
-                                                        <div className="report-content report-content__text">
-                                                            {processString(config)(reportObject.content)}
-                                                        </div>
-                                                    </div>
-                                            : null
-                                        }
-                                        {
-                                            reportObject.tags ?
-                                                <div className="report-tags-container">
-                                                    {
-                                                        reportObject.tags.map((tagString, index) => {
-                                                            return (
-                                                                <span
-                                                                    className="react-tagsinput-tag report-tag"
-                                                                    key={`report-tag-${index}`}
-                                                                >
-                                                                    #{tagString}
-                                                                </span>
-                                                            );
-                                                        })
-                                                    }
-                                                </div>
-                                            : null
-                                        }
+                                                />
+                                                {reportObject.content}
+                                            </div>
+                                        </ReportContent>
                                         <CommentBox
                                             commentListFromDatabase={reportObject.comments}
                                             reportId={reportObject.report_id}
                                             whoIsUser={whoIsUser}
                                             {...this.props}
                                         />
-                                    </div>
-                                );
-                            })
+                                    </SingleReport>
+                                )}
+                            )
                         }
-                    </div>
-                </div>
-                {/* components/_report-list.scss */}
-                <div className="report-list-container">
-                    <div className="player-container">
+                    </ReportList>
+                    <ReportList width={panel_width/2}>
                         <Avatar
                             avatarBackgroundColorIndex={comments_nick[player_id][1]}
                             avatarImageIndex={comments_nick[player_id][0]}
                             isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
                             userPhotoUrl={userBasicData.photo}
+                            usedInReport={true}
                         />
-                        <div className="player-health-point">
-                            HP: {this.props.router_currentFormValue.player_hp}%
-                        </div>
-                        {/* components/_single-report.scss */}
                         {
                             this.state.playerReportList.map((reportObject, index) => {
                                 return (
-                                    <div
-                                        className="player-report-container"
-                                        key={`player-report-${index}`}
-                                    >
+                                    <SingleReport key={`player-report-${index}`} >
                                         {
                                             whoIsUser === 'player' ?
                                                 <ReportEditButton
@@ -681,127 +659,37 @@ export default class ActiveReports extends React.Component {
                                                     whichList="player"
                                                 />
                                         }
-                                        {
-                                            reportObject.image_location ?
-                                                <div className="report-content-container">
-                                                    <img
+                                        <ReportContent>
+                                            <div>
+                                                <img
                                                         className="report-content report-content__image"
-                                                        src={reportObject.image_location}
                                                         onClick={this.handleImageEnlarge}
-                                                    />
-                                                    {
-                                                        isEditingImageReport && isEditingImageReportIndex.indexOf(`p${index}`) != -1 ?
-                                                            <div className="editing-image">
-                                                                {/* components/_single-report.scss */}
-                                                                <DropZone
-                                                                    accept={["image/png", "image/pjepg", "image/jpeg"]}
-                                                                    // TODO: find out why png is not accepted
-                                                                    className="upload"
-                                                                    maxSize={5242880}
-                                                                    onClick={this.handleImageDrop}
-                                                                    onDrop={this.handleImageDrop}
-                                                                >
-                                                                    <img
-                                                                        alt="重新上傳圖片"
-                                                                        className="upload-picture-button__icon"
-                                                                        src={uploadIcon}
-                                                                    />
-                                                                    <span className="upload-description">重新上傳圖片</span>
-                                                                </DropZone>
-                                                                <button
-                                                                    disabled={!isEditReportButtonClickable}
-                                                                    id={`starter-image-edit-cancel-button-${index}`}
-                                                                    onClick={this.handleImageReportEditCancelClick}
-                                                                >
-                                                                    取消編輯
-                                                                </button>
-                                                                {
-                                                                    isImageUploaded ?
-                                                                        <div className="upload-preview">
-                                                                            <span className="upload-preview__text">準備變更的圖片: </span>
-                                                                            <div className="upload-preview__image-container">
-                                                                                <img
-                                                                                    className="upload-preview__image"
-                                                                                    onClick={this.handleImageEnlarge}
-                                                                                    src={files[0].preview}
-                                                                                />
-                                                                                <div className="upload-preview-instruction-container">
-                                                                                    <button
-                                                                                        className="upload-preview-instruction__remove"
-                                                                                        onClick={this.handleImageRemove}
-                                                                                        value="0"
-                                                                                    >
-                                                                                        ×
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
-                                                                            <button
-                                                                                id={`player-image-edit-confirm-button-${index}`}
-                                                                                onClick={this.handleImageReportModifyConfirmClick}
-                                                                            >
-                                                                                確定變更
-                                                                            </button>
-                                                                        </div>
-                                                                    : null
-                                                                }
-                                                            </div>
-                                                        : null
-                                                    }
-                                                </div>
-                                            : null
-                                        }
-
-                                        {
-                                            reportObject.content ?
-                                                isEditingTextReport && isEditingTextReportIndex.indexOf(`p${index}`) != -1 ?
-                                                    <Textarea
-                                                        className="report-content__text-edit"
-                                                        minRows={2}
-                                                        onChange={this.handleReportTextChange}
-                                                        onKeyDown={this.handleFinishReportEditText}
-                                                        defaultValue={processString(config)(reportObject.content)}
-                                                        id={`p-${index}`}
-                                                    />
-                                                :
-                                                    <div className="report-content-container">
-                                                        <div className="report-content report-content__text">
-
-                                                            {processString(config)(reportObject.content)}
-                                                        </div>
-                                                    </div>
-                                            : null
-                                        }
-                                        {
-                                            reportObject.tags ?
-                                                <div className="report-tags-container">
-                                                    {
-                                                        reportObject.tags.map((tagString, index) => {
-                                                            return (
-                                                                <span
-                                                                    className="react-tagsinput-tag report-tag"
-                                                                    key={`report-tag-${index}`}
-                                                                >
-                                                                    #{tagString}
-                                                                </span>
-                                                            );
-                                                        })
-                                                    }
-                                                </div>
-                                            : null
-                                        }
+                                                        src={reportObject.image_location}
+                                                />
+                                                {reportObject.content}
+                                            </div>
+                                        </ReportContent>
                                         <CommentBox
                                             commentListFromDatabase={reportObject.comments}
                                             reportId={reportObject.report_id}
                                             whoIsUser={whoIsUser}
                                             {...this.props}
                                         />
-                                    </div>
-                                );   /* end of return */
-                            })   /* end of map */
+                                    </SingleReport>
+                                )}
+                            )
                         }
-                    </div>
-                </div>
-            </div>
+                    </ReportList>
+                    {/* <ReportList width={panel_width/2}>
+                        <NoReportText>
+                            <div>等等呢！玩家還在努力喔！</div>
+                        </NoReportText> 
+                    </ReportList> */}
+                    {/* <NoReportText>
+                        <div>搶先成為第一個回報的人吧！</div>
+                    </NoReportText> */}
+                </ReportListContainer>
+            </ReportPanelWrapper>
         );
     }
 }
