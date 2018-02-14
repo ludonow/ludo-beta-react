@@ -7,16 +7,17 @@ import axios from './axios-config';
 // override material ui style
 const style = {
     container: {
-      position: 'absolute',
-      top: "100px",
-      left: "40%",
+        alignItems: 'center',
+        display: 'flex',
+        height: 'calc(100vh - 100px)',
+        justifyContent: 'center'
     },
     refresh: {
-      display: 'inline-block',
-      position: 'relative',
-      boxShadow: 'none',
-      backgroundColor: 'none',
-    },
+        backgroundColor: 'none',
+        boxShadow: 'none',
+        display: 'inline-block',
+        position: 'relative'
+    }
 };
 
 const RefreshIndicatorExampleLoading = () => (
@@ -86,7 +87,7 @@ export default class LoadingPage extends React.Component {
                 }
             });
         } else {
-            browserHistory.push('/playground');
+            // browserHistory.push('/cardList');
         }
     }
 
