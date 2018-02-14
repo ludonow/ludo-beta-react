@@ -288,33 +288,33 @@ export default class ActiveForPlayer extends Component {
                                     className="panel panel_report" 
                                     selectedClassName="selected_panel"
                                 >   
-                                <ReportPanelWrapper>
-                                    <CardTitle>台灣茶道是一件很酷的事</CardTitle>
-                                    <CardDays>遊戲天數：七天</CardDays>
-                                    <ReportTime>每一天回報</ReportTime>
-                                    <ReportListContainer width={panel_width}>
-                                        <ReportList width={panel_width/2}>
-                                            <PlayerAvatar></PlayerAvatar>
-                                            <SingleReport>
-                                                <ReportTime>2018/02/06 7:44 pm</ReportTime>
-                                                <ReportContent>
-                                                    <div>根據同學的回覆，這邊要介紹一下紅茶市場的商品特性：紅茶貿易首先是東印度公司（英屬）在十八世紀將印度產地製造的紅茶輸入回大不列顛，英國將牛奶與紅茶結合後大幅度帶動畜牧業的發展，紅茶也成為貴族到平民百姓的常備飲品。而在這裡，我們所熟悉的『紅茶包』裝得並不像台灣的單品高檔茶是球狀或是完整葉子的。而是經過工業革命後，機械便能將發酵、乾燥後的紅茶葉直接切成細碎狀，在市場裡專有名詞工法叫CTC，這種以機器製造、拼配（依照不同比例調整以達到穩定產品為目的），混合碎葉與粉末等級兩種的工法。</div>
-                                                </ReportContent>
-                                                <CommentBox></CommentBox>
-                                            </SingleReport>
-                                            <SingleReport>測試中</SingleReport>
-                                        </ReportList>
-                                        <ReportList width={panel_width/2}>
-                                            <PlayerAvatar></PlayerAvatar>
-                                            <NoReportText>
-                                                <div>等等呢！玩家還在努力喔！</div>
-                                            </NoReportText> 
-                                        </ReportList>
-                                        {/* <NoReportText>
-                                            <div>搶先成為第一個回報的人吧！</div>
-                                        </NoReportText> */}
-                                    </ReportListContainer>
-                                </ReportPanelWrapper>
+                                    <ReportPanelWrapper>
+                                        <CardTitle>台灣茶道是一件很酷的事</CardTitle>
+                                        <CardDays>遊戲天數：七天</CardDays>
+                                        <ReportTime>每一天回報</ReportTime>
+                                        <ReportListContainer width={panel_width}>
+                                            <ReportList width={panel_width/2}>
+                                                <PlayerAvatar></PlayerAvatar>
+                                                <SingleReport>
+                                                    <ReportTime>2018/02/06 7:44 pm</ReportTime>
+                                                    <ReportContent>
+                                                        <div>根據同學的回覆，這邊要介紹一下紅茶市場的商品特性：紅茶貿易首先是東印度公司（英屬）在十八世紀將印度產地製造的紅茶輸入回大不列顛，英國將牛奶與紅茶結合後大幅度帶動畜牧業的發展，紅茶也成為貴族到平民百姓的常備飲品。而在這裡，我們所熟悉的『紅茶包』裝得並不像台灣的單品高檔茶是球狀或是完整葉子的。而是經過工業革命後，機械便能將發酵、乾燥後的紅茶葉直接切成細碎狀，在市場裡專有名詞工法叫CTC，這種以機器製造、拼配（依照不同比例調整以達到穩定產品為目的），混合碎葉與粉末等級兩種的工法。</div>
+                                                    </ReportContent>
+                                                    <CommentBox></CommentBox>
+                                                </SingleReport>
+                                                <SingleReport>測試中</SingleReport>
+                                            </ReportList>
+                                            <ReportList width={panel_width/2}>
+                                                <PlayerAvatar></PlayerAvatar>
+                                                <NoReportText>
+                                                    <div>等等呢！玩家還在努力喔！</div>
+                                                </NoReportText> 
+                                            </ReportList>
+                                            {/* <NoReportText>
+                                                <div>搶先成為第一個回報的人吧！</div>
+                                            </NoReportText> */}
+                                        </ReportListContainer>
+                                    </ReportPanelWrapper>
                                 </TabPanel>
                             </div>
                         </Tabs>
