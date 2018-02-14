@@ -17,10 +17,7 @@ export default class Friend extends React.Component {
 
     render() {
         return (
-            /* layout/main-container */
-            <div className="main-container">
-                <FriendList friendsArrayData={this.props.userProfileData.friends} />
-            </div>
+            <FriendList friendsArrayData={this.props.userProfileData.friends} />
         );
     }
 }

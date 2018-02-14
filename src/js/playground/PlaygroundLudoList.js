@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import Masonry from 'react-masonry-component';
+import styled from 'styled-components';
 
 import axios from '../axios-config'
 import QuickStart from './QuickStart';
@@ -11,6 +12,29 @@ const masonryOptions = {
     columnWidth: 226,
     fitWidth: true
 };
+
+// styled compoennts
+const CardListWrapper = styled.div`
+    @media (max-width: 560px) {
+        width: 226px
+    }
+
+    @media (min-width: 560px) and (max-width: 704px) {
+        width: 554px;
+    }
+
+    @media (min-width: 705px) and (max-width: 944px) {
+        width: 678px;
+    }
+
+    @media (min-width: 945px) and (max-width: 1174px) {
+        width: 904px;
+    }
+
+    @media (min-width: 1175px) {
+        width: 1130px;
+    }
+`;
 
 export default class PlaygroundLudoList extends Component {
     constructor(props) {
@@ -97,25 +121,27 @@ export default class PlaygroundLudoList extends Component {
 
     render() {
         return (
-            <Masonry options={masonryOptions}>
-                <QuickStart />
-                {
-                    this.props.ludoList.map((singleLudoObject, index) => {
-                        const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
-                        const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
-                        return (
-                            <Card
-                                handleCardStage={this.handleCardStage}
-                                handleClick={handleClick}
-                                index={index}
-                                isThisCardFlipped={isThisCardFlipped}
-                                key={`card-${index}`}
-                                singleLudoObject={singleLudoObject}
-                            />
-                        );
-                    })
-                }
-            </Masonry>
+            <CardListWrapper>
+                <Masonry options={masonryOptions}>
+                    <QuickStart />
+                        {
+                            this.props.ludoList.map((singleLudoObject, index) => {
+                                const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
+                                const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
+                                return (
+                                    <Card
+                                        handleCardStage={this.handleCardStage}
+                                        handleClick={handleClick}
+                                        index={index}
+                                        isThisCardFlipped={isThisCardFlipped}
+                                        key={`card-${index}`}
+                                        singleLudoObject={singleLudoObject}
+                                    />
+                                );
+                            })
+                        }
+                </Masonry>
+            </CardListWrapper>
         );
     }
 }
