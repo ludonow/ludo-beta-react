@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import React from 'react';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 
 import logoImage from '../../../images/Ludo_logo.png';
 
-const StyledLogo = styled.div`
+const StyledLink = styled(Link)`
     align-items: center;
     cursor: pointer;
     display: flex;
@@ -34,25 +34,11 @@ const StyledLogo = styled.div`
     }
 `;
 
-export default class Logo extends Component {
-    constructor(props) {
-        super(props);
-        this.handleLogoLink = this.handleLogoLink.bind(this);
-    }
+/* components/_header-logo.scss */
+const Logo = () => (
+    <StyledLink to="/cardList">
+        <img src={logoImage} />
+    </StyledLink>
+);
 
-    handleLogoLink() {
-        this.props.getFilteredLudoList();
-        browserHistory.push('/playground');
-    }
-
-    render() {
-        return (
-            /* components/_header-logo.scss */
-            <StyledLogo
-                onClick={this.handleLogoLink}
-            >
-                <img src={logoImage} />
-            </StyledLogo>
-        );
-    }
-}
+export default Logo;
