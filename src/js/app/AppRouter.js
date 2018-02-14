@@ -151,6 +151,18 @@ const AppRouter = () => (
                     path="invite/:friend_id"
                 />
                 <Route
+                    component={LoadingPage}
+                    path="loading/:ludo_id"
+                />
+                <Route
+                    component={LoadingPage}
+                    path="loading"
+                />
+                <Route
+                    component={LoadingPage}
+                    path="redirect/:temp_ludo_id"
+                />
+                <Route
                     component={LogIn}
                     path="login"
                 />

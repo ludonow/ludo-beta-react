@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import MediaQuery from 'react-responsive';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
+import axios from '../../axios-config';
 import ActiveCardContent from '../../active/active-for-player/ActiveCardContent';
-import LudoList from '../../app/LudoList';
+import DesktopSubmitButton from '../DesktopSubmitButton';
 import MobileOpenedLudo from '../MobileOpenedLudo';
 import OpenedStarterForm from './OpenedStarterForm';
 
@@ -21,27 +23,27 @@ const CardDetailContainer = styled.div`
 const ReportTabs = styled.div`
     .tabs {
         align-items: center;
-        justify-content: center;
-        width: 609px;
         display: block;
-        padding-top:23px;
+        justify-content: center;
+        padding-top: 23px;
+        width: 609px;
     }
 
     .tab_list {
-        display:flex;
-        width :100%;
         align-items: center;
+        display: flex;
         justify-content: center;
+        width: 100%;
     }
     .tab {
         /*border-bottom: 3px solid #727272;*/
-        width: 85px;
-        font-size: 15px;
-        text-align: center;
-        display: block;
-        padding-bottom: 4px;
         color: #FFFFFF;
+        display: block;
+        font-size: 15px;
         margin:0 55px;
+        padding-bottom: 4px;
+        text-align: center;
+        width: 85px;
     }
 
     .selected_tab {
@@ -49,22 +51,22 @@ const ReportTabs = styled.div`
         color: #727272;
     }
 
-    .panel_container{
-        /* display:flex; */
-        width :100%;
+    .panel_container {
         align-items: center;
-        justify-content: center;
         /* background-color: #ffffff; */
-        margin-top:29px;
+        /* display: flex; */
+        justify-content: center;
+        margin-top: 29px;
+        width: 100%;
     }
 
     .panel {
-        padding-top:29px;
-        width:100%;
-        background-color: #ffffff;
-        display:none;
         align-items: center;
+        background-color: #ffffff;
+        display: none;
         justify-content: center;
+        padding-top: 29px;
+        width: 100%;
     }
 
     .selected_panel {
@@ -76,48 +78,110 @@ const ReportTabs = styled.div`
     }
 `;
 
-/* components/_form.scss */
-const OpenedForStarter = (props) => (
-    <CardDetailContainer>
-        <MediaQuery minWidth={768} className="container">
-                <ReportTabs>
-                    <Tabs defaultIndex={0} onSelect={index => console.log(index)} className="tabs">
-                        <TabList className="tab_list">
-                            <Tab 
-                                className="tab" 
-                                selectedClassName="selected_tab"
-                            >
-                                卡片內容
-                            </Tab>
-                            <Tab
-                                className="tab" 
-                                selectedClassName="selected_tab"
-                            >
-                                雙人對戰
-                            </Tab>
-                        </TabList>
-                    
-                    <div className="panel_container">
-                        <TabPanel 
-                            className="panel" 
-                            selectedClassName="selected_panel"
+class OpenedForStarter extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isDeleteButtonDisabled: false
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        this.setState({
+            isDeleteButtonDisabled: true
+        });
+        /* TODO: Use notification confirming delete ludo */
+        const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
+        if (isSureToDelete) {
+            axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
+            .then(response => {
+                if (response.data.status == '200') {
+                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    browserHistory.push('/playground');
+                } else {
+                    if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isDeleteButtonDisabled: false
+                    });
+                }
+            })
+            .catch(error => {
+                if (window.confirm('刪除Ludo時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isDeleteButtonDisabled: false
+                });
+            });
+        } else {
+            this.setState({
+                isDeleteButtonDisabled: false
+            });
+        }
+    }
+
+    /* components/_form.scss */
+    render() {
+        const { isDeleteButtonDisabled } = this.state;
+        return (
+            <CardDetailContainer>
+                <MediaQuery
+                    className="container"
+                    minWidth={768}
+                >
+                    <ReportTabs>
+                        <Tabs
+                            className="tabs"
+                            defaultIndex={0}
+                            onSelect={index => console.log(index)}
                         >
-                            <ActiveCardContent {...props} />
-                        </TabPanel>
-                        <TabPanel 
-                            className="panel panel_report" 
-                            selectedClassName="selected_panel"
-                        >   
-                        </TabPanel>
-                    </div>
-                    </Tabs>
-                </ReportTabs>
-            
-        </MediaQuery>
-        <MediaQuery maxWidth={768}>
-            <MobileOpenedLudo {...props} />
-        </MediaQuery>
-    </CardDetailContainer>  
-);
+                            <TabList className="tab_list">
+                                <Tab 
+                                    className="tab" 
+                                    selectedClassName="selected_tab"
+                                >
+                                    卡片內容
+                                </Tab>
+                                <Tab
+                                    className="tab" 
+                                    selectedClassName="selected_tab"
+                                >
+                                    雙人對戰
+                                </Tab>
+                            </TabList>
+                            <div className="panel_container">
+                                <TabPanel 
+                                    className="panel" 
+                                    selectedClassName="selected_panel"
+                                >
+                                    <ActiveCardContent {...this.props} />
+                                </TabPanel>
+                                <TabPanel 
+                                    className="panel panel_report" 
+                                    selectedClassName="selected_panel"
+                                >   
+                                </TabPanel>
+                            </div>
+                        </Tabs>
+                    </ReportTabs>
+                    <DesktopSubmitButton
+                        disabled={isDeleteButtonDisabled}
+                        label="刪除戰局"
+                        onClick={this.handleSubmit}
+                    />
+                </MediaQuery>
+                <MediaQuery maxWidth={768}>
+                    <MobileOpenedLudo {...this.props} />
+                </MediaQuery>
+            </CardDetailContainer>  
+        );
+    }
+}
 
 export default OpenedForStarter;

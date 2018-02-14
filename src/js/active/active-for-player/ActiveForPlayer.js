@@ -116,22 +116,21 @@ export default class ActiveForPlayer extends Component {
                                     雙人對戰
                                 </Tab>
                             </TabList>
-                        
-                        <div className="panel_container">
-                            <TabPanel 
-                                className="panel" 
-                                selectedClassName="selected_panel"
-                            >
-                                <ActiveCardContent {...this.props} />
-                                {/* <ActivePlayerForm  {...this.props} /> */}
-                            </TabPanel>
-                            <TabPanel 
-                                className="panel panel_report" 
-                                selectedClassName="selected_panel"
-                            >   
-                                <ActiveReports {...this.props} />
-                            </TabPanel>
-                        </div>
+                            <div className="panel_container">
+                                <TabPanel 
+                                    className="panel" 
+                                    selectedClassName="selected_panel"
+                                >
+                                    <ActiveCardContent {...this.props} />
+                                    {/* <ActivePlayerForm  {...this.props} /> */}
+                                </TabPanel>
+                                <TabPanel 
+                                    className="panel panel_report" 
+                                    selectedClassName="selected_panel"
+                                >   
+                                    <ActiveReports {...this.props} />
+                                </TabPanel>
+                            </div>
                         </Tabs>
                     </ReportTabs>
                     {

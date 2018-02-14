@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import MediaQuery from 'react-responsive';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
+import axios from '../../axios-config';
 import ActiveCardContent from '../../active/active-for-player/ActiveCardContent';
-import LudoList from '../../app/LudoList';
+import DesktopSubmitButton from '../DesktopSubmitButton';
 import MobileOpenedLudo from '../MobileOpenedLudo';
 import OpenedBystanderForm from './OpenedBystanderForm';
 
@@ -76,48 +78,98 @@ const ReportTabs = styled.div`
     }
 `;
 
-/* components/_form.scss */
-const OpenedForBystander = (props) => (
-    <CardDetailContainer>
-        <MediaQuery minWidth={768} className="container">
-                <ReportTabs>
-                    <Tabs defaultIndex={0} onSelect={index => console.log(index)} className="tabs">
-                        <TabList className="tab_list">
-                            <Tab 
-                                className="tab" 
-                                selectedClassName="selected_tab"
-                            >
-                                卡片內容
-                            </Tab>
-                            <Tab
-                                className="tab" 
-                                selectedClassName="selected_tab"
-                            >
-                                雙人對戰
-                            </Tab>
-                        </TabList>
-                    
-                    <div className="panel_container">
-                        <TabPanel 
-                            className="panel" 
-                            selectedClassName="selected_panel"
+class OpenedForBystander extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isJoinButtonDisabled: false
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        /* TODO: Use notification confirming join */
+        this.setState({
+            isJoinButtonDisabled: true
+        });
+        const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
+        if (isSureToJoin) {
+            const { ludo_id } = this.props.params;
+            const currentFormValue = this.props.router_currentFormValue;
+            const joinLudoPutbody = {
+                'duration': currentFormValue.duration,
+                'marbles': currentFormValue.marbles,
+                'stage': currentFormValue.stage,
+                'type': 'match'
+            };
+            browserHistory.push({
+                pathname: `/loading/${ludo_id}`,
+                state: joinLudoPutbody,
+            });
+        } else {
+            this.setState({
+                isJoinButtonDisabled: false
+            });
+        }
+    }
+
+    /* components/_form.scss */
+    render() {
+        const { isJoinButtonDisabled } = this.state;
+        return (
+            <CardDetailContainer>
+                <MediaQuery
+                    className="container"
+                    minWidth={768}
+                >
+                    <ReportTabs>
+                        <Tabs
+                            className="tabs"
+                            defaultIndex={0}
+                            onSelect={index => console.log(index)}
                         >
-                            <ActiveCardContent {...props} />
-                        </TabPanel>
-                        <TabPanel 
-                            className="panel panel_report" 
-                            selectedClassName="selected_panel"
-                        >   
-                        </TabPanel>
-                    </div>
-                    </Tabs>
-                </ReportTabs>
-            
-        </MediaQuery>
-        <MediaQuery maxWidth={768}>
-            <MobileOpenedLudo {...props} />
-        </MediaQuery>
-    </CardDetailContainer>  
-);
+                            <TabList className="tab_list">
+                                <Tab 
+                                    className="tab" 
+                                    selectedClassName="selected_tab"
+                                >
+                                    卡片內容
+                                </Tab>
+                                <Tab
+                                    className="tab" 
+                                    selectedClassName="selected_tab"
+                                >
+                                    雙人對戰
+                                </Tab>
+                            </TabList>
+                            <div className="panel_container">
+                                <TabPanel 
+                                    className="panel" 
+                                    selectedClassName="selected_panel"
+                                >
+                                    <ActiveCardContent {...this.props} />
+                                </TabPanel>
+                                <TabPanel 
+                                    className="panel panel_report" 
+                                    selectedClassName="selected_panel"
+                                >
+                                </TabPanel>
+                            </div>
+                        </Tabs>
+                    </ReportTabs>
+                    <DesktopSubmitButton
+                        disabled={isJoinButtonDisabled}
+                        label="加入戰局"
+                        onClick={this.handleSubmit}
+                    />
+                </MediaQuery>
+                <MediaQuery maxWidth={768}>
+                    <MobileOpenedLudo {...this.props} />
+                </MediaQuery>
+            </CardDetailContainer>
+        );
+    }
+}
 
 export default OpenedForBystander;
