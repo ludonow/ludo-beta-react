@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from '../axios-config';
 
-import Header from './header/Header';
-import Sidebar from './sidebar/Sidebar';
 import DenounceBox from './DenounceBox';
+import Header from './Header';
+import Main from './Main';
+import Navbar from './Navbar';
+import Sidebar from './sidebar/Sidebar';
 
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -16,7 +18,6 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             currentAuth: null,
-            currentFilterString: '',
             currentLudoId: '',
             currentLudoReportData: [],
             currentTargetCommentId: '',
@@ -27,9 +28,9 @@ export default class App extends React.Component {
             filterCondition: '',
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
-            isHoveringSidebar: false,
             isInfiniteLoading: false,
             isLoggedIn: false,
+            isNavbarVisible: false,
             isOpeningActivePage: false,
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
@@ -59,17 +60,17 @@ export default class App extends React.Component {
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
         this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
-        this.handleIsHoveringSidebar = this.handleIsHoveringSidebar.bind(this);
         this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleNavbarClose = this.handleNavbarClose.bind(this);
+        this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
-        this.setFilterCondition = this.setFilterCondition.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
@@ -97,7 +98,6 @@ export default class App extends React.Component {
     componentDidUpdate() {
         const {
             currentUserId,
-            filterCondition,
             isLoggedIn,
             isOpeningLudoListPage,
             isOpeningProfilePage,
@@ -105,13 +105,7 @@ export default class App extends React.Component {
             shouldProfileUpdate,
             shouldUserBasicDataUpdate
         } = this.state;
-        if (isOpeningLudoListPage && shouldLudoListUpdate) {
-            this.getFilteredLudoList(filterCondition);
-            this.setState({
-                filterCondition: ''
-            });
-            this.handleShouldLudoListUpdate(false);
-        }
+
         if (currentUserId && isLoggedIn && shouldProfileUpdate) {
             /**
              * Update profile data after the user did some ludo action and is going to open profile page
@@ -148,7 +142,7 @@ export default class App extends React.Component {
     getCurrentLudoData(ludo_id) {
         axios.get(`/apis/ludo/${ludo_id}`)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     currentAuth: response.data.auth,
                     currentFormValue: response.data.ludo,
@@ -173,9 +167,8 @@ export default class App extends React.Component {
         }
         axios.get(api)
         .then((response) => {
-            if (response.data.status == 200) {
+            if (response.data.status === '200') {
                 this.setState({
-                    currentFilterString: filterCondition,
                     ludoList: response.data.ludoList.Items
                 });
                 if (response.data.ludoList.LastEvaluatedKey) {
@@ -183,21 +176,25 @@ export default class App extends React.Component {
                         lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey
                     });
                     const lastEvaluatedKeyString = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
-                    this.getUpComingLudoList(this.state.currentFilterString, lastEvaluatedKeyString);
+                    this.getUpComingLudoList(filterCondition, lastEvaluatedKeyString);
                 }
             } else {
-                console.error('app getFilteredLudoList else response from server: ', response);
+                if (window.confirm('取得卡片列表資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             }
         })
         .catch((error) => {
-            console.error('app getFilteredLudoList error', error);
+            if (window.confirm('取得卡片列表資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
         });
     }
 
     getProfileData() {
         axios.get('/apis/profile')
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     userProfileData: response.data.user
                 });
@@ -214,7 +211,7 @@ export default class App extends React.Component {
     getProfileWillLudoData(user_id) {
         axios.get(`apis/ludo?stage=1&user_id=${user_id}`)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     profileWillLudoData: response.data.ludoList.Items
                 });
@@ -231,7 +228,7 @@ export default class App extends React.Component {
     getProfileLudoingData(user_id) {
         axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     profileLudoingData: response.data.ludoList.Items
                 });
@@ -248,7 +245,7 @@ export default class App extends React.Component {
     getProfileDidLudoData(user_id) {
         axios.get(`apis/ludo?stage=3&user_id=${user_id}`)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     profileDidLudoData: response.data.ludoList.Items
                 });
@@ -265,7 +262,7 @@ export default class App extends React.Component {
     getReportOfCurrentLudo(ludo_id) {
         axios.get(`/apis/report?ludo_id=${ludo_id}`)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 this.setState({
                     currentLudoReportData: response.data.reportList,
                     hasGotNewReport: true
@@ -283,7 +280,7 @@ export default class App extends React.Component {
     getUpComingLudoList(filterCondition, lastEvaluatedKeyString) {
         axios.get(`/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKeyString}`)
         .then((response) => {
-            if(response.data.status === '200') {
+            if (response.data.status === '200') {
                 const newLudoList = [];
                 newLudoList.push.apply(newLudoList, this.state.ludoList);
                 newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
@@ -296,14 +293,18 @@ export default class App extends React.Component {
                 this.setState({
                     isInfiniteLoading: false
                 });
-                console.error('app getUpComingLudoList else response from server: ', response);
+                if (window.confirm('取得其他卡片列表資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             }
         })
         .catch((error) => {
             this.setState({
                 isInfiniteLoading: false
             });
-            console.error('app getUpComingLudoList error', error);
+            if (window.confirm('取得其他卡片列表資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
         });
     }
 
@@ -382,9 +383,15 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsHoveringSidebar(boolean) {
+    handleNavbarClose(event) {
         this.setState({
-            isHoveringSidebar: boolean
+            isNavbarVisible: false
+        });
+    }
+
+    handleNavbarToggle(boolean) {
+        this.setState({
+            isNavbarVisible: boolean
         });
     }
 
@@ -424,7 +431,7 @@ export default class App extends React.Component {
             this.setState({
                 isInfiniteLoading: true
             });
-            this.getUpComingLudoList(this.state.currentFilterString, lastEvaluatedKeyString);
+            this.getUpComingLudoList(this.props.location.search, lastEvaluatedKeyString);
         }
     }
 
@@ -452,12 +459,6 @@ export default class App extends React.Component {
         });
     }
 
-    setFilterCondition(filterCondition) {
-        this.setState({
-            filterCondition
-        })
-    }
-
     updateCurrentFormValue(ludoForm) {
         this.setState({
             currentFormValue: ludoForm
@@ -465,46 +466,33 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { isHoveringSidebar } = this.state;
+        const { isNavbarVisible } = this.state;
         const {
             route,
             router_currentFormValue
         } = this.props;
 
         const { path } = route;
-        let mainContainerClass = '';
-        if (isHoveringSidebar) {
-            mainContainerClass = 'main-container hoveringSidebar';
-        } else {
-            mainContainerClass = 'main-container';
-        }
-        if (this.state.isOpeningLudoListPage) {
-            mainContainerClass += ' playground';
-        }
 
         return (
             <div>
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
+                    handleNavbarToggle={this.handleNavbarToggle}
                     isLoggedIn={this.state.isLoggedIn}
                     isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
-                    setFilterCondition={this.setFilterCondition}
+                    isNavbarVisible={isNavbarVisible}
                     userBasicData={this.state.userBasicData}
                 />
-                <Sidebar
-                    currentUserId={this.state.currentUserId}
+                <Navbar
                     getFilteredLudoList={this.getFilteredLudoList}
-                    handleIsHoveringSidebar={this.handleIsHoveringSidebar}
-                    isHoveringSidebar={isHoveringSidebar}
+                    handleNavbarClose={this.handleNavbarClose}
+                    handleNavbarToggle={this.handleNavbarToggle}
+                    isNavbarVisible={isNavbarVisible}
                 />
-                {/* layout/main-container */}
-                <div
-                    className={mainContainerClass}
-                    onScroll={this.handleScrollEvent}
-                    ref="mainContainer"
-                >
+                <Main handleScrollEvent={this.handleScrollEvent}>
                     {
                         React.cloneElement(this.props.children,
                             {
@@ -521,7 +509,7 @@ export default class App extends React.Component {
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
-                                handleIsHoveringSidebar: this.handleIsHoveringSidebar,
+                                handleNavbarToggle: this.handleNavbarToggle,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
@@ -534,7 +522,7 @@ export default class App extends React.Component {
                             }
                         )
                     }
-                </div>
+                </Main>
                 <DenounceBox
                     currentTargetCommentId={this.state.currentTargetCommentId}
                     currentTargetLudoId={this.state.currentTargetLudoId}
