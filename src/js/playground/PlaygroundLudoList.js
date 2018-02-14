@@ -35,18 +35,15 @@ export default class PlaygroundLudoList extends Component {
         if (prevProps.location.search !== this.props.location.search) {
             const filteredCondition = this.getFilteredConditionListFromUrl(this.props.location.search);
             this.props.getFilteredLudoList(filteredCondition);
-            this.props.handleNavbarToggle(false);
         }
     }
 
     componentWillMount() {
         this.props.handleShouldLudoListUpdate(true);
-        this.props.handleNavbarToggle(false);
     }
 
     componentWillUnmount() {
         this.props.handleShouldLudoListUpdate(false);
-        this.props.handleNavbarToggle(false);
     }
 
     getFilteredConditionListFromUrl(queryUrl) {

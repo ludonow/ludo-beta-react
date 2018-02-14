@@ -64,6 +64,7 @@ export default class App extends React.Component {
         this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleNavbarClose = this.handleNavbarClose.bind(this);
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
@@ -382,6 +383,12 @@ export default class App extends React.Component {
         });
     }
 
+    handleNavbarClose(event) {
+        this.setState({
+            isNavbarVisible: false
+        });
+    }
+
     handleNavbarToggle(boolean) {
         this.setState({
             isNavbarVisible: boolean
@@ -481,6 +488,7 @@ export default class App extends React.Component {
                 />
                 <Navbar
                     getFilteredLudoList={this.getFilteredLudoList}
+                    handleNavbarClose={this.handleNavbarClose}
                     handleNavbarToggle={this.handleNavbarToggle}
                     isNavbarVisible={isNavbarVisible}
                 />

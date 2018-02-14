@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { browserHistory, IndexRedirect, Route, Router } from 'react-router';
 import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
@@ -123,113 +123,111 @@ const ludoEditRedirect = (nextState, replace, callback) => {
 };
 
 /* TODO: find out usage of getComponent callback */
-export default class AppRouter extends React.Component {
-    render() {
-        return (
-            <div>
-                <Router history={browserHistory}>
-                    <Route
-                        component={App}
-                        path="/"
-                    >
-                        <IndexRoute component={Playground} />
-                        <Route
-                            component={Playground}
-                            path="cardList"
-                        />
-                        <Route
-                            component={Create}
-                            onEnter={isLoggedIn}
-                            path="create"
-                        />
-                        <Route
-                            component={Friend}
-                            onEnter={isLoggedIn}
-                            path="friend"
-                        />
-                        <Route
-                            component={Invite}
-                            onEnter={isLoggedIn}
-                            path="invite/:friend_id"
-                        />
-                        <Route
-                            component={LogIn}
-                            path="login"
-                        />
-                        <Route
-                            getComponent={(nextState, cb) => {
-                                const Component = ludoPageArray[router_ludoPageIndex];
-                                cb(
-                                    null,
-                                    props =>
-                                        <Component
-                                            {...props}
-                                            router_currentFormValue={router_currentFormValue}
-                                            router_currentLudoId={router_currentLudoId}
-                                        />
-                                );
-                            }}
-                            onEnter={ludoRedirect}
-                            path="ludo/:ludo_id"
-                        />
-                        <Route
-                            getComponent={(nextState, cb) => {
-                                cb(
-                                    null,
-                                    props =>
-                                        <MobileReportForm
-                                            {...props}
-                                            router_currentFormValue={router_currentFormValue}
-                                            router_currentLudoId={router_currentLudoId}
-                                        />
-                                );
-                            }}
-                            onEnter={ludoRedirect}
-                            path="ludo/:ludo_id/mobile-report-form"
-                        />
-                        <Route
-                            getComponent={(nextState, cb) => {
-                                const Component = ludoPageArrayForEdit[router_ludoPageIndex];
-                                cb(
-                                    null,
-                                    props =>
-                                        <Component
-                                            {...props}
-                                            router_currentFormValue={router_currentFormValue}
-                                            router_currentLudoId={router_currentLudoId}
-                                        />
-                                );
-                            }} 
-                            onEnter={[isLoggedIn, ludoEditRedirect]}
-                            onLeave={ludoRedirect}
-                            path="ludo-edit/:ludo_id"
-                        />
-                        <Route
-                            component={Playground}
-                            path="playground"
-                        />
-                        <Route
-                            component={Profile}
-                            onEnter={isLoggedIn}
-                            path="profile(/:userId)"
-                        />
-                        <Route
-                            component={SignUp}
-                            path="signup"
-                        />
-                        <Route
-                            component={Template}
-                            path="template/:templateId"
-                        />
-                    </Route>
-                </Router>
-                <MediaQuery minDeviceWidth={768}>
-                    <MessengerCustomerChat
-                        appId="1075325352502513"
-                        pageId="1557980337838066"
-                    />
-                </MediaQuery>
-            </div>
-        );
-    }
-}
+const AppRouter = () => (
+    <div>
+        <Router history={browserHistory}>
+            <Route
+                component={App}
+                path="/"
+            >
+                <IndexRedirect to="cardList" />
+                <Route
+                    component={Playground}
+                    path="cardList"
+                />
+                <Route
+                    component={Create}
+                    onEnter={isLoggedIn}
+                    path="create"
+                />
+                <Route
+                    component={Friend}
+                    onEnter={isLoggedIn}
+                    path="friend"
+                />
+                <Route
+                    component={Invite}
+                    onEnter={isLoggedIn}
+                    path="invite/:friend_id"
+                />
+                <Route
+                    component={LogIn}
+                    path="login"
+                />
+                <Route
+                    getComponent={(nextState, cb) => {
+                        const Component = ludoPageArray[router_ludoPageIndex];
+                        cb(
+                            null,
+                            props =>
+                                <Component
+                                    {...props}
+                                    router_currentFormValue={router_currentFormValue}
+                                    router_currentLudoId={router_currentLudoId}
+                                />
+                        );
+                    }}
+                    onEnter={ludoRedirect}
+                    path="ludo/:ludo_id"
+                />
+                <Route
+                    getComponent={(nextState, cb) => {
+                        cb(
+                            null,
+                            props =>
+                                <MobileReportForm
+                                    {...props}
+                                    router_currentFormValue={router_currentFormValue}
+                                    router_currentLudoId={router_currentLudoId}
+                                />
+                        );
+                    }}
+                    onEnter={ludoRedirect}
+                    path="ludo/:ludo_id/mobile-report-form"
+                />
+                <Route
+                    getComponent={(nextState, cb) => {
+                        const Component = ludoPageArrayForEdit[router_ludoPageIndex];
+                        cb(
+                            null,
+                            props =>
+                                <Component
+                                    {...props}
+                                    router_currentFormValue={router_currentFormValue}
+                                    router_currentLudoId={router_currentLudoId}
+                                />
+                        );
+                    }} 
+                    onEnter={[isLoggedIn, ludoEditRedirect]}
+                    onLeave={ludoRedirect}
+                    path="ludo-edit/:ludo_id"
+                />
+                <Route
+                    component={Playground}
+                    path="playground"
+                />
+                <Route
+                    component={Profile}
+                    onEnter={isLoggedIn}
+                    path="profile(/:userId)"
+                />
+                <Route
+                    component={SignUp}
+                    path="signup"
+                />
+                <Route
+                    component={Template}
+                    path="template/:templateId"
+                />
+            </Route>
+        </Router>
+        <MediaQuery minDeviceWidth={768}>
+            <MessengerCustomerChat
+                appId="1075325352502513"
+                pageId="1557980337838066"
+            />
+        </MediaQuery>
+    </div>
+);
+
+export default AppRouter;

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import HeaderLeft from '../Header/HeaderLeft';
 
+const ProfileLabel = "個人數據";
+
 const CardSystemLinkInfoList = [
     {
         text: "遊戲廣場",
@@ -19,19 +21,39 @@ const CardSystemLinkInfoList = [
     }
 ];
 
-const ProfileLabel = "個人數據";
-
-const ProfileLinkTextList = [
-    "等待加入",
-    "正在遊戲",
-    "已經結束",
-    "我的模板"
+const ProfileLinkInfoList = [
+    {
+        text: "等待加入",
+        url: "/profile"
+    },
+    {
+        text: "正在遊戲",
+        url: "/profile"
+    },
+    {
+        text: "已經結束",
+        url: "/profile"
+    },
+    {
+        text: "我的模板",
+        url: "/profile"
+    }
 ];
 
-const SettingLinkTextList = [
-    "帳號設定",
-    "說明",
-    "提供意見"
+const SettingLinkInfoList = [
+    // {
+    //     text: "帳號設定",
+    //     url: "https://www.facebook.com/messages/t/ludonow"
+    // },
+    // {
+    //     text: "說明",
+    //     url: "https://www.facebook.com/messages/t/ludonow"
+    // },
+    {
+        isExternal: true,
+        text: "提供意見",
+        url: "https://www.facebook.com/messages/t/ludonow"
+    }
 ];
 
 // styled components
@@ -54,12 +76,12 @@ const ListItem = styled.li`
     padding: 2px 0;
 
     &:active {
-      background-color: black;
+        background-color: black;
     }
 
     &:hover {
-      border: 1px white solid;
-      border-radius: 1rem;
+        border: 1px white solid;
+        border-radius: 1rem;
     }
 `;
 
@@ -82,47 +104,51 @@ const NavbarWrapper = styled.div`
     width: 10vw;
 `;
 
+const StyledAnchor = styled.a`
+    color: white;
+    text-decoration: none;
+`;
+
+const StyledLink = styled(Link)`
+    color: white;
+    text-decoration: none;
+`;
+
 // child components
-const CardSystemLinkList = ({ CardSystemLinkInfoList }) => (
+const LinkList = ({
+    handleNavbarClose,
+    label,
+    linkInfoList
+}) => (
     <LinkListWrapper>
-        {
-            CardSystemLinkInfoList.map(CardSystemLinkInfo => (
-                <Link to={CardSystemLinkInfo.url}>
-                    <ListItem>
-                        {CardSystemLinkInfo.text}
-                    </ListItem>
-                </Link>
-            ))
+        { label ?
+            <Label>{label}</Label>
+            : null
         }
-    </LinkListWrapper>
-);
-
-const ProfileLinkList = ({ ProfileLabel, ProfileLinkTextList }) => (
-    <LinkListWrapper>
-        <Label>{ProfileLabel}</Label>
         {
-            ProfileLinkTextList.map(ProfileLinkText => (
-                <ListItem>
-                    {ProfileLinkText}
-                </ListItem>
-            ))
-        }
-    </LinkListWrapper>
-);
-
-const SettingLinkList = ({ SettingLinkTextList }) => (
-    <LinkListWrapper>
-        {
-            SettingLinkTextList.map(SettingLinkText => (
-                <ListItem>
-                    {SettingLinkText}
-                </ListItem>
+            linkInfoList.map(linkInfo => (
+                linkInfo.isExternal ? 
+                    <StyledAnchor href={linkInfo.url}>
+                        <ListItem>
+                            {linkInfo.text}
+                        </ListItem>
+                    </StyledAnchor>
+                :
+                    <StyledLink
+                        onClick={handleNavbarClose}
+                        to={linkInfo.url}
+                    >
+                        <ListItem>
+                            {linkInfo.text}
+                        </ListItem>
+                    </StyledLink>
             ))
         }
     </LinkListWrapper>
 );
 
 const Navbar =({
+    handleNavbarClose,
     handleNavbarToggle,
     isNavbarVisible
 }) =>  (
@@ -132,15 +158,18 @@ const Navbar =({
                 handleNavbarToggle={handleNavbarToggle}
                 isNavbarVisible={isNavbarVisible}
             />
-            <CardSystemLinkList
-                CardSystemLinkInfoList={CardSystemLinkInfoList}
+            <LinkList
+                handleNavbarClose={handleNavbarClose}
+                linkInfoList={CardSystemLinkInfoList}
             />
-            <ProfileLinkList
-                ProfileLabel={ProfileLabel}
-                ProfileLinkTextList={ProfileLinkTextList}
+            <LinkList
+                handleNavbarClose={handleNavbarClose}
+                label={ProfileLabel}
+                linkInfoList={ProfileLinkInfoList}
             />
-            <SettingLinkList
-                SettingLinkTextList={SettingLinkTextList}
+            <LinkList
+                handleNavbarClose={handleNavbarClose}
+                linkInfoList={SettingLinkInfoList}
             />
         </NavbarWrapper>
     </Modal>
