@@ -31,6 +31,9 @@ const CloseIconWrapper = styled.div`
 `;
 
 const DesktopReportPostWrapper = styled.div`
+    bottom: 0;
+    display: flex;
+    justify-content: center;
     position: fixed;
 `;
 
@@ -158,10 +161,11 @@ class DesktopReportPost extends Component {
         this.setState({
             isSubmitting: true
         });
-        
-        const imagePost = new FormData();
-        imagePost.append('file', this.state.images[0]);
-        axios.post('/apis/report-image', imagePost)
+        const { reportType } = this.state;
+        if (reportType === 'image') {
+            const imagePost = new FormData();
+            imagePost.append('file', this.state.images[0]);
+            axios.post('/apis/report-image', imagePost)
             .then(response => {
                 if (response.data.status === '200') {
                     return response.data.location;
@@ -219,6 +223,58 @@ class DesktopReportPost extends Component {
                     isSubmitting: false
                 });
             });
+        } else if (reportType === 'text' || reportType === 'video') {
+            const {
+                currentUserId,
+                ludoId,
+                router_currentFormValue
+            } = this.props;
+            const {
+                text,
+                video
+            } = this.state;
+            let whoIsUser = '';
+            (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
+            const ludoReportPost = {
+                content: text,
+                ludo_id: ludoId,
+                player: whoIsUser,
+                video
+            };
+            axios.post('/apis/report', ludoReportPost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    this.props.handleShouldProfileUpdate(true);
+                    this.props.handleShouldReportUpdate(true);
+                    this.handleDialogClose();
+                } else {
+                    if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    console.error('DesktopReportPost handleSubmit response data is not OK. The message from server is: ', response.data.message);
+                    if (response.data.err) {
+                        console.error('DesktopReportPost handleSubmit response data is not OK. The error from server is: ', response.data.err);
+                        throw new Error(response.data.err);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('DesktopReportPost handleSubmit catch an error: ', error);
+                if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+            })
+            .finally(() => {
+                this.setState({
+                    isSubmitting: false
+                });
+            });
+        } else {
+            this.setState({
+                isSubmitting: false
+            });
+            window.alert('請選擇回報種類');
+        }
     }
 
     handleTextChange(event) {

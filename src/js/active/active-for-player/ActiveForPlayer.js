@@ -13,36 +13,36 @@ const panel_width = 609;
 
 const CardDetailContainer = styled.div`
     .container {
-        display:flex;
+        display: flex;
         justify-content: center;
-        margin-bottom:100px;
+        margin-bottom: 100px;
     }
 `;
 
 const ReportTabs = styled.div`
     .tabs {
         align-items: center;
-        justify-content: center;
-        width: 609px;
         display: block;
-        padding-top:23px;
+        justify-content: center;
+        padding-top: 23px;
+        width: 609px;
     }
 
     .tab_list {
-        display:flex;
-        width :100%;
         align-items: center;
+        display:flex;
         justify-content: center;
+        width: 100%;
     }
     .tab {
         /*border-bottom: 3px solid #727272;*/
-        width: 85px;
-        font-size: 15px;
-        text-align: center;
-        display: block;
-        padding-bottom: 4px;
         color: #FFFFFF;
-        margin:0 55px;
+        display: block;
+        font-size: 15px;
+        margin: 0 55px;
+        padding-bottom: 4px;
+        text-align: center;
+        width: 85px;
     }
 
     .selected_tab {
@@ -50,22 +50,22 @@ const ReportTabs = styled.div`
         color: #727272;
     }
 
-    .panel_container{
-        /* display:flex; */
-        width :100%;
+    .panel_container {
         align-items: center;
-        justify-content: center;
         /* background-color: #ffffff; */
+        /* display:flex; */
+        justify-content: center;
         margin-top:29px;
+        width :100%;
     }
 
     .panel {
-        padding-top:29px;
-        width:100%;
-        background-color: #ffffff;
-        display:none;
         align-items: center;
+        background-color: #ffffff;
+        display: none;
         justify-content: center;
+        padding-top:29px;
+        width: 100%;
     }
 
     .selected_panel {
