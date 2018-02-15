@@ -5199,6 +5199,22 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
+typescript-styled-plugin@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.5.1.tgz#fb8651096c6ebff5e13accce67b34471c0dee6cd"
+  dependencies:
+    typescript-template-language-service-decorator "^1.2.0"
+    vscode-css-languageservice "^3.0.5"
+    vscode-languageserver-types "^3.5.0"
+
+typescript-template-language-service-decorator@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-1.2.0.tgz#6d5b20b2b0f394a055390d901a4c5f273e3754ab"
+
+typescript@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.1.tgz#bb3682c2c791ac90e7c6210b26478a8da085c359"
+
 ua-parser-js@^0.7.9:
   version "0.7.14"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
@@ -5345,6 +5361,25 @@ vm-browserify@0.0.4:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-0.0.4.tgz#5d7ea45bbef9e4a6ff65f95438e0a87c357d5a73"
   dependencies:
     indexof "0.0.1"
+
+vscode-css-languageservice@^3.0.5:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/vscode-css-languageservice/-/vscode-css-languageservice-3.0.6.tgz#0e9230347040ba0161fba941885195215ec9be40"
+  dependencies:
+    vscode-languageserver-types "^3.6.0-next.1"
+    vscode-nls "^2.0.1"
+
+vscode-languageserver-types@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.5.0.tgz#e48d79962f0b8e02de955e3f524908e2b19c0374"
+
+vscode-languageserver-types@^3.6.0-next.1:
+  version "3.6.0-next.1"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.6.0-next.1.tgz#98e488d3f87b666b4ee1a3d89f0023e246d358f3"
+
+vscode-nls@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-2.0.2.tgz#808522380844b8ad153499af5c3b03921aea02da"
 
 warning@^2.0.0:
   version "2.1.0"
