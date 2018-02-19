@@ -63,14 +63,6 @@ export default class CardList extends Component {
         }
     }
 
-    componentWillMount() {
-        this.props.handleShouldLudoListUpdate(true);
-    }
-
-    componentWillUnmount() {
-        this.props.handleShouldLudoListUpdate(false);
-    }
-
     getFilteredConditionListFromUrl(queryUrl) {
         return queryUrl.split('?')[1];
     }

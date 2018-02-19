@@ -28,15 +28,21 @@ class Playground extends Component {
 
     render() {
         const {
+            currentUserId,
             handlePersonalCardListClose,
             isPersonalCardListVisible
         } = this.props;
         return (
             <PlaygroundWrapper>
-                <PersonalCardList
-                    handlePersonalCardListClose={handlePersonalCardListClose}
-                    isPersonalCardListVisible={isPersonalCardListVisible}
-                />
+                {
+                    currentUserId ?
+                        <PersonalCardList
+                            currentUserId={currentUserId}
+                            handlePersonalCardListClose={handlePersonalCardListClose}
+                            isPersonalCardListVisible={isPersonalCardListVisible}
+                        />
+                    : null
+                }
                 <CardList {...this.props} />
             </PlaygroundWrapper>
         );

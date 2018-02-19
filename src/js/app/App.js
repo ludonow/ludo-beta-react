@@ -319,11 +319,6 @@ export default class App extends React.Component {
                     currentUserId: response.data.user.user_id,
                     userBasicData: response.data.user
                 });
-            } else {
-                /* not login */
-                if (window.confirm('取得使用者資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
-                    window.open("https://www.facebook.com/messages/t/ludonow");
-                }
             }
         })
         .catch((error) => {

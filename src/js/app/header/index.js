@@ -80,7 +80,7 @@ const HeaderRight = ({
 }) => (
     <HeaderRightWrapper>
         {
-            isOpeningLudoListPage ?
+            isOpeningLudoListPage && userBasicData.name ?
                 <PersonalCardListToggleButton
                     onClick={handlePersonalCardListToggleButtonClick}
                 />
