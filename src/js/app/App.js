@@ -37,6 +37,7 @@ export default class App extends React.Component {
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
+            isPersonalCardListVisible: true,
             lastEvaluatedKey: {},
             ludoList: [],
             shouldLudoListUpdate: false,
@@ -68,6 +69,8 @@ export default class App extends React.Component {
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
         this.handleNavbarClose = this.handleNavbarClose.bind(this);
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
+        this.handlePersonalCardListClose = this.handlePersonalCardListClose.bind(this);
+        this.handlePersonalCardListToggle = this.handlePersonalCardListToggle.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
@@ -385,18 +388,6 @@ export default class App extends React.Component {
         });
     }
 
-    handleNavbarClose(event) {
-        this.setState({
-            isNavbarVisible: false
-        });
-    }
-
-    handleNavbarToggle(boolean) {
-        this.setState({
-            isNavbarVisible: boolean
-        });
-    }
-
     handleIsOpeningActivePage(boolean) {
         this.setState({
             isOpeningActivePage: boolean
@@ -418,6 +409,30 @@ export default class App extends React.Component {
     handleIsOpeningProfilePage(boolean) {
         this.setState({
             isOpeningProfilePage: boolean
+        });
+    }
+
+    handleNavbarClose() {
+        this.setState({
+            isNavbarVisible: false
+        });
+    }
+
+    handleNavbarToggle(boolean) {
+        this.setState({
+            isNavbarVisible: boolean
+        });
+    }
+
+    handlePersonalCardListClose() {
+        this.setState({
+            isPersonalCardListVisible: false
+        });
+    }
+
+    handlePersonalCardListToggle(boolean) {
+        this.setState({
+            isPersonalCardListVisible: boolean
         });
     }
 
@@ -468,7 +483,10 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { isNavbarVisible } = this.state;
+        const {
+            isNavbarVisible,
+            isPersonalCardListVisible
+        } = this.state;
         const {
             route,
             router_currentFormValue
@@ -481,11 +499,13 @@ export default class App extends React.Component {
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
                     handleNavbarToggle={this.handleNavbarToggle}
+                    handlePersonalCardListToggle={this.handlePersonalCardListToggle}
                     isLoggedIn={this.state.isLoggedIn}
                     isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
                     isOpeningLudoListPage={this.state.isOpeningLudoListPage}
                     isOpeningProfilePage={this.state.isOpeningProfilePage}
                     isNavbarVisible={isNavbarVisible}
+                    isPersonalCardListVisible={isPersonalCardListVisible}
                     userBasicData={this.state.userBasicData}
                 />
                 <MediaQuery minWidth={768}>
@@ -520,11 +540,11 @@ export default class App extends React.Component {
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
-                                handleNavbarToggle: this.handleNavbarToggle,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                                 handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
+                                handlePersonalCardListClose: this.handlePersonalCardListClose,
                                 handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,
                                 handleShouldProfileUpdate: this.handleShouldProfileUpdate,
                                 handleShouldReportUpdate: this.handleShouldReportUpdate,

@@ -68,11 +68,19 @@ const StyledMediaQuery = styled(MediaQuery)`
     width: 100%;
 `;
 
+const PersonalCardListToggleButton = styled.button`
+    background-color: black;
+`;
+
 // child components
 const HeaderRight = ({
+    handlePersonalCardListToggleButtonClick,
     userBasicData
 }) => (
     <HeaderRightWrapper>
+        <PersonalCardListToggleButton
+            onClick={handlePersonalCardListToggleButtonClick}
+        />
         <AvatarWrapper>
             {
                 userBasicData.name ?
@@ -110,6 +118,7 @@ export default class Header extends Component {
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
         this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
         this.handleMobileSearchTouchTap = this.handleMobileSearchTouchTap.bind(this);
+        this.handlePersonalCardListToggleButtonClick = this.handlePersonalCardListToggleButtonClick.bind(this);
         this.handleSearchSubmitKeyUp = this.handleSearchSubmitKeyUp.bind(this);
         this.handleSearchSubmitTouchTap = this.handleSearchSubmitTouchTap.bind(this);
         this.handleSearchingTextChange = this.handleSearchingTextChange.bind(this);
@@ -144,6 +153,15 @@ export default class Header extends Component {
                 isSearching: true
             })
         );
+    }
+
+    handlePersonalCardListToggleButtonClick(event) {
+        event.preventDefault();
+        const {
+            handlePersonalCardListToggle,
+            isPersonalCardListVisible
+        } = this.props;
+        handlePersonalCardListToggle(!isPersonalCardListVisible);
     }
 
     handleSearchSubmitKeyUp(event) {
@@ -254,6 +272,7 @@ export default class Header extends Component {
                         searchingText={searchingText}
                     />
                     <HeaderRight
+                        handlePersonalCardListToggleButtonClick={this.handlePersonalCardListToggleButtonClick}
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>

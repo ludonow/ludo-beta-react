@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import PlaygroundLudoList from './PlaygroundLudoList';
+import CardList from './CardList';
+import PersonalCardList from './PersonalCardList';
 
-export default class Playground extends React.Component {
-    render() {
-        return (
-            <PlaygroundLudoList {...this.props}/>
-        );
-    }
-}
+const PlaygroundWrapper = styled.div`
+`;
+
+const Playground = (props) => (
+    <PlaygroundWrapper>
+        <PersonalCardList
+            handlePersonalCardListClose={props.handlePersonalCardListClose}
+            isPersonalCardListVisible={props.isPersonalCardListVisible}
+        />
+        <CardList {...props} />
+    </PlaygroundWrapper>
+);
+
+export default Playground;

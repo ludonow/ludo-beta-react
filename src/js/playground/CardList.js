@@ -15,6 +15,7 @@ const masonryOptions = {
 
 // styled compoennts
 const CardListWrapper = styled.div`
+    width: 1130px;
     @media (max-width: 560px) {
         width: 226px
     }
@@ -36,7 +37,7 @@ const CardListWrapper = styled.div`
     }
 `;
 
-export default class PlaygroundLudoList extends Component {
+export default class CardList extends Component {
     constructor(props) {
         super(props);
         this.state = {
