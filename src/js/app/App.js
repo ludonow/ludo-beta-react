@@ -31,7 +31,6 @@ export default class App extends React.Component {
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
             isInfiniteLoading: false,
-            isLoggedIn: false,
             isNavbarVisible: false,
             isOpeningActivePage: false,
             isOpeningCreateFormPage: false,
@@ -103,7 +102,6 @@ export default class App extends React.Component {
     componentDidUpdate() {
         const {
             currentUserId,
-            isLoggedIn,
             isOpeningLudoListPage,
             isOpeningProfilePage,
             shouldLudoListUpdate,
@@ -111,7 +109,7 @@ export default class App extends React.Component {
             shouldUserBasicDataUpdate
         } = this.state;
 
-        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
+        if (currentUserId && shouldProfileUpdate) {
             /**
              * Update profile data after the user did some ludo action and is going to open profile page
              */
@@ -318,17 +316,20 @@ export default class App extends React.Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.setState({
-                    userBasicData: response.data.user,
                     currentUserId: response.data.user.user_id,
-                    isLoggedIn: true
+                    userBasicData: response.data.user
                 });
             } else {
                 /* not login */
-                // console.error('app getUserBasicData else response from server: ', response);
+                if (window.confirm('取得使用者資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             }
         })
         .catch((error) => {
-            console.error('user error', error);
+            if (window.confirm('取得使用者資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
         });
     }
 
@@ -485,7 +486,10 @@ export default class App extends React.Component {
     render() {
         const {
             isNavbarVisible,
-            isPersonalCardListVisible
+            isOpeningCreateFormPage,
+            isOpeningLudoListPage,
+            isPersonalCardListVisible,
+            userBasicData
         } = this.state;
         const {
             route,
@@ -500,13 +504,11 @@ export default class App extends React.Component {
                     getFilteredLudoList={this.getFilteredLudoList}
                     handleNavbarToggle={this.handleNavbarToggle}
                     handlePersonalCardListToggle={this.handlePersonalCardListToggle}
-                    isLoggedIn={this.state.isLoggedIn}
-                    isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
-                    isOpeningLudoListPage={this.state.isOpeningLudoListPage}
-                    isOpeningProfilePage={this.state.isOpeningProfilePage}
                     isNavbarVisible={isNavbarVisible}
+                    isOpeningCreateFormPage={isOpeningCreateFormPage}
+                    isOpeningLudoListPage={isOpeningLudoListPage}
                     isPersonalCardListVisible={isPersonalCardListVisible}
-                    userBasicData={this.state.userBasicData}
+                    userBasicData={userBasicData}
                 />
                 <MediaQuery minWidth={768}>
                     <DesktopNavbar

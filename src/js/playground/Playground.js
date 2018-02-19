@@ -7,14 +7,40 @@ import PersonalCardList from './PersonalCardList';
 const PlaygroundWrapper = styled.div`
 `;
 
-const Playground = (props) => (
-    <PlaygroundWrapper>
-        <PersonalCardList
-            handlePersonalCardListClose={props.handlePersonalCardListClose}
-            isPersonalCardListVisible={props.isPersonalCardListVisible}
-        />
-        <CardList {...props} />
-    </PlaygroundWrapper>
-);
+class Playground extends Component {
+    componentWillMount() {
+        const {
+            handleIsOpeningLudoListPage,
+            handleShouldLudoListUpdate
+        } = this.props;
+        handleIsOpeningLudoListPage(true);
+        handleShouldLudoListUpdate(true);
+    }
+
+    componentWillUnmount() {
+        const {
+            handleIsOpeningLudoListPage,
+            handleShouldLudoListUpdate
+        } = this.props;
+        handleIsOpeningLudoListPage(false);
+        handleShouldLudoListUpdate(false);
+    }
+
+    render() {
+        const {
+            handlePersonalCardListClose,
+            isPersonalCardListVisible
+        } = this.props;
+        return (
+            <PlaygroundWrapper>
+                <PersonalCardList
+                    handlePersonalCardListClose={handlePersonalCardListClose}
+                    isPersonalCardListVisible={isPersonalCardListVisible}
+                />
+                <CardList {...this.props} />
+            </PlaygroundWrapper>
+        );
+    }
+}
 
 export default Playground;

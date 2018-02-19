@@ -75,12 +75,17 @@ const PersonalCardListToggleButton = styled.button`
 // child components
 const HeaderRight = ({
     handlePersonalCardListToggleButtonClick,
+    isOpeningLudoListPage,
     userBasicData
 }) => (
     <HeaderRightWrapper>
-        <PersonalCardListToggleButton
-            onClick={handlePersonalCardListToggleButtonClick}
-        />
+        {
+            isOpeningLudoListPage ?
+                <PersonalCardListToggleButton
+                    onClick={handlePersonalCardListToggleButtonClick}
+                />
+            : null
+        }
         <AvatarWrapper>
             {
                 userBasicData.name ?
@@ -208,12 +213,10 @@ export default class Header extends Component {
     render() {
         const {
             getFilteredLudoList,
-            getLatestLudoList,
             handleNavbarToggle,
             isNavbarVisible,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
-            isOpeningProfilePage,
             userBasicData 
         } = this.props;
 
@@ -273,6 +276,7 @@ export default class Header extends Component {
                     />
                     <HeaderRight
                         handlePersonalCardListToggleButtonClick={this.handlePersonalCardListToggleButtonClick}
+                        isOpeningLudoListPage={isOpeningLudoListPage}
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>
@@ -283,8 +287,11 @@ export default class Header extends Component {
 
 Header.propTypes = {
     getFilteredLudoList: PropTypes.func,
-    getLatestLudoList: PropTypes.func,
+    handleNavbarToggle: PropTypes.func,
+    handlePersonalCardListToggle: PropTypes.func,
+    isNavbarVisible: PropTypes.bool,
+    isOpeningCreateFormPage: PropTypes.bool,
     isOpeningLudoListPage: PropTypes.bool,
-    isOpeningProfilePage: PropTypes.bool,
+    isPersonalCardListVisible: PropTypes.bool,
     userBasicData: PropTypes.object
 };
