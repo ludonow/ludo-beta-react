@@ -3,14 +3,29 @@ import styled from 'styled-components';
 
 import axios from '../axios-config';
 import Card from './Card';
+import UpDownToggleButton from '../components/UpDownToggleButton';
 
-const CloseButton = styled.button`
-    background-color: black;
+// styled components
+const PersonalCardListWrapper = styled.div`
+    border-bottom: 1px solid white;
+    display: ${props => props.isPersonalCardListVisible ? 'flex' : 'none'};
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
 `;
 
-const PersonalCardListWrapper = styled.div`
-    background-color: red;
-    display: ${props => props.isPersonalCardListVisible ? 'block' : 'none'};
+const CardListWrapper = styled.div`
+    margin: 0 auto;
+`;
+
+const TitleWrapper = styled.div`
+    color: white;
+    padding: 10px;
+    text-align: center;
+`;
+
+const ToggleButtonWrapper = styled.div`
+    margin: 30px auto;
 `;
 
 class PersonalCardList extends Component {
@@ -116,25 +131,33 @@ class PersonalCardList extends Component {
             <PersonalCardListWrapper
                 isPersonalCardListVisible={isPersonalCardListVisible}
             >
-                {
-                    personalLudoList.map((singleLudoObject, index) => {
-                        const isThisCardFlipped = (flippedKey.indexOf(index) != -1);
-                        const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
-                        return (
-                            <Card
-                                handleCardStage={this.handleCardStage}
-                                handleClick={handleClick}
-                                index={index}
-                                isThisCardFlipped={isThisCardFlipped}
-                                key={`personal-card-${index}`}
-                                singleLudoObject={singleLudoObject}
-                            />
-                        );
-                    })
-                }
-                <CloseButton
-                    onClick={handlePersonalCardListClose}
-                />
+                <TitleWrapper>
+                    我的卡片
+                </TitleWrapper>
+                <CardListWrapper>
+                    {
+                        personalLudoList.map((singleLudoObject, index) => {
+                            const isThisCardFlipped = (flippedKey.indexOf(index) != -1);
+                            const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
+                            return (
+                                <Card
+                                    handleCardStage={this.handleCardStage}
+                                    handleClick={handleClick}
+                                    index={index}
+                                    isThisCardFlipped={isThisCardFlipped}
+                                    key={`personal-card-${index}`}
+                                    singleLudoObject={singleLudoObject}
+                                />
+                            );
+                        })
+                    }
+                </CardListWrapper>
+                <ToggleButtonWrapper>
+                    <UpDownToggleButton
+                        handleClick={handlePersonalCardListClose}
+                        isArrowPointingDown={!isPersonalCardListVisible}
+                    />
+                </ToggleButtonWrapper>
             </PersonalCardListWrapper>
         );
     }

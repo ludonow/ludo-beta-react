@@ -8,10 +8,9 @@ import { grey300 } from 'material-ui/styles/colors';
 import axios from '../../axios-config';
 
 import DesktopSearchBar from './SearchBar/DesktopSearchBar';
-import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderLeft from './HeaderLeft';
-import HeaderLogIn from './HeaderLogIn';
 import HeaderPrevPageArrow from './HeaderPrevPageArrow';
+import HeaderRight from './HeaderRight';
 import Logo from './Logo';
 import MobileSearchBar from './SearchBar/MobileSearchBar';
 import Playground from '../../playground/Playground';
@@ -24,14 +23,6 @@ import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
 import magnifierIcon from '../../../images/magnifier.svg';
 
 // styled components
-const AvatarWrapper = styled.div``;
-
-const HeaderRightWrapper = styled.div`
-    align-items: center;
-    display: inline-flex;
-    height: 100%;
-`;
-
 const HeaderWrapper = styled.div`
     background-color: #717070;
     border-bottom-color: #B6BCC1;
@@ -68,35 +59,7 @@ const StyledMediaQuery = styled(MediaQuery)`
     width: 100%;
 `;
 
-const PersonalCardListToggleButton = styled.button`
-    background-color: black;
-`;
-
 // child components
-const HeaderRight = ({
-    handlePersonalCardListToggleButtonClick,
-    isOpeningLudoListPage,
-    userBasicData
-}) => (
-    <HeaderRightWrapper>
-        {
-            isOpeningLudoListPage && userBasicData.name ?
-                <PersonalCardListToggleButton
-                    onClick={handlePersonalCardListToggleButtonClick}
-                />
-            : null
-        }
-        <AvatarWrapper>
-            {
-                userBasicData.name ?
-                    <HeaderFBPhoto userBasicData={userBasicData} />
-                :
-                    <HeaderLogIn />
-            }
-        </AvatarWrapper>
-    </HeaderRightWrapper>
-);
-
 const SearchIcon = ({ handleMobileSearchTouchTap }) => (
     <SearchIconWrapper onTouchTap={handleMobileSearchTouchTap}>
         <img src={magnifierIcon} />
@@ -217,6 +180,7 @@ export default class Header extends Component {
             isNavbarVisible,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
+            isPersonalCardListVisible,
             userBasicData 
         } = this.props;
 
@@ -277,6 +241,7 @@ export default class Header extends Component {
                     <HeaderRight
                         handlePersonalCardListToggleButtonClick={this.handlePersonalCardListToggleButtonClick}
                         isOpeningLudoListPage={isOpeningLudoListPage}
+                        isPersonalCardListVisible={isPersonalCardListVisible}
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>

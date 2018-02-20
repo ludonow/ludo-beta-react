@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ButtonWithStyle = styled.button`
+export const StyledButton = styled.button`
     align-items: center;
     background-color: ${props => props.backgroundColor ? props.backgroundColor : '#2E968C'};
     background-size: cover;
@@ -41,7 +41,7 @@ const Button = ({
     textColor,
     width
 }) => (
-    <ButtonWithStyle
+    <StyledButton
         backgroundColor={backgroundColor}
         data-payload={data}
         disabled={disabled}
@@ -53,7 +53,7 @@ const Button = ({
         width={width}
     >
         {label}
-    </ButtonWithStyle>
+    </StyledButton>
 );
 
 export default Button;
