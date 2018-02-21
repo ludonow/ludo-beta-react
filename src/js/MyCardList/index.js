@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import Masonry from 'react-masonry-component';
 
 import axios from '../axios-config'
+import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper } from '../baseStyle';
 
@@ -12,9 +14,56 @@ const masonryOptions = {
     itemSelector: ".grid-item",
 };
 
+const tabLinkList = [
+    {
+        label: '等待加入',
+        stage: 1,
+    },
+    {
+        label: '正在遊戲',
+        stage: 2,
+    },
+    {
+        label: '已經結束',
+        stage: 3,
+    },
+    {
+        label: '我的模板',
+        stage: 0,
+    }
+];
+
 // styled components
+const StyledMasonry = styled(Masonry)`
+    margin-bottom: 50px;
+`;
+
+const StyledLink = styled(Link)`
+    color: rgba(255,255,255,0.4);
+    font-weight: bold;
+    text-decoration: none;
+`;
+
+const StyledTab = styled.div`
+    font-size: 16px;
+    margin: 0 12px;
+    padding: 0 8px 5px 8px;
+`;
+
+const StyledSelectedTab = StyledTab.extend`
+    border-bottom: 1.5px solid white;
+    color: white;
+`;
+
+const StyledTabList = styled.div`
+    display: inline-flex;
+    margin-bottom: 40px;
+`;
+
 const Wrapper = styled(CardListWrapper)`
+    align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 `;
 
@@ -24,14 +73,18 @@ class MyCardList extends Component {
         this.state = {
             ludoList: [],
             search: 'dafault',
+            tabIndex: 0,
         };
         this.getMyCardList = this.getMyCardList.bind(this);
+        this.getTabIndex = this.getTabIndex.bind(this);
+        this.handleDownloadReportClick = this.handleDownloadReportClick.bind(this);
     }
 
     componentDidMount() {
         if (this.props.search) {
             this.setState({
                 search: this.props.search,
+                tabIndex: this.getTabIndex(this.props.search),
             });
             this.getMyCardList(this.props.search);
         }
@@ -44,6 +97,7 @@ class MyCardList extends Component {
         ) {
             this.setState({
                 search: nextProps.search,
+                tabIndex: this.getTabIndex(nextProps.search),
             });
             this.getMyCardList(nextProps.search);
         }
@@ -71,24 +125,83 @@ class MyCardList extends Component {
         });
     }
 
+    getTabIndex(search) {
+        switch (true) {
+            case search.includes('stage=0'):
+                return 3;
+            case search.includes('stage=3'):
+                return 2;
+            case search.includes('stage=2'):
+                return 1;
+            case search.includes('stage=1'):
+            default:
+                return 0;
+        }
+    }
+
+    handleDownloadReportClick(event) {
+        event.preventDefault();
+    }
+
     render() {
+        const {
+            currentUserId,
+        } = this.props;
+
         const {
             ludoList,
             search,
+            tabIndex,
         } = this.state;
 
         return (
             <Wrapper>
-                <Masonry options={masonryOptions}>
+                <StyledTabList>
+                    {
+                        tabLinkList.map((tabLink, index) => {
+                            if (index === tabIndex) {
+                                return (
+                                    <StyledSelectedTab
+                                        key={`tab-link-${index}`}
+                                    >
+                                        {tabLink.label}
+                                    </StyledSelectedTab>
+                                )
+                            } else {
+                                return (
+                                    <StyledTab
+                                        key={`tab-link-${index}`}
+                                    >
+                                        <StyledLink to={`/myCardList?stage=${tabLink.stage}&user_id=${currentUserId}`}>
+                                            {tabLink.label}
+                                        </StyledLink>
+                                    </StyledTab>
+                                )
+                            }
+                        })
+                    }
+                </StyledTabList>
+                <StyledMasonry options={masonryOptions}>
                     <CardListContainer
                         keyPrefix="my-card"
                         ludoList={ludoList}
                         search={search}
                     />
-                </Masonry>
+                </StyledMasonry>
             </Wrapper>
         );
     }
 }
+/*
+    <Button
+        backgroundColor="#585858"
+        fontSize="14px"
+        label="下載數據報告"
+        margin="20px 0"
+        padding="5px 0"
+        onClick={this.handleDownloadReportClick}
+    >
+    </Button> 
+*/
 
 export default MyCardList;
