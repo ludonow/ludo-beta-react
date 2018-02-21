@@ -50,6 +50,10 @@ const ClassificationTabLinkList = styled.div`
     margin-bottom: 30px;
 `;
 
+const StyledMasonry = styled(Masonry)`
+    margin: 0 auto;
+`;
+
 const Wrapper = styled.div`
     align-items: center;
     display: flex;
@@ -141,13 +145,13 @@ class Search extends Component {
                     }
                 </ClassificationTabLinkList>
                 <CenteredCardListWrapper>
-                    <Masonry options={masonryOptions}>
+                    <StyledMasonry options={masonryOptions}>
                         <CardListContainer
                             emptyText="搜尋不到相關的結果"
                             keyPrefix="search-result"
                             ludoList={searchResult}
                         />
-                    </Masonry>
+                    </StyledMasonry>
                 </CenteredCardListWrapper>
             </Wrapper>
         );
