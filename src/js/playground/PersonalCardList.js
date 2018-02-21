@@ -38,7 +38,7 @@ class PersonalCardList extends Component {
         this.getPersonalLudoList = this.getPersonalLudoList.bind(this);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (prevProps.search !== this.state.search) {
             this.setState({
                 search: prevProps.search
@@ -82,17 +82,21 @@ class PersonalCardList extends Component {
         
         const {
             personalLudoList,
+            search,
         } = this.state;
+
+        const queryTarget = (search.includes('stage=0')) ? '模板' : '卡片';
 
         return (
             <PersonalCardListWrapper isPersonalCardListVisible={isPersonalCardListVisible}>
                 <TitleWrapper>
-                    我的卡片
+                    我的{queryTarget}
                 </TitleWrapper>
                 <CardListWrapper>
                     <CardListContainer
                         keyPrefix="personal-card"
                         ludoList={personalLudoList}
+                        search={search}
                     />
                 </CardListWrapper>
                 <ToggleButtonWrapper>

@@ -68,33 +68,41 @@ class CardListContainer extends Component {
         const {
             keyPrefix,
             ludoList,
+            search,
         } = this.props;
+
+        const queryTarget = (search.includes('stage=0')) ? '模板' : '卡片';
+
         return (
             <div>
                 {
                     ludoList.length > 0 ?
-                    ludoList.map((singleLudoObject, index) => {
-                        const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
-                        const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
-                        return (
-                            <Card
-                                handleCardStage={this.handleCardStage}
-                                handleClick={handleClick}
-                                index={index}
-                                isThisCardFlipped={isThisCardFlipped}
-                                key={`${keyPrefix}-${index}`}
-                                singleLudoObject={singleLudoObject}
-                            />
-                        );
-                    })
+                        ludoList.map((singleLudoObject, index) => {
+                            const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
+                            const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
+                            return (
+                                <Card
+                                    handleCardStage={this.handleCardStage}
+                                    handleClick={handleClick}
+                                    index={index}
+                                    isThisCardFlipped={isThisCardFlipped}
+                                    key={`${keyPrefix}-${index}`}
+                                    singleLudoObject={singleLudoObject}
+                                />
+                            );
+                        })
                     :
-                    <EmptyTextWrapper>
-                        目前沒有卡片喔，自己創建一個吧！
-                    </EmptyTextWrapper>
+                        <EmptyTextWrapper>
+                            目前沒有{queryTarget}喔，創建一個吧！
+                        </EmptyTextWrapper>
                 }
             </div>
         );
     }
 }
+
+CardListContainer.defaultProps = {
+    search: ''
+};
 
 export default CardListContainer;
