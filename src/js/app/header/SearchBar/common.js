@@ -18,22 +18,36 @@ const CancelIconPadding = `
 
 const CancelIconWrapper = styled(A)`
     ${CancelIconPadding}
+    padding-top: ${props => props.isMobile ? '3px': '1px'};
 `;
 
 export const CancelIconPlaceHolder = styled.div`
-    width: 15px;
-    height: 15px;
     ${CancelIconPadding}
+    height: ${props => props.height ? props.height: '15px'};
+    width: ${props => props.width ? props.width: '15px'};
 `;
 
-export const CancelIconButton = ({ handleSearchingTextClear }) => (
-    <CancelIconWrapper onTouchTap={handleSearchingTextClear}>
+export const CancelIconButton = ({
+    handleSearchingTextClear,
+    height,
+    isMobile,
+    width,
+}) => (
+    <CancelIconWrapper
+        isMobile={isMobile}
+        onTouchTap={handleSearchingTextClear}
+    >
         <CancelIcon
             color={grey700}
-            style={{height: '15px', width: '15px'}}
+            style={{height, width}}
         />
     </CancelIconWrapper>
 );
+
+CancelIconButton.defaultProps = {
+    height: '15px',
+    width: '15px',
+};
 
 export const SearchBar = styled.div`
     background-color: #999999;
@@ -54,8 +68,8 @@ export const SearchBar = styled.div`
         background-color: #999999;
         caret-color: white;
         color: white;
-        font-size: 12px;
-        font-family: "Microsoft JhengHei";
+        font-size: ${props => props.isMobile ? '16px' : '12px'};
+        font-family: "Exo", "Microsoft JhengHei";
     }
 
     input::-webkit-input-placeholder {
