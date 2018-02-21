@@ -480,15 +480,17 @@ export default class App extends React.Component {
 
     render() {
         const {
+            currentUserId,
             isNavbarVisible,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
             isPersonalCardListVisible,
-            userBasicData
+            userBasicData,
         } = this.state;
         const {
+            location,
             route,
-            router_currentFormValue
+            router_currentFormValue,
         } = this.props;
 
         const { path } = route;
@@ -507,6 +509,7 @@ export default class App extends React.Component {
                 />
                 <MediaQuery minWidth={768}>
                     <DesktopNavbar
+                        currentUserId={currentUserId}
                         getFilteredLudoList={this.getFilteredLudoList}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
@@ -515,6 +518,7 @@ export default class App extends React.Component {
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
                     <MobileNavbar
+                        currentUserId={currentUserId}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
                         isNavbarVisible={isNavbarVisible}
@@ -525,6 +529,7 @@ export default class App extends React.Component {
                         React.cloneElement(this.props.children,
                             {
                                 ...this.state,
+                                search: location.search,
                                 router_currentFormValue,
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getCurrentLudoData: this.getCurrentLudoData,

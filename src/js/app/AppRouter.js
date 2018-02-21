@@ -14,6 +14,7 @@ import Invite from '../create/Invite';
 import LogIn from './LogIn.js';
 import LudoEdit from '../ludo-edit/LudoEdit';
 import MobileReportForm from '../active/mobile-report-form/MobileReportForm';
+import MyCardList from '../MyCardList/index';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
@@ -213,6 +214,10 @@ const AppRouter = () => (
                     onEnter={[isLoggedIn, ludoEditRedirect]}
                     onLeave={ludoRedirect}
                     path="ludo-edit/:ludo_id"
+                />
+                <Route
+                    component={MyCardList}
+                    path="myCardList"
                 />
                 <Route
                     component={Playground}

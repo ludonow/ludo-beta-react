@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';

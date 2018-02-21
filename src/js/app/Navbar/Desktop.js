@@ -6,7 +6,7 @@ import HeaderLeft from '../Header/HeaderLeft';
 
 const ProfileLabel = "個人數據";
 
-const CardSystemLinkInfoList = [
+const cardSystemLinkInfoList = [
     {
         text: "遊戲廣場",
         url: "/cardList"
@@ -21,26 +21,26 @@ const CardSystemLinkInfoList = [
     }
 ];
 
-const ProfileLinkInfoList = [
+const personalCardListLinkInfoSampleList = [
     {
         text: "等待加入",
-        url: "/profile"
+        url: "/myCardList?stage=1&user_id="
     },
     {
         text: "正在遊戲",
-        url: "/profile"
+        url: "/myCardList?stage=2&user_id="
     },
     {
         text: "已經結束",
-        url: "/profile"
+        url: "/myCardList?stage=3&user_id="
     },
     {
         text: "我的模板",
-        url: "/profile"
+        url: "/myCardList?stage=0&user_id="
     }
 ];
 
-const SettingLinkInfoList = [
+const settingLinkInfoList = [
     // {
     //     text: "帳號設定",
     //     url: "https://www.facebook.com/messages/t/ludonow"
@@ -128,13 +128,17 @@ const LinkList = ({
         {
             linkInfoList.map(linkInfo => (
                 linkInfo.isExternal ? 
-                    <StyledAnchor href={linkInfo.url}>
+                    <StyledAnchor 
+                        href={linkInfo.url}
+                        key={linkInfo.text}
+                    >
                         <ListItem>
                             {linkInfo.text}
                         </ListItem>
                     </StyledAnchor>
                 :
                     <StyledLink
+                        key={linkInfo.text}
                         onClick={handleNavbarClose}
                         to={linkInfo.url}
                     >
@@ -148,31 +152,39 @@ const LinkList = ({
 );
 
 const Desktop =({
+    currentUserId,
     handleNavbarClose,
     handleNavbarToggle,
     isNavbarVisible
-}) =>  (
-    <Modal isNavbarVisible={isNavbarVisible}>
-        <NavbarWrapper>
-            <HeaderLeft
-                handleNavbarToggle={handleNavbarToggle}
-                isNavbarVisible={isNavbarVisible}
-            />
-            <LinkList
-                handleNavbarClose={handleNavbarClose}
-                linkInfoList={CardSystemLinkInfoList}
-            />
-            <LinkList
-                handleNavbarClose={handleNavbarClose}
-                label={ProfileLabel}
-                linkInfoList={ProfileLinkInfoList}
-            />
-            <LinkList
-                handleNavbarClose={handleNavbarClose}
-                linkInfoList={SettingLinkInfoList}
-            />
-        </NavbarWrapper>
-    </Modal>
-);
+}) => {
+    const personalCardListLinkInfoList = personalCardListLinkInfoSampleList.map(info => ({
+        ...info,
+        url: info.url + currentUserId,
+    }));
+
+    return (
+        <Modal isNavbarVisible={isNavbarVisible}>
+            <NavbarWrapper>
+                <HeaderLeft
+                    handleNavbarToggle={handleNavbarToggle}
+                    isNavbarVisible={isNavbarVisible}
+                />
+                <LinkList
+                    handleNavbarClose={handleNavbarClose}
+                    linkInfoList={cardSystemLinkInfoList}
+                />
+                <LinkList
+                    handleNavbarClose={handleNavbarClose}
+                    label={ProfileLabel}
+                    linkInfoList={personalCardListLinkInfoList}
+                />
+                <LinkList
+                    handleNavbarClose={handleNavbarClose}
+                    linkInfoList={settingLinkInfoList}
+                />
+            </NavbarWrapper>
+        </Modal>
+    );
+};
 
 export default Desktop;

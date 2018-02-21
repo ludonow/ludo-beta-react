@@ -30,7 +30,8 @@ class Playground extends Component {
         const {
             currentUserId,
             handlePersonalCardListClose,
-            isPersonalCardListVisible
+            isPersonalCardListVisible,
+            search,
         } = this.props;
         return (
             <PlaygroundWrapper>
@@ -40,6 +41,7 @@ class Playground extends Component {
                             currentUserId={currentUserId}
                             handlePersonalCardListClose={handlePersonalCardListClose}
                             isPersonalCardListVisible={isPersonalCardListVisible}
+                            search={search}
                         />
                     : null
                 }
