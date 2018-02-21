@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
+import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
 
 import axios from '../axios-config';
@@ -130,29 +131,45 @@ class Search extends Component {
         } = this.state;
         return (
             <Wrapper>
-                <ClassificationTabLinkList>
-                    {
-                        filterInfoList.map(filterInfo => (
-                            <ButtonWrapper to={`/search?stage=${filterInfo.stage}&title=${title}`}>
-                                <Button
-                                    backgroundColor={filterInfo.backgroundColor}
-                                    fontSize="16px"
-                                    label={filterInfo.label}
-                                    padding="5px 0"
-                                />
-                            </ButtonWrapper>
-                        ))
-                    }
-                </ClassificationTabLinkList>
-                <CenteredCardListWrapper>
-                    <StyledMasonry options={masonryOptions}>
-                        <CardListContainer
-                            emptyText="搜尋不到相關的結果"
-                            keyPrefix="search-result"
-                            ludoList={searchResult}
-                        />
-                    </StyledMasonry>
-                </CenteredCardListWrapper>
+                <MediaQuery minWidth={768}>
+                    <ClassificationTabLinkList>
+                        {
+                            filterInfoList.map((filterInfo, index) => (
+                                <ButtonWrapper
+                                    key={`search-filter-${index}`}
+                                    to={`/search?stage=${filterInfo.stage}&title=${title}`}
+                                >
+                                    <Button
+                                        backgroundColor={filterInfo.backgroundColor}
+                                        fontSize="16px"
+                                        label={filterInfo.label}
+                                        padding="5px 0"
+                                    />
+                                </ButtonWrapper>
+                            ))
+                        }
+                    </ClassificationTabLinkList>
+                    <CenteredCardListWrapper>
+                        <StyledMasonry options={masonryOptions}>
+                            <CardListContainer
+                                emptyText="搜尋不到相關的結果"
+                                keyPrefix="search-result"
+                                ludoList={searchResult}
+                            />
+                        </StyledMasonry>
+                    </CenteredCardListWrapper>
+                </MediaQuery>
+                <MediaQuery maxWidth={768}>
+                    <CenteredCardListWrapper>
+                        <StyledMasonry options={masonryOptions}>
+                            <CardListContainer
+                                emptyText="搜尋不到相關的結果"
+                                keyPrefix="search-result"
+                                ludoList={searchResult}
+                            />
+                        </StyledMasonry>
+                    </CenteredCardListWrapper>
+                </MediaQuery>
             </Wrapper>
         );
     }
