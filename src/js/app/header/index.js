@@ -169,8 +169,8 @@ export default class Header extends Component {
          * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
          */
         const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
-        browserHistory.push('/playground');
-        this.props.getFilteredLudoList(filterCondition);
+        browserHistory.push(`/search?stage=1&${filterCondition}`);
+        // this.props.getFilteredLudoList(filterCondition);
     }
 
     render() {

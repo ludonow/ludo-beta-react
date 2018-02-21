@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import styled from 'styled-components';
 
 export const CardListWrapper = styled.div`
@@ -21,4 +22,9 @@ export const CardListWrapper = styled.div`
     @media (min-width: 1175px) {
         width: 1130px;
     }
+`;
+
+export const StyledLink = styled(Link)`
+    color: white;
+    text-decoration: none;
 `;

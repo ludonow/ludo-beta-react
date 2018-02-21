@@ -25,6 +25,7 @@ const SearchBarLeftPlaceholder = styled.div`
 
 const DesktopSearchBar = ({
     handleSearchSubmitKeyUp,
+    handleSearchSubmitTouchTap,
     handleSearchingTextChange,
     handleSearchingTextClear,
     searchingText
@@ -55,6 +56,7 @@ const DesktopSearchBar = ({
                 fontSize="12px"
                 label="搜尋"
                 margin="0 0 0 5px"
+                onClick={handleSearchSubmitTouchTap}
                 padding="0"
                 width="40px"
             />

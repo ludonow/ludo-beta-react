@@ -19,6 +19,7 @@ import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
+import Search from '../Search/index';
 import SignUp from './SignUp';
 import Template from '../create/Template';
 import LoadingPage from '../LoadingPage';
@@ -227,6 +228,10 @@ const AppRouter = () => (
                     component={Profile}
                     onEnter={isLoggedIn}
                     path="profile(/:userId)"
+                />
+                <Route
+                    component={Search}
+                    path="search"
                 />
                 <Route
                     component={SignUp}

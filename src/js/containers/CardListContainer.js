@@ -66,12 +66,15 @@ class CardListContainer extends Component {
 
     render() {
         const {
+            emptyText,
             keyPrefix,
             ludoList,
             search,
         } = this.props;
 
         const queryTarget = (search.includes('stage=0')) ? '模板' : '卡片';
+        const defaultEmptyText = `目前沒有${queryTarget}喔，創建一個吧！`;
+        const renderedEmptyText = emptyText ? emptyText : defaultEmptyText;
 
         return (
             <div>
@@ -93,7 +96,7 @@ class CardListContainer extends Component {
                         })
                     :
                         <EmptyTextWrapper>
-                            目前沒有{queryTarget}喔，創建一個吧！
+                            {renderedEmptyText}
                         </EmptyTextWrapper>
                 }
             </div>
