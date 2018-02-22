@@ -34,6 +34,11 @@ const tabLinkList = [
 ];
 
 // styled components
+const StyledCardListWrapper = CardListWrapper.extend`
+    display: flex;
+    justify-content: center;
+`;
+
 const StyledMasonry = styled(Masonry)`
     margin-bottom: 50px;
 `;
@@ -48,6 +53,12 @@ const StyledTab = styled.div`
     font-size: 16px;
     margin: 0 12px;
     padding: 0 8px 5px 8px;
+
+    @media (max-width: 768px) {
+        margin: 0;
+        padding: 5px 0;
+        width: 25%;
+    }
 `;
 
 const StyledSelectedTab = StyledTab.extend`
@@ -58,13 +69,17 @@ const StyledSelectedTab = StyledTab.extend`
 const StyledTabList = styled.div`
     display: inline-flex;
     margin-bottom: 40px;
+
+    @media (max-width: 768px) {
+        text-align: center;
+        width: 100vw;
+    }
 `;
 
-const Wrapper = styled(CardListWrapper)`
+const Wrapper = styled.div`
     align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 `;
 
 class MyCardList extends Component {
@@ -181,13 +196,15 @@ class MyCardList extends Component {
                         })
                     }
                 </StyledTabList>
-                <StyledMasonry options={masonryOptions}>
-                    <CardListContainer
-                        keyPrefix="my-card"
-                        ludoList={ludoList}
-                        search={search}
-                    />
-                </StyledMasonry>
+                <StyledCardListWrapper>
+                    <StyledMasonry options={masonryOptions}>
+                        <CardListContainer
+                            keyPrefix="my-card"
+                            ludoList={ludoList}
+                            search={search}
+                        />
+                    </StyledMasonry>
+                </StyledCardListWrapper>
             </Wrapper>
         );
     }

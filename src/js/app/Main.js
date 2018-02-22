@@ -6,6 +6,10 @@ const MainWrapper = styled.div`
     justify-content: center;
     margin: 70px auto 0 auto;
     position: relative;
+
+    /* @media (max-width: 767px) {
+        margin: 100px auto 0 auto;
+    } */
 `;
 
 const Main = ({

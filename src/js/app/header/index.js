@@ -29,16 +29,14 @@ const HeaderWrapper = styled.div`
     border-bottom-style: solid;
     border-bottom-width: 1px;
     display: flex;
+    height: 40px;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 3;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         height: 70px;
-    }
-    @media (min-width: 768px) {
-        height: 40px;
     }
 `;
 
@@ -194,7 +192,7 @@ export default class Header extends Component {
             <HeaderWrapper>
                 <MediaQuery 
                     className="header-left"
-                    maxDeviceWidth={767}
+                    maxWidth={768}
                 >
                     {
                         isOpeningCreateFormPage ?
@@ -225,7 +223,7 @@ export default class Header extends Component {
                             />
                     }
                 </MediaQuery>
-                <StyledMediaQuery minDeviceWidth={768}>
+                <StyledMediaQuery minWidth={769}>
                     <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}
                         handleNavbarToggle={handleNavbarToggle}
