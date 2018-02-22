@@ -48,7 +48,9 @@ const CenteredCardListWrapper = CardListWrapper.extend`
 
 const ClassificationTabLinkList = styled.div`
     display: inline-flex;
+    justify-content: center;
     margin-bottom: 30px;
+    width: 100%;
 `;
 
 const StyledMasonry = styled(Masonry)`
