@@ -1,6 +1,16 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
+export const ButtonListWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    margin: 2vw 0;
+
+    button {
+        margin: 0 30px;
+    }
+`;
+
 export const CardListWrapper = styled.div`
     width: 1130px;
     @media (max-width: 560px) {

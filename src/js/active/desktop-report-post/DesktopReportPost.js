@@ -12,6 +12,23 @@ import StepperCloseIcon from '../../components/StepperCloseIcon';
 
 promiseFinally.shim();
 
+const initialState = {
+    imageLocation: '',
+    images: [],
+    isDiscardAlertOpen: false,
+    isImageLightBoxOpen: false,
+    isPreviewButtonDisabled: true,
+    isReporting: false,
+    isSubmitting: false,
+    open: false,
+    step: 0,
+    text: '',
+    reportType: '',
+    resizedHeight: 250,
+    resizedWidth: 250,
+    video: '',
+};
+
 const titles = [
     "選擇回報種類",
     "輸入回報內容",
@@ -40,22 +57,7 @@ const titleStyle = {
 class DesktopReportPost extends Component {
     constructor() {
         super();
-        this.state = {
-            imageLocation: '',
-            images: [],
-            isDiscardAlertOpen: false,
-            isImageLightBoxOpen: false,
-            isPreviewButtonDisabled: true,
-            isReporting: false,
-            isSubmitting: false,
-            open: false,
-            step: 0,
-            text: '',
-            reportType: '',
-            resizedHeight: 250,
-            resizedWidth: 250,
-            video: ''
-        };
+        this.state = initialState;
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
@@ -81,20 +83,7 @@ class DesktopReportPost extends Component {
     }
 
     handleDialogClose() {
-        this.setState({
-            imageLocation: '',
-            images: [],
-            isDiscardAlertOpen: false,
-            isPreviewButtonDisabled: true,
-            isReporting: false,
-            open: false,
-            step: 0,
-            text: '',
-            reportType: '',
-            resizedHeight: 250,
-            resizedWidth: 250,
-            video: ''
-        });
+        this.setState(initialState);
     }
 
     handleDialogOpen() {
