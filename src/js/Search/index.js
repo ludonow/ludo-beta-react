@@ -133,7 +133,7 @@ class Search extends Component {
         } = this.state;
         return (
             <Wrapper>
-                <MediaQuery minWidth={768}>
+                <MediaQuery minWidth={769}>
                     <ClassificationTabLinkList>
                         {
                             filterInfoList.map((filterInfo, index) => (
