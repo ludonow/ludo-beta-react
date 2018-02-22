@@ -8,7 +8,7 @@ import Content from './Content';
 import DiscardAlert from './DiscardAlert';
 import ToggleButton from './ToggleButton';
 import StepButtonList from './StepButtonList';
-import closeIconSrc from '../../../images/active/close-icon.png';
+import StepperCloseIcon from '../../components/StepperCloseIcon';
 
 promiseFinally.shim();
 
@@ -19,17 +19,6 @@ const titles = [
 ];
 
 // style components
-const CloseIconWrapper = styled.div`
-    padding: 1vw;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    img {
-        cursor: pointer;
-    }
-`;
-
 const DesktopReportPostWrapper = styled.div`
     bottom: 0;
     display: flex;
@@ -370,13 +359,9 @@ class DesktopReportPost extends Component {
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
-                    <CloseIconWrapper>
-                        <img
-                            onClick={this.handleCloseClick}
-                            src={closeIconSrc}
-                            title="關閉"
-                        />
-                    </CloseIconWrapper>
+                    <StepperCloseIcon
+                        handleCloseClick={this.handleCloseClick}
+                    />
                     <Content
                         handleDialogClose={this.handleDialogClose}
                         handleImageChange={this.handleImageChange}
