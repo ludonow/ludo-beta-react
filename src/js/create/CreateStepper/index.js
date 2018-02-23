@@ -64,7 +64,7 @@ class CreateStepper extends Component {
         if (isEditing) {
             this.setState({ isDiscardAlertOpen: true });
         } else {
-            this.handleDialogClose();
+            // this.handleDialogClose();
         }
     }
 

@@ -4,19 +4,40 @@ import styled from 'styled-components';
 import TextInput from './TextInput';
 
 const Wrapper = styled.div`
-    background-color: yellow;
+    display: flex;
+    justify-content: center;
 `;
 
 class Content extends Component {
+    constructor() {
+        super();
+        this.state = {
+            title: '',
+        };
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+    }
+
+    handleTitleChange(value) {
+        this.setState({
+            title: value,
+        });
+    }
+
     render() {
         const {
             step,
         } = this.props;
 
+        const {
+            title,
+        } = this.state;
+
         return (
             <Wrapper>
                 <TextInput
-                    label="標題"
+                    handleTextChange={this.handleTitleChange}
+                    label="標題："
+                    text={title}
                 />
             </Wrapper>
         );
