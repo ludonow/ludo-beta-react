@@ -3,7 +3,7 @@ import { useRouterHistory } from 'react-router';
 
 // modify base url here
 const browserHistory = useRouterHistory(createHistory)({
-    basename: "/"
+    basename: "/ludo_test_page"
 });
 
 export default browserHistory;
