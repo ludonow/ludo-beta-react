@@ -1,9 +1,10 @@
 import React from 'react';
-import { browserHistory, IndexRedirect, Route, Router } from 'react-router';
+import { IndexRoute,IndexRedirect, Route, Router } from 'react-router';
 import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import axios from '../axios-config';
+import browserHistory from '../baseurl-config';
 
 import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
 import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
@@ -122,6 +123,8 @@ const ludoEditRedirect = (nextState, replace, callback) => {
     });
 };
 
+
+
 /* TODO: find out usage of getComponent callback */
 const AppRouter = () => (
     <div>
@@ -129,7 +132,8 @@ const AppRouter = () => (
             <Route
                 component={App}
                 path="/"
-            >
+            >   
+                {/* <IndexRoute component={Playground} /> */}
                 <IndexRedirect to="cardList" />
                 <Route
                     component={Playground}
