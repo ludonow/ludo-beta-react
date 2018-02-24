@@ -2,4 +2,4 @@
 *.html text eol=lf
 *.js text eol=lf
 *.scss text eol=
-js/baseurl-config.js merge=ours
+baseurl-config.js merge=ours
