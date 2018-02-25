@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 
+/**
+ * custom scroll bar style
+ * src: https://gist.github.com/devinrhode2/2573411
+ */
 export const CustomScrollBarCSS = `
-    /**
-     * custom scroll bar style
-     * src: https://gist.github.com/devinrhode2/2573411
-     */
-
     /* Turn on custom 8px wide scrollbar */
     ::-webkit-scrollbar {
         width: 8px; /* 1px wider than Lion. */

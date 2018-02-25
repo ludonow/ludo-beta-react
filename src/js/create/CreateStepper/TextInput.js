@@ -11,12 +11,15 @@ const LabelWrapper = styled.div`
 
 const Wrapper = styled.div`
     display: inline-flex;
+    margin: 0 auto;
     width: 45%;
 `;
 
 const TextInput = ({
+    handleKeyUp,
     handleTextChange,
     label,
+    maxLength,
     text,
 }) => (
     <Wrapper>
@@ -24,18 +27,25 @@ const TextInput = ({
             {label}
         </LabelWrapper>
         <TextField
-            defaultValue={text}
             fullWidth
-            maxLength={50}
+            maxLength={maxLength}
             onChange={handleTextChange}
+            onKeyUp={handleKeyUp}
+            value={text}
         />
     </Wrapper>
 );
 
 TextInput.propTypes = {
-    handleTextChange: PropTypes.func.isRequired,
+    handleKeyUp: PropTypes.func,
+    handleTextChange: PropTypes.func,
     label: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.string,
+};
+
+TextInput.defaultProps = {
+    maxLength: 50,
+    text: '',
 };
 
 export default TextInput;
