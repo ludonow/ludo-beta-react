@@ -16,22 +16,24 @@ const Wrapper = styled.div`
 `;
 
 const TextInput = ({
+    defaultValue,
     handleKeyUp,
     handleTextChange,
     label,
     maxLength,
-    text,
+    value,
 }) => (
     <Wrapper>
         <LabelWrapper>
             {label}
         </LabelWrapper>
         <TextField
+            defaultValue={defaultValue}
             fullWidth
             maxLength={maxLength}
             onChange={handleTextChange}
             onKeyUp={handleKeyUp}
-            value={text}
+            value={value}
         />
     </Wrapper>
 );

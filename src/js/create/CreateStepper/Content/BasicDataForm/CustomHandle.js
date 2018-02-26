@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import RcSlider from 'rc-slider';
 import RcTooltip from 'rc-tooltip';
 
-import sliderHandleIcon from '../../../images/slider-handle.png'
+import sliderHandleIcon from '../../../../../images/slider-handle.png'
 
 const { Handle } = RcSlider;
 
@@ -24,10 +24,12 @@ const CustomHandle = ({
     ...restProps,
 }) =>(
     <RcTooltip
-        key={index}
+        defaultVisible={true}
+        key={`custom-handle-tooltip-${index}`}
         overlay={`${value}天`}
         placement="top"
         prefixCls="custom-rc-slider-tooltip"
+        trigger={[]}
         visible={true}
     >
         <Handle

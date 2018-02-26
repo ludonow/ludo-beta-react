@@ -332,9 +332,6 @@ class DesktopReportPost extends Component {
             text,
             video
         } = this.state;
-        const {
-            ludoId
-        } = this.props;
         return (
             <DesktopReportPostWrapper>
                 <ToggleButton
@@ -362,7 +359,6 @@ class DesktopReportPost extends Component {
                         handleVideoChange={this.handleVideoChange}
                         imageLocation={imageLocation}
                         images={images}
-                        ludoId={ludoId}
                         step={step}
                         text={text}
                         reportType={reportType}

@@ -33,7 +33,7 @@ export default class CardPreview extends Component {
             duration,
             introduction,
             tags,
-            title
+            title,
         } = this.props;
 
         return (

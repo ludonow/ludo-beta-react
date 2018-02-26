@@ -47,7 +47,6 @@ const Draft = ({
     handleVideoChange,
     imageLocation,
     images,
-    ludoId,
     reportType,
     resizedHeight,
     resizedWidth,
@@ -64,7 +63,6 @@ const Draft = ({
                         handleImageResize={handleImageResize}
                         imageLocation={imageLocation}
                         images={images}
-                        ludoId={ludoId}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}
                         setImageLocation={setImageLocation}

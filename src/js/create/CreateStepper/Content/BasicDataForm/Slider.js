@@ -27,7 +27,9 @@ const trackStyle = {
     backgroundColor: '#ffc645',
 };
 
-const Slider = () => (
+const Slider = ({
+    handleDurationChange,
+}) => (
     <StyledSlider
         defaultValue={3}
         dots
@@ -35,6 +37,7 @@ const Slider = () => (
         handle={CustomHandle}
         max={14}
         min={3}
+        onChange={handleDurationChange}
         railStyle={railStyle}
         trackStyle={trackStyle}
     />

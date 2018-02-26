@@ -11,6 +11,7 @@ const StepButtonList = ({
     handleStepPrev,
     handleSubmit,
     handleTypeSelect,
+    isNextStepButtonDisabled,
     isPreviewButtonDisabled,
     isSubmitting,
     step,
@@ -21,6 +22,7 @@ const StepButtonList = ({
                 <ButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
+                        disabled={isNextStepButtonDisabled}
                         label="下一步"
                         onClick={handleStepNext}
                     />
@@ -53,12 +55,28 @@ const StepButtonList = ({
                     <Button
                         backgroundColor={'#717171'}
                         disabled={isPreviewButtonDisabled}
-                        label="預覽"
+                        label="下一步"
                         onClick={handleStepNext}
                     />
                 </ButtonListWrapper>
             );
         case 3:
+            return (
+                <ButtonListWrapper>
+                    <Button
+                        backgroundColor={'#B1B1B1'}
+                        label="上一步"
+                        onClick={handleStepPrev}
+                    />
+                    <Button
+                        backgroundColor={'#717171'}
+                        disabled={isPreviewButtonDisabled}
+                        label="預覽"
+                        onClick={handleStepNext}
+                    />
+                </ButtonListWrapper>
+            );
+        case 4:
             return (
                 <ButtonListWrapper>
                     <Button
