@@ -100,9 +100,16 @@ export default class ActiveForPlayer extends Component {
         } = this.props;
         return (
             <CardDetailContainer>
-                <MediaQuery minWidth={768} className="container">
+                <MediaQuery
+                    className="container"
+                    minWidth={768}
+                >
                     <ReportTabs>
-                        <Tabs defaultIndex={0} onSelect={index => console.log(index)} className="tabs">
+                        <Tabs
+                            className="tabs"
+                            defaultIndex={0}
+                            onSelect={index => console.log(index)}
+                        >
                             <TabList className="tab_list">
                                 <Tab 
                                     className="tab" 

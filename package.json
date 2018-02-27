@@ -51,7 +51,9 @@
     "react-textarea-autosize": "^4.0.5",
     "react-ux-password-field": "^0.9.12",
     "react-widgets": "^3.4.4",
-    "styled-components": "^2.2.3"
+    "styled-components": "^2.2.3",
+    "typescript": "^2.7.1",
+    "typescript-styled-plugin": "^0.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",

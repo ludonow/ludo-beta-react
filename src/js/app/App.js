@@ -1,10 +1,12 @@
 import React from 'react';
-import axios from '../axios-config';
+import MediaQuery from 'react-responsive';
 
+import axios from '../axios-config';
 import DenounceBox from './DenounceBox';
+import DesktopNavbar from './Navbar/Desktop';
 import Header from './Header';
 import Main from './Main';
-import Navbar from './Navbar';
+import MobileNavbar from './Navbar/Mobile';
 import Sidebar from './sidebar/Sidebar';
 
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -486,12 +488,21 @@ export default class App extends React.Component {
                     isNavbarVisible={isNavbarVisible}
                     userBasicData={this.state.userBasicData}
                 />
-                <Navbar
-                    getFilteredLudoList={this.getFilteredLudoList}
-                    handleNavbarClose={this.handleNavbarClose}
-                    handleNavbarToggle={this.handleNavbarToggle}
-                    isNavbarVisible={isNavbarVisible}
-                />
+                <MediaQuery minWidth={768}>
+                    <DesktopNavbar
+                        getFilteredLudoList={this.getFilteredLudoList}
+                        handleNavbarClose={this.handleNavbarClose}
+                        handleNavbarToggle={this.handleNavbarToggle}
+                        isNavbarVisible={isNavbarVisible}
+                    />
+                </MediaQuery>
+                <MediaQuery maxWidth={768}>
+                    <MobileNavbar
+                        handleNavbarClose={this.handleNavbarClose}
+                        handleNavbarToggle={this.handleNavbarToggle}
+                        isNavbarVisible={isNavbarVisible}
+                    />
+                </MediaQuery>
                 <Main handleScrollEvent={this.handleScrollEvent}>
                     {
                         React.cloneElement(this.props.children,

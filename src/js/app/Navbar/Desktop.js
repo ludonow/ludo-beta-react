@@ -147,7 +147,7 @@ const LinkList = ({
     </LinkListWrapper>
 );
 
-const Navbar =({
+const Desktop =({
     handleNavbarClose,
     handleNavbarToggle,
     isNavbarVisible
@@ -175,4 +175,4 @@ const Navbar =({
     </Modal>
 );
 
-export default Navbar;
+export default Desktop;

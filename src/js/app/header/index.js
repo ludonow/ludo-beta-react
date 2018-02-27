@@ -257,32 +257,6 @@ export default class Header extends Component {
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>
-                {/*fab menu icon for RWD design*/}
-                <label className ="fab-menu">
-                    <input className="fab-menu-checkbox" type="checkbox"/>
-                    <div className="menu-box">
-                        <div className="menu-circle"></div>
-                        <ul className="menu-items">
-                            <li><span onClick={this.handleFilterClick}>遊樂場</span></li>
-                            <li><span onClick={this.handleTemplateFilterClick}>模板</span></li>
-                            <li><Link to="/profile">個人資訊</Link></li>
-                            <li><Link to="/create">創建</Link></li>
-                            <li><Link to="/friend">朋友</Link></li>
-                            <li><span onClick={this.handleHistoryFilterClick}>歷史紀錄</span></li>
-                            {/* TODO: RWD for fab-menu in log in page */}
-                            <li>
-                                {
-                                    this.props.isLoggedIn ?
-                                        <a href="http://api.ludonow.com/logout">
-                                            登出
-                                        </a>
-                                    :
-                                        <Link to="/login">登入</Link>
-                                }
-                            </li>
-                        </ul>
-                    </div>
-              </label>
             </HeaderWrapper>
         );
     }
