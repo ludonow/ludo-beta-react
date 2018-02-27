@@ -9,6 +9,8 @@ const Create = (props) => (
     <div>
         <MediaQuery minDeviceWidth={768} className="form-and-list">
             <CreateStepper
+                getUserBasicData={props.getUserBasicData}
+                handleShouldProfileUpdate={props.handleShouldProfileUpdate}
             />
         </MediaQuery>
         <MediaQuery maxDeviceWidth={768}>

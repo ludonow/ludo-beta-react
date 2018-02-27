@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import BasicDataForm from './BasicDataForm/index';
 import BonusPeriodSelectForm from './BonusPeriodSelectForm';
-import CardPreview from '../../mobile-create-card/CardPreview';
+import CardPreview from '../../CardPreview';
 import Draft from '../../../active/desktop-report-post/Draft';
 import TypeSelectButtonList from '../../../active/desktop-report-post/TypeSelectButtonList';
 
@@ -87,10 +87,11 @@ const Content = ({
             return (
                 <CardPreview
                     duration={duration}
+                    interval={interval}
                     introduction={introduction}
+                    period={period}
                     tags={tags}
                     title={title}
-                    singleLudoObject
                 />
             )
         default:

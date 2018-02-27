@@ -2,11 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
-const labelList = [
-    '每一天回報',
-    '每兩天回報',
-    '每三天回報',
-];
+import { labelList } from '../../../reportInterval';
 
 // styled components
 const StyledRadioButtonGroup = styled(RadioButtonGroup)`
@@ -50,7 +46,7 @@ const styles = {
     }
 };
 
-const FrequencyButtonList = ({
+const ReportIntervalButtonList = ({
     handleCheckPointChange,
     interval,
 }) => (
@@ -76,4 +72,4 @@ const FrequencyButtonList = ({
     </Wrapper>
 );
 
-export default FrequencyButtonList;
+export default ReportIntervalButtonList;

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import CardPreview from './CardPreview';
+import CardPreview from '../CardPreview';
 import CategorySelector from './CategorySelector';
 import CreateFormTextField from './CreateFormTextField';
 import DayForm from './DayForm';

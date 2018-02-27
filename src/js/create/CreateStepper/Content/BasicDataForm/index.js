@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import FrequencyButtonList from './FrequencyButtonList';
+import ReportIntervalButtonList from './ReportIntervalButtonList';
 import Slider from './Slider';
 import TagList from './TagList';
 import TextInput from './TextInput';
@@ -81,7 +81,7 @@ class BasicDataForm extends Component {
                 <Slider
                     handleDurationChange={handleDurationChange}
                 />
-                <FrequencyButtonList
+                <ReportIntervalButtonList
                     handleCheckPointChange={handleCheckPointChange}
                     interval={interval}
                 />

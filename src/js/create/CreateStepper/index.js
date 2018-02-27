@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 
+import axios from '../../axios-config';
 import Content from './Content/index';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
@@ -15,13 +17,14 @@ const initialState = {
     isSubmitting: false,
     isTemplateSubmitButtonDisabled: true,
     ludoCreateForm: {
+        category_id: 1,
         checkpoint: [3],
         duration: 3,
-        imageLocation: '',
+        image_location: '',
         interval: 1,
         introduction: '',
         marbles: 0,
-        period: '0000-2400',
+        period: '0-24',
         tags: [],
         title: '',
         video: '',
@@ -214,7 +217,78 @@ class CreateStepper extends Component {
     }
 
     handleSubmit() {
-        console.log('submit');
+        event.preventDefault();
+        const { ludoCreateForm } = this.state;
+        const ludoTemplateForm = {
+            ...ludoCreateForm,
+            type: 'blank',
+        };
+        this.setState({
+            isTemplateSubmitButtonDisabled: true
+        });
+        axios.post('/apis/ludo', ludoTemplateForm)
+        .then((response) => {
+            if (response.data.status === '200') {
+                const { ludo_id } = response.data;
+                /* get ludo information after create ludo post */
+                axios.get(`/apis/ludo/${ludo_id}`)
+                .then((response) => {
+                    /*
+                        response.data.status
+                        200: everything's fine;
+                        400: user's data issue;
+                        401: no login;
+                        403: no authority 
+                    */
+                    if (response.data.status === '200') {
+                        const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                        getUserBasicData();
+                        handleShouldProfileUpdate(true);
+                        browserHistory.push(`/ludo/${ludo_id}`);
+                    } else {
+                        if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isTemplateSubmitButtonDisabled: false
+                        });
+                    }
+                })
+                .catch((error) => {
+                    if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                });
+            } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                window.alert('燃料或彈珠數不足: ' + response.data.message);
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
+            } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                window.alert('有部分欄位為空白');
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
+            } else {
+                if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
+            }
+        })
+        .catch((error) => {
+            if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isTemplateSubmitButtonDisabled: false
+            });
+        });
     }
 
     handleTagAdd(tag) {
@@ -307,13 +381,13 @@ class CreateStepper extends Component {
         }
     }
 
-    setImageLocation(imageLocation) {
+    setImageLocation(image_location) {
         this.setState(
             prevState => ({
                 isPreviewButtonDisabled: false,
                 ludoCreateForm: {
                     ...prevState.ludoCreateForm,
-                    imageLocation,
+                    image_location,
                 },
             })
         );
@@ -333,7 +407,7 @@ class CreateStepper extends Component {
 
         const {
             duration,
-            imageLocation,
+            image_location,
             interval,
             introduction,
             period,
@@ -353,7 +427,7 @@ class CreateStepper extends Component {
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
-                    <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
+                    {/* <StepperCloseIcon handleCloseClick={this.handleCloseClick} /> */}
                     <Content
                         duration={duration}
                         handleCheckPointChange={this.handleCheckPointChange}
@@ -368,7 +442,7 @@ class CreateStepper extends Component {
                         handleTitleChange={this.handleTitleChange}
                         handleTypeSelect={this.handleTypeSelect}
                         handleVideoChange={this.handleVideoChange}
-                        imageLocation={imageLocation}
+                        imageLocation={image_location}
                         images={images}
                         interval={interval}
                         introduction={introduction}

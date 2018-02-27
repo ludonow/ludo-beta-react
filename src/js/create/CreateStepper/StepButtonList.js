@@ -39,7 +39,7 @@ const StepButtonList = ({
                     <Button
                         backgroundColor={'#B1B1B1'}
                         data="text"
-                        label="文字回報"
+                        label="純文字"
                         onClick={handleTypeSelect}
                     />
                 </ButtonListWrapper>
