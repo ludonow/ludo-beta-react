@@ -8,7 +8,7 @@ import MobileCreateCard from './mobile-create-card/MobileCreateCard';
 /* components/_form.scss */
 const Template = (props) => (
     <div>
-        <MediaQuery minDeviceWidth={768} className="form-and-list">
+        <MediaQuery minWidth={768} className="form-and-list">
             <div className="form">
                 <TemplateForm {...props} />
             </div>
@@ -16,7 +16,7 @@ const Template = (props) => (
                 <LudoList {...props} />
             </div>
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={768}>
+        <MediaQuery maxWidth={768}>
             <MobileCreateCard {...props} />
         </MediaQuery>
     </div>

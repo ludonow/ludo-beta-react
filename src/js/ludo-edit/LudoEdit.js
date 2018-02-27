@@ -7,7 +7,7 @@ import MobileOpenedLudo from '../opened/MobileOpenedLudo';
 /* components/_form.scss */
 const LudoEdit = (props) => (
     <div>
-        <MediaQuery minDeviceWidth={768} className="form-and-report">
+        <MediaQuery minWidth={768} className="form-and-report">
             <div className="form">
                 <LudoEditForm {...props} />
             </div>
@@ -15,7 +15,7 @@ const LudoEdit = (props) => (
                 <LudoList {...props} />
             </div>
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={768}>
+        <MediaQuery maxWidth={768}>
             <MobileOpenedLudo {...props} starter />
         </MediaQuery>
     </div>

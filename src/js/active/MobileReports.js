@@ -10,7 +10,10 @@ import ReportText from './ReportText';
 
 const userPhotoUrl = '../../images/animals/bat.png';
 
-const CardContentTab = styled.div`
+const MobileReportContainer = styled.div`
+    /* margin-top: -40px; */
+`;
+const MobileCardContentTab = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,7 +80,7 @@ export default class MobileReports extends Component {
             title
         } = router_currentFormValue;
         return (
-            <div>
+            <MobileReportContainer>
                 <DarkBackGround
                     display={this.state.isShowingDarkBackGround}
                 />
@@ -100,9 +103,9 @@ export default class MobileReports extends Component {
                             onClick={this.handleCardContentTabClick}
                             selectedClassName="react-tabs__tab--selected mobile-avatar"
                         >
-                            <CardContentTab>
+                            <MobileCardContentTab>
                                 卡片內容
-                            </CardContentTab>
+                            </MobileCardContentTab>
                         </Tab>
                         <Tab 
                             className="react-tabs__tab mobile-avatar"
@@ -173,7 +176,7 @@ export default class MobileReports extends Component {
                         }
                     </TabPanel>
                 </Tabs>
-            </div>
+            </MobileReportContainer>
         );
     }
 }

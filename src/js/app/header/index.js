@@ -209,7 +209,7 @@ export default class Header extends Component {
             <HeaderWrapper>
                 <MediaQuery 
                     className="header-left"
-                    maxDeviceWidth={767}
+                    maxWidth={767}
                 >
                     {
                         isOpeningCreateFormPage ?
@@ -240,7 +240,7 @@ export default class Header extends Component {
                             />
                     }
                 </MediaQuery>
-                <StyledMediaQuery minDeviceWidth={768}>
+                <StyledMediaQuery minWidth={768}>
                     <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}
                         handleNavbarToggle={handleNavbarToggle}

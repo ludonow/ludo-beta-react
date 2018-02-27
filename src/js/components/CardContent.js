@@ -11,7 +11,7 @@ const RoundRadiusTag = styled.span`
 `;
 
 const CardContentWrapper = styled.div`
-    padding: 0 30px;
+    padding: 5px 30px;
     color: white;
 `;
 
@@ -33,7 +33,7 @@ const CardIntroduction = styled.div`
 `;
 
 const CardTitle = styled.div`
-    margin: 30px 0;
+    margin: 35px 0;
     text-align: center;
     font-size: 22px;
     font-weight: bold;

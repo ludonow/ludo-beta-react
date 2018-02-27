@@ -237,7 +237,7 @@ const AppRouter = () => (
                 />
             </Route>
         </Router>
-        <MediaQuery minDeviceWidth={768}>
+        <MediaQuery minWidth={768}>
             <MessengerCustomerChat
                 appId="1075325352502513"
                 pageId="1557980337838066"
