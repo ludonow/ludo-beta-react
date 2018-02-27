@@ -93,7 +93,10 @@ export default class ActiveForBystander extends Component {
     render() {
         return (
             <CardDetailContainer>
-                <MediaQuery minWidth={768} className="container">
+                <MediaQuery
+                    className="container"
+                    minWidth={769}
+                >
                         <ReportTabs>
                             <Tabs defaultIndex={0} onSelect={index => console.log(index)} className="tabs">
                                 <TabList className="tab_list">

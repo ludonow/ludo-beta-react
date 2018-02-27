@@ -102,7 +102,7 @@ export default class ActiveForPlayer extends Component {
             <CardDetailContainer>
                 <MediaQuery
                     className="container"
-                    minWidth={768}
+                    minWidth={769}
                 >
                     <ReportTabs>
                         <Tabs
