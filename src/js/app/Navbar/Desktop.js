@@ -21,7 +21,7 @@ const cardSystemLinkInfoList = [
     }
 ];
 
-const personalCardListLinkInfoSampleList = [
+const myCardListLinkInfoSampleList = [
     {
         text: "等待加入",
         url: "/myCardList?stage=1&user_id="
@@ -157,7 +157,7 @@ const Desktop =({
     handleNavbarToggle,
     isNavbarVisible
 }) => {
-    const personalCardListLinkInfoList = personalCardListLinkInfoSampleList.map(info => ({
+    const myCardListLinkInfoList = myCardListLinkInfoSampleList.map(info => ({
         ...info,
         url: info.url + currentUserId,
     }));
@@ -176,7 +176,7 @@ const Desktop =({
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     label={ProfileLabel}
-                    linkInfoList={personalCardListLinkInfoList}
+                    linkInfoList={myCardListLinkInfoList}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}

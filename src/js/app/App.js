@@ -36,7 +36,7 @@ export default class App extends React.Component {
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
-            isPersonalCardListVisible: true,
+            isPersonalCardListVisible: false,
             lastEvaluatedKey: {},
             ludoList: [],
             shouldLudoListUpdate: false,
