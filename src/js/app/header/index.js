@@ -8,10 +8,9 @@ import { grey300 } from 'material-ui/styles/colors';
 import axios from '../../axios-config';
 
 import DesktopSearchBar from './SearchBar/DesktopSearchBar';
-import HeaderFBPhoto from './HeaderFBPhoto';
 import HeaderLeft from './HeaderLeft';
-import HeaderLogIn from './HeaderLogIn';
 import HeaderPrevPageArrow from './HeaderPrevPageArrow';
+import HeaderRight from './HeaderRight';
 import Logo from './Logo';
 import MobileSearchBar from './SearchBar/MobileSearchBar';
 import Playground from '../../playground/Playground';
@@ -24,30 +23,20 @@ import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
 import magnifierIcon from '../../../images/magnifier.svg';
 
 // styled components
-const AvatarWrapper = styled.div``;
-
-const HeaderRightWrapper = styled.div`
-    align-items: center;
-    display: inline-flex;
-    height: 100%;
-`;
-
 const HeaderWrapper = styled.div`
     background-color: #717070;
     border-bottom-color: #B6BCC1;
     border-bottom-style: solid;
     border-bottom-width: 1px;
     display: flex;
+    height: 40px;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 3;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         height: 70px;
-    }
-    @media (min-width: 768px) {
-        height: 40px;
     }
 `;
 
@@ -69,21 +58,6 @@ const StyledMediaQuery = styled(MediaQuery)`
 `;
 
 // child components
-const HeaderRight = ({
-    userBasicData
-}) => (
-    <HeaderRightWrapper>
-        <AvatarWrapper>
-            {
-                userBasicData.name ?
-                    <HeaderFBPhoto userBasicData={userBasicData} />
-                :
-                    <HeaderLogIn />
-            }
-        </AvatarWrapper>
-    </HeaderRightWrapper>
-);
-
 const SearchIcon = ({ handleMobileSearchTouchTap }) => (
     <SearchIconWrapper onTouchTap={handleMobileSearchTouchTap}>
         <img src={magnifierIcon} />
@@ -110,6 +84,7 @@ export default class Header extends Component {
         this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
         this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
         this.handleMobileSearchTouchTap = this.handleMobileSearchTouchTap.bind(this);
+        this.handlePersonalCardListToggleButtonClick = this.handlePersonalCardListToggleButtonClick.bind(this);
         this.handleSearchSubmitKeyUp = this.handleSearchSubmitKeyUp.bind(this);
         this.handleSearchSubmitTouchTap = this.handleSearchSubmitTouchTap.bind(this);
         this.handleSearchingTextChange = this.handleSearchingTextChange.bind(this);
@@ -144,6 +119,15 @@ export default class Header extends Component {
                 isSearching: true
             })
         );
+    }
+
+    handlePersonalCardListToggleButtonClick(event) {
+        event.preventDefault();
+        const {
+            handlePersonalCardListToggle,
+            isPersonalCardListVisible
+        } = this.props;
+        handlePersonalCardListToggle(!isPersonalCardListVisible);
     }
 
     handleSearchSubmitKeyUp(event) {
@@ -183,19 +167,18 @@ export default class Header extends Component {
          * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
          */
         const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
-        browserHistory.push('/playground');
-        this.props.getFilteredLudoList(filterCondition);
+        browserHistory.push(`/search?stage=1&${filterCondition}`);
+        // this.props.getFilteredLudoList(filterCondition);
     }
 
     render() {
         const {
             getFilteredLudoList,
-            getLatestLudoList,
             handleNavbarToggle,
             isNavbarVisible,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
-            isOpeningProfilePage,
+            isPersonalCardListVisible,
             userBasicData 
         } = this.props;
 
@@ -209,7 +192,7 @@ export default class Header extends Component {
             <HeaderWrapper>
                 <MediaQuery 
                     className="header-left"
-                    maxWidth={767}
+                    maxWidth={768}
                 >
                     {
                         isOpeningCreateFormPage ?
@@ -240,7 +223,7 @@ export default class Header extends Component {
                             />
                     }
                 </MediaQuery>
-                <StyledMediaQuery minWidth={768}>
+                <StyledMediaQuery minWidth={769}>
                     <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}
                         handleNavbarToggle={handleNavbarToggle}
@@ -254,6 +237,9 @@ export default class Header extends Component {
                         searchingText={searchingText}
                     />
                     <HeaderRight
+                        handlePersonalCardListToggleButtonClick={this.handlePersonalCardListToggleButtonClick}
+                        isOpeningLudoListPage={isOpeningLudoListPage}
+                        isPersonalCardListVisible={isPersonalCardListVisible}
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>
@@ -264,8 +250,11 @@ export default class Header extends Component {
 
 Header.propTypes = {
     getFilteredLudoList: PropTypes.func,
-    getLatestLudoList: PropTypes.func,
+    handleNavbarToggle: PropTypes.func,
+    handlePersonalCardListToggle: PropTypes.func,
+    isNavbarVisible: PropTypes.bool,
+    isOpeningCreateFormPage: PropTypes.bool,
     isOpeningLudoListPage: PropTypes.bool,
-    isOpeningProfilePage: PropTypes.bool,
+    isPersonalCardListVisible: PropTypes.bool,
     userBasicData: PropTypes.object
 };

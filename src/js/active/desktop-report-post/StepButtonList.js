@@ -2,18 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
-import LoadingIcon from './LoadingIcon';
-
-// styled components
-const ButtonListWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    margin: 2vw 0;
-
-    button {
-        margin: 0 30px;
-    }
-`;
+import LoadingIcon from '../../components/LoadingIcon';
+import { ButtonListWrapper } from '../../baseStyle';
 
 const StepButtonList = ({
     handleDialogClose,

@@ -10,13 +10,13 @@ const StyledLink = styled(Link)`
     display: flex;
     height: 100%;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         width: 100%;
         position: absolute;
         justify-content: center;
     }
 
-    @media (min-width: 768px) and (max-width: 991px) {
+    @media (min-width: 769px) and (max-width: 991px) {
         position: relative;
         margin-left: 8vw;
 	}

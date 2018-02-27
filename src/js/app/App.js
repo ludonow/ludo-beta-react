@@ -31,12 +31,12 @@ export default class App extends React.Component {
             hasGotNewReport: false,
             isDenounceBoxOpen: false,
             isInfiniteLoading: false,
-            isLoggedIn: false,
             isNavbarVisible: false,
             isOpeningActivePage: false,
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
+            isPersonalCardListVisible: false,
             lastEvaluatedKey: {},
             ludoList: [],
             shouldLudoListUpdate: false,
@@ -68,6 +68,8 @@ export default class App extends React.Component {
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
         this.handleNavbarClose = this.handleNavbarClose.bind(this);
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
+        this.handlePersonalCardListClose = this.handlePersonalCardListClose.bind(this);
+        this.handlePersonalCardListToggle = this.handlePersonalCardListToggle.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
@@ -100,7 +102,6 @@ export default class App extends React.Component {
     componentDidUpdate() {
         const {
             currentUserId,
-            isLoggedIn,
             isOpeningLudoListPage,
             isOpeningProfilePage,
             shouldLudoListUpdate,
@@ -108,7 +109,7 @@ export default class App extends React.Component {
             shouldUserBasicDataUpdate
         } = this.state;
 
-        if (currentUserId && isLoggedIn && shouldProfileUpdate) {
+        if (currentUserId && shouldProfileUpdate) {
             /**
              * Update profile data after the user did some ludo action and is going to open profile page
              */
@@ -315,17 +316,15 @@ export default class App extends React.Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.setState({
-                    userBasicData: response.data.user,
                     currentUserId: response.data.user.user_id,
-                    isLoggedIn: true
+                    userBasicData: response.data.user
                 });
-            } else {
-                /* not login */
-                // console.error('app getUserBasicData else response from server: ', response);
             }
         })
         .catch((error) => {
-            console.error('user error', error);
+            if (window.confirm('取得使用者資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
         });
     }
 
@@ -385,18 +384,6 @@ export default class App extends React.Component {
         });
     }
 
-    handleNavbarClose(event) {
-        this.setState({
-            isNavbarVisible: false
-        });
-    }
-
-    handleNavbarToggle(boolean) {
-        this.setState({
-            isNavbarVisible: boolean
-        });
-    }
-
     handleIsOpeningActivePage(boolean) {
         this.setState({
             isOpeningActivePage: boolean
@@ -418,6 +405,30 @@ export default class App extends React.Component {
     handleIsOpeningProfilePage(boolean) {
         this.setState({
             isOpeningProfilePage: boolean
+        });
+    }
+
+    handleNavbarClose() {
+        this.setState({
+            isNavbarVisible: false
+        });
+    }
+
+    handleNavbarToggle(boolean) {
+        this.setState({
+            isNavbarVisible: boolean
+        });
+    }
+
+    handlePersonalCardListClose() {
+        this.setState({
+            isPersonalCardListVisible: false
+        });
+    }
+
+    handlePersonalCardListToggle(boolean) {
+        this.setState({
+            isPersonalCardListVisible: boolean
         });
     }
 
@@ -468,10 +479,18 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { isNavbarVisible } = this.state;
         const {
+            currentUserId,
+            isNavbarVisible,
+            isOpeningCreateFormPage,
+            isOpeningLudoListPage,
+            isPersonalCardListVisible,
+            userBasicData,
+        } = this.state;
+        const {
+            location,
             route,
-            router_currentFormValue
+            router_currentFormValue,
         } = this.props;
 
         const { path } = route;
@@ -481,15 +500,16 @@ export default class App extends React.Component {
                 <Header
                     getFilteredLudoList={this.getFilteredLudoList}
                     handleNavbarToggle={this.handleNavbarToggle}
-                    isLoggedIn={this.state.isLoggedIn}
-                    isOpeningCreateFormPage={this.state.isOpeningCreateFormPage}
-                    isOpeningLudoListPage={this.state.isOpeningLudoListPage}
-                    isOpeningProfilePage={this.state.isOpeningProfilePage}
+                    handlePersonalCardListToggle={this.handlePersonalCardListToggle}
                     isNavbarVisible={isNavbarVisible}
-                    userBasicData={this.state.userBasicData}
+                    isOpeningCreateFormPage={isOpeningCreateFormPage}
+                    isOpeningLudoListPage={isOpeningLudoListPage}
+                    isPersonalCardListVisible={isPersonalCardListVisible}
+                    userBasicData={userBasicData}
                 />
                 <MediaQuery minWidth={768}>
                     <DesktopNavbar
+                        currentUserId={currentUserId}
                         getFilteredLudoList={this.getFilteredLudoList}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
@@ -498,6 +518,7 @@ export default class App extends React.Component {
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
                     <MobileNavbar
+                        currentUserId={currentUserId}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
                         isNavbarVisible={isNavbarVisible}
@@ -508,6 +529,7 @@ export default class App extends React.Component {
                         React.cloneElement(this.props.children,
                             {
                                 ...this.state,
+                                search: location.search,
                                 router_currentFormValue,
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getCurrentLudoData: this.getCurrentLudoData,
@@ -520,11 +542,11 @@ export default class App extends React.Component {
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
-                                handleNavbarToggle: this.handleNavbarToggle,
                                 handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                                 handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
+                                handlePersonalCardListClose: this.handlePersonalCardListClose,
                                 handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,
                                 handleShouldProfileUpdate: this.handleShouldProfileUpdate,
                                 handleShouldReportUpdate: this.handleShouldReportUpdate,

@@ -18,7 +18,7 @@ const MobileSearchBar = ({
     searchingText
 }) => (
     <MobileSearchBarWrapper>
-        <SearchBar>
+        <SearchBar isMobile={true}>
             <img src={magnifierIcon} />
             <input
                 autoFocus
@@ -30,9 +30,17 @@ const MobileSearchBar = ({
             />
             {
                 searchingText ?
-                    <CancelIconButton handleSearchingTextClear={handleSearchingTextClear} />
+                    <CancelIconButton
+                        handleSearchingTextClear={handleSearchingTextClear}
+                        height="25px"
+                        isMobile={true}
+                        width="25px"
+                    />
                 :
-                    <CancelIconPlaceHolder />
+                    <CancelIconPlaceHolder
+                        height="25px"
+                        width="25px"
+                    />
             }
         </SearchBar>
     </MobileSearchBarWrapper>

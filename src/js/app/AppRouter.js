@@ -15,10 +15,12 @@ import Invite from '../create/Invite';
 import LogIn from './LogIn.js';
 import LudoEdit from '../ludo-edit/LudoEdit';
 import MobileReportForm from '../active/mobile-report-form/MobileReportForm';
+import MyCardList from '../MyCardList/index';
 import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
 import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
+import Search from '../Search/index';
 import SignUp from './SignUp';
 import Template from '../create/Template';
 import LoadingPage from '../LoadingPage';
@@ -219,6 +221,10 @@ const AppRouter = () => (
                     path="ludo-edit/:ludo_id"
                 />
                 <Route
+                    component={MyCardList}
+                    path="myCardList"
+                />
+                <Route
                     component={Playground}
                     path="playground"
                 />
@@ -226,6 +232,10 @@ const AppRouter = () => (
                     component={Profile}
                     onEnter={isLoggedIn}
                     path="profile(/:userId)"
+                />
+                <Route
+                    component={Search}
+                    path="search"
                 />
                 <Route
                     component={SignUp}

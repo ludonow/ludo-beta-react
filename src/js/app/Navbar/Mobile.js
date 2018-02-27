@@ -14,12 +14,28 @@ const linkInfoList = [
     {
         text: '創建模板',
         url: '/create',
-    },
-    {
-        text: '我的訂閱',
-        url: '/profile',
     }
 ];
+
+const myCardListLinkInfoSampleList = [
+    {
+        text: "個人數據",
+        url: "/myCardList?stage=1&user_id="
+    },
+    // {
+    //     text: "正在遊戲",
+    //     url: "/myCardList?stage=2&user_id="
+    // },
+    // {
+    //     text: "已經結束",
+    //     url: "/myCardList?stage=3&user_id="
+    // },
+    // {
+    //     text: "我的模板",
+    //     url: "/myCardList?stage=0&user_id="
+    // }
+];
+
 
 // styled components
 const InnerCircle = styled.div`
@@ -119,30 +135,50 @@ class ToggleButton extends Component {
 }
 
 const Mobile = ({
+    currentUserId,
     handleNavbarClose,
     handleNavbarToggle,
     isNavbarVisible
-}) => (
-    <MobileNavbarWrapper>
-        <ToggleButton
-            handleNavbarToggle={handleNavbarToggle}
-            isNavbarVisible={isNavbarVisible}
-        />
-        <ListWrapper isNavbarVisible={isNavbarVisible}>
-            {
-                linkInfoList.map((linkInfo, index) => (
-                    <StyledListItem key={`mobile-navbar-item-${index}`}>
-                        <StyledLink
-                            onClick={handleNavbarClose}
-                            to={linkInfo.url}
-                        >
-                            {linkInfo.text}
-                        </StyledLink>
-                    </StyledListItem>
-                ))
-            }
-        </ListWrapper>
-    </MobileNavbarWrapper>
-);
+}) => {
+    const myCardListLinkInfoList = myCardListLinkInfoSampleList.map(info => ({
+        ...info,
+        url: info.url + currentUserId,
+    }));
+
+    return (
+        <MobileNavbarWrapper>
+            <ToggleButton
+                handleNavbarToggle={handleNavbarToggle}
+                isNavbarVisible={isNavbarVisible}
+            />
+            <ListWrapper isNavbarVisible={isNavbarVisible}>
+                {
+                    linkInfoList.map((linkInfo, index) => (
+                        <StyledListItem key={`mobile-navbar-link-${index}`}>
+                            <StyledLink
+                                onClick={handleNavbarClose}
+                                to={linkInfo.url}
+                            >
+                                {linkInfo.text}
+                            </StyledLink>
+                        </StyledListItem>
+                    ))
+                }
+                {
+                    myCardListLinkInfoList.map((linkInfo, index) => (
+                        <StyledListItem key={`mobile-navbar-my-card-list-${index}`}>
+                            <StyledLink
+                                onClick={handleNavbarClose}
+                                to={linkInfo.url}
+                            >
+                                {linkInfo.text}
+                            </StyledLink>
+                        </StyledListItem>
+                    ))
+                }
+            </ListWrapper>
+        </MobileNavbarWrapper>
+    );
+}
 
 export default Mobile;

@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import MediaQuery from 'react-responsive';
 
-import TemplateForm from './TemplateForm';
+import CreateStepper from './CreateStepper/index';
 import LudoList from '../app/LudoList';
 import MobileCreateCard from './mobile-create-card/MobileCreateCard';
 
 /* components/_form.scss */
 const Template = (props) => (
     <div>
-        <MediaQuery minWidth={768} className="form-and-list">
-            <div className="form">
-                <TemplateForm {...props} />
-            </div>
-            <div className="form-ludo-list-container">
-                <LudoList {...props} />
-            </div>
+        <MediaQuery minWidth={769} className="form-and-list">
+            <CreateStepper
+                getUserBasicData={props.getUserBasicData}
+                handleShouldProfileUpdate={props.handleShouldProfileUpdate}
+                ludoId={props.params.ludo_id}
+            />
         </MediaQuery>
         <MediaQuery maxWidth={768}>
             <MobileCreateCard {...props} />

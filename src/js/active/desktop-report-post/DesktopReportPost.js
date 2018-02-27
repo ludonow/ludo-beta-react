@@ -8,9 +8,26 @@ import Content from './Content';
 import DiscardAlert from './DiscardAlert';
 import ToggleButton from './ToggleButton';
 import StepButtonList from './StepButtonList';
-import closeIconSrc from '../../../images/active/close-icon.png';
+import StepperCloseIcon from '../../components/StepperCloseIcon';
 
 promiseFinally.shim();
+
+const initialState = {
+    imageLocation: '',
+    images: [],
+    isDiscardAlertOpen: false,
+    isImageLightBoxOpen: false,
+    isPreviewButtonDisabled: true,
+    isReporting: false,
+    isSubmitting: false,
+    open: false,
+    step: 0,
+    text: '',
+    reportType: '',
+    resizedHeight: 250,
+    resizedWidth: 250,
+    video: '',
+};
 
 const titles = [
     "選擇回報種類",
@@ -19,17 +36,6 @@ const titles = [
 ];
 
 // style components
-const CloseIconWrapper = styled.div`
-    padding: 1vw;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    img {
-        cursor: pointer;
-    }
-`;
-
 const DesktopReportPostWrapper = styled.div`
     bottom: 0;
     display: flex;
@@ -51,22 +57,7 @@ const titleStyle = {
 class DesktopReportPost extends Component {
     constructor() {
         super();
-        this.state = {
-            imageLocation: '',
-            images: [],
-            isDiscardAlertOpen: false,
-            isImageLightBoxOpen: false,
-            isPreviewButtonDisabled: true,
-            isReporting: false,
-            isSubmitting: false,
-            open: false,
-            step: 0,
-            text: '',
-            reportType: '',
-            resizedHeight: 250,
-            resizedWidth: 250,
-            video: ''
-        };
+        this.state = initialState;
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
@@ -92,20 +83,7 @@ class DesktopReportPost extends Component {
     }
 
     handleDialogClose() {
-        this.setState({
-            imageLocation: '',
-            images: [],
-            isDiscardAlertOpen: false,
-            isPreviewButtonDisabled: true,
-            isReporting: false,
-            open: false,
-            step: 0,
-            text: '',
-            reportType: '',
-            resizedHeight: 250,
-            resizedWidth: 250,
-            video: ''
-        });
+        this.setState(initialState);
     }
 
     handleDialogOpen() {
@@ -354,9 +332,6 @@ class DesktopReportPost extends Component {
             text,
             video
         } = this.state;
-        const {
-            ludoId
-        } = this.props;
         return (
             <DesktopReportPostWrapper>
                 <ToggleButton
@@ -370,13 +345,9 @@ class DesktopReportPost extends Component {
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
-                    <CloseIconWrapper>
-                        <img
-                            onClick={this.handleCloseClick}
-                            src={closeIconSrc}
-                            title="關閉"
-                        />
-                    </CloseIconWrapper>
+                    <StepperCloseIcon
+                        handleCloseClick={this.handleCloseClick}
+                    />
                     <Content
                         handleDialogClose={this.handleDialogClose}
                         handleImageChange={this.handleImageChange}
@@ -388,7 +359,6 @@ class DesktopReportPost extends Component {
                         handleVideoChange={this.handleVideoChange}
                         imageLocation={imageLocation}
                         images={images}
-                        ludoId={ludoId}
                         step={step}
                         text={text}
                         reportType={reportType}
