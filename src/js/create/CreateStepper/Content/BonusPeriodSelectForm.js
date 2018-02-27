@@ -22,7 +22,6 @@ const IconWrapper = styled.div`
 
     img {
         height: 120px;
-        width: 150px;
     }
 `;
 
@@ -60,10 +59,19 @@ const Wrapper = styled.div`
 `;
 
 // override material ui
+const iconStyle = {
+    top: '30px',
+};
+
+const menuStyle = {
+    top: '-30px',
+};
+
 const labelStyle = {
     backgroundColor: '#F0F0F0',
+    height: 'auto',
     lineHeight: '30px',
-    top: '10px',
+    top: '41px',
 };
 
 class BonusPeriodSelectForm extends Component {
@@ -112,6 +120,8 @@ class BonusPeriodSelectForm extends Component {
                     <SelectFieldWrapper>
                         <SelectField
                             fullWidth
+                            iconStyle={iconStyle}
+                            menuStyle={menuStyle}
                             labelStyle={labelStyle}
                             onChange={handlePeriodChange}
                             value={period}

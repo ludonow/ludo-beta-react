@@ -7,13 +7,16 @@ import MobileCreateCard from './mobile-create-card/MobileCreateCard';
 /* components/_form.scss */
 const Create = (props) => (
     <div>
-        <MediaQuery minDeviceWidth={768} className="form-and-list">
+        <MediaQuery
+            className="form-and-list"
+            minWidth={769}
+        >
             <CreateStepper
                 getUserBasicData={props.getUserBasicData}
                 handleShouldProfileUpdate={props.handleShouldProfileUpdate}
             />
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={768}>
+        <MediaQuery maxWidth={768}>
             <MobileCreateCard {...props} />
         </MediaQuery>
     </div>

@@ -6,14 +6,19 @@ import LoadingIcon from '../../components/LoadingIcon';
 import { ButtonListWrapper } from '../../baseStyle';
 
 const StepButtonList = ({
+    handleCardSubmit,
     handleDialogClose,
+    handleFormSelect,
     handleStepNext,
     handleStepPrev,
-    handleSubmit,
-    handleTypeSelect,
+    handleTemplateDelete,
+    handleTemplateSubmit,
+    isAtTemplatePage,
+    isCardSubmitButtonDisabled,
     isNextStepButtonDisabled,
     isPreviewButtonDisabled,
     isSubmitting,
+    isTemplateSubmitButtonDisabled,
     step,
 }) => {
     switch(step) {
@@ -40,7 +45,7 @@ const StepButtonList = ({
                         backgroundColor={'#B1B1B1'}
                         data="text"
                         label="純文字"
-                        onClick={handleTypeSelect}
+                        onClick={handleFormSelect}
                     />
                 </ButtonListWrapper>
             );
@@ -86,14 +91,34 @@ const StepButtonList = ({
                         onClick={handleStepPrev}
                     />
                     {
-                        !isSubmitting ?
+                        !isAtTemplatePage ?
                             <Button
                                 backgroundColor={'#FF704E'}
+                                disabled={isSubmitting && isTemplateSubmitButtonDisabled}
                                 label="創建模板"
-                                onClick={handleSubmit}
+                                onClick={handleTemplateSubmit}
                             />
-                        :
-                            <LoadingIcon />
+                        : null
+                    }
+                    {
+                        isAtTemplatePage ?
+                            <Button
+                                backgroundColor={'#FF704E'}
+                                disabled={isSubmitting && isCardSubmitButtonDisabled}
+                                label="創建卡片"
+                                onClick={handleCardSubmit}
+                            />
+                        : null
+                    }
+                    {
+                        isAtTemplatePage ?
+                            <Button
+                                backgroundColor={'#FF704E'}
+                                disabled={isSubmitting}
+                                label="刪除模板"
+                                onClick={handleTemplateDelete}
+                            />
+                        : null
                     }
                 </ButtonListWrapper>
             );
@@ -111,13 +136,19 @@ const StepButtonList = ({
 };
 
 StepButtonList.propTypes = {
+    handleCardSubmit: PropTypes.func.isRequired,
     handleDialogClose: PropTypes.func.isRequired,
-    handleTypeSelect: PropTypes.func.isRequired,
+    handleFormSelect: PropTypes.func.isRequired,
     handleStepNext: PropTypes.func.isRequired,
     handleStepPrev: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
+    handleTemplateDelete: PropTypes.func.isRequired,
+    handleTemplateSubmit: PropTypes.func.isRequired,
+    isAtTemplatePage: PropTypes.bool.isRequired,
+    isCardSubmitButtonDisabled: PropTypes.bool.isRequired,
+    isNextStepButtonDisabled: PropTypes.bool.isRequired,
     isPreviewButtonDisabled: PropTypes.bool.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
+    isTemplateSubmitButtonDisabled: PropTypes.bool.isRequired,
     step: PropTypes.number.isRequired,
 };
 

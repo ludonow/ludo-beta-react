@@ -39,19 +39,18 @@ const TemplateCardBorderTopWrapper = styled.div`
 `;
 
 const TemplateInfo = styled.div`
-    margin: 15px 0;
+    margin: 10px 0;
 `;
 const IntroWrapper = TemplateInfo.extend`
     font-size: 12px;
     line-height: 30px;
-    white-space: pre;
+    white-space: pre-wrap;
 `;
 
 const TemplateInfoWrapper = styled.div`
     align-items: center;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
     min-height: 200px;
 `;
 
