@@ -48,6 +48,7 @@ class BasicDataForm extends Component {
 
     render() {
         const {
+            duration,
             handleCheckPointChange,
             handleDurationChange,
             handleTagDelete,
@@ -64,9 +65,9 @@ class BasicDataForm extends Component {
         return (
             <Wrapper>
                 <TextInput
-                    defaultValue={title}
                     handleTextChange={this.handleTitleChange}
                     label="標題："
+                    value={title}
                 />
                 <TextInput
                     handleKeyUp={this.handleTagKeyUp}
@@ -79,6 +80,7 @@ class BasicDataForm extends Component {
                     tagList={tags}
                 />
                 <Slider
+                    duration={duration}
                     handleDurationChange={handleDurationChange}
                 />
                 <ReportIntervalButtonList

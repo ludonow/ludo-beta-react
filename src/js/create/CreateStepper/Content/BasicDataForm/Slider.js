@@ -28,10 +28,11 @@ const trackStyle = {
 };
 
 const Slider = ({
+    duration,
     handleDurationChange,
 }) => (
     <StyledSlider
-        defaultValue={3}
+        defaultValue={duration}
         dots
         dotStyle={dotStyle}
         handle={CustomHandle}
@@ -42,5 +43,9 @@ const Slider = ({
         trackStyle={trackStyle}
     />
 );
+
+Slider.defaultProps = {
+    duration: 3
+};
 
 export default Slider;

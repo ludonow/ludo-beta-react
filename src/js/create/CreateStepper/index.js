@@ -83,6 +83,41 @@ class CreateStepper extends Component {
         this.setImageLocation = this.setImageLocation.bind(this);
     }
 
+    componentDidMount() {
+        const { ludoId } = this.props;
+        axios.get(`/apis/ludo/${ludoId}`)
+        .then((response) => {
+            /*
+                response.data.status
+                200: everything's fine;
+                400: user's data issue;
+                401: no login;
+                403: no authority 
+            */
+            if (response.data.status === '200') {
+                this.setState({
+                    isNextStepButtonDisabled: false,
+                    ludoCreateForm: response.data.ludo
+                });
+            } else {
+                if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
+            }
+        })
+        .catch((error) => {
+            if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isTemplateSubmitButtonDisabled: false
+            });
+        });
+    }
+
     handleCheckPointChange(event) {
         const interval = Number(event.currentTarget.value);
         const { duration } = this.state.ludoCreateForm;
@@ -396,6 +431,7 @@ class CreateStepper extends Component {
     render() {
         const {
             images,
+            isDataFetched,
             isNextStepButtonDisabled,
             isPreviewButtonDisabled,
             isSubmitting,
@@ -446,6 +482,7 @@ class CreateStepper extends Component {
                         images={images}
                         interval={interval}
                         introduction={introduction}
+                        isDataFetched={isDataFetched}
                         period={period}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}

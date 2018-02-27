@@ -41,6 +41,7 @@ const Content = ({
         case 0:
             return (
                 <BasicDataForm
+                    duration={duration}
                     handleCheckPointChange={handleCheckPointChange}
                     handleDurationChange={handleDurationChange}
                     handleTagAdd={handleTagAdd}
