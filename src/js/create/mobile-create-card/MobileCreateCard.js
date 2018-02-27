@@ -309,7 +309,7 @@ export default class MobileCreateCard extends Component {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                     getUserBasicData();
                     handleShouldProfileUpdate(true);
-                    browserHistory.push('/playground');
+                    browserHistory.push('/cardList');
                 } else {
                     if (window.confirm('刪除Ludo模板時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");

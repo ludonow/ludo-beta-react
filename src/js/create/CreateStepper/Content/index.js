@@ -11,8 +11,10 @@ import TypeSelectButtonList from '../../../active/desktop-report-post/TypeSelect
 
 const Content = ({
     duration,
+    form,
     handleCheckPointChange,
     handleDurationChange,
+    handleFormSelect,
     handleImageChange,
     handleImageResize,
     handleIntroductionChange,
@@ -21,7 +23,6 @@ const Content = ({
     handleTagAdd,
     handleTagDelete,
     handleTitleChange,
-    handleTypeSelect,
     handleVideoChange,
     imageLocation,
     images,
@@ -34,7 +35,6 @@ const Content = ({
     step,
     tags,
     title,
-    type,
     video,
 }) => {
     switch (step) {
@@ -56,7 +56,7 @@ const Content = ({
         case 1:
             return (
                 <TypeSelectButtonList
-                    handleReportTypeClick={handleTypeSelect}
+                    handleReportTypeClick={handleFormSelect}
                 />
             )
         case 2:
@@ -69,7 +69,7 @@ const Content = ({
                     handleVideoChange={handleVideoChange}
                     imageLocation={imageLocation}
                     images={images}
-                    reportType={type}
+                    reportType={form}
                     resizedHeight={resizedHeight}
                     resizedWidth={resizedWidth}
                     setImageLocation={setImageLocation}

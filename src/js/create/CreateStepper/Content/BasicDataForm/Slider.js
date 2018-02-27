@@ -32,7 +32,7 @@ const Slider = ({
     handleDurationChange,
 }) => (
     <StyledSlider
-        defaultValue={duration}
+        defaultValue={3}
         dots
         dotStyle={dotStyle}
         handle={CustomHandle}
@@ -41,6 +41,7 @@ const Slider = ({
         onChange={handleDurationChange}
         railStyle={railStyle}
         trackStyle={trackStyle}
+        value={duration}
     />
 );
 
