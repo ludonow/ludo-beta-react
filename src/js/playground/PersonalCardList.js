@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import Masonry from 'react-masonry-component';
 import styled from 'styled-components';
 
 import axios from '../axios-config';
 import CardListContainer from '../containers/CardListContainer';
 import UpDownToggleButton from '../components/UpDownToggleButton';
+import { CardListWrapper } from '../baseStyle';
+
+const masonryOptions = {
+    columnWidth: 226,
+    fitWidth: true,
+    itemSelector: ".grid-item",
+};
 
 // styled components
 const PersonalCardListWrapper = styled.div`
@@ -14,8 +22,9 @@ const PersonalCardListWrapper = styled.div`
     margin-bottom: 20px;
 `;
 
-const CardListWrapper = styled.div`
-    margin: 0 auto;
+const StyledCardListWrapper = CardListWrapper.extend`
+    display: flex;
+    justify-content: center;
 `;
 
 const TitleWrapper = styled.div`
@@ -92,13 +101,15 @@ class PersonalCardList extends Component {
                 <TitleWrapper>
                     我的{queryTarget}
                 </TitleWrapper>
-                <CardListWrapper>
-                    <CardListContainer
-                        keyPrefix="personal-card"
-                        ludoList={personalLudoList}
-                        search={search}
-                    />
-                </CardListWrapper>
+                <StyledCardListWrapper>
+                    <Masonry options={masonryOptions}>
+                        <CardListContainer
+                            keyPrefix="personal-card"
+                            ludoList={personalLudoList}
+                            search={search}
+                        />
+                    </Masonry>
+                </StyledCardListWrapper>
                 <ToggleButtonWrapper>
                     <UpDownToggleButton
                         handleClick={handlePersonalCardListClose}
