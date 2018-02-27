@@ -54,6 +54,10 @@ const contentStyle = {
     maxWidth: 'none'
 };
 
+const dialogStyle = {
+    zIndex: '2',
+};
+
 const titleStyle = {
     fontFamily: 'Microsoft JhengHei',
     textAlign: 'center'
@@ -84,38 +88,40 @@ class CreateStepper extends Component {
     }
 
     componentDidMount() {
-        const { ludoId } = this.props;
-        axios.get(`/apis/ludo/${ludoId}`)
-        .then((response) => {
-            /*
-                response.data.status
-                200: everything's fine;
-                400: user's data issue;
-                401: no login;
-                403: no authority 
-            */
-            if (response.data.status === '200') {
-                this.setState({
-                    isNextStepButtonDisabled: false,
-                    ludoCreateForm: response.data.ludo
-                });
-            } else {
-                if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+        if (this.props.ludoId) {
+            const { ludoId } = this.props;
+            axios.get(`/apis/ludo/${ludoId}`)
+            .then((response) => {
+                /*
+                    response.data.status
+                    200: everything's fine;
+                    400: user's data issue;
+                    401: no login;
+                    403: no authority 
+                */
+                if (response.data.status === '200') {
+                    this.setState({
+                        isNextStepButtonDisabled: false,
+                        ludoCreateForm: response.data.ludo
+                    });
+                } else {
+                    if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
                 this.setState({
                     isTemplateSubmitButtonDisabled: false
                 });
-            }
-        })
-        .catch((error) => {
-            if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-            this.setState({
-                isTemplateSubmitButtonDisabled: false
             });
-        });
+        }
     }
 
     handleCheckPointChange(event) {
@@ -460,6 +466,7 @@ class CreateStepper extends Component {
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
                     open={open}
+                    style={dialogStyle}
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
