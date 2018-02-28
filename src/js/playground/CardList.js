@@ -23,7 +23,7 @@ class CardList extends Component {
     }
 
     componentDidMount() {
-        const filteredCondition = this.getFilteredConditionListFromUrl(this.props.location.search);
+        const filteredCondition = String(this.getFilteredConditionListFromUrl(this.props.location.search));
         this.props.getFilteredLudoList(filteredCondition);
         this.setState({
             isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
@@ -35,7 +35,7 @@ class CardList extends Component {
             this.props.handleShouldLudoListUpdate(false);
         }
         if (prevProps.location.search !== this.props.location.search) {
-            const filteredCondition = this.getFilteredConditionListFromUrl(this.props.location.search);
+            const filteredCondition = String(this.getFilteredConditionListFromUrl(this.props.location.search));
             this.props.getFilteredLudoList(filteredCondition);
             this.setState({
                 isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
