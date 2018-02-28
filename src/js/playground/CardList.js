@@ -15,11 +15,19 @@ const masonryOptions = {
 class CardList extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isAtTemplateListPage: false,
+        };
+        this.getFilteredConditionListFromUrl = this.getFilteredConditionListFromUrl.bind(this);
+        this.getIsAtTemplatePage = this.getIsAtTemplatePage.bind(this);
     }
 
     componentDidMount() {
         const filteredCondition = this.getFilteredConditionListFromUrl(this.props.location.search);
         this.props.getFilteredLudoList(filteredCondition);
+        this.setState({
+            isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
+        });
     }
 
     componentDidUpdate(prevProps) {
@@ -29,6 +37,9 @@ class CardList extends Component {
         if (prevProps.location.search !== this.props.location.search) {
             const filteredCondition = this.getFilteredConditionListFromUrl(this.props.location.search);
             this.props.getFilteredLudoList(filteredCondition);
+            this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
+            });
         }
     }
 
@@ -36,15 +47,23 @@ class CardList extends Component {
         return queryUrl.split('?')[1];
     }
 
+    getIsAtTemplatePage(search) {
+        return search.includes('stage=0');
+    }
+
     render() {
         const {
             ludoList,
         } = this.props;
+        const {
+            isAtTemplateListPage,
+        } = this.state;
         return (
             <CardListWrapper>
                 <Masonry options={masonryOptions}>
                     <QuickStart />
                     <CardListContainer
+                        isAtTemplateListPage={isAtTemplateListPage}
                         keyPrefix="card"
                         ludoList={ludoList}
                     />
