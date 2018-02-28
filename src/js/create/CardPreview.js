@@ -158,11 +158,11 @@ export default class CardPreview extends Component {
                                 </TemplateInfo>
                                 <TemplateInfo>
                                     <Button
-                                        backgroundColor="#FF7171"
-                                        fontSize="14px"
+                                        backgroundColor="#FF7171 !important"
+                                        fontSize="14px !important"
                                         label={labelList[Number(interval)-1]}
-                                        padding="5px 0"
-                                        width="100px"
+                                        padding="5px 0 !important"
+                                        width="100px !important"
                                     />
                                 </TemplateInfo>
                             </TemplateInfoWrapper>

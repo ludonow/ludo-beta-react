@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import styled from 'styled-components';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RcSlider from 'rc-slider';
 
 const maxDuration = 14;
+
+const StyledSlider = styled(RcSlider)`
+    padding: 0;
+`;
 
 // override material ui style
 const styles = {
@@ -28,7 +33,7 @@ const DaySlider = ({
     handleDurationChange
 }) => (
     <div className="slider-container">
-        <RcSlider
+        <StyledSlider
             max={maxDuration}
             min={3}
             defaultValue={duration}

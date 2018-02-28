@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import MediaQuery from 'react-responsive';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 
@@ -14,6 +15,9 @@ import {
 const DescriptionWrapper = styled.div`
     margin: 0 auto;
     width: 75%;
+    @media (max-width: 768px) {
+        margin-bottom: 20px;
+    }
 `;
 
 const IconWrapper = styled.div`
@@ -43,6 +47,9 @@ const LeftWrapper = styled.div`
 const PeriodWrapper = styled.div`
     font-size: 48px;
     margin-bottom: 50px;
+    @media (max-width: 768px) {
+        margin-bottom: 20px;
+    }
 `;
 
 const RightWrapper = styled.div`
@@ -84,11 +91,16 @@ const menuStyle = {
     top: '-30px',
 };
 
-const labelStyle = {
+const deskTopLabelStyle = {
     backgroundColor: '#F0F0F0',
     height: 'auto',
     lineHeight: '30px',
     top: '41px',
+};
+
+const mobileLabelStyle = {
+    ...deskTopLabelStyle,
+    paddingLeft: '25px',
 };
 
 class BonusPeriodSelectForm extends Component {
@@ -128,6 +140,11 @@ class BonusPeriodSelectForm extends Component {
         const {
             bonusPeriodIndex,
         } = this.state;
+
+        const width = window.innerWidth || document.body.clientWidth;
+
+        const labelStyle = (width <= 768) ? mobileLabelStyle : deskTopLabelStyle;
+
         return (
             <Wrapper>
                 <LeftWrapper>

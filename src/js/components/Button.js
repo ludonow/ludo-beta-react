@@ -10,7 +10,7 @@ export const StyledButton = styled.button`
     border-right: none;
     border-left: none;
     border-top: none;
-    border: ${props => props.border ? props.border : 'none none 2px none'};
+    border-width: ${props => props.borderWidth ? props.borderWidth : '0 0 2px 0'};
     box-shadow: ${props => props.boxShadow ? props.boxShadow : '0px 3px 6px rgba(0,0,0,0.16)'};
     color: ${props => props.textColor ? props.textColor : '#FFFFFF'};
     cursor: pointer; 
@@ -49,7 +49,7 @@ const Button = ({
     activeBackgroundColor,
     activeTextColor,
     backgroundColor,
-    border,
+    borderWidth,
     boxShadow,
     data,
     disabled,
@@ -69,7 +69,7 @@ const Button = ({
         activeBackgroundColor={activeBackgroundColor ? activeBackgroundColor : backgroundColor}
         activeTextColor={activeTextColor ? activeTextColor : textColor}
         backgroundColor={backgroundColor}
-        border={border}
+        borderWidth={borderWidth}
         boxShadow={boxShadow}
         data-payload={data}
         disabled={disabled}
