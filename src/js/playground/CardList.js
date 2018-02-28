@@ -6,6 +6,12 @@ import QuickStart from './QuickStart';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper } from '../baseStyle';
 
+const StyledCardListWrapper = CardListWrapper.extend`
+    @media (max-width: 768px) {
+        margin: 0 auto;
+    }
+`;
+
 const masonryOptions = {
     columnWidth: 226,
     fitWidth: true,
@@ -59,7 +65,7 @@ class CardList extends Component {
             isAtTemplateListPage,
         } = this.state;
         return (
-            <CardListWrapper>
+            <StyledCardListWrapper>
                 <Masonry options={masonryOptions}>
                     <QuickStart />
                     <CardListContainer
@@ -68,7 +74,7 @@ class CardList extends Component {
                         ludoList={ludoList}
                     />
                 </Masonry>
-            </CardListWrapper>
+            </StyledCardListWrapper>
         );
     }
 }
