@@ -67,10 +67,12 @@ class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isAtTemplateListPage: false,
             searchResult: [],
             search: '',
             title: '',
         };
+        this.getIsAtTemplatePage = this.getIsAtTemplatePage.bind(this);
         this.getSearchResult = this.getSearchResult.bind(this);
     }
 
@@ -78,6 +80,7 @@ class Search extends Component {
         if (this.props.search !== this.state.search) {
             const queryTitle = this.props.search.split('title=')[1];
             this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(this.props.search),
                 search: this.props.search,
                 title: queryTitle,
             });
@@ -97,6 +100,10 @@ class Search extends Component {
             });
             this.getSearchResult(nextProps.search);
         }
+    }
+
+    getIsAtTemplatePage(search) {
+        return search.includes('stage=0');
     }
 
     getSearchResult(search) {
@@ -128,6 +135,7 @@ class Search extends Component {
 
     render() {
         const {
+            isAtTemplateListPage,
             searchResult,
             title,
         } = this.state;
@@ -155,6 +163,7 @@ class Search extends Component {
                         <StyledMasonry options={masonryOptions}>
                             <CardListContainer
                                 emptyText="搜尋不到相關的結果"
+                                isAtTemplateListPage={isAtTemplateListPage}
                                 keyPrefix="search-result"
                                 ludoList={searchResult}
                             />
@@ -166,6 +175,7 @@ class Search extends Component {
                         <StyledMasonry options={masonryOptions}>
                             <CardListContainer
                                 emptyText="搜尋不到相關的結果"
+                                isAtTemplateListPage={isAtTemplateListPage}
                                 keyPrefix="search-result"
                                 ludoList={searchResult}
                             />
