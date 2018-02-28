@@ -4,6 +4,7 @@ import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
 
 import axios from '../axios-config';
+import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper, StyledLink } from '../baseStyle';
@@ -147,7 +148,7 @@ class Search extends Component {
                             filterInfoList.map((filterInfo, index) => (
                                 <ButtonWrapper
                                     key={`search-filter-${index}`}
-                                    to={`/search?stage=${filterInfo.stage}&title=${title}`}
+                                    to={`${baseUrl}/search?stage=${filterInfo.stage}&title=${title}`}
                                 >
                                     <Button
                                         backgroundColor={filterInfo.backgroundColor}

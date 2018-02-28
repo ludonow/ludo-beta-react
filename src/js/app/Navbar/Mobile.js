@@ -2,25 +2,27 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
+import { baseUrl } from '../../baseurl-config';
+
 const linkInfoList = [
     {
-        text: '遊戲廣場',
-        url: '/cardList'
+        text: "遊戲廣場",
+        url: "cardList"
     },
     {
-        text: '模板系統',
-        url: '/cardList?stage=0',
+        text: "模板系統",
+        url: "cardList?stage=0",
     },
     {
-        text: '創建模板',
-        url: '/create',
+        text: "創建模板",
+        url: "create",
     }
 ];
 
 const myCardListLinkInfoSampleList = [
     {
         text: "個人數據",
-        url: "/myCardList?stage=1&user_id="
+        url: "myCardList?stage=1&user_id="
     },
     // {
     //     text: "正在遊戲",
@@ -157,7 +159,7 @@ const Mobile = ({
                         <StyledListItem key={`mobile-navbar-link-${index}`}>
                             <StyledLink
                                 onClick={handleNavbarClose}
-                                to={linkInfo.url}
+                                to={`${baseUrl}/${linkInfo.url}`}
                             >
                                 {linkInfo.text}
                             </StyledLink>
@@ -169,7 +171,7 @@ const Mobile = ({
                         <StyledListItem key={`mobile-navbar-my-card-list-${index}`}>
                             <StyledLink
                                 onClick={handleNavbarClose}
-                                to={linkInfo.url}
+                                to={`${baseUrl}/${linkInfo.url}`}
                             >
                                 {linkInfo.text}
                             </StyledLink>

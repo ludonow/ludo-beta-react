@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import Masonry from 'react-masonry-component';
 
-import axios from '../axios-config'
+import axios from '../axios-config';
+import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper } from '../baseStyle';
@@ -196,7 +197,7 @@ class MyCardList extends Component {
                                     <StyledTab
                                         key={`tab-link-${index}`}
                                     >
-                                        <StyledLink to={`/myCardList?stage=${tabLink.stage}&user_id=${currentUserId}`}>
+                                        <StyledLink to={`${baseUrl}/myCardList?stage=${tabLink.stage}&user_id=${currentUserId}`}>
                                             {tabLink.label}
                                         </StyledLink>
                                     </StyledTab>

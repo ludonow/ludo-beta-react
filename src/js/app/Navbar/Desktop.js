@@ -10,34 +10,34 @@ const ProfileLabel = "個人數據";
 const cardSystemLinkInfoList = [
     {
         text: "遊戲廣場",
-        url: "/cardList"
+        url: "cardList"
     },
     {
         text: "模板系統",
-        url: "/cardList?stage=0"
+        url: "cardList?stage=0"
     },
     {
         text: "創建模板",
-        url: "/create"
+        url: "create"
     }
 ];
 
 const myCardListLinkInfoSampleList = [
     {
         text: "等待加入",
-        url: "/myCardList?stage=1&user_id="
+        url: "myCardList?stage=1&user_id="
     },
     {
         text: "正在遊戲",
-        url: "/myCardList?stage=2&user_id="
+        url: "myCardList?stage=2&user_id="
     },
     {
         text: "已經結束",
-        url: "/myCardList?stage=3&user_id="
+        url: "myCardList?stage=3&user_id="
     },
     {
         text: "我的模板",
-        url: "/myCardList?stage=0&user_id="
+        url: "myCardList?stage=0&user_id="
     }
 ];
 
