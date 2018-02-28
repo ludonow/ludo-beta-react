@@ -171,7 +171,7 @@ class CreateStepper extends Component {
         } else {
             const cardCreateForm = {
                 ...ludoCreateForm,
-                template_id: this.props.templateId,
+                template_id: this.props.ludoId,
             };
             axios.post('/apis/ludo', cardCreateForm)
             .then((response) => {
@@ -436,7 +436,7 @@ class CreateStepper extends Component {
         const isSureToDelete = window.confirm('你確定要刪除這個Ludo模板嗎？');
         // const isSureToDelete = window.confirm('Are you sure to delete this template ludo?');
         if (isSureToDelete) {
-            axios.delete(`/apis/ludo/${this.props.templateId}`)
+            axios.delete(`/apis/ludo/${this.props.ludoId}`)
             .then(response => {
                 if (response.data.status == '200') {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
