@@ -40,9 +40,9 @@ const initialState = {
 
 const titles = [
     '標題與回報間隔',
-    '卡片形式選擇',
     '卡片內容簡介',
-    '加分回報時段'
+    '加分回報時段',
+    '預覽',
 ];
 
 // styled components

@@ -33,7 +33,6 @@ const TextReportArea = ({
             maxLength={1000}
             multiLine
             onChange={onChange}
-            rows={5}
             rowsMax={10}
             value={text}
         />

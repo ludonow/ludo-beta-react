@@ -42,22 +42,6 @@ const StepButtonList = ({
                         onClick={handleStepPrev}
                     />
                     <Button
-                        backgroundColor={'#B1B1B1'}
-                        data="text"
-                        label="純文字"
-                        onClick={handleFormSelect}
-                    />
-                </ButtonListWrapper>
-            );
-        case 2:
-            return (
-                <ButtonListWrapper>
-                    <Button
-                        backgroundColor={'#B1B1B1'}
-                        label="上一步"
-                        onClick={handleStepPrev}
-                    />
-                    <Button
                         backgroundColor={'#717171'}
                         disabled={isPreviewButtonDisabled}
                         label="下一步"
@@ -65,7 +49,7 @@ const StepButtonList = ({
                     />
                 </ButtonListWrapper>
             );
-        case 3:
+        case 2:
             return (
                 <ButtonListWrapper>
                     <Button
@@ -81,7 +65,7 @@ const StepButtonList = ({
                     />
                 </ButtonListWrapper>
             );
-        case 4:
+        case 3:
             return (
                 <ButtonListWrapper>
                     <Button
