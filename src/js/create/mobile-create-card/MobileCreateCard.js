@@ -59,9 +59,9 @@ export default class MobileCreateCard extends Component {
 
     componentDidMount() {
         this.props.handleIsOpeningCreateFormPage(true);
-        if (this.props.params.ludo_id) {
-            const { ludo_id } = this.props.params;
-            axios.get(`/apis/ludo/${ludo_id}`)
+        if (this.props.params.templateId) {
+            const { templateId } = this.props.params;
+            axios.get(`/apis/ludo/${templateId}`)
             .then((response) => {
                 this.setState(
                     prevState => ({
