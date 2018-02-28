@@ -93,12 +93,8 @@ class CreateStepper extends Component {
     }
 
     componentDidMount() {
-        if (this.props.ludoId) {
-            const { ludoId } = this.props;
-            browserHistory.push(`/template/${ludoId}`);
-        }
-        if (this.props.templateId && !this.state.isAtTemplatePage) {
-            this.getTemplateData(this.props.templateId);
+        if (!this.state.isAtTemplatePage && this.props.ludoId) {
+            this.getTemplateData(this.props.ludoId);
         }
     }
 
@@ -123,7 +119,7 @@ class CreateStepper extends Component {
                         isNextStepButtonDisabled: false,
                         isPreviewButtonDisabled: false,
                         ludoCreateForm: response.data.ludo,
-                        step: 4,
+                        step: 3,
                     });
                 } else {
                     this.setState({
@@ -135,13 +131,14 @@ class CreateStepper extends Component {
                             ...response.data.ludo,
                             form: 'text',
                         },
-                        step: 4,
+                        step: 3,
                     });
                 }
             } else {
                 if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
+                console.log(response.data);
                 this.setState({
                     isCardSubmitButtonDisabled: false
                 });

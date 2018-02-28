@@ -16,7 +16,6 @@ const Template = (props) => (
                 getUserBasicData={props.getUserBasicData}
                 handleShouldProfileUpdate={props.handleShouldProfileUpdate}
                 ludoId={props.params.ludo_id}
-                templateId={props.params.templateId}
             />
         </MediaQuery>
         <MediaQuery maxWidth={768}>
