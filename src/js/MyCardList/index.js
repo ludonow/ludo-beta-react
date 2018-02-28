@@ -86,10 +86,12 @@ class MyCardList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isAtTemplateListPage: false,
             ludoList: [],
             search: 'dafault',
             tabIndex: 0,
         };
+        this.getIsAtTemplatePage = this.getIsAtTemplatePage.bind(this);
         this.getMyCardList = this.getMyCardList.bind(this);
         this.getTabIndex = this.getTabIndex.bind(this);
         this.handleDownloadReportClick = this.handleDownloadReportClick.bind(this);
@@ -98,6 +100,7 @@ class MyCardList extends Component {
     componentDidMount() {
         if (this.props.search) {
             this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(this.props.search),
                 search: this.props.search,
                 tabIndex: this.getTabIndex(this.props.search),
             });
@@ -111,11 +114,16 @@ class MyCardList extends Component {
             nextProps.search !== this.props.search
         ) {
             this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(nextProps.search),
                 search: nextProps.search,
                 tabIndex: this.getTabIndex(nextProps.search),
             });
             this.getMyCardList(nextProps.search);
         }
+    }
+
+    getIsAtTemplatePage(search) {
+        return search.includes('stage=0');
     }
 
     getMyCardList(search) {
@@ -164,6 +172,7 @@ class MyCardList extends Component {
         } = this.props;
 
         const {
+            isAtTemplateListPage,
             ludoList,
             search,
             tabIndex,
@@ -199,6 +208,7 @@ class MyCardList extends Component {
                 <StyledCardListWrapper>
                     <StyledMasonry options={masonryOptions}>
                         <CardListContainer
+                            isAtTemplateListPage={isAtTemplateListPage}
                             keyPrefix="my-card"
                             ludoList={ludoList}
                             search={search}

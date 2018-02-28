@@ -93,8 +93,8 @@ class CreateStepper extends Component {
     }
 
     componentDidMount() {
-        if (!this.state.isAtTemplatePage && this.props.ludoId) {
-            this.getTemplateData(this.props.ludoId);
+        if (!this.state.isAtTemplatePage && this.props.templateId) {
+            this.getTemplateData(this.props.templateId);
         }
     }
 

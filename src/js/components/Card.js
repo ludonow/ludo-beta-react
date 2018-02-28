@@ -24,6 +24,7 @@ const Card = ({
     handleCardStage,
     handleClick,
     index,
+    isAtTemplateListPage,
     isThisCardFlipped,
     singleLudoObject
 }) => (
@@ -72,7 +73,7 @@ const Card = ({
                 {/* the circle button for GO */}
                 <Link 
                     className="card-button_circle"
-                    to={`/ludo/${singleLudoObject.ludo_id}`}
+                    to={isAtTemplateListPage ? `/template/${singleLudoObject.ludo_id}` : `/ludo/${singleLudoObject.ludo_id}`}
                 >
                     <div className="card-button_text">
                         Go

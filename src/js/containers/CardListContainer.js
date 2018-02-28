@@ -67,6 +67,7 @@ class CardListContainer extends Component {
     render() {
         const {
             emptyText,
+            isAtTemplateListPage,
             keyPrefix,
             ludoList,
             search,
@@ -88,6 +89,7 @@ class CardListContainer extends Component {
                                     handleCardStage={this.handleCardStage}
                                     handleClick={handleClick}
                                     index={index}
+                                    isAtTemplateListPage={isAtTemplateListPage}
                                     isThisCardFlipped={isThisCardFlipped}
                                     key={`${keyPrefix}-${index}`}
                                     singleLudoObject={singleLudoObject}

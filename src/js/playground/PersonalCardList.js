@@ -41,19 +41,27 @@ class PersonalCardList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isAtTemplateListPage: false,
             personalLudoList: [],
             search: 'dafault',
         };
+        this.getIsAtTemplatePage = this.getIsAtTemplatePage.bind(this);
         this.getPersonalLudoList = this.getPersonalLudoList.bind(this);
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.search !== this.state.search) {
             this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(prevProps.search),
                 search: prevProps.search
             });
+            
             this.getPersonalLudoList(prevProps.currentUserId, prevProps.search);
         }
+    }
+
+    getIsAtTemplatePage(search) {
+        return search.includes('stage=0');
     }
 
     getPersonalLudoList(currentUserId, search='') {
@@ -90,6 +98,7 @@ class PersonalCardList extends Component {
         } = this.props;
         
         const {
+            isAtTemplateListPage,
             personalLudoList,
             search,
         } = this.state;
@@ -104,6 +113,7 @@ class PersonalCardList extends Component {
                 <StyledCardListWrapper>
                     <Masonry options={masonryOptions}>
                         <CardListContainer
+                            isAtTemplateListPage={isAtTemplateListPage}
                             keyPrefix="personal-card"
                             ludoList={personalLudoList}
                             search={search}
