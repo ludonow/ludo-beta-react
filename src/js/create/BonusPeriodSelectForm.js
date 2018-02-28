@@ -8,7 +8,7 @@ import {
     getBonusPeriodIndexFromPeriod,
     getPeriodDisplayByPeriod,
     periodList
-} from '../../bonusPeriod';
+} from './bonusPeriod';
 
 // styled components
 const DescriptionWrapper = styled.div`
@@ -35,6 +35,9 @@ const LeftWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 50%;
+    @media (max-width: 768px) {
+        width: auto;
+    }
 `;
 
 const PeriodWrapper = styled.div`
@@ -45,17 +48,31 @@ const PeriodWrapper = styled.div`
 const RightWrapper = styled.div`
     text-align: center;
     width: 50%;
+    @media (max-width: 768px) {
+        width: auto;
+    }
 `;
 
 const SelectFieldWrapper = styled.div`
     margin: 0 auto;
     text-align: center;
     width: 50%;
+
+    @media (max-width: 768px) {
+        width: auto;
+    }
 `;
 
 const Wrapper = styled.div`
-    display: inline-flex;
+    display: flex;
+    flex-direction: row;
     width: 100%;
+
+    @media (max-width: 768px) {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
 `;
 
 // override material ui

@@ -1,22 +1,22 @@
 import React, { Component, PropTypes } from 'react';
 
+import BonusPeriodSelectForm from '../BonusPeriodSelectForm';
 import CardPreview from '../CardPreview';
-import CategorySelector from './CategorySelector';
 import CreateFormTextField from './CreateFormTextField';
 import DayForm from './DayForm';
 
 const MobileCreateForm = ({
-    categoryId,
     duration,
-    handleCategoryChange,
     handleCheckPointChange,
     handleDurationChange,
     handleIntroductionChange,
+    handlePeriodChange,
     handleTagAdd,
     handleTagDelete,
     handleTitleChange,
     interval,
     introduction,
+    period,
     step,
     tags,
     title
@@ -45,17 +45,18 @@ const MobileCreateForm = ({
             );
         case 2:
             return (
-                <CategorySelector
-                    categoryId={categoryId}
-                    handleCategoryChange={handleCategoryChange}
+                <BonusPeriodSelectForm
+                    handlePeriodChange={handlePeriodChange}
+                    period={period}
                 />
             );
         case 3:
             return (
                 <CardPreview
-                    categoryId={categoryId}
                     duration={duration}
+                    interval={interval}
                     introduction={introduction}
+                    period={period}
                     tags={tags}
                     title={title}
                 />

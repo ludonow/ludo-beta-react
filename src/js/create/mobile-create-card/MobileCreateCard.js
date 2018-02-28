@@ -31,24 +31,30 @@ export default class MobileCreateCard extends Component {
                 category_id: 1,
                 checkpoint: [3],
                 duration: 3,
+                form: '',
+                image_location: '',
                 interval: 1,
                 introduction: '',
+                period: '0-24',
                 marbles: 0,
                 tags: [],
-                title: ''
+                title: '',
+                video: '',
             },
             isAtTemplatePage: false,
             isLudoSubmitButtonDisabled: true,
             isNextStepButtonDisabled: true,
             isTemplateDeleteButtonDisabled: true,
             isTemplateSubmitButtonDisabled: true,
-            step: 0
+            step: 0,
         };
+        this.getTemplateData = this.getTemplateData.bind(this);
         this.handleCardSubmit = this.handleCardSubmit.bind(this);
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleDurationChange = this.handleDurationChange.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
+        this.handlePeriodChange = this.handlePeriodChange.bind(this);
         this.handleStepChange = this.handleStepChange.bind(this);
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
@@ -61,8 +67,18 @@ export default class MobileCreateCard extends Component {
         this.props.handleIsOpeningCreateFormPage(true);
         if (this.props.params.templateId) {
             const { templateId } = this.props.params;
-            axios.get(`/apis/ludo/${templateId}`)
-            .then((response) => {
+            this.getTemplateData(templateId);
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.handleIsOpeningCreateFormPage(false);
+    }
+
+    getTemplateData(templateId) {
+        axios.get(`/apis/ludo/${templateId}`)
+        .then((response) => {
+            if (response.data.status === '200') {
                 this.setState(
                     prevState => ({
                         isAtTemplatePage: true,
@@ -76,17 +92,17 @@ export default class MobileCreateCard extends Component {
                         step: maxStep
                     })
                 );
-            })
-            .catch((error) => {
-                if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            } else {
+                if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.handleIsOpeningCreateFormPage(false);
+            }
+        })
+        .catch((error) => {
+            if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+        });
     }
 
     handleCardSubmit(event) {
@@ -249,6 +265,17 @@ export default class MobileCreateCard extends Component {
                 });
             }
         }
+    }
+
+    handlePeriodChange(event, index, value) {
+        this.setState(
+            prevState => ({
+                ludoCreateForm: {
+                    ...prevState.ludoCreateForm,
+                    period: value
+                }
+            })
+        );
     }
 
     handleStepChange(variation) {
@@ -449,16 +476,16 @@ export default class MobileCreateCard extends Component {
             isTemplateDeleteButtonDisabled,
             isTemplateSubmitButtonDisabled,
             ludoCreateForm,
-            step
+            step,
         } = this.state;
 
         const {
-            category_id,
             duration,
             interval,
             introduction,
+            period,
             tags,
-            title
+            title,
         } = ludoCreateForm;
 
         const ludoId = this.props.params.ludo_id;
@@ -470,17 +497,17 @@ export default class MobileCreateCard extends Component {
             <div className="mobile-create-card">
                 <CardTitle title={cardTitle} />
                 <MobileCreateForm
-                    categoryId={category_id}
                     duration={duration}
-                    handleCategoryChange={this.handleCategoryChange}
                     handleCheckPointChange={this.handleCheckPointChange}
                     handleDurationChange={this.handleDurationChange}
                     handleIntroductionChange={this.handleIntroductionChange}
+                    handlePeriodChange={this.handlePeriodChange}
                     handleTagAdd={this.handleTagAdd}
                     handleTagDelete={this.handleTagDelete}
                     handleTitleChange={this.handleTitleChange}
                     interval={interval}
                     introduction={introduction}
+                    period={period}
                     step={step}
                     tags={tags}
                     title={title}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import BasicDataForm from './BasicDataForm/index';
-import BonusPeriodSelectForm from './BonusPeriodSelectForm';
+import BonusPeriodSelectForm from '../../BonusPeriodSelectForm';
 import CardPreview from '../../CardPreview';
 import Draft from '../../../active/desktop-report-post/Draft';
 // import TypeSelectButtonList from '../../../active/desktop-report-post/TypeSelectButtonList';
