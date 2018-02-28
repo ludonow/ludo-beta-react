@@ -4,6 +4,7 @@ import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import axios from '../axios-config';
+import { baseUrl } from '../baseurl-config';
 
 import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
 import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
@@ -132,7 +133,7 @@ const AppRouter = () => (
         <Router history={browserHistory}>
             <Route
                 component={App}
-                path="/"
+                path={`${baseUrl}/`}
             >   
                 {/* <IndexRoute component={Playground} /> */}
                 <IndexRedirect to="cardList" />
