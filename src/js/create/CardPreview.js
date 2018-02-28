@@ -8,6 +8,7 @@ import {
 } from './bonusPeriod';
 import { labelList } from './reportInterval';
 import Button from '../components/Button';
+import { CustomScrollBarCSS } from '../baseStyle';
 
 const BackPeriodIconWrapper = styled.div`
     margin-top: 10px;
@@ -44,7 +45,11 @@ const TemplateInfo = styled.div`
 const IntroWrapper = TemplateInfo.extend`
     font-size: 12px;
     line-height: 30px;
+    max-height: 60px;
+    /* overflow-y: auto;
     white-space: pre-wrap;
+
+    ${CustomScrollBarCSS} */
 `;
 
 const TemplateInfoWrapper = styled.div`
@@ -128,8 +133,8 @@ export default class CardPreview extends Component {
                             </BackPeriodIconWrapper>
                             <TemplateInfoWrapper>
                                 <IntroWrapper>
-                                    { String(introduction).length > 40 ?
-                                        String(introduction).substring(0, 40) + ' ...'
+                                    { String(introduction).length > 30 ?
+                                        String(introduction).substring(0, 30) + ' ...'
                                         : String(introduction)
                                     }
                                 </IntroWrapper>
