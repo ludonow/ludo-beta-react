@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
+import { baseUrl } from '../baseurl-config';
+
 const Button = styled.button`
     align-items: center;
     cursor: pointer;
@@ -54,7 +56,7 @@ const ReportButton = ({
         <Button
             disabled={disabled}
         >
-            <Link to={url}>{label}</Link>
+            <Link to={`${baseUrl}/${url}`}>{label}</Link>
         </Button>
     </ReportButtonWrapper>
 );

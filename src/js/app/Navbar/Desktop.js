@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import styled from 'styled-components';
 
+import { baseUrl } from '../../baseurl-config';
 import HeaderLeft from '../Header/HeaderLeft';
 
 const ProfileLabel = "個人數據";
@@ -140,7 +141,7 @@ const LinkList = ({
                     <StyledLink
                         key={linkInfo.text}
                         onClick={handleNavbarClose}
-                        to={linkInfo.url}
+                        to={`${baseUrl}/${linkInfo.url}`}
                     >
                         <ListItem>
                             {linkInfo.text}

@@ -6,4 +6,6 @@ const browserHistory = useRouterHistory(createHistory)({
     basename: "/"
 });
 
+export const baseUrl = '';
+
 export default browserHistory;

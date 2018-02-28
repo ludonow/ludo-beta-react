@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router";
 
+import { baseUrl } from '../baseurl-config';
 import Create from '../create/Create';
 
 export default class QuickStart extends React.Component {
@@ -11,7 +12,7 @@ export default class QuickStart extends React.Component {
         {/* layout/_create.scss */}
         <Link
           className="remove-hyperlink-style"
-          to="create"
+          to={`${baseUrl}/create`}
         >
           {/* components/_playground-quick-start.scss */}
           <div className="quick-start card--playground">

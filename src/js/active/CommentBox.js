@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 
 import axios from '../axios-config';
+import { baseUrl } from '../baseurl-config';
 
 import IconButton from 'material-ui/IconButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
@@ -23,7 +24,7 @@ const LoginButtonWrapper = styled.div`
 
 const LoginButton = () => (
     <LoginButtonWrapper>
-        <Link to="/login">
+        <Link to={`${baseUrl}/login`}>
             登入後即可留言
         </Link>
     </LoginButtonWrapper>

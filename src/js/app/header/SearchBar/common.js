@@ -16,9 +16,12 @@ const CancelIconPadding = `
     padding-top: 1px;
 `;
 
-const CancelIconWrapper = styled(A)`
+const CancelIconButtonWrapper = styled(A)`
     ${CancelIconPadding}
-    padding-top: ${props => props.isMobile ? '3px': '1px'};
+`;
+
+const CancelIconWrapper = styled.div`
+    padding-top: ${props => props.isMoblie ? '2px': '0'};
 `;
 
 export const CancelIconPlaceHolder = styled.div`
@@ -33,15 +36,14 @@ export const CancelIconButton = ({
     isMobile,
     width,
 }) => (
-    <CancelIconWrapper
-        isMobile={isMobile}
-        onTouchTap={handleSearchingTextClear}
-    >
-        <CancelIcon
-            color={grey700}
-            style={{height, width}}
-        />
-    </CancelIconWrapper>
+    <CancelIconButtonWrapper onTouchTap={handleSearchingTextClear}>
+        <CancelIconWrapper isMobile={isMobile}>
+            <CancelIcon
+                color={grey700}
+                style={{height, width}}
+            />
+        </CancelIconWrapper>
+    </CancelIconButtonWrapper>
 );
 
 CancelIconButton.defaultProps = {

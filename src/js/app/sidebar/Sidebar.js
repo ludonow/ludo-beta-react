@@ -1,6 +1,7 @@
 import React, { Component, PropTypes }from "react";
 import { browserHistory, Link } from "react-router";
 
+import { baseUrl } from '../../baseurl-config';
 import Playground from '../../playground/Playground';
 import Profile from '../../profile/Profile';
 import Create from '../../create/Create';
@@ -100,7 +101,7 @@ export default class Sidebar extends Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to={`/profile/${this.props.currentUserId}`}>
+                            <Link to={`${baseUrl}/profile/${this.props.currentUserId}`}>
                                 {
                                     hoverSidebarIndex == 0 ?
                                         <div className="right-sidebar-item__instruction">
@@ -154,7 +155,7 @@ export default class Sidebar extends Component {
                             onMouseLeave={this.handleMouseLeave}
                             onMouseOver={this.handleMouseOver}
                         >
-                            <Link to="/create">
+                            <Link to={`${baseUrl}/create`}>
                                 {
                                     hoverSidebarIndex == 3 ?
                                         <div className="right-sidebar-item__instruction">

@@ -95,12 +95,12 @@ export default class Header extends Component {
 
     handleFilterClick(event) {
         this.props.getFilteredLudoList(event.target.value);
-        browserHistory.push('/playground');
+        browserHistory.push('/cardList');
     }
 
     handleHistoryFilterClick() {
         this.props.getFilteredLudoList('stage=3');
-        browserHistory.push('/playground');
+        browserHistory.push('/cardList');
     }
 
     handleMobileSearchCancelTouchTap(event) {
@@ -155,7 +155,7 @@ export default class Header extends Component {
 
     handleTemplateFilterClick() {
         this.props.getFilteredLudoList('stage=0');
-        browserHistory.push('/playground');
+        browserHistory.push('/cardList');
     }
 
     searchSubmit(searchText) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 
+import { baseUrl } from '../baseurl-config';
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
 import exerciseIcon from '../../images/category_icon/exercise.png';
@@ -73,7 +74,7 @@ const Card = ({
                 {/* the circle button for GO */}
                 <Link 
                     className="card-button_circle"
-                    to={isAtTemplateListPage ? `/template/${singleLudoObject.ludo_id}` : `/ludo/${singleLudoObject.ludo_id}`}
+                    to={isAtTemplateListPage ? `${baseUrl}/template/${singleLudoObject.ludo_id}` : `${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
                 >
                     <div className="card-button_text">
                         Go

@@ -69,7 +69,7 @@ class Search extends Component {
         this.state = {
             isAtTemplateListPage: false,
             searchResult: [],
-            search: '',
+            search: 'default',
             title: '',
         };
         this.getIsAtTemplatePage = this.getIsAtTemplatePage.bind(this);

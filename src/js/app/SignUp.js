@@ -4,6 +4,7 @@ import { browserHistory, Link } from 'react-router';
 import Formsy from 'formsy-react';
 import md5 from 'blueimp-md5';
 
+import { baseUrl } from '../baseurl-config';
 import FormsyHOCInput from './FormsyHOCInput.js';
 import PasswordField from './PasswordField.js';
 
@@ -125,7 +126,7 @@ export default class SignUp extends React.Component {
                         </button>
                         <Link
                             className="login"
-                            to="login"
+                            to={`${baseUrl}/login`}
                         >
                             返回登入頁
                         </Link>

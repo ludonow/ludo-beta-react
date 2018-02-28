@@ -1,10 +1,9 @@
 import React from 'react';
-import { IndexRoute,IndexRedirect, Route, Router } from 'react-router';
+import { browserHistory, IndexRoute,IndexRedirect, Route, Router } from 'react-router';
 import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import axios from '../axios-config';
-import browserHistory from '../baseurl-config';
 
 import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
 import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
@@ -169,6 +168,10 @@ const AppRouter = () => (
                     path="redirect/:temp_ludo_id"
                 />
                 <Route
+                    component={LoadingPage}
+                    path="redirectTo/:url"
+                />
+                <Route
                     component={LogIn}
                     path="login"
                 />
@@ -235,7 +238,7 @@ const AppRouter = () => (
                 />
                 <Route
                     component={Search}
-                    path="search"
+                    path="search(?:filterCondition)"
                 />
                 <Route
                     component={SignUp}

@@ -7,6 +7,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Tooltip from 'material-ui/internal/Tooltip';
 
+import { baseUrl } from '../../baseurl-config';
 import defaultAvatartIcon from '../../../images/header/default_avatar.png';
 
 // styled components
@@ -77,7 +78,7 @@ export default class HeaderLogIn extends Component {
                 onMouseLeave={this.handleTooltipDisappear}
                 onMouseOver={this.handleTooltipShow}
             >
-                <Link to="login">
+                <Link to={`${baseUrl}/login`}>
                     <DefaultAvatarImg src={defaultAvatartIcon} />
                 </Link>
                 <Tooltip

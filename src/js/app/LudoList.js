@@ -2,6 +2,7 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 
+import { baseUrl } from '../baseurl-config';
 import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
 import readIcon from '../../images/category_icon/read.svg';
 import exerciseIcon from '../../images/category_icon/exercise.png';
@@ -159,9 +160,9 @@ export default class LudoList extends React.Component {
                                         </div>
                                     </div>
                                     {/* the circle button for GO */}
-                                    <Link 
+                                    <Link
                                         className="card-button_circle"
-                                        to={`/ludo/${singleLudoObject.ludo_id}`}
+                                        to={`${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
                                     >
                                         <div className="card-button_text">
                                             Go
