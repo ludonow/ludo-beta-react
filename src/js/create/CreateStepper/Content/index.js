@@ -28,6 +28,7 @@ const Content = ({
     images,
     interval,
     introduction,
+    isAtTemplatePage,
     period,
     resizedHeight,
     resizedWidth,
@@ -84,6 +85,7 @@ const Content = ({
                     duration={duration}
                     interval={interval}
                     introduction={introduction}
+                    isAtTemplatePage={isAtTemplatePage}
                     period={period}
                     tags={tags}
                     title={title}

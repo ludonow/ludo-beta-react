@@ -663,6 +663,7 @@ class CreateStepper extends Component {
                         images={images}
                         interval={interval}
                         introduction={introduction}
+                        isAtTemplatePage={isAtTemplatePage}
                         period={period}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}
