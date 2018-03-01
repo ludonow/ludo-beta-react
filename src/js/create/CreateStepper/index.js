@@ -441,7 +441,7 @@ class CreateStepper extends Component {
         const isSureToDelete = window.confirm('你確定要刪除這個Ludo模板嗎？');
         // const isSureToDelete = window.confirm('Are you sure to delete this template ludo?');
         if (isSureToDelete) {
-            axios.delete(`/apis/ludo/${this.props.ludoId}`)
+            axios.delete(`/apis/ludo/${this.props.templateId}`)
             .then(response => {
                 if (response.data.status == '200') {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
@@ -509,7 +509,7 @@ class CreateStepper extends Component {
                         const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                         getUserBasicData();
                         handleShouldProfileUpdate(true);
-                        browserHistory.push(`/ludo/${ludo_id}`);
+                        browserHistory.push(`/template/${ludo_id}`);
                     } else {
                         if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
