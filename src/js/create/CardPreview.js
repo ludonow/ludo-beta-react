@@ -17,6 +17,11 @@ import {
     TemplateCardBorderTop
 } from '../components/Card';
 
+const GoPlaceHolder = styled.div`
+    height: 60px;
+    width: 60px;
+`
+
 const TemplateInfo = styled.div`
     margin: 10px 0;
 `;
@@ -135,12 +140,7 @@ export default class CardPreview extends Component {
                                     />
                                 </TemplateInfo>
                             </TemplateInfoWrapper>
-                            {/* the circle button for GO */}
-                            <div className="card-button_circle">
-                                <div className="card-button_text">
-                                    Go
-                                </div>
-                            </div>
+                            <GoPlaceHolder />
                         </CardBackWrapper>
                         <div className="card-front-info">
                             <TemplateCardBorderTop
