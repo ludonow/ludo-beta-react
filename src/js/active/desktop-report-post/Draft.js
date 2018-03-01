@@ -19,21 +19,30 @@ const TextAreaWrapper = styled.div`
     textarea {
         ${CustomScrollBarCSS}
     }
-`
+`;
+
+// override material ui
+const hintStyle = {
+    top: '12px',
+};
 
 // child components
 const TextReportArea = ({
     onChange,
-    text
+    text,
 }) => (
     <TextAreaWrapper>
         <TextField
+            autoFocus
             fullWidth
+            hintStyle={hintStyle}
             hintText="輸入文字回報"
             maxLength={1000}
             multiLine
             onChange={onChange}
+            rows={10}
             rowsMax={10}
+            // underlineShow={false}
             value={text}
         />
     </TextAreaWrapper>
