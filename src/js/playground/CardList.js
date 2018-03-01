@@ -23,6 +23,7 @@ class CardList extends Component {
         super(props);
         this.state = {
             isAtTemplateListPage: false,
+            isDataFetched: false,
         };
         this.getFilteredConditionListFromUrl = this.getFilteredConditionListFromUrl.bind(this);
         this.getIsAtTemplatePage = this.getIsAtTemplatePage.bind(this);
@@ -33,6 +34,7 @@ class CardList extends Component {
         this.props.getFilteredLudoList(filteredCondition);
         this.setState({
             isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
+            isDataFetched: true,
         });
     }
 
@@ -45,6 +47,7 @@ class CardList extends Component {
             this.props.getFilteredLudoList(filteredCondition);
             this.setState({
                 isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
+                isDataFetched: true,
             });
         }
     }
@@ -63,6 +66,7 @@ class CardList extends Component {
         } = this.props;
         const {
             isAtTemplateListPage,
+            isDataFetched,
         } = this.state;
         return (
             <StyledCardListWrapper>
@@ -70,6 +74,7 @@ class CardList extends Component {
                     <QuickStart />
                     <CardListContainer
                         isAtTemplateListPage={isAtTemplateListPage}
+                        isDataFetched={isDataFetched}
                         keyPrefix="card"
                         ludoList={ludoList}
                     />

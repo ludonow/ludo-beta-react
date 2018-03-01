@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Card from '../components/Card';
+import LoadingIcon from '../../images/loading.svg';
 
 const EmptyTextWrapper = styled.div`
     color: white;
@@ -47,6 +48,7 @@ class CardListContainer extends Component {
         const {
             emptyText,
             isAtTemplateListPage,
+            isDataFetched,
             keyPrefix,
             ludoList,
             search,
@@ -58,6 +60,13 @@ class CardListContainer extends Component {
 
         return (
             <div>
+                {
+                    isDataFetched ?
+                        <img
+                            src={LoadingIcon}
+                        />
+                    : null
+                }
                 {
                     ludoList.length > 0 ?
                         ludoList.map((singleLudoObject, index) => {
@@ -74,10 +83,14 @@ class CardListContainer extends Component {
                                 />
                             );
                         })
-                    :
+                    : null
+                }
+                {
+                    ludoList.length === 0 ?
                         <EmptyTextWrapper>
                             {renderedEmptyText}
                         </EmptyTextWrapper>
+                    : null
                 }
             </div>
         );
