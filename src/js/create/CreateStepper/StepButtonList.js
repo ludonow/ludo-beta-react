@@ -12,9 +12,11 @@ const StepButtonList = ({
     handleStepNext,
     handleStepPrev,
     handleTemplateDelete,
+    handleTemplateModify,
     handleTemplateSubmit,
     isAtTemplatePage,
     isCardSubmitButtonDisabled,
+    isMyTemplate,
     isNextStepButtonDisabled,
     isPreviewButtonDisabled,
     isSubmitting,
@@ -72,7 +74,7 @@ const StepButtonList = ({
                         backgroundColor={'#B1B1B1'}
                         disabled={isSubmitting}
                         label="修改"
-                        onClick={handleStepPrev}
+                        onClick={handleTemplateModify}
                     />
                     {
                         !isAtTemplatePage ?
@@ -95,7 +97,7 @@ const StepButtonList = ({
                         : null
                     }
                     {
-                        isAtTemplatePage ?
+                        isAtTemplatePage && isMyTemplate ?
                             <Button
                                 backgroundColor={'#FF704E'}
                                 disabled={isSubmitting}
@@ -129,6 +131,7 @@ StepButtonList.propTypes = {
     handleTemplateSubmit: PropTypes.func.isRequired,
     isAtTemplatePage: PropTypes.bool.isRequired,
     isCardSubmitButtonDisabled: PropTypes.bool.isRequired,
+    isMyTemplate: PropTypes.bool.isRequired,
     isNextStepButtonDisabled: PropTypes.bool.isRequired,
     isPreviewButtonDisabled: PropTypes.bool.isRequired,
     isSubmitting: PropTypes.bool.isRequired,

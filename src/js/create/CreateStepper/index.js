@@ -14,6 +14,7 @@ const initialState = {
     isDiscardAlertOpen: false,
     isEditing: false,
     isCardSubmitButtonDisabled: true,
+    isMyTemplate: false,
     isNextStepButtonDisabled: true,
     isPreviewButtonDisabled: true,
     isSubmitting: false,
@@ -86,6 +87,7 @@ class CreateStepper extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
+        this.handleTemplateModify = this.handleTemplateModify.bind(this);
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
@@ -112,10 +114,12 @@ class CreateStepper extends Component {
                 403: no authority 
             */
             if (response.data.status === '200') {
+                const isMyTemplate = response.data.ludo.starter_id === this.props.currentUserId;
                 if (response.data.ludo.form) {
                     this.setState({
                         isAtTemplatePage: true,
                         isCardSubmitButtonDisabled: false,
+                        isMyTemplate,
                         isNextStepButtonDisabled: false,
                         isPreviewButtonDisabled: false,
                         ludoCreateForm: response.data.ludo,
@@ -125,6 +129,7 @@ class CreateStepper extends Component {
                     this.setState({
                         isAtTemplatePage: true,
                         isCardSubmitButtonDisabled: false,
+                        isMyTemplate,
                         isNextStepButtonDisabled: false,
                         isPreviewButtonDisabled: false,
                         ludoCreateForm: {
@@ -468,6 +473,14 @@ class CreateStepper extends Component {
         }
     }
 
+    handleTemplateModify() {
+        this.setState(
+            prevState => ({
+                step: 0
+            })
+        );
+    }
+
     handleTemplateSubmit(event) {
         event.preventDefault();
         const { ludoCreateForm } = this.state;
@@ -610,6 +623,7 @@ class CreateStepper extends Component {
             images,
             isAtTemplatePage,
             isCardSubmitButtonDisabled,
+            isMyTemplate,
             isNextStepButtonDisabled,
             isPreviewButtonDisabled,
             isSubmitting,
@@ -680,9 +694,11 @@ class CreateStepper extends Component {
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
                         handleTemplateDelete={this.handleTemplateDelete}
+                        handleTemplateModify={this.handleTemplateModify}
                         handleTemplateSubmit={this.handleTemplateSubmit}
                         isAtTemplatePage={isAtTemplatePage}
                         isCardSubmitButtonDisabled={isCardSubmitButtonDisabled}
+                        isMyTemplate={isMyTemplate}
                         isNextStepButtonDisabled={isNextStepButtonDisabled}
                         isPreviewButtonDisabled={isPreviewButtonDisabled}
                         isSubmitting={isSubmitting}
