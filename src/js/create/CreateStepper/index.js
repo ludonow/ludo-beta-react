@@ -22,7 +22,7 @@ const initialState = {
         category_id: 1,
         checkpoint: [3],
         duration: 3,
-        form: '',
+        form: 'text',
         image_location: '',
         interval: 1,
         introduction: '',
