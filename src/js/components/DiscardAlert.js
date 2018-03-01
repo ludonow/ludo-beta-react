@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import styled from 'styled-components';
 
-import Button from '../../components/Button';
+import Button from './Button';
 
 const ButtonListWrapper = styled.div`
     display: flex;

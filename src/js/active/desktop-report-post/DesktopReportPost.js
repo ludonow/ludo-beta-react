@@ -5,7 +5,7 @@ import promiseFinally from 'promise.prototype.finally';
 
 import axios from '../../axios-config';
 import Content from './Content';
-import DiscardAlert from './DiscardAlert';
+import DiscardAlert from '../../components/DiscardAlert';
 import ToggleButton from './ToggleButton';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
