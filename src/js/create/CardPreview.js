@@ -5,51 +5,17 @@ import {
     bonusPeriodIconList,
     getBonusPeriodIndexFromPeriod,
     periodList
-} from './bonusPeriod';
-import { labelList } from './reportInterval';
+} from '../components/bonusPeriod';
 import Button from '../components/Button';
 import { CustomScrollBarCSS } from '../baseStyle';
-
-const CardBackBackgroundColorList = [
-    '#FFFF9F',
-    '#FFEB50',
-    '#FFA53C',
-    '#409EC1',
-    '#98D643',
-];
-
-const BackPeriodIconWrapper = styled.div`
-    padding-top: 10px;
-
-    img {
-        height: 35px;
-        width: 40px;
-    }
-`;
-
-const CardBackWrapper = styled.div`
-    background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};
-`;
-
-const FrontIconWrapper = styled.div`
-    img {
-        height: 100px;
-    }
-`;
-
-const TemplateCardBorderTopWrapper = styled.div`
-    align-items: center;
-    background-color: ${props => props.isAtTemplatePage ? '#63C16A' : 'rgba(0,0,0,0.8)'};
-    color: white;
-    display: flex;
-    font-size: 12px;
-    height: 25px;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    opacity: ${props => props.isShowingFrontSide ? '0': '100'};
-    width: 100%;
-`;
+import { labelList } from './reportInterval';
+import {
+    BackPeriodIconWrapper,
+    CardBackBackgroundColorList,
+    CardBackWrapper,
+    FrontIconWrapper,
+    TemplateCardBorderTop
+} from '../components/Card';
 
 const TemplateInfo = styled.div`
     margin: 10px 0;
@@ -75,21 +41,6 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
 `;
-
-const TemplateCardBorderTop = ({
-    bonusPeriodIndex,
-    isAtTemplatePage,
-    isShowingFrontSide,
-}) => (
-    <TemplateCardBorderTopWrapper
-        isAtTemplatePage={isAtTemplatePage}
-        isShowingFrontSide={isShowingFrontSide}
-    >
-        {
-            periodList[bonusPeriodIndex].label
-        }
-    </TemplateCardBorderTopWrapper>
-);
 
 export default class CardPreview extends Component {
     constructor(props) {
@@ -191,13 +142,12 @@ export default class CardPreview extends Component {
                                 </div>
                             </div>
                         </CardBackWrapper>
-                        {/* stage: shows red/green rectangle that indicates this card is available or not */}
-                        <TemplateCardBorderTop
-                            bonusPeriodIndex={bonusPeriodIndex}
-                            isAtTemplatePage={isAtTemplatePage}
-                            isShowingFrontSide={isShowingFrontSide}
-                        />
                         <div className="card-front-info">
+                            <TemplateCardBorderTop
+                                bonusPeriodIndex={bonusPeriodIndex}
+                                isAtTemplatePage={isAtTemplatePage}
+                                isShowingFrontSide={isShowingFrontSide}
+                            />
                             <FrontIconWrapper>
                                 <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                             </FrontIconWrapper>

@@ -39,7 +39,7 @@ function getBonusPeriodIndexFromPeriod(period) {
     const bonusPeriodIndex = periodList.findIndex(
         element => (element.period === period)
     );
-    return bonusPeriodIndex;
+    return (bonusPeriodIndex > 4 || bonusPeriodIndex < 0) ? 4 : bonusPeriodIndex;
 }
 
 function getPeriodDisplayByPeriod(bonusPeriodIndex) {
