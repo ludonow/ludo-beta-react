@@ -72,7 +72,6 @@ class CardList extends Component {
         } = this.props;
         const {
             isAtTemplateListPage,
-            isDataFetched,
         } = this.state;
         return (
             <StyledCardListWrapper>
