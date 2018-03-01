@@ -41,10 +41,14 @@ const masonryOptions = {
 // styled components
 const ButtonWrapper = styled(StyledLink)`
     margin: 0 20px;
+    @media (max-width: 768px) {
+        margin: 0;
+    }
 `;
 
 const CenteredCardListWrapper = CardListWrapper.extend`
     margin: 0 auto;
+    text-align: center;
 `;
 
 const ClassificationTabLinkList = styled.div`
@@ -52,6 +56,12 @@ const ClassificationTabLinkList = styled.div`
     justify-content: center;
     margin-bottom: 30px;
     width: 100%;
+    @media (max-width: 768px) {
+        justify-content: space-between;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        width: 100vw;
+    }
 `;
 
 const StyledMasonry = styled(Masonry)`
@@ -172,6 +182,25 @@ class Search extends Component {
                     </CenteredCardListWrapper>
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
+                    <ClassificationTabLinkList>
+                        {
+                            filterInfoList.map((filterInfo, index) => (
+                                <ButtonWrapper
+                                    key={`search-filter-${index}`}
+                                    to={`${baseUrl}/search?stage=${filterInfo.stage}&title=${title}`}
+                                >
+                                    <Button
+                                        backgroundColor={filterInfo.backgroundColor}
+                                        fontSize="16px"
+                                        label={filterInfo.label}
+                                        padding="5px 0"
+                                        margin="0"
+                                        width="80px"
+                                    />
+                                </ButtonWrapper>
+                            ))
+                        }
+                    </ClassificationTabLinkList>
                     <CenteredCardListWrapper>
                         <StyledMasonry options={masonryOptions}>
                             <CardListContainer
