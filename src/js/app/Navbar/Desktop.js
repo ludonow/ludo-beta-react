@@ -13,11 +13,11 @@ const cardSystemLinkInfoList = [
         url: "cardList"
     },
     {
-        text: "模板系統",
+        text: "看看範例",
         url: "cardList?stage=0"
     },
     {
-        text: "創建模板",
+        text: "開啟新局",
         url: "create"
     }
 ];
