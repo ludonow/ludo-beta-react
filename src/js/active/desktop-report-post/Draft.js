@@ -42,7 +42,6 @@ const TextReportArea = ({
             onChange={onChange}
             rows={10}
             rowsMax={10}
-            // underlineShow={false}
             value={text}
         />
     </TextAreaWrapper>
