@@ -91,7 +91,7 @@ const StepButtonList = ({
                             <Button
                                 backgroundColor={'#FF704E'}
                                 disabled={isSubmitting && isCardSubmitButtonDisabled}
-                                label="創建卡片"
+                                label="開始玩囉"
                                 onClick={handleCardSubmit}
                             />
                         : null
