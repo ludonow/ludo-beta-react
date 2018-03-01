@@ -20,19 +20,19 @@ export const CardBackBackgroundColorList = [
 export const CardBorderInfoList = [
     {
         backgroundColor: '#000000',
-        label: '等待對手',
+        label: '模板',
     },
     {
         backgroundColor: '#63C16A',
-        label: '進行中',
+        label: '等待對手',
     },
     {
         backgroundColor: '#FF5050',
-        label: '已結束',
+        label: '進行中',
     },
     {
         backgroundColor: '#838383',
-        label: '模板',
+        label: '已結束',
     },
 ];
 
@@ -84,6 +84,7 @@ const TemplateCardBorderTopWrapper = styled.div`
 `;
 
 export const CardBorderTop = ({
+    bonusPeriodIndex,
     isShowingFrontSide,
     stage,
 }) => (
@@ -92,7 +93,10 @@ export const CardBorderTop = ({
         isShowingFrontSide={isShowingFrontSide}
     >
         {
-            CardBorderInfoList[stage].label
+            stage === 0 ?
+                periodList[bonusPeriodIndex].label
+            :
+                CardBorderInfoList[stage].label
         }
     </CardBorderTopWrapper>
 );
@@ -107,7 +111,10 @@ export const TemplateCardBorderTop = ({
         isShowingFrontSide={isShowingFrontSide}
     >
         {
-            periodList[bonusPeriodIndex].label
+            isAtTemplatePage ?
+                CardBorderInfoList[1].label
+            :
+                periodList[bonusPeriodIndex].label
         }
     </TemplateCardBorderTopWrapper>
 );
@@ -175,6 +182,7 @@ const Card = ({
 
                 <div className="card-front-info">
                     <CardBorderTop
+                        bonusPeriodIndex={bonusPeriodIndex}
                         isShowingFrontSide={!isThisCardFlipped}
                         stage={singleLudoObject.stage}
                     />
