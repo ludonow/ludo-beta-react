@@ -45,7 +45,7 @@ const DiscardAlert = ({
         open={isDiscardAlertOpen}
         onRequestClose={handleDiscardAlertClose}
         titleStyle={titleStyle}
-        title="關閉將捨棄本次回報"
+        title="關閉將捨棄已輸入的內容"
     >
         <ButtonListWrapper>
             <Button
@@ -56,7 +56,7 @@ const DiscardAlert = ({
             />
             <Button
                 backgroundColor={'#FF6262'}
-                label="捨棄回報"
+                label="捨棄"
                 onClick={handleDialogClose}
             />
         </ButtonListWrapper>
