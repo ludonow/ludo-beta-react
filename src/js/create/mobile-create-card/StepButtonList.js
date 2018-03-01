@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
 const DeleteButtonStyle = {
     backgroundColor: '#f24150',
@@ -116,12 +117,6 @@ const StepButtonList = ({
                         handleClick={handleTemplateModify}
                         label="修改"
                         stepVariation={-1}
-                    />
-                    <StepButton
-                        disabled={isNextStepButtonDisabled}
-                        handleStepChange={handleStepChange}
-                        label="預覽"
-                        stepVariation={1}
                     />
                     {
                         !isAtTemplatePage ?
