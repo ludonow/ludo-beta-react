@@ -12,6 +12,7 @@ const panel_width = 609;
 const CardContainer = styled.div`
     display:inline;
     text-align:center;
+    width:85%;
 `;
 const CardTitle = styled.div`
     font-size:20px;
@@ -42,17 +43,18 @@ const ReportCycle = styled.div`
 `;
 
 const CardContent = styled.div`
-    width: 512.5px;
+    width: 100%;
 	font-family: HelveticaNeue;
 	font-size: 14px;
 	line-height: 1.2;
 	text-align: left;
     color: #484848;
     margin-top:35px;
+    white-space: pre-wrap;
 `;
 
 const CardImage = styled.div`
-    max-width: 512.5px;
+    max-width: 100%;
     margin-top:42px;
 `;
 
