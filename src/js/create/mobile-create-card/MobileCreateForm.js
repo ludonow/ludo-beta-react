@@ -16,6 +16,7 @@ const MobileCreateForm = ({
     handleTitleChange,
     interval,
     introduction,
+    isAtTemplatePage,
     period,
     step,
     tags,
@@ -56,6 +57,7 @@ const MobileCreateForm = ({
                     duration={duration}
                     interval={interval}
                     introduction={introduction}
+                    isAtTemplatePage={isAtTemplatePage}
                     period={period}
                     tags={tags}
                     title={title}
