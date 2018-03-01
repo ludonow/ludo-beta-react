@@ -18,29 +18,8 @@ class CardListContainer extends Component {
             lastEvaluatedKey: {},
             ludoList: [],
         };
-        this.handleCardStage = this.handleCardStage.bind(this);
         this.showBack = this.showBack.bind(this);
         this.showFront = this.showFront.bind(this);
-    }
-
-    handleCardStage(stage) {
-        switch (stage) {
-            case 0:
-                return 'card-top__stage--0';
-                break;
-            case 1:
-                return 'card-top__stage--1';
-                break;
-            case 2:
-                return 'card-top__stage--2';
-                break;
-            case 3:
-                return 'card-top__stage--3';
-                break;
-            default:
-                return 'card-top__stage--0';
-                break;
-        }
     }
 
     showBack(event) {
@@ -86,7 +65,6 @@ class CardListContainer extends Component {
                             const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
                             return (
                                 <Card
-                                    handleCardStage={this.handleCardStage}
                                     handleClick={handleClick}
                                     index={index}
                                     isAtTemplateListPage={isAtTemplateListPage}

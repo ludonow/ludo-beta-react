@@ -22,7 +22,7 @@ const initialState = {
         category_id: 1,
         checkpoint: [3],
         duration: 3,
-        form: '',
+        form: 'text',
         image_location: '',
         interval: 1,
         introduction: '',
@@ -663,6 +663,7 @@ class CreateStepper extends Component {
                         images={images}
                         interval={interval}
                         introduction={introduction}
+                        isAtTemplatePage={isAtTemplatePage}
                         period={period}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}

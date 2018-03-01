@@ -5,39 +5,17 @@ import {
     bonusPeriodIconList,
     getBonusPeriodIndexFromPeriod,
     periodList
-} from './bonusPeriod';
-import { labelList } from './reportInterval';
+} from '../components/bonusPeriod';
 import Button from '../components/Button';
 import { CustomScrollBarCSS } from '../baseStyle';
-
-const BackPeriodIconWrapper = styled.div`
-    margin-top: 10px;
-
-    img {
-        height: 35px;
-        width: 40px;
-    }
-`;
-
-const FrontIconWrapper = styled.div`
-    img {
-        height: 100px;
-    }
-`;
-
-const TemplateCardBorderTopWrapper = styled.div`
-    align-items: center;
-    background-color: rgba(0,0,0,0.8);
-    color: white;
-    display: flex;
-    font-size: 12px;
-    height: 25px;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    opacity: ${props => props.isShowingFrontSide ? '0': '100'};
-    width: 100%;
-`;
+import { labelList } from './reportInterval';
+import {
+    BackPeriodIconWrapper,
+    CardBackBackgroundColorList,
+    CardBackWrapper,
+    FrontIconWrapper,
+    TemplateCardBorderTop
+} from '../components/Card';
 
 const TemplateInfo = styled.div`
     margin: 10px 0;
@@ -63,19 +41,6 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
 `;
-
-const TemplateCardBorderTop = ({
-    bonusPeriodIndex,
-    isShowingFrontSide,
-}) => (
-    <TemplateCardBorderTopWrapper
-        isShowingFrontSide={isShowingFrontSide}
-    >
-        {
-            periodList[bonusPeriodIndex].label
-        }
-    </TemplateCardBorderTopWrapper>
-);
 
 export default class CardPreview extends Component {
     constructor(props) {
@@ -116,6 +81,7 @@ export default class CardPreview extends Component {
             duration,
             interval,
             introduction,
+            isAtTemplatePage,
             tags,
             title,
         } = this.props;
@@ -127,7 +93,10 @@ export default class CardPreview extends Component {
                         className={`card card--playground card-front ${isShowingFrontSide ? 'card-flip' : ''}`}
                         onClick={this.handleCardFlip}
                     >
-                        <div className="card-back">
+                        <CardBackWrapper
+                            backgroundColor={CardBackBackgroundColorList[bonusPeriodIndex]}
+                            className="card-back"
+                        >
                             <BackPeriodIconWrapper>
                                 <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                             </BackPeriodIconWrapper>
@@ -172,13 +141,13 @@ export default class CardPreview extends Component {
                                     Go
                                 </div>
                             </div>
-                        </div>
-                        {/* stage: shows red/green rectangle that indicates this card is available or not */}
-                        <TemplateCardBorderTop
-                            bonusPeriodIndex={bonusPeriodIndex}
-                            isShowingFrontSide={isShowingFrontSide}
-                        />
+                        </CardBackWrapper>
                         <div className="card-front-info">
+                            <TemplateCardBorderTop
+                                bonusPeriodIndex={bonusPeriodIndex}
+                                isAtTemplatePage={isAtTemplatePage}
+                                isShowingFrontSide={isShowingFrontSide}
+                            />
                             <FrontIconWrapper>
                                 <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                             </FrontIconWrapper>

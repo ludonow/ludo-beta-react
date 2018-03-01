@@ -1,101 +1,201 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Masonry from 'react-masonry-component';
+import styled from 'styled-components';
 
 import { baseUrl } from '../baseurl-config';
-import lifestyleIcon from '../../images/category_icon/lifestyle.svg';
-import readIcon from '../../images/category_icon/read.svg';
-import exerciseIcon from '../../images/category_icon/exercise.png';
-import studyIcon from '../../images/category_icon/study.svg';
-import newSkillIcon from '../../images/category_icon/new_skill.svg';
-import unmentionablesIcon from '../../images/category_icon/unmentionables.png';
-import othersIcon from '../../images/category_icon/others.svg';
-const iconArray = [othersIcon, lifestyleIcon, readIcon, exerciseIcon, studyIcon, newSkillIcon, unmentionablesIcon, othersIcon];
+import {
+    bonusPeriodIconList,
+    getBonusPeriodIndexFromPeriod,
+    periodList
+} from './bonusPeriod';
 
-const categoryClassArray = ['others', 'lifestyle', 'read', 'exercise', 'study', 'new_skill', 'unmentionables', 'others'];
-const category = ['其它', '生活作息', '閱讀', '運動', '教科書', '新技能', '不可被提起的', '其它']
-const masonryOptions = {
-    itemSelector: ".grid-item",
-    columnWidth: 226,
-    fitWidth: true
-};
+export const CardBackBackgroundColorList = [
+    '#FFFF9F',
+    '#FFEB50',
+    '#FFA53C',
+    '#409EC1',
+    '#98D643',
+];
+
+export const CardBorderInfoList = [
+    {
+        backgroundColor: '#000000',
+        label: '模板',
+    },
+    {
+        backgroundColor: '#63C16A',
+        label: '等待對手',
+    },
+    {
+        backgroundColor: '#FF5050',
+        label: '進行中',
+    },
+    {
+        backgroundColor: '#838383',
+        label: '已結束',
+    },
+];
+
+export const BackPeriodIconWrapper = styled.div`
+    padding-top: 10px;
+
+    img {
+        height: 35px;
+        width: 40px;
+    }
+`;
+
+export const CardBackWrapper = styled.div`
+    background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};
+`;
+
+const CardBorderTopWrapper = styled.div`
+    align-items: center;
+    background-color: ${props => props.backgroundColor ? props.backgroundColor : 'rgba(0,0,0,0.8)'};
+    color: white;
+    display: flex;
+    font-size: 12px;
+    height: 25px;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    opacity: ${props => props.isShowingFrontSide ? '100': '0'};
+    width: 100%;
+`;
+
+export const FrontIconWrapper = styled.div`
+    img {
+        height: 100px;
+    }
+`;
+
+const TemplateCardBorderTopWrapper = styled.div`
+    align-items: center;
+    background-color: ${props => props.isAtTemplatePage ? '#63C16A' : 'rgba(0,0,0,0.8)'};
+    color: white;
+    display: flex;
+    font-size: 12px;
+    height: 25px;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    opacity: ${props => props.isShowingFrontSide ? '0': '100'};
+    width: 100%;
+`;
+
+export const CardBorderTop = ({
+    bonusPeriodIndex,
+    isShowingFrontSide,
+    stage,
+}) => (
+    <CardBorderTopWrapper
+        backgroundColor={CardBorderInfoList[stage].backgroundColor}
+        isShowingFrontSide={isShowingFrontSide}
+    >
+        {
+            stage === 0 ?
+                periodList[bonusPeriodIndex].label
+            :
+                CardBorderInfoList[stage].label
+        }
+    </CardBorderTopWrapper>
+);
+
+export const TemplateCardBorderTop = ({
+    bonusPeriodIndex,
+    isAtTemplatePage,
+    isShowingFrontSide,
+}) => (
+    <TemplateCardBorderTopWrapper
+        isAtTemplatePage={isAtTemplatePage}
+        isShowingFrontSide={isShowingFrontSide}
+    >
+        {
+            isAtTemplatePage ?
+                CardBorderInfoList[1].label
+            :
+                periodList[bonusPeriodIndex].label
+        }
+    </TemplateCardBorderTopWrapper>
+);
 
 /* components/_card.scss */
 const Card = ({
-    handleCardStage,
     handleClick,
     index,
     isAtTemplateListPage,
     isThisCardFlipped,
-    singleLudoObject
-}) => (
-    <div className="grid-item">
-        <div
-            className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
-            id={index}
-            onClick={handleClick}
-        >
-            <div 
-                className={`card-back ${categoryClassArray[singleLudoObject.category_id]}`}
+    singleLudoObject,
+}) => {
+    const bonusPeriodIndex = getBonusPeriodIndexFromPeriod(singleLudoObject.period);
+    return (
+        <div className="grid-item">
+            <div
+                className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
                 id={index}
                 onClick={handleClick}
             >
-                {/* three information: star(for user to highlight this card), category, and introduction*/}
-                <div className="card-information">
-                    <div className="card-star" />
-                    <div className ="card-category">
-                        {category[singleLudoObject.category_id]}
-                    </div>
-                    <div className="card-introduction">
-                        { String(singleLudoObject.introduction).length > 20 ?
-                            String(singleLudoObject.introduction).substring(0, 20) + ' ...'
-                            : String(singleLudoObject.introduction)
-                        }
-                    </div>
-                    <div className="card-hashtags">
-                        {
-                            // TODO: Use presentational component and proptypes to receive ludolist data
-                            Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                singleLudoObject.tags.map((tagString, tagIndex) => {
-                                    return (
-                                        /* components/_tags.scss */
-                                        <span
-                                            className="react-tagsinput-tag--card"
-                                            key={`tag-${tagIndex}`}
-                                        >
-                                            {tagString}
-                                        </span>
-                                    );
-                                })
-                            : null
-                        }
-                    </div>
-                </div>
-                {/* the circle button for GO */}
-                <Link 
-                    className="card-button_circle"
-                    to={isAtTemplateListPage ? `${baseUrl}/template/${singleLudoObject.ludo_id}` : `${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
+                <CardBackWrapper
+                    backgroundColor={CardBackBackgroundColorList[bonusPeriodIndex]} 
+                    className="card-back"
                 >
-                    <div className="card-button_text">
-                        Go
+                    <BackPeriodIconWrapper>
+                        <img src={bonusPeriodIconList[bonusPeriodIndex]} />
+                    </BackPeriodIconWrapper>
+                    {/* three information: introduction, hashtags, and interval */}
+                    <div className="card-information">
+                        <div className="card-introduction">
+                            { String(singleLudoObject.introduction).length > 30 ?
+                                String(singleLudoObject.introduction).substring(0, 30) + ' ...'
+                                : String(singleLudoObject.introduction)
+                            }
+                        </div>
+                        <div className="card-hashtags">
+                            {
+                                // TODO: Use presentational component and proptypes to receive ludolist data
+                                Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
+                                    singleLudoObject.tags.map((tagString, tagIndex) => {
+                                        return (
+                                            /* components/_tags.scss */
+                                            <span
+                                                className="react-tagsinput-tag--card"
+                                                key={`tag-${tagIndex}`}
+                                            >
+                                                {tagString}
+                                            </span>
+                                        );
+                                    })
+                                : null
+                            }
+                        </div>
                     </div>
-                </Link>
-            </div>
+                    {/* the circle button for GO */}
+                    <Link
+                        className="card-button_circle"
+                        to={isAtTemplateListPage ? `${baseUrl}/template/${singleLudoObject.ludo_id}` : `${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
+                    >
+                        <div className="card-button_text">
+                            Go
+                        </div>
+                    </Link>
+                </CardBackWrapper>
 
-            {/* stage: shows red/green rectangle that indicates this card is available or not */}
-            <div className={`card-top__stage ${handleCardStage(singleLudoObject.stage)}`} />
-            <div className="card-front-info">
-                <div className="card-star" />
-                <img
-                    className="category-icon"
-                    src={iconArray[singleLudoObject.category_id]}
-                />
-                <div className="title">{singleLudoObject.title}</div>
-                <div className="duration">{singleLudoObject.duration}天</div>
+                <div className="card-front-info">
+                    <CardBorderTop
+                        bonusPeriodIndex={bonusPeriodIndex}
+                        isShowingFrontSide={!isThisCardFlipped}
+                        stage={singleLudoObject.stage}
+                    />
+                    <FrontIconWrapper>
+                        <img src={bonusPeriodIconList[bonusPeriodIndex]} />
+                    </FrontIconWrapper>
+                    <div className="title">{singleLudoObject.title}</div>
+                    <div className="duration">{singleLudoObject.duration}天</div>
+                </div>
+                <div className="card-views">{singleLudoObject.views}</div>
             </div>
-            <div className="card-views">{singleLudoObject.views}</div>
         </div>
-    </div>
-);
+    );
+}
 
 export default Card;
