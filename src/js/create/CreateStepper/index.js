@@ -87,6 +87,7 @@ class CreateStepper extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
+        this.handleTemplateEdit = this.handleTemplateEdit.bind(this);
         this.handleTemplateModify = this.handleTemplateModify.bind(this);
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -473,6 +474,42 @@ class CreateStepper extends Component {
         }
     }
 
+    handleTemplateEdit(event) {
+        event.preventDefault();
+        const ludoTemplateForm = {
+            ...this.state.ludoCreateForm,
+            type: 'modify',
+        };
+        this.setState({
+            isTemplateDeleteButtonDisabled: true
+        });
+        axios.put(`/apis/ludo/${this.props.templateId}`, ludoTemplateForm)
+        .then(response => {
+            if (response.data.status == '200') {
+                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                getUserBasicData();
+                handleShouldProfileUpdate(true);
+                window.alert('編輯成功');
+                browserHistory.push('/cardList');
+            } else {
+                if (window.confirm('編輯Ludo模板時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateDeleteButtonDisabled: false
+                });
+            }
+        })
+        .catch(error => {
+            if (window.confirm('編輯Ludo模板時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isTemplateDeleteButtonDisabled: false
+            });
+        });
+    }
+
     handleTemplateModify() {
         this.setState(
             prevState => ({
@@ -694,6 +731,7 @@ class CreateStepper extends Component {
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
                         handleTemplateDelete={this.handleTemplateDelete}
+                        handleTemplateEdit={this.handleTemplateEdit}
                         handleTemplateModify={this.handleTemplateModify}
                         handleTemplateSubmit={this.handleTemplateSubmit}
                         isAtTemplatePage={isAtTemplatePage}

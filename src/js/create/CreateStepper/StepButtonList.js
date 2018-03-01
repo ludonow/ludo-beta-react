@@ -12,6 +12,7 @@ const StepButtonList = ({
     handleStepNext,
     handleStepPrev,
     handleTemplateDelete,
+    handleTemplateEdit,
     handleTemplateModify,
     handleTemplateSubmit,
     isAtTemplatePage,
@@ -120,6 +121,17 @@ const StepButtonList = ({
             );
     }
 };
+
+// {
+//     isAtTemplatePage && isMyTemplate ?
+//         <Button
+//             backgroundColor={'#FF704E'}
+//             disabled={isSubmitting}
+//             label="編輯模板"
+//             onClick={handleTemplateEdit}
+//         />
+//     : null
+// }
 
 StepButtonList.propTypes = {
     handleCardSubmit: PropTypes.func.isRequired,
