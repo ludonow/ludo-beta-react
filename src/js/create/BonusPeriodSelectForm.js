@@ -108,7 +108,7 @@ class BonusPeriodSelectForm extends Component {
         super(props);
         this.state = {
             bonusPeriodIndex: 4,
-            period: 'default',
+            period: '0-24',
         };
     }
 
@@ -135,10 +135,10 @@ class BonusPeriodSelectForm extends Component {
     render() {
         const {
             handlePeriodChange,
-            period,
         } = this.props;
         const {
             bonusPeriodIndex,
+            period,
         } = this.state;
 
         const width = window.innerWidth || document.body.clientWidth;
