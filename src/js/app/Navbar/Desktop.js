@@ -46,14 +46,14 @@ const settingLinkInfoList = [
     //     text: "帳號設定",
     //     url: "https://www.facebook.com/messages/t/ludonow"
     // },
-    // {
-    //     text: "說明",
-    //     url: "https://www.facebook.com/messages/t/ludonow"
-    // },
+    {
+        text: "使用教學",
+        url: "tutorial"
+    },
     {
         isExternal: true,
         text: "提供意見",
-        url: "https://www.facebook.com/messages/t/ludonow"
+        url: "https://m.me/ludonow?ref=%E5%B0%88%E4%BA%BA%E6%9C%8D%E5%8B%99"
     }
 ];
 

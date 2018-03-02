@@ -46,6 +46,18 @@ const myCardListLinkInfoSampleList = [
     // }
 ];
 
+const settingLinkInfoList = [
+    {
+        text: "使用教學",
+        url: "tutorial"
+    },
+    {
+        isExternal: true,
+        text: "提供意見",
+        url: "https://m.me/ludonow?ref=%E5%B0%88%E4%BA%BA%E6%9C%8D%E5%8B%99"
+    }
+];
+
 const unAuthedInfoList = [
     {
         text: "登入",
@@ -93,7 +105,7 @@ const StyledListItem = styled.li`
     border-radius: 20px;
     font-weight: bold;
     padding: 8px 30px;
-    margin: 30px auto;
+    margin: 20px auto;
 
     &:active, &:focus {
         background-color: #FFC645;
@@ -201,6 +213,28 @@ const Mobile = ({
                 }
                 {
                     authInfoList.map((linkInfo, index) => (
+                        <StyledListItem key={`mobile-navbar-auth-${index}`}>
+                            {
+                                linkInfo.isExternal ? 
+                                    <StyledAnchor
+                                        href={linkInfo.url}
+                                        key={linkInfo.text}
+                                    >
+                                        {linkInfo.text}
+                                    </StyledAnchor>
+                                :
+                                    <StyledLink
+                                        onClick={handleNavbarClose}
+                                        to={`${baseUrl}/${linkInfo.url}`}
+                                    >
+                                        {linkInfo.text}
+                                    </StyledLink>
+                            }
+                        </StyledListItem>
+                    ))
+                }
+                {
+                    settingLinkInfoList.map((linkInfo, index) => (
                         <StyledListItem key={`mobile-navbar-auth-${index}`}>
                             {
                                 linkInfo.isExternal ? 
