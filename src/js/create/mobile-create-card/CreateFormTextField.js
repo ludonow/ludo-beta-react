@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import Tags from './Tags';
 
+// override material ui
+const hintStyle = {
+    top: '12px',
+};
+
 const styles = {
     errorStyle : {
         color: '#FFC645',
@@ -69,9 +74,12 @@ export default class CreateFormTextField extends Component {
                 />
                 <TextField
                     fullWidth
+                    hintStyle={hintStyle}
                     hintText="簡介(必填)"
                     multiLine
                     onChange={this.handleIntroductionChange}
+                    rows={10}
+                    rowsMax={10}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
                     value={introduction}
