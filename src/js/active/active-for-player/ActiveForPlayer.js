@@ -9,14 +9,14 @@ import ActiveReports from '../ActiveReports';
 import DesktopReportPost from '../desktop-report-post/DesktopReportPost';
 import MobileReports from '../MobileReports';
 
-const panel_width = 609;
+const panel_width = window.innerHeight * 0.7;
 
 const CardDetailContainer = styled.div`
     .container {
         display: flex;
         justify-content: center;
         margin-bottom: 100px;
-                
+        width:${panel_width};           
     }
 `;
 

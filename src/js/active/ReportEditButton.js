@@ -41,7 +41,7 @@ export default class ReportEditButton extends Component {
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                         >
                             <Menu>
-                                <MenuItem
+                                {/* <MenuItem
                                     disabled={!reportList[isEditingWhichReportIndex].content}
                                     id={`${whichList}-text-edit-${isEditingWhichReportIndex}`}
                                     onTouchTap={this.props.handleEditTextReportClick}
@@ -52,7 +52,7 @@ export default class ReportEditButton extends Component {
                                     id={`${whichList}-image-edit-${isEditingWhichReportIndex}`}
                                     onTouchTap={this.props.handleEditImageReportClick}
                                     primaryText="編輯圖片回報"
-                                />
+                                /> */}
                                 <MenuItem
                                     id={`${whichList}-report-delete-${isEditingWhichReportIndex}`}
                                     onTouchTap={this.props.handleReportDelete}
