@@ -1,29 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
-import Slider from 'react-slick';
+import Carousel from 'nuka-carousel';
 
-const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-};
+import image1 from '../../images/tutorial/1.png';
+import image2 from '../../images/tutorial/2.png';
+import image3 from '../../images/tutorial/3.png';
+import image4 from '../../images/tutorial/4.png';
+import image5 from '../../images/tutorial/5.png';
+
+const ImageWrapper = styled.div`
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+`;
 
 const Wrapper = styled.div`
+    background-color: rgba(70, 70, 70, 0.7);
+    margin: 20px auto;
+    width: 90%;
+
+    @media (max-width: 767px) {
+        margin-top: 90px;
+    }
+
+    .slider-list, .slider-slide {
+        height: 80vh !important;
+    }
 `;
 
 const Tutorial = () => (
     <Wrapper>
-        <h2> Single Item</h2>
-        <Slider {...settings}>
-            <div><h3>1</h3></div>
-            <div><h3>2</h3></div>
-            <div><h3>3</h3></div>
-            <div><h3>4</h3></div>
-            <div><h3>5</h3></div>
-            <div><h3>6</h3></div>
-        </Slider>
+        <Carousel>
+            <ImageWrapper><img src={image1} /></ImageWrapper>
+            <ImageWrapper><img src={image2} /></ImageWrapper>
+            <ImageWrapper><img src={image3} /></ImageWrapper>
+            <ImageWrapper><img src={image4} /></ImageWrapper>
+            <ImageWrapper><img src={image5} /></ImageWrapper>
+        </Carousel>
     </Wrapper>
 );
 

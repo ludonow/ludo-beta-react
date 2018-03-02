@@ -21,7 +21,7 @@ const UpArrowImage = styled.img`
 const UpDownToggleButtonWrapper = StyledButton.extend`
     background-color: black;
     border: none;
-    border-radius: 50%;
+    border-radius: ${props => props.withLabel ? '50px' : '50%'};
     height: ${props => props.withLabel ? 'auto' : '20px'};
     margin-right: 10px;
     padding: ${props => props.withLabel ? '5px 0' : '0'};
