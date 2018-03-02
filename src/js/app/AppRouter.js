@@ -24,6 +24,7 @@ import Profile from '../profile/Profile';
 import Search from '../Search/index';
 import SignUp from './SignUp';
 import Template from '../create/Template';
+import Tutorial from '../Tutorial/index.js';
 import LoadingPage from '../LoadingPage';
 /*
     auth        statement：
@@ -271,6 +272,10 @@ const AppRouter = () => (
                 <Route
                     component={Template}
                     path="template/:templateId"
+                />
+                <Route
+                    component={Tutorial}
+                    path="tutorial"
                 />
             </Route>
         </Router>
