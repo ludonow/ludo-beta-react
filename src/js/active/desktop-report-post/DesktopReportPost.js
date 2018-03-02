@@ -9,6 +9,7 @@ import DiscardAlert from '../../components/DiscardAlert';
 import ToggleButton from './ToggleButton';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
+import { CustomScrollBarCSS } from '../../baseStyle';
 
 promiseFinally.shim();
 
@@ -43,10 +44,21 @@ const DesktopReportPostWrapper = styled.div`
     position: fixed;
 `;
 
+const StyledDialog = styled(Dialog)`
+    ${CustomScrollBarCSS}
+    h3 + div {
+        max-height: 400px !important;
+    }
+`;
+
 // override material-ui style
 const contentStyle = {
+    maxWidth: 'none',
     width: '60%',
-    maxWidth: 'none'
+};
+
+const dialogStyle = {
+    overflowY: 'auto',
 };
 
 const titleStyle = {
@@ -338,10 +350,11 @@ class DesktopReportPost extends Component {
                     onClick={this.handleDialogOpen}
                     label="我要回報"
                 />
-                <Dialog
+                <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
                     open={open}
+                    style={dialogStyle}
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
@@ -377,7 +390,7 @@ class DesktopReportPost extends Component {
                         isSubmitting={isSubmitting}
                         step={step}
                     />
-                </Dialog>
+                </StyledDialog>
                 <DiscardAlert
                     handleDialogClose={this.handleDialogClose}
                     handleDiscardAlertClose={this.handleDiscardAlertClose}

@@ -8,6 +8,7 @@ import Content from './Content/index';
 import DiscardAlert from '../../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
+import { CustomScrollBarCSS } from '../../baseStyle';
 
 const initialState = {
     images: [],
@@ -48,6 +49,13 @@ const titles = [
 ];
 
 // styled components
+const StyledDialog = styled(Dialog)`
+    ${CustomScrollBarCSS}
+    h3 + div {
+        max-height: 425px !important;
+    }
+`;
+
 const Wrapper = styled.div`
     background-color: white;
 `;
@@ -59,6 +67,7 @@ const contentStyle = {
 };
 
 const dialogStyle = {
+    overflowY: 'auto',
     zIndex: '2',
 };
 
@@ -696,7 +705,7 @@ class CreateStepper extends Component {
 
         return (
             <Wrapper>
-                <Dialog
+                <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
                     open={open}
@@ -758,7 +767,7 @@ class CreateStepper extends Component {
                         handleDiscardAlertClose={this.handleDiscardAlertClose}
                         isDiscardAlertOpen={isDiscardAlertOpen}
                     />
-                </Dialog>
+                </StyledDialog>
             </Wrapper>
         );
     }
