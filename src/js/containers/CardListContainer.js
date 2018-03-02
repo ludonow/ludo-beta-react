@@ -54,7 +54,7 @@ class CardListContainer extends Component {
         } = this.props;
 
         const queryTarget = (search.includes('stage=0')) ? '模板' : '卡片';
-        const defaultEmptyText = `目前沒有${queryTarget}喔，創建一個吧！`;
+        const defaultEmptyText = `目前沒有${queryTarget}喔，點擊 ⊕ 按鈕創建一個吧！`;
         const renderedEmptyText = emptyText ? emptyText : defaultEmptyText;
 
         return (
