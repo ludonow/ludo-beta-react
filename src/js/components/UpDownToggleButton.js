@@ -9,6 +9,11 @@ const DownArrowImage = styled.img`
     margin-top: 2px;
 `;
 
+const Label = styled.div`
+    font-size: 12px;
+    margin: 0 5px;
+`;
+
 const UpArrowImage = styled.img`
     margin-bottom: 1px;
 `;
@@ -17,19 +22,34 @@ const UpDownToggleButtonWrapper = StyledButton.extend`
     background-color: black;
     border: none;
     border-radius: 50%;
-    height: 20px;
+    height: ${props => props.withLabel ? 'auto' : '20px'};
     margin-right: 10px;
-    padding: 0;
-    width: 20px;
+    padding: ${props => props.withLabel ? '5px 0' : '0'};
+    width: ${props => props.withLabel ? '80px' : '20px'};
+
+    img {
+        width: 10px;
+    }
 `;
 
 const UpDownToggleButton = ({
     handleClick,
     isArrowPointingDown,
+    label,
     labelForDownArrowIcon,
     labelForUpArrowIcon,
 }) => (
-    <UpDownToggleButtonWrapper onClick={handleClick}>
+    <UpDownToggleButtonWrapper
+        onClick={handleClick}
+        withLabel={!!label}
+    >
+        {
+            label ?
+                <Label>
+                    {label}
+                </Label>
+            : null
+        }
         {
             isArrowPointingDown ?
                 <DownArrowImage

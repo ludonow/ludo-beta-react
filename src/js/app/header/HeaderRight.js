@@ -24,6 +24,7 @@ const HeaderRight = ({
                 <UpDownToggleButton
                     handleClick={handlePersonalCardListToggleButtonClick}
                     isArrowPointingDown={!isPersonalCardListVisible}
+                    label="我的卡片"
                 />
             : null
         }
