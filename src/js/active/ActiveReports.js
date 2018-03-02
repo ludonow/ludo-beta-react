@@ -8,6 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Popover from 'material-ui/Popover';
 import processString from 'react-process-string';
+import ReactPlayer from 'react-player'
 
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
@@ -61,6 +62,7 @@ const ReportListContainer = styled.div`
     /* height:291px; */
     display:inline-flex;
     justify-content:center;
+    align-items:flex-start;
 	/* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)); */
 `;
 
@@ -118,7 +120,9 @@ const ReportContent = styled.div`
     img{
         width:100%;
         display:flex;
-        margin-bottom:10px;
+        margin-top:20px;
+    }
+    .report_word {
         margin-top:20px;
     }
 `;
@@ -610,7 +614,16 @@ export default class ActiveReports extends React.Component {
                                                         onClick={this.handleImageEnlarge}
                                                         src={reportObject.image_location}
                                                 />
-                                                {reportObject.content}
+                                                { reportObject.video ? 
+                                                    <ReactPlayer url={reportObject.video} 
+                                                        width = "100%"  
+                                                        controls = "true"
+                                                        />
+                                                    : null
+                                                }
+                                                <div className="report_word" >
+                                                    {reportObject.content}
+                                                </div>
                                             </div>
                                         </ReportContent>
                                         <CommentBox
@@ -671,7 +684,16 @@ export default class ActiveReports extends React.Component {
                                                         onClick={this.handleImageEnlarge}
                                                         src={reportObject.image_location}
                                                 />
-                                                {reportObject.content}
+                                                { reportObject.video ? 
+                                                    <ReactPlayer url={reportObject.video} 
+                                                        width = "100%"  
+                                                        controls = "true"
+                                                        />
+                                                    : null
+                                                }
+                                                <div className="report_word" >
+                                                    {reportObject.content}
+                                                </div>
                                             </div>
                                         </ReportContent>
                                         <CommentBox
