@@ -30,7 +30,7 @@ export default class MobileReportEditButton extends Component {
         const { handleReportDelete, reportObject } = this.props;
         return (
             <div>
-                <div className="report-icon-button">
+                <div className="mobile-report-icon-button">
                     <IconButton
                         onTouchTap={this.props.handleReportEditButtonTouchTap}
                         tooltip="編輯"

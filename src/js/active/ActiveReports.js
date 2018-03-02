@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Popover from 'material-ui/Popover';
 import processString from 'react-process-string';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
 
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
@@ -22,7 +22,7 @@ import ReportExpandMoreButton from './ReportExpandMoreButton';
 import uploadIcon from '../../images/active/upload-icon.png';
 
 
-const panel_width = 900;
+const panel_width = window.innerWidth * 0.7;
 
 const CardTitle = styled.div`
     font-size:20px;
