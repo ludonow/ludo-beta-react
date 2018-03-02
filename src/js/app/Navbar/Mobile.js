@@ -4,17 +4,25 @@ import styled from 'styled-components';
 
 import { baseUrl } from '../../baseurl-config';
 
+const authedInfoList = [
+    {
+        isExternal: true,
+        text: "登出",
+        url: "https://api.ludonow.com/logout"
+    },
+];
+
 const linkInfoList = [
     {
         text: "遊戲廣場",
         url: "cardList"
     },
     {
-        text: "模板系統",
+        text: "看看範例",
         url: "cardList?stage=0",
     },
     {
-        text: "創建模板",
+        text: "開啟新局",
         url: "create",
     }
 ];
@@ -38,6 +46,12 @@ const myCardListLinkInfoSampleList = [
     // }
 ];
 
+const unAuthedInfoList = [
+    {
+        text: "登入",
+        url: "login"
+    },
+];
 
 // styled components
 const InnerCircle = styled.div`
@@ -62,6 +76,11 @@ const MobileNavbarWrapper = styled.div`
     position: fixed;
     width: 100%;
     z-index: 3;
+`;
+
+const StyledAnchor = styled.a`
+    color: white;
+    text-decoration: none;
 `;
 
 const StyledLink = styled(Link)`
@@ -147,6 +166,8 @@ const Mobile = ({
         url: info.url + currentUserId,
     }));
 
+    const authInfoList = currentUserId ? authedInfoList : unAuthedInfoList;
+
     return (
         <MobileNavbarWrapper>
             <ToggleButton
@@ -175,6 +196,28 @@ const Mobile = ({
                             >
                                 {linkInfo.text}
                             </StyledLink>
+                        </StyledListItem>
+                    ))
+                }
+                {
+                    authInfoList.map((linkInfo, index) => (
+                        <StyledListItem key={`mobile-navbar-auth-${index}`}>
+                            {
+                                linkInfo.isExternal ? 
+                                    <StyledAnchor
+                                        href={linkInfo.url}
+                                        key={linkInfo.text}
+                                    >
+                                        {linkInfo.text}
+                                    </StyledAnchor>
+                                :
+                                    <StyledLink
+                                        onClick={handleNavbarClose}
+                                        to={`${baseUrl}/${linkInfo.url}`}
+                                    >
+                                        {linkInfo.text}
+                                    </StyledLink>
+                            }
                         </StyledListItem>
                     ))
                 }
