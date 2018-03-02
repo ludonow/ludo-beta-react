@@ -47,6 +47,7 @@ const ReportTabs = styled.div`
         padding-bottom: 4px;
         text-align: center;
         width: 85px;
+        cursor: pointer;
     }
 
     .selected_tab {
