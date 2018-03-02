@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from '../axios-config';
+import ReactPlayer from 'react-player';
 
 import CommentBox from './CommentBox';
 import MobileReportEditButton from './MobileReportEditButton';
@@ -145,6 +146,13 @@ export default class ReportCard extends Component {
                     reportId={reportId}
                     reportObject={reportObject}
                 />
+                { reportObject.video ? 
+                    <ReactPlayer url={reportObject.video} 
+                        width = "100%"  
+                        controls = "true"
+                        />
+                    : null
+                }
                 <ReportText
                     handleIsEditingText={this.handleIsEditingText}
                     handleShouldReportUpdate={handleShouldReportUpdate}

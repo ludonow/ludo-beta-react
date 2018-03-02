@@ -31,6 +31,7 @@ export default class ReportEditButton extends Component {
                         id={`${whichList}-report-expand-more-${index}`}
                         onTouchTap={this.props.handleReportExpandMoreButtonTouchTap}
                         tooltip="更多"
+                        className="desktop_edit_button"
                     >
                         <ExpandMore />
                     </IconButton>

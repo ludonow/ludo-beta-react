@@ -76,18 +76,24 @@
 .report-icon-button {
     @extend %as_wide_as_parent;
     @extend %flex;
-    justify-content: flex-start;
-    
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+
     .report-date{
         font-size: 12px;
-        margin-top: 52px;
         margin-left: 20px;
     }
 
-    button {
-        margin-top: 35px !important;
-        margin-left: 240px !important;
+    .desktop_edit_button {
+        justify-content: flex-start;
     }
+}
+
+.mobile-report-icon-button {
+    @extend %as_wide_as_parent;
+    @extend %flex;
+    justify-content: flex-end;
 }
 
 .report-popover-expand-more-menu-item {

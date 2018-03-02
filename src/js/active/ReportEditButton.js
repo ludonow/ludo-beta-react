@@ -27,6 +27,7 @@ export default class ReportEditButton extends Component {
                         id={`${whichList}-report-edit-${index}`}
                         onTouchTap={this.props.handleReportEditButtonTouchTap}
                         tooltip="編輯"
+                        className="desktop_edit_button"
                     >
                         <ModeEdit />
                     </IconButton>

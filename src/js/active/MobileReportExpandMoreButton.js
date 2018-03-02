@@ -28,7 +28,7 @@ export default class MobileReportExpandMoreButton extends Component {
         return (
             <div>
                 {/* components/_single-report.scss */}
-                <div className="report-icon-button">
+                <div className="mobile-report-icon-button">
                     {/* <ReportDate
                         index={index}
                         reportList={reportList}

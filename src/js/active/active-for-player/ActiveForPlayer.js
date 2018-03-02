@@ -12,7 +12,7 @@ import DesktopReportPost from '../desktop-report-post/DesktopReportPost';
 import MobileReports from '../MobileReports';
 import DesktopSubmitButton from './DesktopSubmitButton';
 
-const panel_width = 900;
+const panel_width = window.innerWidth * 0.7;
 
 const CardDetailContainer = styled.div`
     .container {
