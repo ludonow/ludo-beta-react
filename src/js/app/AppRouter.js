@@ -226,6 +226,7 @@ const AppRouter = () => (
                 />
                 <Route
                     component={MyCardList}
+                    onEnter={isLoggedIn}
                     path="myCardList"
                 />
                 <Route
