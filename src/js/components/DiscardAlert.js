@@ -35,9 +35,11 @@ const titleStyle = {
 };
 
 const DiscardAlert = ({
+    alertTitle,
+    buttonLabel,
     handleDialogClose,
     handleDiscardAlertClose,
-    isDiscardAlertOpen
+    isDiscardAlertOpen,
 }) => (
     <Dialog
         bodyStyle={bodyStyle}
@@ -45,7 +47,7 @@ const DiscardAlert = ({
         open={isDiscardAlertOpen}
         onRequestClose={handleDiscardAlertClose}
         titleStyle={titleStyle}
-        title="關閉將捨棄已輸入的內容"
+        title={alertTitle ? alertTitle : '關閉將捨棄已輸入的內容'}
     >
         <ButtonListWrapper>
             <Button
@@ -56,7 +58,7 @@ const DiscardAlert = ({
             />
             <Button
                 backgroundColor={'#FF6262'}
-                label="捨棄"
+                label={buttonLabel ? buttonLabel : '捨棄'}
                 onClick={handleDialogClose}
             />
         </ButtonListWrapper>

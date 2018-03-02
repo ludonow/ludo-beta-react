@@ -8,7 +8,10 @@ import {
     getBonusPeriodIndexFromPeriod,
     periodList
 } from './bonusPeriod';
+import { labelList } from './reportInterval';
 import viewIcon from '../../images/eye.svg';
+import Button from './Button';
+import CircleButton from './CircleButton';
 
 export const CardBackBackgroundColorList = [
     '#FFFF9F',
@@ -64,6 +67,15 @@ const CardBorderTopWrapper = styled.div`
     width: 100%;
 `;
 
+const CardFrontWrapper = styled.div`
+    background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};
+    text-align: center;
+`;
+
+const CardWrapper = styled.div`
+    border-color: ${props => props.isHistory ? '#838383' : 'rgba(0, 0, 0, 0.8)'};
+`;
+
 const EyeIconWrapper = styled.div`
     align-items: center;
     display: flex;
@@ -77,6 +89,28 @@ const EyeIconWrapper = styled.div`
 export const FrontIconWrapper = styled.div`
     img {
         height: 100px;
+    }
+`;
+
+const Info = styled.div`
+    margin: 10px 0;
+`;
+const IntroWrapper = Info.extend`
+    font-size: 12px;
+    line-height: 30px;
+`;
+
+const InfoWrapper = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    padding: 0 20px;
+`;
+
+const LinkWrapper = styled.div`
+    a.card-button_circle {
+        box-shadow: ${props => props.isHistory ? '0 0 0 2px #838383' : '0 0 0 2px black'};
     }
 `;
 
@@ -154,29 +188,31 @@ const Card = ({
     singleLudoObject,
 }) => {
     const bonusPeriodIndex = getBonusPeriodIndexFromPeriod(singleLudoObject.period);
+    const interval = singleLudoObject.interval ? singleLudoObject.interval : 1;
     return (
         <div className="grid-item">
-            <div
+            <CardWrapper
                 className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
                 id={index}
+                isHistory={singleLudoObject.stage === 3}
                 onClick={handleClick}
             >
                 <CardBackWrapper
-                    backgroundColor={CardBackBackgroundColorList[bonusPeriodIndex]} 
+                    backgroundColor={(singleLudoObject.stage === 0) ? 'white' : CardBackBackgroundColorList[bonusPeriodIndex]}
                     className="card-back"
                 >
                     <BackPeriodIconWrapper>
                         <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                     </BackPeriodIconWrapper>
                     {/* three information: introduction, hashtags, and interval */}
-                    <div className="card-information">
-                        <div className="card-introduction">
+                    <InfoWrapper>
+                        <IntroWrapper>
                             { String(singleLudoObject.introduction).length > 30 ?
                                 String(singleLudoObject.introduction).substring(0, 30) + ' ...'
                                 : String(singleLudoObject.introduction)
                             }
-                        </div>
-                        <div className="card-hashtags">
+                        </IntroWrapper>
+                        <Info>
                             {
                                 // TODO: Use presentational component and proptypes to receive ludolist data
                                 Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
@@ -193,20 +229,31 @@ const Card = ({
                                     })
                                 : null
                             }
-                        </div>
-                    </div>
-                    {/* the circle button for GO */}
-                    <Link
-                        className="card-button_circle"
-                        to={isAtTemplateListPage ? `${baseUrl}/template/${singleLudoObject.ludo_id}` : `${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
-                    >
-                        <div className="card-button_text">
-                            Go
-                        </div>
-                    </Link>
+                        </Info>
+                        <Info>
+                            <Button
+                                backgroundColor="#FF7171 !important"
+                                fontSize="14px !important"
+                                label={labelList[Number(interval)-1]}
+                                padding="5px 0 !important"
+                                width="100px !important"
+                            />
+                        </Info>
+                    </InfoWrapper>
+                    <LinkWrapper isHistory={singleLudoObject.stage === 3}>
+                        <Link
+                            className="card-button_circle"
+                            to={isAtTemplateListPage ? `${baseUrl}/template/${singleLudoObject.ludo_id}` : `${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
+                        >
+                            <CircleButton stage={singleLudoObject.stage} />
+                        </Link>
+                    </LinkWrapper>
                 </CardBackWrapper>
 
-                <div className="card-front-info">
+                <CardFrontWrapper
+                    backgroundColor={(singleLudoObject.stage === 2) ? CardBackBackgroundColorList[bonusPeriodIndex] : 'white'}
+                    className="card-front-info"
+                >
                     <CardBorderTop
                         bonusPeriodIndex={bonusPeriodIndex}
                         isShowingFrontSide={!isThisCardFlipped}
@@ -217,7 +264,7 @@ const Card = ({
                     </FrontIconWrapper>
                     <div className="title">{singleLudoObject.title}</div>
                     <div className="duration">{singleLudoObject.duration}天</div>
-                </div>
+                </CardFrontWrapper>
                 <ViewWrapper isShowingFrontSide={!isThisCardFlipped}>
                     <EyeIconWrapper>
                         <img src={viewIcon} />
@@ -226,7 +273,7 @@ const Card = ({
                         {singleLudoObject.views}
                     </ViewNumberWrapper>
                 </ViewWrapper>
-            </div>
+            </CardWrapper>
         </div>
     );
 }

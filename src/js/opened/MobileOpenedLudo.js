@@ -144,7 +144,7 @@ export default class MobileOpenedLudo extends Component {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                     getUserBasicData();
                     handleShouldProfileUpdate(true);
-                    browserHistory.push('/playground');
+                    browserHistory.push('/cardList');
                 } else {
                     if (window.confirm('刪除Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");

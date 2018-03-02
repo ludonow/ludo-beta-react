@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import axios from '../axios-config';
 import { browserHistory, Link } from 'react-router';
 import Formsy from 'formsy-react';
@@ -25,11 +25,11 @@ Formsy.addValidationRule('isPassword', (values, value) => {
     }
 });
 
-export default class SignUp extends React.Component {
+export default class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            canSubmit: false,
+            isSubmitButtonDisabled: true,
             errorMessageFromServer: ''
         };
         this.disableButton = this.disableButton.bind(this);
@@ -39,13 +39,13 @@ export default class SignUp extends React.Component {
 
     disableButton() {
         this.setState({
-            canSubmit: false
+            isSubmitButtonDisabled: true
         });
     }
 
     enableButton() {
         this.setState({
-            canSubmit: true
+            isSubmitButtonDisabled: false
         });
     }
 
@@ -53,24 +53,40 @@ export default class SignUp extends React.Component {
         const signUpData = Object.assign({}, data);
         delete signUpData.repeated_password;
         signUpData.password = md5(signUpData.password);
+        this.setState({
+            isSubmitButtonDisabled: true,
+        });
         axios.post('/signup', signUpData)
         .then((response) => {
             if (response.data.status === '200') {
-                this.props.handleShouldUserBasicDataUpdate(true);
-                browserHistory.push('/playground');
+                const emailData = {
+                    email: data.email
+                };
+                window.location.reload();
+                browserHistory.push('/cardList');
             } else {
                 this.setState({
-                    errorMessageFromServer: response.data.message[0]
+                    errorMessageFromServer: response.data.message[0],
+                    isSubmitButtonDisabled: true,
                 });
             }
         })
         .catch((error) => {
-            window.alert('註冊時發生錯誤，請再試一次，若問題依舊發生，請聯絡開發人員！');
-            console.error('SignUp handleSignUp error', error);
+            if (window.confirm('註冊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isSubmitButtonDisabled: false,
+            });
         });
     }
 
     render() {
+        const {
+            errorMessageFromServer,
+            isSubmitButtonDisabled,
+        } = this.state;
+
         return (
             /* components/_login.scss */
             <div className="login-container">
@@ -114,12 +130,12 @@ export default class SignUp extends React.Component {
                         validationError="姓名大於10個字"
                     />
                     <div className="server-error-message">
-                        {this.state.errorMessageFromServer}
+                        {errorMessageFromServer}
                     </div>
                     <div className="buttons">
                         <button
                             className="signup"
-                            disabled={!this.state.canSubmit}
+                            disabled={isSubmitButtonDisabled}
                             type="submit"
                         >
                             註冊

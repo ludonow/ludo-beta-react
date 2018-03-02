@@ -4,6 +4,8 @@ import { Link } from "react-router";
 import { baseUrl } from '../baseurl-config';
 import Create from '../create/Create';
 
+import createIcon from '../../images/create.png';
+
 export default class QuickStart extends React.Component {
   render() {
     return (
@@ -16,7 +18,9 @@ export default class QuickStart extends React.Component {
         >
           {/* components/_playground-quick-start.scss */}
           <div className="quick-start card--playground">
-            <div className="quick-start__icon">NEW</div>
+            <div className="quick-start__icon">
+              <img src={createIcon} />
+            </div>
           </div>
         </Link>
       </div>
