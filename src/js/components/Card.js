@@ -8,6 +8,7 @@ import {
     getBonusPeriodIndexFromPeriod,
     periodList
 } from './bonusPeriod';
+import viewIcon from '../../images/eye.svg';
 
 export const CardBackBackgroundColorList = [
     '#FFFF9F',
@@ -63,6 +64,16 @@ const CardBorderTopWrapper = styled.div`
     width: 100%;
 `;
 
+const EyeIconWrapper = styled.div`
+    align-items: center;
+    display: flex;
+    margin-right: 3px;
+
+    img {
+        width: 15px;
+    }
+`;
+
 export const FrontIconWrapper = styled.div`
     img {
         height: 100px;
@@ -81,6 +92,21 @@ const TemplateCardBorderTopWrapper = styled.div`
     top: 0;
     opacity: ${props => props.isShowingFrontSide ? '0': '100'};
     width: 100%;
+`;
+
+const ViewNumberWrapper = styled.div`
+    align-items: center;
+    display: flex;
+`;
+
+const ViewWrapper = styled.div`
+    backface-visibility: hidden;
+    bottom: 5px;
+    display: inline-flex;
+    font-size: 12px;
+    opacity: ${props => props.isShowingFrontSide ? '100': '0'};
+    position: absolute;
+    right: 5px;
 `;
 
 export const CardBorderTop = ({
@@ -192,7 +218,14 @@ const Card = ({
                     <div className="title">{singleLudoObject.title}</div>
                     <div className="duration">{singleLudoObject.duration}天</div>
                 </div>
-                <div className="card-views">{singleLudoObject.views}</div>
+                <ViewWrapper isShowingFrontSide={!isThisCardFlipped}>
+                    <EyeIconWrapper>
+                        <img src={viewIcon} />
+                    </EyeIconWrapper>
+                    <ViewNumberWrapper>
+                        {singleLudoObject.views}
+                    </ViewNumberWrapper>
+                </ViewWrapper>
             </div>
         </div>
     );
