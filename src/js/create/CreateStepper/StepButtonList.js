@@ -108,14 +108,14 @@ const StepButtonList = ({
                         : null
                     }
                     {
-                        // isAtTemplatePage && isMyTemplate ?
-                        //     <Button
-                        //         backgroundColor={'#FF704E'}
-                        //         disabled={isSubmitting}
-                        //         label="編輯模板"
-                        //         onClick={handleTemplateEdit}
-                        //     />
-                        // : null
+                        isAtTemplatePage && isMyTemplate ?
+                            <Button
+                                backgroundColor={'#FF704E'}
+                                disabled={isSubmitting}
+                                label="編輯模板"
+                                onClick={handleTemplateEdit}
+                            />
+                        : null
                     }
                 </ButtonListWrapper>
             );

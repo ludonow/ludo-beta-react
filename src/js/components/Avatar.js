@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { animalImageArray, colorArray } from './avatarImage';
 
 const AvatarWrapper = styled.div`
+    ${props => props.usedInReport ? "position : absolute;" : ""}
     .avatar-in-report {
         width: 43px;
         height: 43px;
@@ -32,7 +33,7 @@ const Avatar = ({
     userPhotoUrl,
     usedInReport
 }) => (
-    <AvatarWrapper>
+    <AvatarWrapper usedInReport={usedInReport}>
         <div className={usedInReport ? "avatar-in-report" : "avatar-container"}>
             {
                 isThisBelongToCurrentUser ?

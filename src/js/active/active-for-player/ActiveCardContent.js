@@ -44,7 +44,6 @@ const ReportCycle = styled.div`
 
 const CardContent = styled.div`
     width: 100%;
-	font-family: HelveticaNeue;
 	font-size: 14px;
 	line-height: 1.2;
 	text-align: left;

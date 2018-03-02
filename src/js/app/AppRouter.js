@@ -37,14 +37,18 @@ import LoadingPage from '../LoadingPage';
     8           stage 0 other players
     9           stage 0 not login (same as 0, may be modified in the future)
 */
-
+/*
+    0,2 OpenedForBystander
+    1 OpenedForStarter
+    5 ActiveForBystander
+*/
 const ludoPageArray = [
-    OpenedForBystander,
-    OpenedForStarter,
-    OpenedForBystander,
     ActiveForPlayer,
     ActiveForPlayer,
-    ActiveForBystander,
+    ActiveForPlayer,
+    ActiveForPlayer,
+    ActiveForPlayer,
+    ActiveForPlayer,
     ActiveForPlayer,
     Template,
     Template,
@@ -93,6 +97,7 @@ const ludoRedirect = (nextState, replace, callback) => {
     .catch((error) => {
         if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
             window.open("https://www.facebook.com/messages/t/ludonow");
+            // console.log(error);
         }
     });
 };
@@ -121,6 +126,7 @@ const ludoEditRedirect = (nextState, replace, callback) => {
     .catch((error) => {
         if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
             window.open("https://www.facebook.com/messages/t/ludonow");
+            // console.log(error);
         }
     });
 };
@@ -186,6 +192,7 @@ const AppRouter = () => (
                                     {...props}
                                     router_currentFormValue={router_currentFormValue}
                                     router_currentLudoId={router_currentLudoId}
+                                    router_ludoPageIndex={router_ludoPageIndex}
                                 />
                         );
                     }}

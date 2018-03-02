@@ -7,6 +7,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Popover from 'material-ui/Popover';
+import processString from 'react-process-string';
 
 import DropZone from 'react-dropzone';
 import Lightbox from 'react-image-lightbox';
@@ -18,9 +19,9 @@ import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';
 
 import uploadIcon from '../../images/active/upload-icon.png';
-import processString from 'react-process-string';
 
-const panel_width = 609;
+
+const panel_width = 900;
 
 const CardTitle = styled.div`
     font-size:20px;
@@ -38,7 +39,6 @@ const ReportCycle = styled.div`
 	background-color: #ff5757;
     border: solid 1px #ff5757;
     border-radius:20px;
-	font-family: MHeiHK;
 	font-size: 12px;
 	font-weight: bold;
 	line-height: 1.21;
@@ -58,7 +58,7 @@ const ReportPanelWrapper = styled.div`
 const ReportListContainer = styled.div`
     margin-top: 15px;
     width: ${props => props.width}px;
-    height:291px;
+    /* height:291px; */
     display:inline-flex;
     justify-content:center;
 	/* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)); */
@@ -74,7 +74,6 @@ const ReportList = styled.div`
 `;
 
 const NoReportText = styled.div`
-    font-family: HelveticaNeue;
 	font-size: 22.5px;
 	font-weight: 500;
 	line-height: 1.22;
@@ -93,7 +92,7 @@ const SingleReport = styled.div`
     background:white;
     margin:0 0px 28px 0px;
     display:flex;
-    width:361px;
+    width:100%;
     flex-direction:column;
 `;
 
@@ -109,12 +108,18 @@ const ReportContent = styled.div`
     display:flex;
     justify-content: center;
     margin-bottom:50px;
+    white-space:pre-wrap;
+    line-height:1.1rem;
+    text-align:left;
+
     div {
         width:90%;
     }
     img{
         width:100%;
         display:flex;
+        margin-bottom:10px;
+        margin-top:20px;
     }
 `;
 

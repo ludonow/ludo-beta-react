@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import MediaQuery from 'react-responsive';
+import { browserHistory } from 'react-router';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
+import axios from '../../axios-config';
 
 import ActivePlayerForm from './ActivePlayerForm';
 import ActiveCardContent from './ActiveCardContent';
 import ActiveReports from '../ActiveReports';
 import DesktopReportPost from '../desktop-report-post/DesktopReportPost';
 import MobileReports from '../MobileReports';
+import DesktopSubmitButton from './DesktopSubmitButton';
 
-const panel_width = window.innerHeight * 0.7;
+const panel_width = 900;
 
 const CardDetailContainer = styled.div`
     .container {
         display: flex;
         justify-content: center;
-        margin-bottom: 100px;
-        width:${panel_width};           
+        margin-bottom: 100px;   
+        width:${panel_width}px; 
     }
 `;
 
@@ -26,7 +29,7 @@ const ReportTabs = styled.div`
         display: block;
         justify-content: center;
         padding-top: 23px;
-        width: 609px;
+        width:${panel_width}px; 
     }
 
     .tab_list {
@@ -81,6 +84,14 @@ const ReportTabs = styled.div`
 export default class ActiveForPlayer extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isJoinButtonDisabled: false
+        };
+        this.state = {
+            isDeleteButtonDisabled: false
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        const { router_ludoPageIndex } = this.props;
     }
 
     componentWillMount() {
@@ -91,13 +102,87 @@ export default class ActiveForPlayer extends Component {
         this.props.handleIsOpeningActivePage(false);
     }
 
+    handleSubmit(event) {
+        const { router_ludoPageIndex } = this.props;
+        event.preventDefault();
+        /* TODO: Use notification confirming join */
+        if (router_ludoPageIndex === 0 || router_ludoPageIndex === 2) {
+            this.setState({
+                isJoinButtonDisabled: true
+            });
+            this.setState({
+                isDeleteButtonDisabled: true
+            });
+
+            const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
+            if (isSureToJoin) {
+                const { ludo_id } = this.props.params;
+                const currentFormValue = this.props.router_currentFormValue;
+                const joinLudoPutbody = {
+                    'duration': currentFormValue.duration,
+                    'marbles': currentFormValue.marbles,
+                    'stage': currentFormValue.stage,
+                    'type': 'match'
+                };
+                browserHistory.push({
+                    pathname: `/loading/${ludo_id}`,
+                    state: joinLudoPutbody,
+                });
+            } else {
+                this.setState({
+                    isJoinButtonDisabled: false
+                });
+            }
+        } else if (router_ludoPageIndex === 1) {
+            this.setState({
+                isDeleteButtonDisabled: true
+            });
+            /* TODO: Use notification confirming delete ludo */
+            const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
+            if (isSureToDelete) {
+                axios.delete(`/apis/ludo/${this.props.params.ludo_id}`)
+                .then(response => {
+                    if (response.data.status == '200') {
+                        const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                        getUserBasicData();
+                        handleShouldProfileUpdate(true);
+                        browserHistory.push('/playground');
+                    } else {
+                        if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isDeleteButtonDisabled: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    if (window.confirm('刪除Ludo時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    // console.log(error);
+                    this.setState({
+                        isDeleteButtonDisabled: false
+                    });
+                });
+            } else {
+                this.setState({
+                    isDeleteButtonDisabled: false
+                });
+            }
+        }
+    }
+
     /* components/_report-form.scss */
     render() {
         const {
             currentUserId,
             params,
-            router_currentFormValue
+            router_currentFormValue,
+            router_ludoPageIndex
         } = this.props;
+        const { isJoinButtonDisabled } = this.state;
+        const { isDeleteButtonDisabled } = this.state;
         return (
             <CardDetailContainer>
                 <MediaQuery
@@ -136,13 +221,18 @@ export default class ActiveForPlayer extends Component {
                                     className="panel panel_report" 
                                     selectedClassName="selected_panel"
                                 >   
-                                    <ActiveReports {...this.props} />
+                                    {
+                                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 || router_currentFormValue.stage === 1 || router_currentFormValue.stage === 2 ?
+                                            <ActiveReports {...this.props} />    
+                                        : null    
+                                    }
+                                    {/* <ActiveReports {...this.props} /> */}
                                 </TabPanel>
                             </div>
                         </Tabs>
                     </ReportTabs>
                     {
-                        router_currentFormValue.stage === 1 || router_currentFormValue.stage === 2 ?
+                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 6 ?
                             <DesktopReportPost
                                 currentUserId={currentUserId}
                                 handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
@@ -152,6 +242,25 @@ export default class ActiveForPlayer extends Component {
                             />
                         : null
                     }
+                    {
+                        router_ludoPageIndex === 0 || router_ludoPageIndex === 2 ?
+                        <DesktopSubmitButton
+                            disabled={isJoinButtonDisabled}
+                            label="加入戰局"
+                            onClick={this.handleSubmit}
+                        />
+                        :null
+                    }
+                    {
+                        router_ludoPageIndex === 1 ?
+                        <DesktopSubmitButton
+                            disabled={isDeleteButtonDisabled}
+                            label="刪除戰局"
+                            onClick={this.handleSubmit}
+                        />
+                        :null
+                    }
+                    
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
                     <MobileReports {...this.props} />
