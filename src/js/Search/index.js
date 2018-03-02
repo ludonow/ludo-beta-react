@@ -56,7 +56,9 @@ const ClassificationTabLinkList = styled.div`
     display: inline-flex;
     justify-content: center;
     margin-bottom: 30px;
+    text-align: center;
     width: 100%;
+
     @media (max-width: 768px) {
         justify-content: space-between;
         margin-bottom: 10px;
