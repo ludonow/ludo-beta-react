@@ -5,7 +5,7 @@ import axios from '../../axios-config';
 
 import CardTitle from './CardTitle';
 import MobileCreateForm from './MobileCreateForm';
-import StepButtonContainer from './StepButtonContainer';
+import StepButtonList from './StepButtonList';
 
 const ludoStepTitles = [
     '創建卡片',
@@ -18,7 +18,7 @@ const templateStepTitles = [
     '創建模板',
     '遊戲條件',
     '種類選擇',
-    '模板預覽'
+    '預覽'
 ];
 
 const maxStep = ludoStepTitles.length - 1;
@@ -59,6 +59,7 @@ export default class MobileCreateCard extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
+        this.handleTemplateModify = this.handleTemplateModify.bind(this);
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
     }
@@ -362,6 +363,12 @@ export default class MobileCreateCard extends Component {
         }
     }
 
+    handleTemplateModify() {
+        this.setState({
+            step: 0,
+        });
+    }
+
     handleTemplateSubmit(event) {
         event.preventDefault();
         const { ludoCreateForm } = this.state;
@@ -508,15 +515,17 @@ export default class MobileCreateCard extends Component {
                     handleTitleChange={this.handleTitleChange}
                     interval={interval}
                     introduction={introduction}
+                    isAtTemplatePage={isAtTemplatePage}
                     period={period}
                     step={step}
                     tags={tags}
                     title={title}
                 />
-                <StepButtonContainer
+                <StepButtonList
                     handleCardSubmit={this.handleCardSubmit}
                     handleStepChange={this.handleStepChange}
                     handleTemplateDelete={this.handleTemplateDelete}
+                    handleTemplateModify={this.handleTemplateModify}
                     handleTemplateSubmit={this.handleTemplateSubmit}
                     isAtTemplatePage={isAtTemplatePage}
                     isCreatedByCurrentUser={isCreatedByCurrentUser}

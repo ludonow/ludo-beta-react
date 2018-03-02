@@ -12,6 +12,7 @@ const StepButtonList = ({
     handleStepNext,
     handleStepPrev,
     handleTemplateDelete,
+    handleTemplateEdit,
     handleTemplateModify,
     handleTemplateSubmit,
     isAtTemplatePage,
@@ -105,6 +106,16 @@ const StepButtonList = ({
                                 onClick={handleTemplateDelete}
                             />
                         : null
+                    }
+                    {
+                        // isAtTemplatePage && isMyTemplate ?
+                        //     <Button
+                        //         backgroundColor={'#FF704E'}
+                        //         disabled={isSubmitting}
+                        //         label="編輯模板"
+                        //         onClick={handleTemplateEdit}
+                        //     />
+                        // : null
                     }
                 </ButtonListWrapper>
             );

@@ -5,6 +5,7 @@ import Dialog from 'material-ui/Dialog';
 
 import axios from '../../axios-config';
 import Content from './Content/index';
+import DiscardAlert from '../../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
 
@@ -74,6 +75,7 @@ class CreateStepper extends Component {
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.handleDiscardAlertClose = this.handleDiscardAlertClose.bind(this);
         this.handleDurationChange = this.handleDurationChange.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
         this.handleImageResize = this.handleImageResize.bind(this);
@@ -87,6 +89,7 @@ class CreateStepper extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
+        this.handleTemplateEdit = this.handleTemplateEdit.bind(this);
         this.handleTemplateModify = this.handleTemplateModify.bind(this);
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -143,7 +146,6 @@ class CreateStepper extends Component {
                 if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                console.log(response.data);
                 this.setState({
                     isCardSubmitButtonDisabled: false
                 });
@@ -270,7 +272,7 @@ class CreateStepper extends Component {
         if (isEditing) {
             this.setState({ isDiscardAlertOpen: true });
         } else {
-            // this.handleDialogClose();
+            this.handleDialogClose();
         }
     }
 
@@ -279,6 +281,11 @@ class CreateStepper extends Component {
             ...initialState,
             open: false,
         });
+        browserHistory.goBack();
+    }
+
+    handleDiscardAlertClose() {
+        this.setState({ isDiscardAlertOpen: false });
     }
 
     handleDurationChange(currentSliderValue) {
@@ -409,6 +416,7 @@ class CreateStepper extends Component {
         ];
         this.setState(
             (prevState) => ({
+                isEditing: true,
                 ludoCreateForm: {
                     ...prevState.ludoCreateForm,
                     tags: newTags
@@ -471,6 +479,42 @@ class CreateStepper extends Component {
                 isTemplateDeleteButtonDisabled: false
             });
         }
+    }
+
+    handleTemplateEdit(event) {
+        event.preventDefault();
+        const ludoTemplateForm = {
+            ...this.state.ludoCreateForm,
+            type: 'modify',
+        };
+        this.setState({
+            isTemplateDeleteButtonDisabled: true
+        });
+        axios.put(`/apis/ludo/${this.props.templateId}`, ludoTemplateForm)
+        .then(response => {
+            if (response.data.status == '200') {
+                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                getUserBasicData();
+                handleShouldProfileUpdate(true);
+                window.alert('編輯成功');
+                browserHistory.push('/cardList');
+            } else {
+                if (window.confirm('編輯Ludo模板時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateDeleteButtonDisabled: false
+                });
+            }
+        })
+        .catch(error => {
+            if (window.confirm('編輯Ludo模板時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+            this.setState({
+                isTemplateDeleteButtonDisabled: false
+            });
+        });
     }
 
     handleTemplateModify() {
@@ -570,6 +614,7 @@ class CreateStepper extends Component {
         } else {
             this.setState(
                 prevState => ({
+                    isEditing: true,
                     isNextStepButtonDisabled: false,
                     ludoCreateForm: {
                         ...prevState.ludoCreateForm,
@@ -623,6 +668,7 @@ class CreateStepper extends Component {
             images,
             isAtTemplatePage,
             isCardSubmitButtonDisabled,
+            isDiscardAlertOpen,
             isMyTemplate,
             isNextStepButtonDisabled,
             isPreviewButtonDisabled,
@@ -657,7 +703,7 @@ class CreateStepper extends Component {
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
-                    {/* <StepperCloseIcon handleCloseClick={this.handleCloseClick} /> */}
+                    <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
                     <Content
                         duration={duration}
                         form={form}
@@ -694,6 +740,7 @@ class CreateStepper extends Component {
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
                         handleTemplateDelete={this.handleTemplateDelete}
+                        handleTemplateEdit={this.handleTemplateEdit}
                         handleTemplateModify={this.handleTemplateModify}
                         handleTemplateSubmit={this.handleTemplateSubmit}
                         isAtTemplatePage={isAtTemplatePage}
@@ -704,6 +751,11 @@ class CreateStepper extends Component {
                         isSubmitting={isSubmitting}
                         isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
                         step={step}
+                    />
+                    <DiscardAlert
+                        handleDialogClose={this.handleDialogClose}
+                        handleDiscardAlertClose={this.handleDiscardAlertClose}
+                        isDiscardAlertOpen={isDiscardAlertOpen}
                     />
                 </Dialog>
             </Wrapper>

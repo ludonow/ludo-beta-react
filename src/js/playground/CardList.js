@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
+import styled from 'styled-components';
 
 import axios from '../axios-config'
 import QuickStart from './QuickStart';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper } from '../baseStyle';
+import LoadingIcon from '../../images/loading.svg';
+
+const LoadingIconWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`;
 
 const StyledCardListWrapper = CardListWrapper.extend`
     @media (max-width: 768px) {
@@ -34,7 +41,6 @@ class CardList extends Component {
         this.props.getFilteredLudoList(filteredCondition);
         this.setState({
             isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
-            isDataFetched: true,
         });
     }
 
@@ -47,7 +53,6 @@ class CardList extends Component {
             this.props.getFilteredLudoList(filteredCondition);
             this.setState({
                 isAtTemplateListPage: this.getIsAtTemplatePage(filteredCondition),
-                isDataFetched: true,
             });
         }
     }
@@ -62,23 +67,32 @@ class CardList extends Component {
 
     render() {
         const {
+            isCardListFetched,
             ludoList,
         } = this.props;
         const {
             isAtTemplateListPage,
-            isDataFetched,
         } = this.state;
         return (
             <StyledCardListWrapper>
-                <Masonry options={masonryOptions}>
-                    <QuickStart />
-                    <CardListContainer
-                        isAtTemplateListPage={isAtTemplateListPage}
-                        isDataFetched={isDataFetched}
-                        keyPrefix="card"
-                        ludoList={ludoList}
-                    />
-                </Masonry>
+                {
+                    isCardListFetched ?
+                        <Masonry options={masonryOptions}>
+                            <QuickStart />
+                            <CardListContainer
+                                isAtTemplateListPage={isAtTemplateListPage}
+                                isCardListFetched={isCardListFetched}
+                                keyPrefix="card"
+                                ludoList={ludoList}
+                            />
+                        </Masonry>
+                    :
+                        <LoadingIconWrapper>
+                            <img
+                                src={LoadingIcon}
+                            />
+                        </LoadingIconWrapper>
+                }
             </StyledCardListWrapper>
         );
     }

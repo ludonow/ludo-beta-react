@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Card from '../components/Card';
-import LoadingIcon from '../../images/loading.svg';
 
 const EmptyTextWrapper = styled.div`
     color: white;
@@ -48,7 +47,7 @@ class CardListContainer extends Component {
         const {
             emptyText,
             isAtTemplateListPage,
-            isDataFetched,
+            isCardListFetched,
             keyPrefix,
             ludoList,
             search,
@@ -61,14 +60,7 @@ class CardListContainer extends Component {
         return (
             <div>
                 {
-                    isDataFetched ?
-                        <img
-                            src={LoadingIcon}
-                        />
-                    : null
-                }
-                {
-                    ludoList.length > 0 ?
+                    isCardListFetched && ludoList.length > 0 ?
                         ludoList.map((singleLudoObject, index) => {
                             const isThisCardFlipped = (this.state.flippedKey.indexOf(index) != -1);
                             const handleClick = isThisCardFlipped ? this.showFront : this.showBack;
@@ -86,7 +78,7 @@ class CardListContainer extends Component {
                     : null
                 }
                 {
-                    ludoList.length === 0 ?
+                    isCardListFetched && ludoList.length === 0 ?
                         <EmptyTextWrapper>
                             {renderedEmptyText}
                         </EmptyTextWrapper>

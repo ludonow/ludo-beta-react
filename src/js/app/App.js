@@ -29,6 +29,7 @@ export default class App extends React.Component {
             denounceType: 100,
             filterCondition: '',
             hasGotNewReport: false,
+            isCardListFetched: false,
             isDenounceBoxOpen: false,
             isInfiniteLoading: false,
             isNavbarVisible: false,
@@ -172,7 +173,8 @@ export default class App extends React.Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.setState({
-                    ludoList: response.data.ludoList.Items
+                    isCardListFetched: true,
+                    ludoList: response.data.ludoList.Items,
                 });
                 if (response.data.ludoList.LastEvaluatedKey) {
                     this.setState({
@@ -481,6 +483,7 @@ export default class App extends React.Component {
     render() {
         const {
             currentUserId,
+            isCardListFetched,
             isNavbarVisible,
             isOpeningCreateFormPage,
             isOpeningLudoListPage,

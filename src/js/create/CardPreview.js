@@ -99,7 +99,7 @@ export default class CardPreview extends Component {
                         onClick={this.handleCardFlip}
                     >
                         <CardBackWrapper
-                            backgroundColor={CardBackBackgroundColorList[bonusPeriodIndex]}
+                            backgroundColor={isAtTemplatePage ? 'white' : CardBackBackgroundColorList[bonusPeriodIndex]}
                             className="card-back"
                         >
                             <BackPeriodIconWrapper>

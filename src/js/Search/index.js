@@ -8,6 +8,7 @@ import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper, StyledLink } from '../baseStyle';
+import LoadingIcon from '../../images/loading.svg';
 
 const filterInfoList = [
     {
@@ -55,13 +56,20 @@ const ClassificationTabLinkList = styled.div`
     display: inline-flex;
     justify-content: center;
     margin-bottom: 30px;
+    text-align: center;
     width: 100%;
+
     @media (max-width: 768px) {
         justify-content: space-between;
         margin-bottom: 10px;
         margin-top: 10px;
         width: 100vw;
     }
+`;
+
+const LoadingIconWrapper = styled.div`
+    display: flex;
+    justify-content: center;
 `;
 
 const StyledMasonry = styled(Masonry)`
@@ -79,6 +87,7 @@ class Search extends Component {
         super(props);
         this.state = {
             isAtTemplateListPage: false,
+            isCardListFetched: false,
             searchResult: [],
             search: 'default',
             title: '',
@@ -106,6 +115,7 @@ class Search extends Component {
         ) {
             const queryTitle = nextProps.search.split('title=')[1];
             this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(nextProps.search),
                 search: nextProps.search,
                 title: queryTitle,
             });
@@ -129,7 +139,8 @@ class Search extends Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.setState({
-                    searchResult: response.data.ludoList.Items
+                    isCardListFetched: true,
+                    searchResult: response.data.ludoList.Items,
                 });
             } else {
                 if (window.confirm('取得卡片列表資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -147,6 +158,7 @@ class Search extends Component {
     render() {
         const {
             isAtTemplateListPage,
+            isCardListFetched,
             searchResult,
             title,
         } = this.state;
@@ -175,6 +187,7 @@ class Search extends Component {
                             <CardListContainer
                                 emptyText="搜尋不到相關的結果"
                                 isAtTemplateListPage={isAtTemplateListPage}
+                                isCardListFetched={isCardListFetched}
                                 keyPrefix="search-result"
                                 ludoList={searchResult}
                             />
@@ -202,14 +215,24 @@ class Search extends Component {
                         }
                     </ClassificationTabLinkList>
                     <CenteredCardListWrapper>
-                        <StyledMasonry options={masonryOptions}>
-                            <CardListContainer
-                                emptyText="搜尋不到相關的結果"
-                                isAtTemplateListPage={isAtTemplateListPage}
-                                keyPrefix="search-result"
-                                ludoList={searchResult}
-                            />
-                        </StyledMasonry>
+                        {
+                            isCardListFetched ?
+                                <StyledMasonry options={masonryOptions}>
+                                    <CardListContainer
+                                        emptyText="搜尋不到相關的結果"
+                                        isAtTemplateListPage={isAtTemplateListPage}
+                                        isCardListFetched={isCardListFetched}
+                                        keyPrefix="search-result"
+                                        ludoList={searchResult}
+                                    />
+                                </StyledMasonry>
+                            :
+                                <LoadingIconWrapper>
+                                    <img
+                                        src={LoadingIcon}
+                                    />
+                                </LoadingIconWrapper>
+                        }
                     </CenteredCardListWrapper>
                 </MediaQuery>
             </Wrapper>
