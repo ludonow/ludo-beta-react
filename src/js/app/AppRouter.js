@@ -10,6 +10,7 @@ import ActiveForBystander from '../active/active-for-bystander/ActiveForBystande
 import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
 import Create from '../create/Create';
+import EmailConfirm from './EmailConfirm';
 import Friend from '../friend/Friend';
 import Invite from '../create/Invite';
 import LogIn from './LogIn.js';
@@ -58,12 +59,29 @@ const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
     axios.get('/apis/user')
     .then((response) => {
-        if (response.data.status != '200') {
+        if (response.data.status !== '200') {
             if (window.confirm('登入後即可使用該功能！點選「確定」後進入登入頁面。')) {
                 browserHistory.push('/login');
             }
-        } else {
-            callback();
+        } else if (response.data.status === '200') {
+            const { user } = response.data;
+            const {
+                email,
+                unVerify,
+                user_id,
+            } = user;
+            if (unVerify === true || typeof(unVerify) === "undefined") {
+                if (window.confirm('你的 email 尚未驗證，請問是否前往 email 驗證頁面？')) {
+                    browserHistory.push({
+                        pathname: '/emailConfirm',
+                        state: {
+                            email
+                        },
+                    });
+                }
+            } else {
+                callback();
+            }
         }
     })
     .catch((error) => {
@@ -145,6 +163,10 @@ const AppRouter = () => (
                     component={Create}
                     onEnter={isLoggedIn}
                     path="create"
+                />
+                <Route
+                    component={EmailConfirm}
+                    path="emailConfirm"
                 />
                 <Route
                     component={Friend}

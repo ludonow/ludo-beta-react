@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import MediaQuery from 'react-responsive';
 
 import axios from '../axios-config';
@@ -28,6 +29,7 @@ export default class App extends React.Component {
             currentUserId: '',
             denounceType: 100,
             filterCondition: '',
+            email: '',
             hasGotNewReport: false,
             isCardListFetched: false,
             isDenounceBoxOpen: false,
@@ -317,9 +319,15 @@ export default class App extends React.Component {
         axios.get('/apis/user')
         .then((response) => {
             if (response.data.status === '200') {
+                const { user } = response.data;
+                const {
+                    email,
+                    user_id,
+                } = user;
                 this.setState({
-                    currentUserId: response.data.user.user_id,
-                    userBasicData: response.data.user
+                    currentUserId: user_id,
+                    email,
+                    userBasicData: user,
                 });
             }
         })

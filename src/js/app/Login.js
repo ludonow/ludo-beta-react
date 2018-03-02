@@ -13,12 +13,27 @@ import logoImgPath from '../../images/Ludo_logo.png';
 // import twitterIcon from '../../images/login/twitter-icon.png';
 import facebookIcon from '../../images/login/facebook-icon.png';
 
+const validators = {
+    password: {
+        regexp: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+        message: '密碼必須大於8碼，至少有1個數字和1個英文字'
+    }
+};
+
+Formsy.addValidationRule('isPassword', (values, value) => {
+    if (validators.password.regexp.test(value)) {
+        return true;
+    } else {
+        return false;
+    }
+});
+
 export default class LogIn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            canSubmit: false,
-            errorMessageFromServer: ''
+            errorMessageFromServer: '',
+            isSubmitButtonDisabled: true,
         };
         this.disableButton = this.disableButton.bind(this);
         this.enableButton = this.enableButton.bind(this);
@@ -27,18 +42,14 @@ export default class LogIn extends React.Component {
 
     disableButton() {
         this.setState({
-            canSubmit: false
+            isSubmitButtonDisabled: true
         });
     }
 
     enableButton() {
         this.setState({
-            canSubmit: true
+            isSubmitButtonDisabled: false
         });
-    }
-
-    handleSignUp(event) {
-        browserHistory.push('/playground');
     }
 
     handleLogIn(logInData) {
@@ -47,13 +58,7 @@ export default class LogIn extends React.Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.props.handleShouldUserBasicDataUpdate(true);
-                browserHistory.push('/playground');
-            // } else if (response.data.status === '') {
-                 /* wrong password */
-            //     console.log('wrong password');
-            // } else if (response.data.status === '') {
-                 /* email not exist */
-            //     console.log('email not exist');
+                browserHistory.push('/cardList');
             } else {
                 this.setState({
                     errorMessageFromServer: response.data.message[0]
@@ -61,17 +66,24 @@ export default class LogIn extends React.Component {
             }
         })
         .catch((error) => {
-            window.alert('登入時發生錯誤，請再試一次，若問題依舊發生，請聯絡開發人員！');
-            console.error('Login handleLogIn error', error);
+            if (window.confirm('登入時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
         });
     }
 
     render() {
+        const {
+            errorMessageFromServer,
+            isSubmitButtonDisabled
+        } = this.state;
+
         return (
             /* components/_login.scss */
             <div className="login-container">
                 <Formsy.Form
                     className="login-top-container"
+                    onInvalid={this.disableButton}
                     onValid={this.enableButton}
                     onValidSubmit={this.handleLogIn}
                 >
@@ -91,15 +103,17 @@ export default class LogIn extends React.Component {
                         name="password"
                         placeholder="輸入密碼"
                         required
-                        type="password"
+                        validationError={validators.password.message}
                         validations="isPassword"
+                        type="password"
                     />
                     <div className="server-error-message">
-                        {this.state.errorMessageFromServer}
+                        {errorMessageFromServer}
                     </div>
                     <div className="buttons">
                         <button
                             className="login"
+                            disabled={isSubmitButtonDisabled}
                             type="submit"
                         >
                             登入
@@ -108,7 +122,7 @@ export default class LogIn extends React.Component {
                             className="signup"
                             to={`${baseUrl}/signup`}
                         >
-                            註冊
+                            前往註冊頁
                         </Link>
                     </div>
                     <a
