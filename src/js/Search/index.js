@@ -8,6 +8,7 @@ import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper, StyledLink } from '../baseStyle';
+import LoadingIcon from '../../images/loading.svg';
 
 const filterInfoList = [
     {
@@ -64,6 +65,11 @@ const ClassificationTabLinkList = styled.div`
     }
 `;
 
+const LoadingIconWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
 const StyledMasonry = styled(Masonry)`
     margin: 0 auto;
 `;
@@ -79,6 +85,7 @@ class Search extends Component {
         super(props);
         this.state = {
             isAtTemplateListPage: false,
+            isCardListFetched: false,
             searchResult: [],
             search: 'default',
             title: '',
@@ -129,7 +136,8 @@ class Search extends Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.setState({
-                    searchResult: response.data.ludoList.Items
+                    isCardListFetched: true,
+                    searchResult: response.data.ludoList.Items,
                 });
             } else {
                 if (window.confirm('取得卡片列表資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -147,6 +155,7 @@ class Search extends Component {
     render() {
         const {
             isAtTemplateListPage,
+            isCardListFetched,
             searchResult,
             title,
         } = this.state;
@@ -175,6 +184,7 @@ class Search extends Component {
                             <CardListContainer
                                 emptyText="搜尋不到相關的結果"
                                 isAtTemplateListPage={isAtTemplateListPage}
+                                isCardListFetched={isCardListFetched}
                                 keyPrefix="search-result"
                                 ludoList={searchResult}
                             />
@@ -202,14 +212,25 @@ class Search extends Component {
                         }
                     </ClassificationTabLinkList>
                     <CenteredCardListWrapper>
-                        <StyledMasonry options={masonryOptions}>
-                            <CardListContainer
-                                emptyText="搜尋不到相關的結果"
-                                isAtTemplateListPage={isAtTemplateListPage}
-                                keyPrefix="search-result"
-                                ludoList={searchResult}
-                            />
-                        </StyledMasonry>
+                            
+                        {
+                            isCardListFetched ?
+                                <StyledMasonry options={masonryOptions}>
+                                    <CardListContainer
+                                        emptyText="搜尋不到相關的結果"
+                                        isAtTemplateListPage={isAtTemplateListPage}
+                                        isCardListFetched={isCardListFetched}
+                                        keyPrefix="search-result"
+                                        ludoList={searchResult}
+                                    />
+                                </StyledMasonry>
+                            :
+                                <LoadingIconWrapper>
+                                    <img
+                                        src={LoadingIcon}
+                                    />
+                                </LoadingIconWrapper>
+                        }
                     </CenteredCardListWrapper>
                 </MediaQuery>
             </Wrapper>
