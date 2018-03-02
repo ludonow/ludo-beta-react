@@ -113,6 +113,7 @@ class Search extends Component {
         ) {
             const queryTitle = nextProps.search.split('title=')[1];
             this.setState({
+                isAtTemplateListPage: this.getIsAtTemplatePage(nextProps.search),
                 search: nextProps.search,
                 title: queryTitle,
             });
@@ -212,7 +213,6 @@ class Search extends Component {
                         }
                     </ClassificationTabLinkList>
                     <CenteredCardListWrapper>
-                            
                         {
                             isCardListFetched ?
                                 <StyledMasonry options={masonryOptions}>
