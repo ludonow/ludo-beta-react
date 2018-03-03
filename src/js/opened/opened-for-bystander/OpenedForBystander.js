@@ -127,7 +127,6 @@ class OpenedForBystander extends Component {
                         <Tabs
                             className="tabs"
                             defaultIndex={0}
-                            onSelect={index => console.log(index)}
                         >
                             <TabList className="tab_list">
                                 <Tab 
