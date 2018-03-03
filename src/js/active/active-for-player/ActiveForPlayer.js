@@ -87,13 +87,10 @@ export default class ActiveForPlayer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isJoinButtonDisabled: false
-        };
-        this.state = {
-            isDeleteButtonDisabled: false
+            isDeleteButtonDisabled: false,
+            isJoinButtonDisabled: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        const { router_ludoPageIndex } = this.props;
     }
 
     componentWillMount() {
@@ -110,30 +107,32 @@ export default class ActiveForPlayer extends Component {
         /* TODO: Use notification confirming join */
         if (router_ludoPageIndex === 0 || router_ludoPageIndex === 2) {
             this.setState({
-                isJoinButtonDisabled: true
+                isJoinButtonDisabled: true,
             });
-            this.setState({
-                isDeleteButtonDisabled: true
-            });
-
-            const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
-            if (isSureToJoin) {
-                const { ludo_id } = this.props.params;
-                const currentFormValue = this.props.router_currentFormValue;
-                const joinLudoPutbody = {
-                    'duration': currentFormValue.duration,
-                    'marbles': currentFormValue.marbles,
-                    'stage': currentFormValue.stage,
-                    'type': 'match'
-                };
-                browserHistory.push({
-                    pathname: `/loading/${ludo_id}`,
-                    state: joinLudoPutbody,
-                });
+            if (!this.props.currentUserId) {
+                if (window.confirm('登入後即可加入此卡片！點選「確定」後進入登入頁面。')) {
+                    browserHistory.push('/login');
+                }
             } else {
-                this.setState({
-                    isJoinButtonDisabled: false
-                });
+                const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
+                if (isSureToJoin) {
+                    const { ludo_id } = this.props.params;
+                    const currentFormValue = this.props.router_currentFormValue;
+                    const joinLudoPutbody = {
+                        'duration': currentFormValue.duration,
+                        'marbles': currentFormValue.marbles,
+                        'stage': currentFormValue.stage,
+                        'type': 'match'
+                    };
+                    browserHistory.push({
+                        pathname: `/loading/${ludo_id}`,
+                        state: joinLudoPutbody,
+                    });
+                } else {
+                    this.setState({
+                        isJoinButtonDisabled: false,
+                    });
+                }
             }
         } else if (router_ludoPageIndex === 1) {
             this.setState({
@@ -148,13 +147,13 @@ export default class ActiveForPlayer extends Component {
                         const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                         getUserBasicData();
                         handleShouldProfileUpdate(true);
-                        browserHistory.push('/playground');
+                        browserHistory.push('/cardList');
                     } else {
                         if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
                         this.setState({
-                            isDeleteButtonDisabled: false
+                            isDeleteButtonDisabled: false,
                         });
                     }
                 })
@@ -164,12 +163,12 @@ export default class ActiveForPlayer extends Component {
                     }
                     // console.log(error);
                     this.setState({
-                        isDeleteButtonDisabled: false
+                        isDeleteButtonDisabled: false,
                     });
                 });
             } else {
                 this.setState({
-                    isDeleteButtonDisabled: false
+                    isDeleteButtonDisabled: false,
                 });
             }
         }
@@ -183,8 +182,10 @@ export default class ActiveForPlayer extends Component {
             router_currentFormValue,
             router_ludoPageIndex
         } = this.props;
-        const { isJoinButtonDisabled } = this.state;
-        const { isDeleteButtonDisabled } = this.state;
+        const {
+            isDeleteButtonDisabled,
+            isJoinButtonDisabled,
+        } = this.state;
         return (
             <CardDetailContainer>
                 <MediaQuery
@@ -198,37 +199,35 @@ export default class ActiveForPlayer extends Component {
                             onSelect={index => console.log(index)}
                         >
                             <TabList className="tab_list">
-                                <Tab 
-                                    className="tab" 
+                                <Tab
+                                    className="tab"
                                     selectedClassName="selected_tab"
                                 >
                                     卡片內容
                                 </Tab>
                                 <Tab
-                                    className="tab" 
+                                    className="tab"
                                     selectedClassName="selected_tab"
                                 >
                                     雙人對戰
                                 </Tab>
                             </TabList>
                             <div className="panel_container">
-                                <TabPanel 
-                                    className="panel" 
+                                <TabPanel
+                                    className="panel"
                                     selectedClassName="selected_panel"
                                 >
                                     <ActiveCardContent {...this.props} />
-                                    {/* <ActivePlayerForm  {...this.props} /> */}
                                 </TabPanel>
-                                <TabPanel 
-                                    className="panel panel_report" 
+                                <TabPanel
+                                    className="panel panel_report"
                                     selectedClassName="selected_panel"
                                 >   
                                     {
                                         router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
                                             <ActiveReports {...this.props} />    
-                                        : null    
+                                        : null
                                     }
-                                    {/* <ActiveReports {...this.props} /> */}
                                 </TabPanel>
                             </div>
                         </Tabs>
@@ -246,31 +245,29 @@ export default class ActiveForPlayer extends Component {
                     }
                     {
                         router_ludoPageIndex === 0 || router_ludoPageIndex === 2 ?
-                        <DesktopSubmitButton
-                            disabled={isJoinButtonDisabled}
-                            label="加入戰局"
-                            onClick={this.handleSubmit}
-                        />
+                            <DesktopSubmitButton
+                                disabled={isJoinButtonDisabled}
+                                label="加入戰局"
+                                onClick={this.handleSubmit}
+                            />
                         :null
                     }
                     {
                         router_ludoPageIndex === 1 ?
-                        <DesktopSubmitButton
-                            disabled={isDeleteButtonDisabled}
-                            label="刪除戰局"
-                            onClick={this.handleSubmit}
-                        />
+                            <DesktopSubmitButton
+                                disabled={isDeleteButtonDisabled}
+                                label="刪除戰局"
+                                onClick={this.handleSubmit}
+                            />
                         :null
                     }
-                    
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
                     {
                         router_ludoPageIndex < 3 ?
-                        <MobileOpenedLudo {...this.props} />
+                            <MobileOpenedLudo {...this.props} />
                         :
-                        <MobileReports {...this.props} />
-
+                            <MobileReports {...this.props} />
                     }
                 </MediaQuery>
             </CardDetailContainer>
