@@ -106,9 +106,6 @@ export default class ActiveForPlayer extends Component {
         event.preventDefault();
         /* TODO: Use notification confirming join */
         if (router_ludoPageIndex === 0 || router_ludoPageIndex === 2) {
-            this.setState({
-                isJoinButtonDisabled: true,
-            });
             if (!this.props.currentUserId) {
                 if (window.confirm('登入後即可加入此卡片！點選「確定」後進入登入頁面。')) {
                     browserHistory.push('/login');
@@ -116,6 +113,9 @@ export default class ActiveForPlayer extends Component {
             } else {
                 const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
                 if (isSureToJoin) {
+                    this.setState({
+                        isJoinButtonDisabled: true,
+                    });
                     const { ludo_id } = this.props.params;
                     const currentFormValue = this.props.router_currentFormValue;
                     const joinLudoPutbody = {
