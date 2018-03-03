@@ -74,46 +74,61 @@ const StepButtonList = ({
                     <Button
                         backgroundColor={'#B1B1B1'}
                         disabled={isSubmitting}
-                        label="修改"
+                        fontSize="14px"
+                        label="修改內容"
                         onClick={handleTemplateModify}
+                        padding="8px"
+                        width="100px"
                     />
                     {
                         !isAtTemplatePage ?
                             <Button
                                 backgroundColor={'#FF704E'}
                                 disabled={isSubmitting && isTemplateSubmitButtonDisabled}
+                                fontSize="14px"
                                 label="創建模板"
                                 onClick={handleTemplateSubmit}
+                                padding="8px"
+                                width="100px"
                             />
                         : null
                     }
                     {
                         isAtTemplatePage ?
                             <Button
-                                backgroundColor={'#FF704E'}
+                                backgroundColor={'#2e968c'}
                                 disabled={isSubmitting && isCardSubmitButtonDisabled}
+                                fontSize="14px"
                                 label="開始玩囉"
                                 onClick={handleCardSubmit}
+                                padding="8px"
+                                width="100px"
                             />
                         : null
                     }
                     {
                         isAtTemplatePage && isMyTemplate ?
                             <Button
-                                backgroundColor={'#FF704E'}
+                                backgroundColor={'rgb(242, 65, 80)'}
                                 disabled={isSubmitting}
+                                fontSize="14px"
                                 label="刪除模板"
                                 onClick={handleTemplateDelete}
+                                padding="8px"
+                                width="100px"
                             />
                         : null
                     }
                     {
                         isAtTemplatePage && isMyTemplate ?
                             <Button
-                                backgroundColor={'#FF704E'}
+                                backgroundColor={'#4267b2'}
                                 disabled={isSubmitting}
-                                label="編輯模板"
+                                fontSize="14px"
+                                label="儲存變更"
                                 onClick={handleTemplateEdit}
+                                padding="8px"
+                                width="100px"
                             />
                         : null
                     }
