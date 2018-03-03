@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import tagIcon from '../../../images/active/tag-icon.png';
 import ReportButton from '../ReportButton';
 import CommentBox from '../CommentBox';
+import {labelList} from '../../components/reportInterval.js'; 
 
 const panel_width = window.innerHeight * 0.7;
 
@@ -84,20 +85,12 @@ export default class ActiveCardContent extends Component {
     render() {
         const currentFormValue = this.props.router_currentFormValue;
         const { category_id, checkpoint, duration, introduction, marbles, tags, title,interval} = currentFormValue;
-        var interval_zht;
-        if (interval == 1) {
-            interval_zht = "一"
-        } else if (interval == 2) {
-            interval_zht = "二"
-        } else if (interval == 3) {
-            interval_zht = "三"
-        }
         
         return  (
             <CardContainer>
                 <CardTitle>{title}</CardTitle>
                 <CardDays>遊戲天數：{duration}天</CardDays>
-                <ReportCycle>每{interval_zht}天回報</ReportCycle>
+                <ReportCycle>{labelList[Number(interval)-1]}</ReportCycle>
                 <CardContent>{introduction}</CardContent>
                 <CardImage><img /></CardImage>
                 <CardTags><img src={tagIcon} />

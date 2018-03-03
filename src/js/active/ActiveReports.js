@@ -18,6 +18,7 @@ import Avatar from '../components/Avatar';
 import CommentBox from './CommentBox';
 import ReportEditButton from './ReportEditButton';
 import ReportExpandMoreButton from './ReportExpandMoreButton';
+import {labelList} from '../components/reportInterval.js'; 
 
 import uploadIcon from '../../images/active/upload-icon.png';
 
@@ -560,12 +561,12 @@ export default class ActiveReports extends React.Component {
         }];
 
         const { currentUserId, router_currentFormValue, userBasicData } = this.props;
-        const { comments_nick, player_id, starter_id , title, duration} = router_currentFormValue;
+        const { comments_nick, player_id, starter_id , title, duration, interval } = router_currentFormValue;
         return (
             <ReportPanelWrapper>
                 <CardTitle>{title}</CardTitle>
                 <CardDays>遊戲天數：{duration}天</CardDays>
-                <ReportCycle>每一天回報</ReportCycle>
+                <ReportCycle>{labelList[Number(interval)-1]}</ReportCycle>
                 <ReportListContainer width={panel_width}>
                     <ReportList width={panel_width/2}>
                         <Avatar
