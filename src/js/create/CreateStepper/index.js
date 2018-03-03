@@ -52,7 +52,7 @@ const titles = [
 const StyledDialog = styled(Dialog)`
     ${CustomScrollBarCSS}
     h3 + div {
-        max-height: 425px !important;
+        max-height: 450px !important;
     }
 `;
 
