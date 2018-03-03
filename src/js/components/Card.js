@@ -44,7 +44,6 @@ export const BackPeriodIconWrapper = styled.div`
     padding-top: 10px;
 
     img {
-        height: 35px;
         width: 40px;
     }
 `;
@@ -88,7 +87,7 @@ const EyeIconWrapper = styled.div`
 
 export const FrontIconWrapper = styled.div`
     img {
-        height: 100px;
+        width: 100px;
     }
 `;
 

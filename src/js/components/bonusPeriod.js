@@ -1,5 +1,5 @@
-import CloudyDayIcon from '../../images/bonus_period_icon/cloudy-day.png';
 import HalfMoonIcon from '../../images/bonus_period_icon/half-moon.png';
+import SunAndMoonIcon from '../../images/bonus_period_icon/sun-and-moon.svg';
 import SunIcon from '../../images/bonus_period_icon/sun.png';
 import SunSetIcon from '../../images/bonus_period_icon/sunset.png';
 import SunRiseIcon from '../../images/bonus_period_icon/sunrise.png';
@@ -9,7 +9,7 @@ export const bonusPeriodIconList = [
     SunIcon,
     SunSetIcon,
     HalfMoonIcon,
-    CloudyDayIcon,
+    SunAndMoonIcon,
 ];
 
 export const periodList = [
