@@ -224,7 +224,7 @@ export default class ActiveForPlayer extends Component {
                                     selectedClassName="selected_panel"
                                 >   
                                     {
-                                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 || router_currentFormValue.stage === 1 || router_currentFormValue.stage === 2 ?
+                                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
                                             <ActiveReports {...this.props} />    
                                         : null    
                                     }
