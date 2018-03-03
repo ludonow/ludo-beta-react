@@ -232,7 +232,7 @@ export default class ActiveForPlayer extends Component {
                         </Tabs>
                     </ReportTabs>
                     {
-                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 6 ?
+                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 ?
                             <DesktopReportPost
                                 currentUserId={currentUserId}
                                 handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
