@@ -27,37 +27,36 @@ export default class MobileReportEditButton extends Component {
 
     /* components/_single-report.scss */
     render() {
-        const { handleReportDelete, reportObject } = this.props;
+        const {
+            anchorEl,
+            handleReportDelete,
+            handleReportEditButtonTouchTap,
+            isDeleting,
+            isPopOverOfEditOpen,
+            onRequestClose,
+            reportObject,
+        } = this.props;
         return (
             <div>
                 <div className="mobile-report-icon-button">
                     <IconButton
-                        onTouchTap={this.props.handleReportEditButtonTouchTap}
+                        onTouchTap={handleReportEditButtonTouchTap}
                         tooltip="編輯"
                     >
                         <ModeEdit />
                     </IconButton>
                 </div>
                 <Popover
-                    anchorEl={this.props.anchorEl}
+                    anchorEl={anchorEl}
                     anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                    onRequestClose={this.props.onRequestClose}
-                    open={this.props.isPopOverOfEditOpen}
+                    onRequestClose={onRequestClose}
+                    open={isPopOverOfEditOpen}
                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
                 >
                     <Menu>
                         <MenuItem
-                            disabled={!reportObject.content}
-                            onTouchTap={this.handleTextEditingTouchTap}
-                            primaryText="編輯文字回報"
-                        />
-                        <MenuItem
-                            disabled={!reportObject.image_location}
-                            onTouchTap={this.handleImageEditingTouchTap}
-                            primaryText="編輯圖片回報"
-                        />
-                        <MenuItem
-                            onTouchTap={handleReportDelete}
+                            disabled={isDeleting}
+                            onClick={handleReportDelete}
                             primaryText="刪除此回報"
                         />
                     </Menu>

@@ -19,9 +19,9 @@ export default class ReportCard extends Component {
         super(props);
         this.state = {
             anchorEl: {},
+            isDeleting: false,
             isEditingImage: false,
             isEditingText: false,
-            isEditReportButtonClickable: false,
             isPopOverOfEditOpen: false,
             isPopOverOfExpandMoreOpen: false
         };
@@ -63,21 +63,36 @@ export default class ReportCard extends Component {
         if (isSureToDelelteReport) {
 
             this.setState({
+                isDeleting: true,
                 isPopOverOfEditOpen: false
             });
 
             const { reportObject ,reportId } = this.props;
             axios.delete(`apis/report/${reportId}/${reportObject.ludo_id}`)
             .then(response => {
-                if(response.data.status === '200'){
+                if (response.data.status === '200'){
                     this.props.handleShouldReportUpdate(true);
+                    this.setState({
+                        isDeleting: true,
+                    });
                 } else {
-                    window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
+                    this.setState({
+                        isDeleting: false,
+                    });
+                    if (window.confirm('刪除回報時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
                     console.error(' handleReportDelete else response: ', response);
                     console.error(' handleReportDelete else message: ', response.data.message);
                 }
             })
             .catch(error => {
+                this.setState({
+                    isDeleting: false,
+                });
+                if (window.confirm('刪除回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
                 window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
                 console.error(' handleReportDelete error: ', error);
             });
@@ -117,46 +132,58 @@ export default class ReportCard extends Component {
             reportId,
             reportObject
         } = this.props;
+
+        const {
+            anchorEl,
+            isDeleting,
+            isEditingImage,
+            isEditingText,
+            isPopOverOfEditOpen,
+            isPopOverOfExpandMoreOpen,
+        } = this.state;
+
         return (
             <Report className="player-report-container">
                 {
                     isThisBelongToCurrentUser ?
                         <MobileReportEditButton
-                            anchorEl={this.state.anchorEl}
+                            anchorEl={anchorEl}
                             handleIsEditingText={this.handleIsEditingText}
                             handleIsEditingImage={this.handleIsEditingImage}
                             handleReportDelete={this.handleReportDelete}
                             handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                            isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                            isDeleting={isDeleting}
+                            isPopOverOfEditOpen={isPopOverOfEditOpen}
                             onRequestClose={this.handleRequestClose}
                             reportObject={reportObject}
                         />
                     :
                         <MobileReportExpandMoreButton
-                            anchorEl={this.state.anchorEl}
+                            anchorEl={anchorEl}
                             handleIsDenounceReport={this.handleIsDenounceReport}
                             handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                            isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                            isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                             onRequestClose={this.handleRequestClose}
                         />
                 }
                 <ReportImage
                     handleIsEditingImage={this.handleIsEditingImage}
-                    isEditingImage={this.state.isEditingImage}
+                    isEditingImage={isEditingImage}
                     reportId={reportId}
                     reportObject={reportObject}
                 />
-                { reportObject.video ? 
-                    <ReactPlayer url={reportObject.video} 
-                        width = "100%"  
-                        controls = "true"
+                { reportObject.video ?
+                        <ReactPlayer
+                            controls="true"
+                            url={reportObject.video}
+                            width="100%"
                         />
                     : null
                 }
                 <ReportText
                     handleIsEditingText={this.handleIsEditingText}
                     handleShouldReportUpdate={handleShouldReportUpdate}
-                    isEditingText={this.state.isEditingText}
+                    isEditingText={isEditingText}
                     reportId={reportId}
                     reportObject={reportObject}
                 />

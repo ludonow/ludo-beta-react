@@ -7,6 +7,7 @@ import axios from '../../axios-config';
 import MobileImageUpload from './MobileImageUpload';
 import MobileReportText from './MobileReportText';
 import ReportButton from '../ReportButton';
+import VideoPreview from './VideoPreview';
 
 const ReportButtonWrapper = styled.div`
     bottom: 0;
@@ -60,28 +61,32 @@ export default class MobileReportForm extends Component {
         this.state = {
             content: '',
             imageLocation: '',
-            isReportButtonClickable: false
+            isReportButtonDisabled: true,
+            video: '',
         };
         this.handleButtonClick = this.handleButtonClick.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleVideoChange = this.handleVideoChange.bind(this);
         this.setImageLocation = this.setImageLocation.bind(this);
     }
 
     handleButtonClick(event) {
         event.preventDefault();
-        const { currentUserId, router_currentFormValue } = this.props;
+        const {
+            currentUserId,
+            router_currentFormValue
+        } = this.props;
         const ludoId = this.props.params.ludo_id;
-        let whoIsUser = '';
-        (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
+        const whoIsUser = (router_currentFormValue.starter_id == currentUserId) ? 'starter_check' : 'player_check';
         const ludoReportPost = {
             'ludo_id': ludoId,
             'player': whoIsUser,
             'content': this.state.content,
             'image_location': this.state.imageLocation,
-            'tags': []
+            'video': this.state.video,
         };
         this.setState({
-            isReportButtonClickable: false
+            isReportButtonDisabled: true
         });
         axios.post('apis/report', ludoReportPost)
         .then((response) => {
@@ -89,27 +94,26 @@ export default class MobileReportForm extends Component {
                 this.props.handleShouldProfileUpdate(true);
                 this.props.handleShouldReportUpdate(true);
                 browserHistory.push(`/ludo/${ludoId}`);
-            } else if (response.data.message === 'both text and image are blank') {
-                window.alert('文字和圖片都尚未有內容，請重試一次');
-                this.setState({
-                    isReportButtonClickable: true
-                });
             } else {
-                window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
+                if (window.confirm('回報時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
                 console.error('MobileReportForm Report else message from server: ', response.data.message);
                 if (response.data.err) {
                     console.error('MobileReportForm Report else error from server: ', response.data.err);
                 }
                 this.setState({
-                    isReportButtonClickable: true
+                    isReportButtonDisabled: false
                 });
             }
         })
         .catch((error) => {
-            window.alert('回報時發生錯誤，請重試一次；若問題還是發生，請聯絡開發人員');
+            if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
             console.error('MobileReportForm Report error', error);
             this.setState({
-                isReportButtonClickable: true
+                isReportButtonDisabled: false
             });
         });
     }
@@ -119,12 +123,27 @@ export default class MobileReportForm extends Component {
         if (!content) {
             this.setState({
                 content,
-                isReportButtonClickable: false
+                isReportButtonDisabled: true
             });
         } else {
             this.setState({
                 content,
-                isReportButtonClickable: true
+                isReportButtonDisabled: false
+            });
+        }
+    }
+
+    handleVideoChange(event) {
+        const video = event.target.value;
+        if (!video) {
+            this.setState({
+                video,
+                isReportButtonDisabled: true
+            });
+        } else {
+            this.setState({
+                video,
+                isReportButtonDisabled: false
             });
         }
     }
@@ -132,24 +151,34 @@ export default class MobileReportForm extends Component {
     setImageLocation(imageUrl) {
         this.setState({
             imageLocation: imageUrl,
-            isReportButtonClickable: true
+            isReportButtonDisabled: false
         });
     }
 
     /* components/mobile-report-form.scss */
     render() {
+        const {
+            content,
+            isReportButtonDisabled,
+            video,
+        } = this.state;
+
         return (
             <form>
                 <div className="mobile-report-form">
                     <MobileReportText
                         onChange={this.handleTextChange}
-                        content={this.state.content}
+                        content={content}
                     />
                     <MobileImageUpload setImageLocation={this.setImageLocation} />
+                    <VideoPreview
+                        handleVideoChange={this.handleVideoChange}
+                        video={video}
+                    />
                 </div>
                 <ReportButtonComponent
                     onClick={this.handleButtonClick}
-                    disabled={!this.state.isReportButtonClickable}
+                    disabled={isReportButtonDisabled}
                 />
             </form>
         );

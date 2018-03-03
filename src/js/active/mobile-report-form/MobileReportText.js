@@ -15,7 +15,7 @@ export default class MobileReportText extends Component {
                     maxLength="300"
                     minRows={6}
                     onChange={this.props.onChange}
-                    placeholder="let us know your tips"
+                    placeholder="輸入要回報的內容"
                     value={this.props.content}
                 />
                 <div className="mobile-report-form-status">
