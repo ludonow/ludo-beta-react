@@ -94,6 +94,10 @@
     @extend %as_wide_as_parent;
     @extend %flex;
     justify-content: flex-end;
+
+    button {
+        z-index: 0 !important;
+    }
 }
 
 .report-popover-expand-more-menu-item {
