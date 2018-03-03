@@ -75,9 +75,10 @@ export default class MobileReports extends Component {
             comments_nick,
             introduction,
             player_id,
+            stage,
             starter_id,
             tags,
-            title
+            title,
         } = router_currentFormValue;
         return (
             <MobileReportContainer>
@@ -131,7 +132,7 @@ export default class MobileReports extends Component {
                             router_currentFormValue={router_currentFormValue}
                             userBasicData={userBasicData}
                         />
-                        {router_currentFormValue.starter_id == currentUserId || router_currentFormValue.player_id == currentUserId
+                        {stage === 2 && starter_id == currentUserId || player_id == currentUserId
                             ?
                                 <ReportButton
                                     label="我要回報"
@@ -147,7 +148,7 @@ export default class MobileReports extends Component {
                             tags={tags}
                             title={title}
                         />
-                        {router_currentFormValue.starter_id == currentUserId ||router_currentFormValue.player_id == currentUserId
+                        {stage === 2 && (starter_id === currentUserId || player_id === currentUserId)
                             ?
                                 <ReportButton
                                     label="我要回報"
@@ -166,7 +167,7 @@ export default class MobileReports extends Component {
                             router_currentFormValue={router_currentFormValue}
                             userBasicData={userBasicData}
                         />
-                        {router_currentFormValue.starter_id == currentUserId ||router_currentFormValue.player_id == currentUserId
+                        {stage === 2 && (starter_id === currentUserId || player_id === currentUserId)
                             ?
                                 <ReportButton
                                     label="我要回報"
