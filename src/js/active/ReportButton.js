@@ -56,7 +56,7 @@ const ReportButton = ({
         <Button
             disabled={disabled}
         >
-            <Link to={`${baseUrl}/${url}`}>{label}</Link>
+            <Link to={`${baseUrl}${url}`}>{label}</Link>
         </Button>
     </ReportButtonWrapper>
 );
