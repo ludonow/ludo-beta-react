@@ -84,6 +84,8 @@ const isLoggedIn = (nextState, replace, callback) => {
                             email
                         },
                     });
+                } else {
+                    callback();
                 }
             } else {
                 callback();
