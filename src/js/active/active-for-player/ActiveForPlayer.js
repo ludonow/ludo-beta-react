@@ -10,6 +10,7 @@ import ActiveCardContent from './ActiveCardContent';
 import ActiveReports from '../ActiveReports';
 import DesktopReportPost from '../desktop-report-post/DesktopReportPost';
 import MobileReports from '../MobileReports';
+import MobileOpenedLudo from '../../opened/MobileOpenedLudo.js'
 import DesktopSubmitButton from './DesktopSubmitButton';
 
 const panel_width = window.innerWidth * 0.7;
@@ -264,7 +265,13 @@ export default class ActiveForPlayer extends Component {
                     
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
-                    <MobileReports {...this.props} />
+                    {
+                        router_ludoPageIndex < 3 ?
+                        <MobileOpenedLudo {...this.props} />
+                        :
+                        <MobileReports {...this.props} />
+
+                    }
                 </MediaQuery>
             </CardDetailContainer>
         );
