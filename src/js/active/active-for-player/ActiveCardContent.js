@@ -84,13 +84,23 @@ export default class ActiveCardContent extends Component {
 
     render() {
         const currentFormValue = this.props.router_currentFormValue;
-        const { category_id, checkpoint, duration, introduction, marbles, tags, title,interval} = currentFormValue;
+        const {
+            category_id,
+            checkpoint,
+            duration,
+            introduction,
+            marbles,
+            tags,
+            title,
+        } = currentFormValue;
+
+        const renderedInterval = currentFormValue.interval ? Number(currentFormValue.interval) : 1;
         
         return  (
             <CardContainer>
                 <CardTitle>{title}</CardTitle>
                 <CardDays>遊戲天數：{duration}天</CardDays>
-                <ReportCycle>{labelList[Number(interval)-1]}</ReportCycle>
+                <ReportCycle>{labelList[Number(renderedInterval)-1]}</ReportCycle>
                 <CardContent>{introduction}</CardContent>
                 <CardImage><img /></CardImage>
                 <CardTags><img src={tagIcon} />
