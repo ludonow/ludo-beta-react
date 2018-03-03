@@ -9,6 +9,7 @@ import { baseUrl } from '../baseurl-config';
 import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
 import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
+import Bind from '../Bind/index';
 import Create from '../create/Create';
 import EmailConfirm from './EmailConfirm';
 import Friend from '../friend/Friend';
@@ -162,6 +163,10 @@ const AppRouter = () => (
             >   
                 {/* <IndexRoute component={Playground} /> */}
                 <IndexRedirect to="cardList" />
+                <Route
+                    component={Bind}
+                    path="bind"
+                />
                 <Route
                     component={Playground}
                     path="cardList"
