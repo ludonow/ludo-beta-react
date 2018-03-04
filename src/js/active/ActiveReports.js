@@ -106,25 +106,25 @@ const ReportTime = styled.div`
 `;
 
 const ReportContent = styled.div`
-    margin-top:25px;
-    width:100%;
-    display:flex;
+    display: flex;
+    font-size: 14px;
     justify-content: center;
-    margin-bottom:50px;
-    white-space:pre-wrap;
-    line-height:1.1rem;
-    text-align:left;
+    line-height: 1.1rem;
+    margin-bottom: 50px;
+    text-align: left;
+    white-space: pre-wrap;
+    width: 100%;
 
     div {
-        width:90%;
+        width: 90%;
     }
-    img{
-        width:100%;
-        display:flex;
-        margin-top:20px;
+    img {
+        display: flex;
+        margin-top: 20px;
+        width: 100%;
     }
     .report_word {
-        margin-top:20px;
+        margin: 20px auto 0 auto;
     }
 `;
 
@@ -625,15 +625,16 @@ export default class ActiveReports extends React.Component {
                                         <ReportContent>
                                             <div>
                                                 <img
-                                                        className="report-content report-content__image"
-                                                        onClick={this.handleImageEnlarge}
-                                                        src={reportObject.image_location}
+                                                    className="report-content report-content__image"
+                                                    onClick={this.handleImageEnlarge}
+                                                    src={reportObject.image_location}
                                                 />
-                                                { reportObject.video ? 
-                                                    <ReactPlayer url={reportObject.video} 
-                                                        width = "100%"  
-                                                        controls = "true"
-                                                        />
+                                                { reportObject.video ?
+                                                    <ReactPlayer
+                                                        controls="true"
+                                                        url={reportObject.video}
+                                                        width="100%"
+                                                    />
                                                     : null
                                                 }
                                                 <div className="report_word" >
@@ -695,15 +696,16 @@ export default class ActiveReports extends React.Component {
                                         <ReportContent>
                                             <div>
                                                 <img
-                                                        className="report-content report-content__image"
-                                                        onClick={this.handleImageEnlarge}
-                                                        src={reportObject.image_location}
+                                                    className="report-content report-content__image"
+                                                    onClick={this.handleImageEnlarge}
+                                                    src={reportObject.image_location}
                                                 />
                                                 { reportObject.video ? 
-                                                    <ReactPlayer url={reportObject.video} 
-                                                        width = "100%"  
-                                                        controls = "true"
-                                                        />
+                                                    <ReactPlayer
+                                                        controls="true"
+                                                        url={reportObject.video}
+                                                        width="100%"
+                                                    />
                                                     : null
                                                 }
                                                 <div className="report_word" >

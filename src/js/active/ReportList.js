@@ -5,11 +5,10 @@ import MobileCommentBox from './MobileCommentBox';
 
 const MobileReportList = styled.div`
     margin-bottom: 65px;
-    padding: 0 30px;
+    padding: 20px 30px 0 30px;
 `;
 
 const ReportWithComments = styled.div`
-    margin: 20px 0;
 `;
 
 const ReportList = ({
