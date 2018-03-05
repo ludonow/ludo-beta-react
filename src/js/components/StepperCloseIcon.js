@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import closeIconSrc from '../../images/active/close-icon.png';
 
 const CloseIconWrapper = styled.div`
-    padding: 1vw;
+    padding: ${props => props.padding ? props.padding : '1vw'};
     position: absolute;
     right: 0;
     top: 0;
@@ -16,8 +16,11 @@ const CloseIconWrapper = styled.div`
 
 const StepperCloseIcon = ({
     handleCloseClick,
+    padding,
 }) => (
-    <CloseIconWrapper>
+    <CloseIconWrapper
+        padding={padding}
+    >
         <img
             onClick={handleCloseClick}
             src={closeIconSrc}

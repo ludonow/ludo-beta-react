@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
-import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 
 import { StyledButton } from '../components/Button';
@@ -56,13 +55,16 @@ class Bind extends Component {
     }
 
     handleCloseClick() {
-        const { isBindButtonClicked } = this.state;
-        if (isBindButtonClicked) {
-            this.handleDialogClose();
-        } else {
-            if (window.confirm('綁定 Messenger 後可以即時收到通知，確定不要綁定嗎？')) {
+        if (!this.props.userBasicData.chatfuel_id) {
+            if (this.state.isBindButtonClicked) {
                 this.handleDialogClose();
+            } else {
+                if (window.confirm('綁定 Messenger 後可以即時收到通知，確定不要綁定嗎？')) {
+                    this.handleDialogClose();
+                }
             }
+        } else {
+            this.handleDialogClose();
         }
     }
 
@@ -111,8 +113,5 @@ class Bind extends Component {
         );
     }
 }
-
-Bind.propTypes = {
-};
 
 export default Bind;

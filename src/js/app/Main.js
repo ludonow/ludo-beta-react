@@ -23,12 +23,12 @@ const Main = ({
     handleScrollEvent
 }) => (
     <div>
-        <MediaQuery minWidth={768}>
+        <MediaQuery minWidth={769}>
             <MainWrapper onScroll={handleScrollEvent}>
                 {children}
             </MainWrapper>
         </MediaQuery>
-        <MediaQuery maxWidth={767}>
+        <MediaQuery maxWidth={768}>
             <MobileMainWrapper onScroll={handleScrollEvent}>
                 {children}
             </MobileMainWrapper>

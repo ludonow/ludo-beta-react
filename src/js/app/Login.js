@@ -6,7 +6,6 @@ import md5 from 'blueimp-md5';
 
 import { baseUrl } from '../baseurl-config';
 import FormsyHOCInput from './FormsyHOCInput.js';
-import PasswordField from './PasswordField.js';
 
 import logoImgPath from '../../images/Ludo_logo.png';
 // import googleIcon from '../../images/login/google-icon.png';
@@ -120,7 +119,7 @@ export default class LogIn extends React.Component {
                         </button>
                         <Link
                             className="signup"
-                            to={`${baseUrl}/signup`}
+                            to={`${baseUrl}/login-recommend`}
                         >
                             前往註冊頁
                         </Link>
