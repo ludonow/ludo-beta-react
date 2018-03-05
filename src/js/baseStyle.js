@@ -64,6 +64,11 @@ export const CustomScrollBarCSS = `
     }
 `;
 
+export const StyledAnchor = styled.a`
+    color: white;
+    text-decoration: none;
+`;
+
 export const StyledLink = styled(Link)`
     color: white;
     text-decoration: none;

@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Textarea from 'react-textarea-autosize';
+
 import axios from '../axios-config';
 
 import IconButton from 'material-ui/IconButton';
@@ -10,9 +13,15 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import Textarea from 'react-textarea-autosize';
+// styled components
+const AvatarWrapper = styled.div`
+    img.avatar-container__photo {
+        height: 43px;
+        width: 43px;
+    }
+`;
 
-export default class MobileCommentForm extends React.Component {
+class MobileCommentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,12 +70,12 @@ export default class MobileCommentForm extends React.Component {
         /* components/_comment.scss */
         return (
             <div className="single-comment-container">
-                <div className="avatar-container">
+                <AvatarWrapper className="avatar-container">
                     <img
                         className="avatar-container__photo"
                         src={this.props.userBasicData.photo}
                     />
-                </div>
+                </AvatarWrapper>
                 <Textarea
                     className="comment__message"
                     minRows={2}
@@ -77,3 +86,5 @@ export default class MobileCommentForm extends React.Component {
         );
     }
 };
+
+export default MobileCommentForm;

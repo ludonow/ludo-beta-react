@@ -6,22 +6,17 @@ import { animalImageArray, colorArray } from './avatarImage';
 const AvatarWrapper = styled.div`
     ${props => props.usedInReport ? "position : absolute;" : ""}
     .avatar-in-report {
-        width: 43px;
         height: 43px;
-        /* background-color: #bababa; */
-        
-        margin-top:-22px; 
         margin-left: -30px;
-        position:absolute;
+        margin-top: -22px;
+        position: absolute;
+        width: 43px;
     }
     .avatar-container__photo {
-        width: 43px;
-        height: 43px;
         border: solid 2px #707070;
         border-radius: 50%;
-        /* background-color: #bababa; */
-        /* border: solid 2px #707070;
-        border-radius: 50%; */
+        height: 43px;
+        width: 43px;
     }
 `;
 
