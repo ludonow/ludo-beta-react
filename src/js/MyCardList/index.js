@@ -8,12 +8,7 @@ import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper } from '../baseStyle';
-import LoadingIcon from '../../images/loading.svg';
-
-const LoadingIconWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`;
+import CardListLoadingIcon from '../components/CardListLoadingIcon';
 
 const masonryOptions = {
     columnWidth: 226,
@@ -95,6 +90,7 @@ class MyCardList extends Component {
         this.state = {
             isAtTemplateListPage: false,
             isCardListFetched: false,
+            isLoadingCardList: false,
             ludoList: [],
             search: 'dafault',
             tabIndex: 0,
@@ -135,6 +131,9 @@ class MyCardList extends Component {
     }
 
     getMyCardList(search) {
+        this.setState({
+            isLoadingCardList: true,
+        });
         const query = search.split('?')[1];
         const apiUrl = `/apis/ludo?${query}`;
         axios.get(apiUrl)
@@ -142,6 +141,7 @@ class MyCardList extends Component {
             if (response.data.status === '200') {
                 this.setState({
                     isCardListFetched: true,
+                    isLoadingCardList: false,
                     ludoList: response.data.ludoList.Items,
                 });
             } else {
@@ -183,6 +183,7 @@ class MyCardList extends Component {
         const {
             isAtTemplateListPage,
             isCardListFetched,
+            isLoadingCardList,
             ludoList,
             search,
             tabIndex,
@@ -216,8 +217,9 @@ class MyCardList extends Component {
                     }
                 </StyledTabList>
                 <StyledCardListWrapper>
+                    <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
                     {
-                        isCardListFetched ?
+                        !isLoadingCardList && isCardListFetched ?
                             <StyledMasonry options={masonryOptions}>
                                 <CardListContainer
                                     isAtTemplateListPage={isAtTemplateListPage}
@@ -227,12 +229,7 @@ class MyCardList extends Component {
                                     search={search}
                                 />
                             </StyledMasonry>
-                        :
-                            <LoadingIconWrapper>
-                                <img
-                                    src={LoadingIcon}
-                                />
-                            </LoadingIconWrapper>
+                        : null
                     }
                 </StyledCardListWrapper>
             </Wrapper>

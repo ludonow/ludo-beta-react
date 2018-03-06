@@ -6,12 +6,7 @@ import axios from '../axios-config';
 import CardListContainer from '../containers/CardListContainer';
 import UpDownToggleButton from '../components/UpDownToggleButton';
 import { CardListWrapper } from '../baseStyle';
-import LoadingIcon from '../../images/loading.svg';
-
-const LoadingIconWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`;
+import CardListLoadingIcon from '../components/CardListLoadingIcon';
 
 const masonryOptions = {
     columnWidth: 226,
@@ -49,6 +44,7 @@ class PersonalCardList extends Component {
         this.state = {
             isAtTemplateListPage: false,
             isCardListFetched: false,
+            isLoadingCardList: false,
             personalLudoList: [],
             search: 'dafault',
         };
@@ -73,6 +69,9 @@ class PersonalCardList extends Component {
     }
 
     getPersonalLudoList(currentUserId, search='') {
+        this.setState({
+            isLoadingCardList: true,
+        });
         let apiUrl = '';
         if (search) {
             const query = search.split('?')[1];
@@ -85,6 +84,7 @@ class PersonalCardList extends Component {
             if (response.data.status === '200') {
                 this.setState({
                     isCardListFetched: true,
+                    isLoadingCardList: false,
                     personalLudoList: response.data.ludoList.Items,
                 });
             } else {
@@ -109,6 +109,7 @@ class PersonalCardList extends Component {
         const {
             isAtTemplateListPage,
             isCardListFetched,
+            isLoadingCardList,
             personalLudoList,
             search,
         } = this.state;
@@ -121,8 +122,9 @@ class PersonalCardList extends Component {
                     我的{queryTarget}
                 </TitleWrapper>
                 <StyledCardListWrapper>
+                    <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
                     {
-                        isCardListFetched ?
+                        !isLoadingCardList && isCardListFetched ?
                             <Masonry options={masonryOptions}>
                                 <CardListContainer
                                     isAtTemplateListPage={isAtTemplateListPage}
@@ -132,12 +134,7 @@ class PersonalCardList extends Component {
                                     search={search}
                                 />
                             </Masonry>
-                        :
-                            <LoadingIconWrapper>
-                                <img
-                                    src={LoadingIcon}
-                                />
-                            </LoadingIconWrapper>
+                        : null
                     }
                 </StyledCardListWrapper>
                 <ToggleButtonWrapper>

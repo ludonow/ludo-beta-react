@@ -7,8 +7,11 @@ import axios from '../axios-config';
 import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
-import { CardListWrapper, StyledLink } from '../baseStyle';
-import LoadingIcon from '../../images/loading.svg';
+import CardListLoadingIcon from '../components/CardListLoadingIcon';
+import {
+    CardListWrapper,
+    StyledLink,
+} from '../baseStyle';
 
 const filterInfoList = [
     {
@@ -88,6 +91,7 @@ class Search extends Component {
         this.state = {
             isAtTemplateListPage: false,
             isCardListFetched: false,
+            isLoadingCardList: false,
             searchResult: [],
             search: 'default',
             title: '',
@@ -128,6 +132,9 @@ class Search extends Component {
     }
 
     getSearchResult(search) {
+        this.setState({
+            isLoadingCardList: true,
+        });
         let apiUrl = '';
         if (search) {
             const query = search.split('?')[1];
@@ -140,6 +147,7 @@ class Search extends Component {
             if (response.data.status === '200') {
                 this.setState({
                     isCardListFetched: true,
+                    isLoadingCardList: false,
                     searchResult: response.data.ludoList.Items,
                 });
             } else {
@@ -159,6 +167,7 @@ class Search extends Component {
         const {
             isAtTemplateListPage,
             isCardListFetched,
+            isLoadingCardList,
             searchResult,
             title,
         } = this.state;
@@ -183,15 +192,20 @@ class Search extends Component {
                         }
                     </ClassificationTabLinkList>
                     <CenteredCardListWrapper>
-                        <StyledMasonry options={masonryOptions}>
-                            <CardListContainer
-                                emptyText="搜尋不到相關的結果"
-                                isAtTemplateListPage={isAtTemplateListPage}
-                                isCardListFetched={isCardListFetched}
-                                keyPrefix="search-result"
-                                ludoList={searchResult}
-                            />
-                        </StyledMasonry>
+                        <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
+                        {
+                            !isLoadingCardList && isCardListFetched ?
+                                <StyledMasonry options={masonryOptions}>
+                                    <CardListContainer
+                                        emptyText="搜尋不到相關的結果"
+                                        isAtTemplateListPage={isAtTemplateListPage}
+                                        isCardListFetched={isCardListFetched}
+                                        keyPrefix="search-result"
+                                        ludoList={searchResult}
+                                    />
+                                </StyledMasonry>
+                            : null
+                        }
                     </CenteredCardListWrapper>
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
@@ -215,8 +229,9 @@ class Search extends Component {
                         }
                     </ClassificationTabLinkList>
                     <CenteredCardListWrapper>
+                        <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
                         {
-                            isCardListFetched ?
+                            !isLoadingCardList && isCardListFetched ?
                                 <StyledMasonry options={masonryOptions}>
                                     <CardListContainer
                                         emptyText="搜尋不到相關的結果"
@@ -226,12 +241,7 @@ class Search extends Component {
                                         ludoList={searchResult}
                                     />
                                 </StyledMasonry>
-                            :
-                                <LoadingIconWrapper>
-                                    <img
-                                        src={LoadingIcon}
-                                    />
-                                </LoadingIconWrapper>
+                            : null
                         }
                     </CenteredCardListWrapper>
                 </MediaQuery>

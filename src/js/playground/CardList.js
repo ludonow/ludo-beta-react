@@ -6,12 +6,7 @@ import axios from '../axios-config'
 import QuickStart from './QuickStart';
 import CardListContainer from '../containers/CardListContainer';
 import { CardListWrapper } from '../baseStyle';
-import LoadingIcon from '../../images/loading.svg';
-
-const LoadingIconWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`;
+import CardListLoadingIcon from '../components/CardListLoadingIcon';
 
 const StyledCardListWrapper = CardListWrapper.extend`
     @media (max-width: 768px) {
@@ -68,6 +63,7 @@ class CardList extends Component {
     render() {
         const {
             isCardListFetched,
+            isLoadingCardList,
             ludoList,
         } = this.props;
         const {
@@ -75,8 +71,9 @@ class CardList extends Component {
         } = this.state;
         return (
             <StyledCardListWrapper>
+                <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
                 {
-                    isCardListFetched ?
+                    !isLoadingCardList && isCardListFetched ?
                         <Masonry options={masonryOptions}>
                             <QuickStart />
                             <CardListContainer
@@ -86,12 +83,7 @@ class CardList extends Component {
                                 ludoList={ludoList}
                             />
                         </Masonry>
-                    :
-                        <LoadingIconWrapper>
-                            <img
-                                src={LoadingIcon}
-                            />
-                        </LoadingIconWrapper>
+                    : null
                 }
             </StyledCardListWrapper>
         );

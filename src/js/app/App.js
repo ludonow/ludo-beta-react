@@ -34,6 +34,7 @@ export default class App extends React.Component {
             isCardListFetched: false,
             isDenounceBoxOpen: false,
             isInfiniteLoading: false,
+            isLoadingCardList: false,
             isNavbarVisible: false,
             isOpeningActivePage: false,
             isOpeningCreateFormPage: false,
@@ -165,6 +166,9 @@ export default class App extends React.Component {
     }
 
     getFilteredLudoList(filterCondition) {
+        this.setState({
+            isLoadingCardList: true,
+        });
         let api = '';
         if (filterCondition) {
             api = `/apis/ludo?${filterCondition}`;
@@ -176,6 +180,7 @@ export default class App extends React.Component {
             if (response.data.status === '200') {
                 this.setState({
                     isCardListFetched: true,
+                    isLoadingCardList: false,
                     ludoList: response.data.ludoList.Items,
                 });
                 if (response.data.ludoList.LastEvaluatedKey) {
