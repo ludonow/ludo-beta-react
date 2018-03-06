@@ -523,7 +523,7 @@ export default class App extends React.Component {
                     isPersonalCardListVisible={isPersonalCardListVisible}
                     userBasicData={userBasicData}
                 />
-                <MediaQuery minWidth={768}>
+                <MediaQuery minWidth={769}>
                     <DesktopNavbar
                         currentUserId={currentUserId}
                         chatFuelId={userBasicData.chatfuel_id}
@@ -540,6 +540,7 @@ export default class App extends React.Component {
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
                         isNavbarVisible={isNavbarVisible}
+                        userBasicData={userBasicData}
                     />
                 </MediaQuery>
                 <Main handleScrollEvent={this.handleScrollEvent}>

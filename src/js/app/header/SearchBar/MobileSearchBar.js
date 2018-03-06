@@ -8,7 +8,7 @@ const MobileSearchBarWrapper = styled.div`
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 0;
 `;
 
 const MobileSearchBar = ({

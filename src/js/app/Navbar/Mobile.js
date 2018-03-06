@@ -12,6 +12,7 @@ import {
     getMyCardListLinkInfoList,
     getSettingLinkInfoList,
 } from './common';
+import defaultAvatartIcon from '../../../images/header/default_avatar.png';
 
 const authedInfoList = [
     {
@@ -85,10 +86,16 @@ const OutSideCircle = styled.div`
     background-color: white;
     border-radius: 50%;
     display: flex;
-    height: 40px;
+    height: 50px;
     justify-content: center;
     margin: 20px;
-    width: 40px;
+    width: 50px;
+
+    img {
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+    }
 `;
 
 const ToggleButtonWrapper = styled.div`
@@ -99,11 +106,15 @@ const ToggleButtonWrapper = styled.div`
 
 // child component
 const DoubleCircleIcon = ({
-    handleClick,
-    isNavbarVisible
+    userBasicData,
 }) => (
-    <OutSideCircle onClick={handleClick}>
-        <InnerCircle isNavbarVisible={isNavbarVisible} />
+    <OutSideCircle>
+        {
+            userBasicData.photo ?
+                <img src={userBasicData.photo} />
+            :
+                <img src={defaultAvatartIcon} />
+        }
     </OutSideCircle>
 );
 
@@ -139,48 +150,30 @@ const LinkList = ({
     </LinkListWrapper>
 );
 
-class ToggleButton extends Component {
-    constructor() {
-        super();
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(event) {
-        event.preventDefault();
-        const {
-            handleNavbarToggle,
-            isNavbarVisible
-        } = this.props;
-        handleNavbarToggle(!isNavbarVisible);
-    }
-
-    render() {
-        const { isNavbarVisible } = this.props; 
-        return (
-            <ToggleButtonWrapper>
-                <DoubleCircleIcon
-                    handleClick={this.handleClick}
-                    isNavbarVisible={isNavbarVisible}
-                />
-            </ToggleButtonWrapper>
-        );
-    }
-}
+const ToggleButton = ({
+    isNavbarVisible,
+    userBasicData,
+}) => (
+    <ToggleButtonWrapper>
+        <DoubleCircleIcon userBasicData={userBasicData} />
+    </ToggleButtonWrapper>
+);
 
 const Mobile = ({
     chatFuelId,
     currentUserId,
     handleNavbarClose,
     handleNavbarToggle,
-    isNavbarVisible
+    isNavbarVisible,
+    userBasicData,
 }) => {
     const authInfoList = currentUserId ? authedInfoList : unAuthedInfoList;
 
     return (
         <MobileNavbarWrapper>
             <ToggleButton
-                handleNavbarToggle={handleNavbarToggle}
                 isNavbarVisible={isNavbarVisible}
+                userBasicData={userBasicData}
             />
             <ButtonListWrapper isNavbarVisible={isNavbarVisible}>
                 <LinkList

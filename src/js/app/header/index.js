@@ -8,6 +8,7 @@ import { grey300 } from 'material-ui/styles/colors';
 import axios from '../../axios-config';
 
 import DesktopSearchBar from './SearchBar/DesktopSearchBar';
+import HamburgerIcon from './HamburgerIcon';
 import HeaderLeft from './HeaderLeft';
 import HeaderPrevPageArrow from './HeaderPrevPageArrow';
 import HeaderRight from './HeaderRight';
@@ -41,8 +42,6 @@ const HeaderWrapper = styled.div`
 `;
 
 const SearchIconWrapper = styled(A)`
-    position: absolute;
-    right: 0;
     padding: 20px;
 
     img {
@@ -190,16 +189,14 @@ export default class Header extends Component {
         return (
             /* layout/_header.scss */
             <HeaderWrapper>
-                <MediaQuery 
+                <StyledMediaQuery 
                     className="header-left"
                     maxWidth={768}
                 >
-                    {
-                        isOpeningCreateFormPage ?
-                            null
-                        :
-                            <HeaderPrevPageArrow />
-                    }
+                    <HamburgerIcon
+                        handleNavbarToggle={handleNavbarToggle}
+                        isNavbarVisible={isNavbarVisible}
+                    />
                     {
                         isSearching ?
                             <MobileSearchBar
@@ -222,7 +219,7 @@ export default class Header extends Component {
                                 handleMobileSearchTouchTap={this.handleMobileSearchTouchTap}
                             />
                     }
-                </MediaQuery>
+                </StyledMediaQuery>
                 <StyledMediaQuery minWidth={769}>
                     <HeaderLeft
                         getFilteredLudoList={getFilteredLudoList}

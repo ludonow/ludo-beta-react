@@ -11,18 +11,14 @@ const StyledLink = styled(Link)`
     height: 100%;
 
     @media (max-width: 768px) {
-        width: 100%;
-        position: absolute;
         justify-content: center;
     }
 
     @media (min-width: 769px) and (max-width: 991px) {
-        position: relative;
         margin-left: 8vw;
 	}
 
     @media (min-width: 992px) {
-        position: relative;
         & > img {
             width: 52px;
         }

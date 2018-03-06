@@ -4,22 +4,35 @@ import styled from 'styled-components';
 const HamburgerIconWrapper = styled.div`
     cursor: pointer;
     display: inline-block;
-    margin: 5px 15px 0 15px;
     position: relative;
+
+    @media (min-width: 769px) {
+        margin: 5px 15px 0 15px;
+    }
+    @media (max-width: 768px) {
+        margin: 22px;
+    }
 
     span {
         background: #cdcdcd;
         border-radius: 3px;
         display: block;
         height: 1px;
-        margin-bottom: 5px;
         position: relative;
         transform-origin: 4px 0px;
         transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
                     background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
                     opacity 0.55s ease;
-        width: 15px;
         z-index: 1;
+
+        @media (min-width: 769px) {
+            margin-bottom: 5px;
+            width: 15px;
+        }
+        @media (max-width: 768px) {
+            margin-bottom: 10px;
+            width: 40px;
+        }
     }
 `;
 
