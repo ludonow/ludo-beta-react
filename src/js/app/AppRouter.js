@@ -24,7 +24,7 @@ import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystande
 import Playground from '../playground/Playground';
 import Profile from '../profile/Profile';
 import Search from '../Search/index';
-import SignUp from './SignUp';
+import SignUp from '../SignUp/index';
 import Template from '../create/Template';
 import Tutorial from '../Tutorial/index.js';
 import LoadingPage from '../LoadingPage';
