@@ -11,7 +11,8 @@ import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
 import Bind from '../Bind/index';
 import Create from '../create/Create';
-import EmailConfirm from './EmailConfirm';
+import EmailConfirm from '../EmailConfirm/index';
+import EmailConfirmAlert from '../EmailConfirm/alert';
 import Friend from '../friend/Friend';
 import Invite from '../create/Invite';
 import Login from '../Login/index.js';
@@ -80,7 +81,7 @@ const isLoggedIn = (nextState, replace, callback) => {
             if (unVerify === true || typeof(unVerify) === "undefined") {
                 if (window.confirm('你的 email 尚未驗證，請問是否前往 email 驗證頁面？')) {
                     browserHistory.push({
-                        pathname: '/emailConfirm',
+                        pathname: '/email-confirm',
                         state: {
                             email
                         },
@@ -181,7 +182,11 @@ const AppRouter = () => (
                 />
                 <Route
                     component={EmailConfirm}
-                    path="emailConfirm"
+                    path="email-confirm"
+                />
+                <Route
+                    component={EmailConfirmAlert}
+                    path="email-confirm-alert"
                 />
                 <Route
                     component={Friend}
