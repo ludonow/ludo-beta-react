@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
+import { Dialog } from 'material-ui';
 
 export const ButtonListWrapper = styled.div`
     display: flex;
@@ -65,8 +66,17 @@ export const CustomScrollBarCSS = `
 `;
 
 export const StyledAnchor = styled.a`
-    color: white;
+    color: ${props => props.color ? props.color : 'white'};
+    font-family: ${props => props.fontFamily ? props.fontFamily : 'Helvetica'};
     text-decoration: none;
+`;
+
+export const StyledDialog = styled(Dialog)`
+    overflow-y: auto;
+    ${CustomScrollBarCSS}
+    h3 + div {
+        max-height: 400px !important;
+    }
 `;
 
 export const StyledLink = styled(Link)`

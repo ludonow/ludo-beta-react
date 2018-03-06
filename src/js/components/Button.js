@@ -63,6 +63,7 @@ const Button = ({
     onClick,
     padding,
     textColor,
+    type,
     width
 }) => (
     <StyledButton
@@ -82,6 +83,7 @@ const Button = ({
         onClick={onClick}
         padding={padding}
         textColor={textColor}
+        type={type ? type : 'button'}
         width={width}
     >
         {label}

@@ -14,7 +14,8 @@ import Create from '../create/Create';
 import EmailConfirm from './EmailConfirm';
 import Friend from '../friend/Friend';
 import Invite from '../create/Invite';
-import LogIn from './LogIn.js';
+import Login from '../Login/index.js';
+import LoginRecommend from '../LoginRecommend/index.js';
 import LudoEdit from '../ludo-edit/LudoEdit';
 import MobileReportForm from '../active/mobile-report-form/MobileReportForm';
 import MyCardList from '../MyCardList/index';
@@ -209,7 +210,7 @@ const AppRouter = () => (
                     path="redirectTo/:url"
                 />
                 <Route
-                    component={LogIn}
+                    component={Login}
                     path="login"
                 />
                 <Route
@@ -265,6 +266,10 @@ const AppRouter = () => (
                     component={MyCardList}
                     onEnter={isLoggedIn}
                     path="myCardList"
+                />
+                <Route
+                    component={LoginRecommend}
+                    path="login-recommend"
                 />
                 <Route
                     component={Playground}

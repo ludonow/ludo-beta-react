@@ -22,6 +22,7 @@ class FormsyHOCInput extends React.Component {
         return (
             <div className={className}>
                 <input
+                    maxLength={this.props.maxLength ? this.props.maxLength : 50}
                     onChange={this.changeValue}
                     placeholder={this.props.placeholder || ''}
                     type={this.props.type || ''}

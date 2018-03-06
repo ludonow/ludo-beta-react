@@ -63,7 +63,7 @@ export default class SignUp extends Component {
                     email: data.email
                 };
                 window.location.reload();
-                browserHistory.push('/cardList');
+                browserHistory.push('/bind');
             } else {
                 this.setState({
                     errorMessageFromServer: response.data.message[0],
