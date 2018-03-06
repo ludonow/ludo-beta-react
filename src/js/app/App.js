@@ -521,6 +521,7 @@ export default class App extends React.Component {
                 <MediaQuery minWidth={768}>
                     <DesktopNavbar
                         currentUserId={currentUserId}
+                        chatFuelId={userBasicData.chatfuel_id}
                         getFilteredLudoList={this.getFilteredLudoList}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
@@ -530,6 +531,7 @@ export default class App extends React.Component {
                 <MediaQuery maxWidth={768}>
                     <MobileNavbar
                         currentUserId={currentUserId}
+                        chatFuelId={userBasicData.chatfuel_id}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
                         isNavbarVisible={isNavbarVisible}

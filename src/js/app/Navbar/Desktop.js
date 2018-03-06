@@ -2,25 +2,19 @@ import React from "react";
 import { Link } from "react-router";
 import styled from 'styled-components';
 
-import { baseUrl } from '../../baseurl-config';
 import HeaderLeft from '../Header/HeaderLeft';
+import { baseUrl } from '../../baseurl-config';
+import {
+    StyledAnchor,
+    StyledLink,
+} from '../../baseStyle';
+import {
+    cardSystemLinkInfoList,
+    getMyCardListLinkInfoList,
+    getSettingLinkInfoList,
+} from './common';
 
 const ProfileLabel = "個人數據";
-
-const cardSystemLinkInfoList = [
-    {
-        text: "遊戲廣場",
-        url: "cardList"
-    },
-    {
-        text: "看看範例",
-        url: "cardList?stage=0"
-    },
-    {
-        text: "開啟新局",
-        url: "create"
-    }
-];
 
 const myCardListLinkInfoSampleList = [
     {
@@ -38,22 +32,6 @@ const myCardListLinkInfoSampleList = [
     {
         text: "我的模板",
         url: "myCardList?stage=0&user_id="
-    }
-];
-
-const settingLinkInfoList = [
-    // {
-    //     text: "帳號設定",
-    //     url: "https://www.facebook.com/messages/t/ludonow"
-    // },
-    {
-        text: "使用教學",
-        url: "tutorial"
-    },
-    {
-        isExternal: true,
-        text: "提供意見",
-        url: "https://m.me/ludonow?ref=%E5%B0%88%E4%BA%BA%E6%9C%8D%E5%8B%99"
     }
 ];
 
@@ -105,16 +83,6 @@ const NavbarWrapper = styled.div`
     width: 10vw;
 `;
 
-const StyledAnchor = styled.a`
-    color: white;
-    text-decoration: none;
-`;
-
-const StyledLink = styled(Link)`
-    color: white;
-    text-decoration: none;
-`;
-
 // child components
 const LinkList = ({
     handleNavbarClose,
@@ -153,16 +121,12 @@ const LinkList = ({
 );
 
 const Desktop =({
+    chatFuelId,
     currentUserId,
     handleNavbarClose,
     handleNavbarToggle,
     isNavbarVisible
 }) => {
-    const myCardListLinkInfoList = myCardListLinkInfoSampleList.map(info => ({
-        ...info,
-        url: info.url + currentUserId,
-    }));
-
     return (
         <Modal isNavbarVisible={isNavbarVisible}>
             <NavbarWrapper>
@@ -177,11 +141,11 @@ const Desktop =({
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     label={ProfileLabel}
-                    linkInfoList={myCardListLinkInfoList}
+                    linkInfoList={getMyCardListLinkInfoList(myCardListLinkInfoSampleList, currentUserId)}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
-                    linkInfoList={settingLinkInfoList}
+                    linkInfoList={getSettingLinkInfoList(chatFuelId)}
                 />
             </NavbarWrapper>
         </Modal>
