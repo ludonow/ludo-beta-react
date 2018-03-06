@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
-import Dialog from 'material-ui/Dialog';
 
-import { StyledButton } from '../components/Button';
-import { StyledAnchor, StyledLink } from '../baseStyle';
+import Button, { StyledButton } from '../components/Button';
+import {
+    StyledAnchor,
+    StyledDialog,
+    StyledLink,
+} from '../baseStyle';
 import StepperCloseIcon from '../components/StepperCloseIcon';
 import rightArrowIcon from '../../images/login/right-arrow.png';
 
@@ -16,8 +19,26 @@ const ButtonWrapper = styled.div`
 const Hint = styled.div`
     color: #9D9D9D;
     line-height: 1.3rem;
-    margin-top: 40px;
     margin-bottom: 50px;
+
+    @media (max-width: 768px) {
+        margin-top: 40px;
+    }
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
+`;
+
+const Paragraph = styled.div`
+    display: flex;
+    justify-content: center;
+
+    @media (min-width: 769px) {
+        flex-direction: row;
+    }
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 `;
 
 const StyledImg = styled.img`
@@ -25,19 +46,28 @@ const StyledImg = styled.img`
 `;
 
 // override material ui
-const bodyStyle = {
+const desktopBodyStyle = {
     fontFamily: 'Helvetica',
-    paddingBottom: '80px',
+    padding: '30px 0 80px 0',
+};
+const mobileBodyStyle = {
+    ...desktopBodyStyle,
+    padding: '0 0 20px 0',
 };
 
 const dialogStyle = {
     textAlign: 'center',
 };
 
-const titleStyle = {
+const desktopTitleStyle = {
     color: '#919191',
     fontFamily: 'Exo, Microsoft JhengHei',
     fontWeight: 'bold',
+};
+const mobileTitleStyle = {
+    ...desktopTitleStyle,
+    fontSize: '18px',
+    padding: '70px 0 10px 0',
 };
 
 class LoginRecommend extends Component {
@@ -66,56 +96,66 @@ class LoginRecommend extends Component {
 
     render() {
         const {
-            open
+            open,
         } = this.state;
 
+        const width = window.innerWidth || document.body.clientWidth;
+
+        const bodyStyle = (width <= 768) ? mobileBodyStyle : desktopBodyStyle;
+        const titleStyle = (width <= 768) ? mobileTitleStyle : desktopTitleStyle;
+
         return (
-            <div>
-                <Dialog
-                    bodyStyle={bodyStyle}
-                    onRequestClose={this.handleDialogClose}
-                    open={open}
-                    style={dialogStyle}
-                    title="享受更好的平台體驗！"
-                    titleStyle={titleStyle}
-                >
-                    <StepperCloseIcon handleCloseClick={this.handleDialogClose} />
-                    <Hint>
+            <StyledDialog
+                bodyStyle={bodyStyle}
+                onRequestClose={this.handleDialogClose}
+                open={open}
+                style={dialogStyle}
+                title="享受更好的平台體驗！"
+                titleStyle={titleStyle}
+            >
+                <StepperCloseIcon
+                    handleCloseClick={this.handleDialogClose}
+                    padding="15px"
+                />
+                <Hint>
+                    <Paragraph>
                         <div>
-                            使用 Facebook 登入，綁定 Messneger
+                            使用 Facebook 登入，
                         </div>
                         <div>
-                            享受更好的平台體驗！
+                            綁定 Messneger
                         </div>
-                    </Hint>
-                    <ButtonWrapper>
-                        <StyledButton
-                            backgroundColor="#3A5691"
-                            fontSize="16px"
-                            padding="8px 5px 8px 30px"
-                            width="180px"
-                        >
-                            <StyledAnchor href="https://api.ludonow.com/auth/facebook">
-                                facebook登入
-                                <StyledImg src={rightArrowIcon} />
-                            </StyledAnchor>
-                        </StyledButton>
-                    </ButtonWrapper>
-                    <ButtonWrapper>
-                        <StyledButton
+                    </Paragraph>
+                    <div>
+                        享受更好的平台體驗！
+                    </div>
+                </Hint>
+                <ButtonWrapper>
+                    <StyledButton
+                        backgroundColor="#3A5691"
+                        fontSize="16px"
+                        padding="8px 5px 8px 30px"
+                        width="180px"
+                    >
+                        <StyledAnchor href="https://api.ludonow.com/auth/facebook">
+                            facebook登入
+                            <StyledImg src={rightArrowIcon} />
+                        </StyledAnchor>
+                    </StyledButton>
+                </ButtonWrapper>
+                <ButtonWrapper>
+                    <StyledLink to="/signup">
+                        <Button
                             backgroundColor="#B2B2B2"
                             fontSize="16px"
                             onClick={this.handleButtonClick}
+                            label="繼續註冊"
                             padding="8px"
                             width="180px"
-                        >
-                            <StyledLink href="/signup">
-                                繼續註冊
-                            </StyledLink>
-                        </StyledButton>
-                    </ButtonWrapper>
-                </Dialog>
-            </div>
+                        />
+                    </StyledLink>
+                </ButtonWrapper>
+            </StyledDialog>
         );
     }
 }

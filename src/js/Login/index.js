@@ -324,17 +324,16 @@ class Login extends Component {
                                 type="submit"
                                 width={buttonWidth}
                             />
-                            <StyledButton
-                                backgroundColor="#005074"
-                                fontSize="12px"
-                                margin="0"
-                                padding="8px"
-                                width={buttonWidth}
-                            >
-                                <StyledLink to={`${baseUrl}/login-recommend`}>
-                                    註冊
-                                </StyledLink>
-                            </StyledButton>
+                            <StyledLink to={`${baseUrl}/login-recommend`}>
+                                <Button
+                                    backgroundColor="#005074"
+                                    fontSize="12px"
+                                    label="註冊"
+                                    margin="0"
+                                    padding="8px"
+                                    width={buttonWidth}
+                                />
+                            </StyledLink>
                         </ButtonList>
                         <ErrorMessage>
                             {errorMessageFromServer}

@@ -81,35 +81,33 @@ class Bind extends Component {
         } = this.state;
 
         return (
-            <div>
-                <Dialog
-                    bodyStyle={bodyStyle}
-                    onRequestClose={this.handleCloseClick}
-                    open={open}
-                    style={dialogStyle}
-                    title="享受更好的平台體驗！"
-                    titleStyle={titleStyle}
+            <Dialog
+                bodyStyle={bodyStyle}
+                onRequestClose={this.handleCloseClick}
+                open={open}
+                style={dialogStyle}
+                title="享受更好的平台體驗！"
+                titleStyle={titleStyle}
+            >
+                <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
+                <Hint>
+                    點擊以下按鈕連結 Messenger
+                </Hint>
+                <StyledButton
+                    backgroundColor="#FFC62B"
+                    fontSize="16px"
+                    onClick={this.handleButtonClick}
+                    padding="8px"
+                    width="130px"
                 >
-                    <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
-                    <Hint>
-                        點擊以下按鈕連結 Messenger
-                    </Hint>
-                    <StyledButton
-                        backgroundColor="#FFC62B"
-                        fontSize="16px"
-                        onClick={this.handleButtonClick}
-                        padding="8px"
-                        width="130px"
-                    >
-                        <StyledAnchor href="https://m.me/ludonow?ref=link">
-                            確認綁定帳號
-                        </StyledAnchor>
-                    </StyledButton>
-                    <Description>
-                        LUDO 團隊‧創新開發了由 Messenger AI 導向的新功能，致力於優化使用者跨裝置便利性，歡迎您隨時反應使用上的經驗，我們會儘速優化及更新！
-                    </Description>
-                </Dialog>
-            </div>
+                    <StyledAnchor href="https://m.me/ludonow?ref=link">
+                        確認綁定帳號
+                    </StyledAnchor>
+                </StyledButton>
+                <Description>
+                    LUDO 團隊‧創新開發了由 Messenger AI 導向的新功能，致力於優化使用者跨裝置便利性，歡迎您隨時反應使用上的經驗，我們會儘速優化及更新！
+                </Description>
+            </Dialog>
         );
     }
 }
