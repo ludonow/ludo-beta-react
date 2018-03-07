@@ -28,6 +28,7 @@ import Search from '../Search/index';
 import SignUp from '../SignUp/index';
 import Template from '../create/Template';
 import Tutorial from '../Tutorial/index.js';
+import TutorialSlideShow from '../Tutorial/SlideShow';
 import LoadingPage from '../LoadingPage';
 /*
     auth        statement：
@@ -300,6 +301,10 @@ const AppRouter = () => (
                 <Route
                     component={Tutorial}
                     path="tutorial"
+                />
+                <Route
+                    component={TutorialSlideShow}
+                    path="tutorial/slide-show"
                 />
             </Route>
         </Router>
