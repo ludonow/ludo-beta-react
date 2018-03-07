@@ -106,9 +106,10 @@ const ToggleButtonWrapper = styled.div`
 
 // child component
 const DoubleCircleIcon = ({
+    handleClick,
     userBasicData,
 }) => (
-    <OutSideCircle>
+    <OutSideCircle onClick={handleClick}>
         {
             userBasicData.photo ?
                 <img src={userBasicData.photo} />
@@ -150,14 +151,36 @@ const LinkList = ({
     </LinkListWrapper>
 );
 
-const ToggleButton = ({
-    isNavbarVisible,
-    userBasicData,
-}) => (
-    <ToggleButtonWrapper>
-        <DoubleCircleIcon userBasicData={userBasicData} />
-    </ToggleButtonWrapper>
-);
+class ToggleButton extends Component {
+    constructor() {
+        super();
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(event) {
+        event.preventDefault();
+        const {
+            handleNavbarToggle,
+            isNavbarVisible
+        } = this.props;
+        handleNavbarToggle(!isNavbarVisible);
+    }
+
+    render() {
+        const {
+            userBasicData,
+        } = this.props;
+
+        return (
+            <ToggleButtonWrapper>
+                <DoubleCircleIcon
+                    handleClick={this.handleClick}
+                    userBasicData={userBasicData}
+                />
+            </ToggleButtonWrapper>
+        );
+    }
+}
 
 const Mobile = ({
     chatFuelId,
@@ -172,10 +195,14 @@ const Mobile = ({
     return (
         <MobileNavbarWrapper>
             <ToggleButton
+                handleNavbarToggle={handleNavbarToggle}
                 isNavbarVisible={isNavbarVisible}
                 userBasicData={userBasicData}
             />
-            <ButtonListWrapper isNavbarVisible={isNavbarVisible}>
+            <ButtonListWrapper
+                isNavbarVisible={isNavbarVisible}
+                onClick={handleNavbarClose}
+            >
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={cardSystemLinkInfoList}
