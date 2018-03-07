@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
 
+import decorators from './decorators';
 import desktopImage1 from '../../images/tutorial/d-1.png';
 import desktopImage2 from '../../images/tutorial/d-2.png';
 import desktopImage3 from '../../images/tutorial/d-3.png';
@@ -11,7 +12,6 @@ import desktopImage6 from '../../images/tutorial/d-6.png';
 import desktopImage7 from '../../images/tutorial/d-7.png';
 import desktopImage8 from '../../images/tutorial/d-8.png';
 import desktopImage9 from '../../images/tutorial/d-9.png';
-
 import mobileImage1 from '../../images/tutorial/m-1.png';
 import mobileImage2 from '../../images/tutorial/m-2.png';
 import mobileImage3 from '../../images/tutorial/m-3.png';
@@ -52,7 +52,7 @@ const ImageWrapper = styled.div`
     justify-content: center;
 
     img {
-        width: 100%;
+        width: 99%;
     }
 `;
 
@@ -84,7 +84,7 @@ const Tutorial = () => {
 
     return (
         <Wrapper>
-            <Carousel>
+            <Carousel decorators={decorators}>
                 {
                     imageList.map((image, index) => (
                         <ImageWrapper key={`tutorial-image-${index}`} >
