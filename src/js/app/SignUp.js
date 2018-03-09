@@ -6,7 +6,6 @@ import md5 from 'blueimp-md5';
 
 import { baseUrl } from '../baseurl-config';
 import FormsyHOCInput from './FormsyHOCInput.js';
-import PasswordField from './PasswordField.js';
 
 import logoImgPath from '../../images/Ludo_logo.png';
 

@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const parts = require('./libs/parts');
 const path = require('path');
 const pkg = require('./package.json');
-const validate = require('webpack-validator');
 const webpack = require('webpack'); 
 
 const PATHS = {
@@ -23,41 +22,67 @@ const common = {
         vendor: Object.keys(pkg.dependencies)
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js?$/,
-                loaders: [ 'react-hot', 'babel?presets[]=es2015,presets[]=react,presets[]=stage-0' ],
+                loader: 'babel-loader',
+                options: {
+                    presets: [
+                        'es2015',
+                        'react',
+                        'stage-0'
+                    ],
+                    plugins: ['react-hot-loader/babel']
+                },
                 include: PATHS.src,
                 exclude: /node_modules/
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                loader: 'url-loader?limit=100000',
+                loader: 'url-loader',
+                options: {
+                    limit: 100000
+                },
                 include: PATHS.src
             },
             { 
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, 
-                loader: "file",
+                loader: 'file-loader',
                 include: PATHS.src
             },
             { 
                 test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, 
-                loader: "url-loader?mimetype=application/font-woff",
+                loader: 'url-loader',
+                options: {
+                    mimetype: 'application/font-woff'
+                },
                 include: PATHS.src
             },
             { 
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, 
-                loader: "url?limit=10000&mimetype=application/octet-stream",
+                loader: 'url-loader',
+                options: {
+                    limit: 100000,
+                    mimetype: 'application/octet-stream'
+                },
                 include: PATHS.src
             },
             { 
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
-                loader: "url?limit=10000&mimetype=image/svg+xml",
+                loader: 'url-loader',
+                options: {
+                    limit: 100000,
+                    mimetype: 'image/svg+xml'
+                },
                 include: PATHS.src
             },
             {
                 test: /masonry|imagesloaded|fizzy\-ui\-utils|desandro\-|outlayer|get\-size|doc\-ready|eventie|eventemitter/,
-                loader: 'imports?define=>false&this=>window',
+                loader: 'imports-loader',
+                options: {
+                    define: false,
+                    this: 'window'
+                },
                 include: PATHS.src
             }
         ]
@@ -69,7 +94,7 @@ const common = {
     },
     plugins: [
         new HtmlWebpackPlugin({ title: 'Ludo' }),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 };
 
@@ -100,15 +125,13 @@ switch(process.env.npm_lifecycle_event) {
                 name: 'vendor'
             }),
             parts.minify(),
-            parts.extractCSS(PATHS.mainscss),
-            parts.purifyCSS([PATHS.mainscss])
+            parts.extractCSS(PATHS.mainscss)
         );
     break;
     default:
         config = merge(
             common,
             {
-                // devtool: 'source-map'
                 devtool: 'eval-source-map'
             },
             parts.copyImages(PATHS.images, PATHS.imagesbuild),
@@ -121,4 +144,4 @@ switch(process.env.npm_lifecycle_event) {
         );
 }
 
-module.exports = validate(config);
+module.exports = config;

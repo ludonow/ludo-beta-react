@@ -8,25 +8,6 @@ $detail_equal_to_columns_of_grid_item: 3;
 $grid-item--ludo-detail-information_width: $grid-item_width * $detail_equal_to_columns_of_grid_item + $grid-item_padding * 2 * ($detail_equal_to_columns_of_grid_item - 1);
 $grid-item--profile_width: 520px;
 $grid-item--friend_width: 170px;
-// color
-$card_border-color: hsla(0, 0%, 0%, 0.5);
-$green_opened: #009944;
-$red_active: #e60012;
-$lifestyle-color: rgba(83, 206, 244, 1);
-$read-color: #535cf9;
-$exercise-color: #81ea9f;
-$study-color: #ff6d55;
-$new_skill-color: #f2f297;
-$unmentionables-color: rgba(127, 41, 125, 0.8);
-$others-color: #f95ab1;
-$lifestyle-triangle-color: #dcf5fc;
-$read-triangle-color: #dcdefd;
-$exercise-triangle-color: #e5faeb;
-$study-triangle-color: #ffe1dd;
-$new_skill-triangle-color: #fcfcea;
-$unmentionables-triangle-color: #e5d4e5;
-$others-triangle-color: #fddeef;
-$new_skill-text-color: #fdcaad;
 
 .grid {
     @extend %relative;
@@ -75,7 +56,7 @@ $new_skill-text-color: #fdcaad;
     @extend %clickable;
     border-color: rgba(0,0,0,0.8);
     border-style: solid;
-    border-width: 5px; //5px;
+    border-width: 5px;
     background-color: rgba(255, 255, 255, 1);
 }
 
@@ -96,30 +77,6 @@ $new_skill-text-color: #fdcaad;
     -moz-perspective: 1000px;
     -o-perspective: 1000px;
     overflow: hidden;
-    .card-top__stage {
-        align-self: flex-end;
-        margin-left: auto;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 30px 30px 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
-
-    .card-top__stage--0 {
-        border-color: transparent transparent transparent transparent;
-    }
-    .card-top__stage--1 {
-        border-color: transparent $green_opened transparent transparent;
-    }
-    .card-top__stage--2 {
-        border-color: transparent $red_active transparent transparent;
-    }
-    .card-top__stage--3 {
-        border-color: transparent gray transparent transparent;
-    }
 
     .card-front-info {
         @extend %absolute;
@@ -170,7 +127,7 @@ $new_skill-text-color: #fdcaad;
                 margin: auto;
                 font-size: 12px;
                 color: white;
-                line-height: 25px; //When line-height equals to div, it will be centered.
+                line-height: 25px;
             }
         }
     }
@@ -225,19 +182,6 @@ $new_skill-text-color: #fdcaad;
           padding-right: 20px;
           padding-left: 20px;
           margin-bottom:20px;
-          /* scroll bar */
-          // overflow-x: hidden;
-          // overflow-y: auto;
-          // /* scroll bar */
-          // &::-webkit-scrollbar {
-          //     width: 4px;
-          //     height: 4px;
-          // }
-          // /* Handle */
-          // &::-webkit-scrollbar-thumb {
-          //     background-color: $g_background_gray;
-          //     -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
-          // } */
       }
     }
     .card-button_circle {
@@ -247,44 +191,15 @@ $new_skill-text-color: #fdcaad;
         box-shadow: 0 0 0 2px black;
         margin-top: 10px;
         margin-bottom: 10px;
-        color: black; /*word is black*/
+        color: black;
         text-decoration: none;
 
         &:hover {
-            @include circle(40px, gray); //顏色要再改
+            @include circle(40px, gray);
             @include transition-duration(0.25s);
         }
-
     }
-
 }
-/*        .card-bottom {
-            @extend %flex;
-            align-items: center;
-        }  */
-/*      .card-bottom__triangle {
-                align-self: flex-end;
-                margin-left: auto;
-                width: 0;
-                height: 0;
-                border-left: 40px solid;
-                border-bottom: 40px solid;
-            }
-            .card-bottom__text {
-                @extend %clickable;
-                @extend %absolute;
-                right: 5px;
-                bottom: 5px;
-                color: red;
-            }*/
-// .card-back--form-list {
-//     width: 210px;
-// }
-/*      .card-bottom__category-icon {
-            justify-content: flex-start;
-            height: 30px;
-            padding-left: 10px;
-        } */
 
 /* card flip animation */
 .card-flip {
@@ -301,118 +216,25 @@ $new_skill-text-color: #fdcaad;
   opacity: 0;
 
 }
-
 .card-flip .card-back {
     @include backface-visibility(visible);
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
 }
-
 .card-flip .card-top__stage {
     opacity: 0;
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
-  }
-
-.card-flip .card-marble__number{
+}
+.card-flip .card-marble__number {
   opacity:0;
   @include transition-duration(0.3s);
   @include transition-timing-function(linear);
 }
-.card-flip .card-views{
+.card-flip .card-views {
   opacity: 0;
 }
-.card-flip .card-front-info{
+.card-flip .card-front-info {
   opacity: 0;
   visibility: hidden;
 }
-
-/* card background color by different category */
-.lifestyle {
-    background-color: $lifestyle-color;
-}
-
-.read {
-    background-color: $read-color;
-    color:white;
-}
-
-.exercise {
-    background-color: $exercise-color;
-}
-
-.study {
-    background-color: $study-color;
-    color:white;
-}
-
-.new_skill {
-  //  color: white;
-    background-color: $new_skill-color;
-}
-
-.unmentionables {
-    background-color: $unmentionables-color;
-    color:white;
-}
-
-.others {
-    color: white;
-    background-color: $others-color;
-}
-/* card back bottom traiangle color by different category */
-/*
-.card-bottom__triangle.lifestyle {
-    border-color: transparent transparent $lifestyle-triangle-color transparent;
-}
-.card-bottom__triangle.read {
-    border-color: transparent transparent  $read-triangle-color transparent;
-}
-.card-bottom__triangle.exercise {
-    border-color: transparent transparent  $exercise-triangle-color transparent;
-}
-.card-bottom__triangle.study {
-    border-color: transparent transparent  $study-triangle-color transparent;
-}
-.card-bottom__triangle.new_skill {
-    border-color: transparent transparent  $new_skill-triangle-color transparent;
-}
-.card-bottom__triangle.unmentionables {
-    border-color: transparent transparent  $unmentionables-triangle-color transparent;
-}
-.card-bottom__triangle.others {
-    border-color: transparent transparent  $others-triangle-color transparent;
-}
-*/
-/* card back bottom text color by different category */
-/*
-.card-bottom__text.lifestyle {
-    color: $lifestyle-color;
-    background-color: $lifestyle-triangle-color;
-}
-.card-bottom__text.read {
-    color: $read-color;
-    background-color: $read-triangle-color;
-}
-.card-bottom__text.exercise {
-    color: $exercise-color;
-    background-color: $exercise-triangle-color;
-}
-.card-bottom__text.study {
-    color: $study-color;
-    background-color: $study-triangle-color;
-}
-.card-bottom__text.new_skill {
-    color: $new_skill-text-color;
-    background-color: $new_skill-triangle-color;
-}
-.card-bottom__text.unmentionables {
-    color: $unmentionables-color;
-    background-color: $unmentionables-triangle-color;
-}
-.card-bottom__text.others {
-    color: $others-color;
-    background-color: $others-triangle-color;
-}
-
-*/

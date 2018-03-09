@@ -1,7 +1,8 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const PurifyCSSPlugin = require('purifycss-webpack-plugin');
+const PurifyCSSPlugin = require('purifycss-webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
 exports.clean = function(path) {
@@ -15,30 +16,9 @@ exports.clean = function(path) {
     };
 }
 
-exports.copyJSON = function(srcpath, destpath) {
-    return {
-        context: srcpath,
-        devServer: {
-            // This is required for webpack-dev-server if using a version <3.0.0. 
-            // The path should be an absolute path to your build destination. 
-            outputPath: destpath + '/'
-        },
-        plugins: [
-            new CopyWebpackPlugin([
-                { from: srcpath, to: destpath }
-            ])
-        ]
-    };
-}
-
 exports.copyImages = function(srcpath, destpath) {
     return {
         context: srcpath,
-        devServer: {
-            // This is required for webpack-dev-server if using a version <3.0.0. 
-            // The path should be an absolute path to your build destination. 
-            outputPath: destpath + '/'
-        },
         plugins: [
             new CopyWebpackPlugin([
                 { from: srcpath, to: destpath }
@@ -92,39 +72,44 @@ exports.extractBundle = function(options) {
         plugins: [
             // Extract bundle and manifest files. Manifest is needed for reliable caching.
             new webpack.optimize.CommonsChunkPlugin({
-                names: [options.name, 'runtime']
+                names: [
+                    options.name,
+                    'runtime'
+                ]
             })
         ]
     };
 }
 
+// Extract CSS during build
 exports.extractCSS = function(paths) {
     return {
         module: {
-            loaders: [
-                // Extract CSS during build
+            rules: [
                 {
                     test: /\.css$/,
-                    loader: ExtractTextPlugin.extract(
-                        'style',
-                        'css'
-                    ),
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: 'css-loader'
+                    }),
                     include: paths
                 },
                 {
                     test: /\.scss$/,
-                    loader: ExtractTextPlugin.extract(
-                        'style',
-                        'css!sass'
-                    ),
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: ['css-loader', 'sass-loader']
+                    }),
                     include: paths
                 }
             ]
         },
         plugins: [
             // Output extracted CSS to a file
-            new webpack.optimize.CommonsChunkPlugin("commons", "commons.js"),
-            new ExtractTextPlugin('stylesheets/[name].[chunkhash].css', {allChunks: false})
+            new ExtractTextPlugin({
+                filename: 'stylesheets/[name].[chunkhash].css',
+                allChunks: true
+            })
         ]
     };
 }
@@ -132,7 +117,7 @@ exports.extractCSS = function(paths) {
 exports.minify = function() {
     return {
         plugins: [
-            new webpack.optimize.UglifyJsPlugin({
+            new UglifyJsPlugin({
                 // Don't beautify output (enable for neater output)
                 beautify: false,
 
@@ -141,10 +126,9 @@ exports.minify = function() {
 
                 // Compression specific options
                 compress: {
-                    warnings: false,
-
                     // Drop `console` statements
-                    drop_console: true
+                    drop_console: true,
+                    warnings: false
                 },
 
                 // Mangling specific options
@@ -167,7 +151,6 @@ exports.purifyCSS = function(paths) {
     return {
         plugins: [
             new PurifyCSSPlugin({
-                basePath: process.cwd(),
                 // `paths` is used to point PurifyCSS to files not visible to Webpack. 
                 // You can pass glob patterns to it.
                 paths: paths
@@ -190,10 +173,13 @@ exports.setFreeVariable = function(key, value) {
 exports.setupCSS = function(paths) {
     return {
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.css$/,
-                    loaders: ['style', 'css'],
+                    use: [
+                        'style-loader',
+                        'css-loader'
+                    ],
                     include: paths
                 }
             ]
@@ -204,10 +190,14 @@ exports.setupCSS = function(paths) {
 exports.setupSCSS = function(paths) {
     return {
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.scss$/,
-                    loaders: ["style", "css", "sass"],
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        'sass-loader'
+                    ],
                     include: paths
                 }
             ]

@@ -7,7 +7,6 @@ import md5 from 'blueimp-md5';
 import axios from '../axios-config';
 import Button, { StyledButton } from '../components/Button';
 import { baseUrl } from '../baseurl-config';
-import PasswordField from '../app/PasswordField.js';
 import FormsyHOCInput from '../app/FormsyHOCInput';
 import StepperCloseIcon from '../components/StepperCloseIcon';
 import {
