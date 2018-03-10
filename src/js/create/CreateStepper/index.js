@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import styled from 'styled-components';
+import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../../axios-config';
@@ -10,7 +11,10 @@ import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
 import { CustomScrollBarCSS } from '../../baseStyle';
 
+promiseFinally.shim();
+
 const initialState = {
+    contentType: '',
     images: [],
     isAtTemplatePage: false,
     isDiscardAlertOpen: false,
@@ -25,7 +29,6 @@ const initialState = {
         category_id: 1,
         checkpoint: [3],
         duration: 3,
-        form: 'text',
         image_location: '',
         interval: 1,
         introduction: '',
@@ -41,8 +44,11 @@ const initialState = {
     resizedWidth: 250,
 };
 
+const stepOfPreview = 4;
+
 const titles = [
     '標題與回報間隔',
+    '卡片形式選擇',
     '卡片內容簡介',
     '加分回報時段',
     '預覽',
@@ -80,6 +86,7 @@ class CreateStepper extends Component {
     constructor(props) {
         super(props);
         this.state = initialState;
+        this.getContentTypeByFormData = this.getContentTypeByFormData.bind(this);
         this.getTemplateData = this.getTemplateData.bind(this);
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleCloseClick = this.handleCloseClick.bind(this);
@@ -90,7 +97,7 @@ class CreateStepper extends Component {
         this.handleImageResize = this.handleImageResize.bind(this);
         this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleCardSubmit = this.handleCardSubmit.bind(this);
-        this.handleFormSelect = this.handleFormSelect.bind(this);
+        this.handleContentTypeSelect = this.handleContentTypeSelect.bind(this);
         this.handlePeriodChange = this.handlePeriodChange.bind(this);
         this.handleStepChange = this.handleStepChange.bind(this);
         this.handleStepNext = this.handleStepNext.bind(this);
@@ -103,12 +110,23 @@ class CreateStepper extends Component {
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
+        this.isUpdatingImage = this.isUpdatingImage.bind(this);
         this.setImageLocation = this.setImageLocation.bind(this);
     }
 
     componentDidMount() {
         if (!this.state.isAtTemplatePage && this.props.templateId) {
             this.getTemplateData(this.props.templateId);
+        }
+    }
+
+    getContentTypeByFormData(ludoCreateForm) {
+        if (ludoCreateForm.video) {
+            return 'video';
+        } else if (ludoCreateForm.image_location) {
+            return 'image';
+        } else {
+            return 'text';
         }
     }
 
@@ -127,30 +145,16 @@ class CreateStepper extends Component {
             */
             if (response.data.status === '200') {
                 const isMyTemplate = response.data.ludo.starter_id === this.props.currentUserId;
-                if (response.data.ludo.form) {
-                    this.setState({
-                        isAtTemplatePage: true,
-                        isCardSubmitButtonDisabled: false,
-                        isMyTemplate,
-                        isNextStepButtonDisabled: false,
-                        isPreviewButtonDisabled: false,
-                        ludoCreateForm: response.data.ludo,
-                        step: 3,
-                    });
-                } else {
-                    this.setState({
-                        isAtTemplatePage: true,
-                        isCardSubmitButtonDisabled: false,
-                        isMyTemplate,
-                        isNextStepButtonDisabled: false,
-                        isPreviewButtonDisabled: false,
-                        ludoCreateForm: {
-                            ...response.data.ludo,
-                            form: 'text',
-                        },
-                        step: 3,
-                    });
-                }
+                this.setState({
+                    contentType: this.getContentTypeByFormData(response.data.ludo),
+                    isAtTemplatePage: true,
+                    isCardSubmitButtonDisabled: false,
+                    isMyTemplate,
+                    isNextStepButtonDisabled: false,
+                    isPreviewButtonDisabled: false,
+                    ludoCreateForm: response.data.ludo,
+                    step: stepOfPreview,
+                });
             } else {
                 if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
@@ -172,10 +176,11 @@ class CreateStepper extends Component {
 
     handleCardSubmit(event) {
         event.preventDefault();
-        const { ludoCreateForm } = this.state;
         this.setState({
-            isCardSubmitButtonDisabled: true
+            isCardSubmitButtonDisabled: true,
+            isSubmitting: true,
         });
+        const { contentType } = this.state;
         if (!this.props.currentUserId) {
             if (window.confirm('登入後即可發佈卡片！點選「確定」後進入登入頁面。')) {
                 browserHistory.push('/login');
@@ -185,74 +190,178 @@ class CreateStepper extends Component {
                 });
             }
         } else {
+            const {
+                images,
+                ludoCreateForm,
+            } = this.state;
+            const isUpdatingImage = this.isUpdatingImage(contentType, images);
             const cardCreateForm = {
                 ...ludoCreateForm,
-                template_id: this.props.ludoId,
+                template_id: this.props.templateId,
             };
-            axios.post('/apis/ludo', cardCreateForm)
-            .then((response) => {
-                if (response.data.status === '200') {
-                    const { ludo_id } = response.data;
-                    /* get ludo information after create ludo post */
-                    axios.get(`/apis/ludo/${ludo_id}`)
-                    .then((response) => {
-                        /*
-                            response.data.status
-                            200: everything's fine;
-                            400: user's data issue;
-                            401: no login;
-                            403: no authority 
-                        */
-                        if (response.data.status === '200') {
-                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
-                            getUserBasicData();
-                            handleShouldProfileUpdate(true);
-                            browserHistory.push(`/ludo/${ludo_id}`);
-                        } else {
-                            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+            if (isUpdatingImage) {
+                const imagePost = new FormData();
+                imagePost.append('file', images[0]);
+                axios.post('/apis/report-image', imagePost)
+                .then(response => {
+                    if (response.data.status === '200') {
+                        return response.data.location;
+                    } else {
+                        console.error('CreateStepper handleTemplateSubmit response status from server is not OK, which is: ', response);
+                        const errorMessage = 'CreateStepper handleTemplateSubmit response message from server: ' + response.data.message;
+                        throw new Error(errorMessage);
+                    }
+                })
+                .then(imageLocation => {
+                    const cardCreateFormWithUpdatedImage = {
+                        ...cardCreateForm,
+                        image_location: imageLocation,
+                    };
+                    return axios.post('/apis/ludo', cardCreateFormWithUpdatedImage)
+                })
+                .then((response) => {
+                    if (response.data.status === '200') {
+                        const { ludo_id } = response.data;
+                        /* get ludo information after create ludo post */
+                        axios.get(`/apis/ludo/${ludo_id}`)
+                        .then((response) => {
+                            /*
+                                response.data.status
+                                200: everything's fine;
+                                400: user's data issue;
+                                401: no login;
+                                403: no authority 
+                            */
+                            if (response.data.status === '200') {
+                                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                                getUserBasicData();
+                                handleShouldProfileUpdate(true);
+                                browserHistory.push(`/ludo/${ludo_id}`);
+                            } else {
+                                if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                                    window.open("https://www.facebook.com/messages/t/ludonow");
+                                }
+                                this.setState({
+                                    isCardSubmitButtonDisabled: false
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                                 window.open("https://www.facebook.com/messages/t/ludonow");
                             }
                             this.setState({
                                 isCardSubmitButtonDisabled: false
                             });
-                        }
-                    })
-                    .catch((error) => {
-                        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        });
+                    } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                        window.alert('燃料或彈珠數不足: ' + response.data.message);
+                        this.setState({
+                            isCardSubmitButtonDisabled: false
+                        });
+                    } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                        window.alert('有部分欄位為空白');
+                        this.setState({
+                            isCardSubmitButtonDisabled: false
+                        });
+                    } else {
+                        if (window.confirm('發送Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
-                            // console.log(error);
                         }
                         this.setState({
                             isCardSubmitButtonDisabled: false
                         });
-                    });
-                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
-                    window.alert('燃料或彈珠數不足: ' + response.data.message);
-                    this.setState({
-                        isCardSubmitButtonDisabled: false
-                    });
-                } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                    window.alert('有部分欄位為空白');
-                    this.setState({
-                        isCardSubmitButtonDisabled: false
-                    });
-                } else {
-                    if (window.confirm('建立Ludo卡片時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                    }
+                })
+                .catch((error) => {
+                    if (window.confirm('發送Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
                     this.setState({
                         isCardSubmitButtonDisabled: false
                     });
-                }
-            })
-            .catch((error) => {
-                if (window.confirm('建立Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                    window.open("https://www.facebook.com/messages/t/ludonow");
-                }
-                this.setState({
-                    isCardSubmitButtonDisabled: false
+                })
+                .finally(() => {
+                    this.setState({
+                        isSubmitting: false
+                    });
                 });
-            });
+                
+            } else { // not isUpdatingImage
+                const cardCreateFormWithoutImageLocation = {
+                    ...cardCreateForm,
+                    image_location: '',
+                };
+                const createForm = (contentType === 'image') ? cardCreateForm : cardCreateFormWithoutImageLocation;
+                axios.post('/apis/ludo', createForm)
+                .then((response) => {
+                    if (response.data.status === '200') {
+                        const { ludo_id } = response.data;
+                        /* get ludo information after create ludo post */
+                        axios.get(`/apis/ludo/${ludo_id}`)
+                        .then((response) => {
+                            /*
+                                response.data.status
+                                200: everything's fine;
+                                400: user's data issue;
+                                401: no login;
+                                403: no authority 
+                            */
+                            if (response.data.status === '200') {
+                                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                                getUserBasicData();
+                                handleShouldProfileUpdate(true);
+                                browserHistory.push(`/ludo/${ludo_id}`);
+                            } else {
+                                if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                                    window.open("https://www.facebook.com/messages/t/ludonow");
+                                }
+                                this.setState({
+                                    isCardSubmitButtonDisabled: false
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                                window.open("https://www.facebook.com/messages/t/ludonow");
+                            }
+                            this.setState({
+                                isCardSubmitButtonDisabled: false
+                            });
+                        });
+                    } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                        window.alert('燃料或彈珠數不足: ' + response.data.message);
+                        this.setState({
+                            isCardSubmitButtonDisabled: false
+                        });
+                    } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                        window.alert('有部分欄位為空白');
+                        this.setState({
+                            isCardSubmitButtonDisabled: false
+                        });
+                    } else {
+                        if (window.confirm('發送Ludo卡片資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isCardSubmitButtonDisabled: false
+                        });
+                    }
+                })
+                .catch((error) => {
+                    if (window.confirm('發送Ludo卡片資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isCardSubmitButtonDisabled: false
+                    });
+                })
+                .finally(() => {
+                    this.setState({
+                        isSubmitting: false
+                    });
+                });
+            }
         }
     }
 
@@ -286,6 +395,14 @@ class CreateStepper extends Component {
         }
     }
 
+    handleContentTypeSelect(event) {
+        const contentType = event.currentTarget.dataset.payload;
+        this.setState({
+            contentType,
+            step: 2,
+        });
+    }
+
     handleDialogClose() {
         this.setState({
             ...initialState,
@@ -316,19 +433,6 @@ class CreateStepper extends Component {
         );
     }
 
-    handleFormSelect(event) {
-        const form = event.currentTarget.dataset.payload;
-        this.setState(
-            prevState => ({
-                ludoCreateForm: {
-                    ...prevState.ludoCreateForm,
-                    form,
-                },
-                step: 2,
-            })
-        );
-    }
-
     handleImageChange(image) {
         this.setState({
             images: [image],
@@ -346,7 +450,7 @@ class CreateStepper extends Component {
 
     handleIntroductionChange(event) {
         const introduction = event.currentTarget.value;
-        if (!introduction && this.state.ludoCreateForm.form !== 'text') {
+        if (!introduction && this.state.contentType !== 'text') {
             this.setState(
                 prevState => ({
                     isEditing: false,
@@ -356,7 +460,7 @@ class CreateStepper extends Component {
                     }
                 })
             );
-        } else if (introduction && this.state.ludoCreateForm.form !== 'text') {
+        } else if (introduction && this.state.contentType !== 'text') {
             this.setState(
                 prevState => ({
                     isEditing: true,
@@ -366,7 +470,7 @@ class CreateStepper extends Component {
                     }
                 })
             );
-        } else if (introduction && this.state.ludoCreateForm.form === 'text') {
+        } else if (introduction && this.state.contentType === 'text') {
             this.setState(
                 prevState => ({
                     isEditing: true,
@@ -410,7 +514,11 @@ class CreateStepper extends Component {
     }
 
     handleStepNext() {
-        this.handleStepChange(1);
+        if (this.state.contentType && this.state.step === 0) {
+            this.handleStepChange(2);
+        } else {
+            this.handleStepChange(1);
+        }
     }
 
     handleStepPrev() {
@@ -537,77 +645,183 @@ class CreateStepper extends Component {
 
     handleTemplateSubmit(event) {
         event.preventDefault();
-        const { ludoCreateForm } = this.state;
-        const ludoTemplateForm = {
-            ...ludoCreateForm,
-            type: 'blank',
-        };
         this.setState({
+            isSubmitting: true,
             isTemplateSubmitButtonDisabled: true
         });
-        axios.post('/apis/ludo', ludoTemplateForm)
-        .then((response) => {
-            if (response.data.status === '200') {
-                const { ludo_id } = response.data;
-                /* get ludo information after create ludo post */
-                axios.get(`/apis/ludo/${ludo_id}`)
-                .then((response) => {
-                    /*
-                        response.data.status
-                        200: everything's fine;
-                        400: user's data issue;
-                        401: no login;
-                        403: no authority 
-                    */
-                    if (response.data.status === '200') {
-                        const { getUserBasicData, handleShouldProfileUpdate } = this.props;
-                        getUserBasicData();
-                        handleShouldProfileUpdate(true);
-                        browserHistory.push(`/template/${ludo_id}`);
-                    } else {
-                        if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+        const { contentType } = this.state;
+        if (contentType === 'image') {
+            const imagePost = new FormData();
+            imagePost.append('file', this.state.images[0]);
+            axios.post('/apis/report-image', imagePost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    return response.data.location;
+                } else {
+                    console.error('CreateStepper handleTemplateSubmit response status from server is not OK, which is: ', response);
+                    const errorMessage = 'CreateStepper handleTemplateSubmit response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
+                }
+            })
+            .then(imageLocation => {
+                console.log(imageLocation);
+                const { ludoCreateForm } = this.state;
+                const ludoTemplateForm = {
+                    ...ludoCreateForm,
+                    image_location: imageLocation,
+                    type: 'blank',
+                    video: '',
+                };
+                return axios.post('/apis/ludo', ludoTemplateForm)
+            })
+            .then((response) => {
+                console.log(response);
+                if (response.data.status === '200') {
+                    const { ludo_id } = response.data;
+                    /* get ludo information after create ludo post */
+                    axios.get(`/apis/ludo/${ludo_id}`)
+                    .then((response) => {
+                        /*
+                            response.data.status
+                            200: everything's fine;
+                            400: user's data issue;
+                            401: no login;
+                            403: no authority 
+                        */
+                        if (response.data.status === '200') {
+                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            getUserBasicData();
+                            handleShouldProfileUpdate(true);
+                            browserHistory.push(`/template/${ludo_id}`);
+                        } else {
+                            if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                                window.open("https://www.facebook.com/messages/t/ludonow");
+                            }
+                            this.setState({
+                                isTemplateSubmitButtonDisabled: false
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
                         this.setState({
                             isTemplateSubmitButtonDisabled: false
                         });
-                    }
-                })
-                .catch((error) => {
-                    if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    });
+                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                    window.alert('燃料或彈珠數不足: ' + response.data.message);
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                    window.alert('有部分欄位為空白');
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                } else {
+                    if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
                     this.setState({
                         isTemplateSubmitButtonDisabled: false
                     });
-                });
-            } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
-                window.alert('燃料或彈珠數不足: ' + response.data.message);
-                this.setState({
-                    isTemplateSubmitButtonDisabled: false
-                });
-            } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                window.alert('有部分欄位為空白');
-                this.setState({
-                    isTemplateSubmitButtonDisabled: false
-                });
-            } else {
-                if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
                 this.setState({
                     isTemplateSubmitButtonDisabled: false
                 });
-            }
-        })
-        .catch((error) => {
-            if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-            this.setState({
-                isTemplateSubmitButtonDisabled: false
+            })
+            .finally(() => {
+                this.setState({
+                    isSubmitting: false
+                });
             });
-        });
+        } else if (contentType === 'text' || contentType === 'video') {
+            const { ludoCreateForm } = this.state;
+            const ludoTemplateForm = {
+                ...ludoCreateForm,
+                type: 'blank',
+            };
+            axios.post('/apis/ludo', ludoTemplateForm)
+            .then((response) => {
+                if (response.data.status === '200') {
+                    const { ludo_id } = response.data;
+                    /* get ludo information after create ludo post */
+                    axios.get(`/apis/ludo/${ludo_id}`)
+                    .then((response) => {
+                        /*
+                            response.data.status
+                            200: everything's fine;
+                            400: user's data issue;
+                            401: no login;
+                            403: no authority 
+                        */
+                        if (response.data.status === '200') {
+                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            getUserBasicData();
+                            handleShouldProfileUpdate(true);
+                            browserHistory.push(`/template/${ludo_id}`);
+                        } else {
+                            if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                                window.open("https://www.facebook.com/messages/t/ludonow");
+                            }
+                            this.setState({
+                                isTemplateSubmitButtonDisabled: false
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isTemplateSubmitButtonDisabled: false
+                        });
+                    });
+                } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                    window.alert('燃料或彈珠數不足: ' + response.data.message);
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
+                    window.alert('有部分欄位為空白');
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                } else {
+                    if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isTemplateSubmitButtonDisabled: false
+                    });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateSubmitButtonDisabled: false
+                });
+            })
+            .finally(() => {
+                this.setState({
+                    isSubmitting: false
+                });
+            });
+        } else {
+            this.setState({
+                isSubmitting: false
+            });
+            window.alert('請選擇模板形式');
+        }
     }
 
     handleTitleChange(title) {
@@ -661,6 +875,14 @@ class CreateStepper extends Component {
         }
     }
 
+    isUpdatingImage(contentType, images) {
+        if (contentType === 'image' && images.length === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     setImageLocation(image_location) {
         this.setState(
             prevState => ({
@@ -675,6 +897,7 @@ class CreateStepper extends Component {
 
     render() {
         const {
+            contentType,
             images,
             isAtTemplatePage,
             isCardSubmitButtonDisabled,
@@ -686,18 +909,17 @@ class CreateStepper extends Component {
             isTemplateSubmitButtonDisabled,
             ludoCreateForm,
             open,
+            resizedHeight,
+            resizedWidth,
             step,
         } = this.state;
 
         const {
             duration,
-            form,
             image_location,
             interval,
             introduction,
             period,
-            resizedHeight,
-            resizedWidth,
             tags,
             title,
             video,
@@ -715,11 +937,11 @@ class CreateStepper extends Component {
                 >
                     <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
                     <Content
+                        contentType={contentType}
                         duration={duration}
-                        form={form}
                         handleCheckPointChange={this.handleCheckPointChange}
+                        handleContentTypeSelect={this.handleContentTypeSelect}
                         handleDurationChange={this.handleDurationChange}
-                        handleFormSelect={this.handleFormSelect}
                         handleImageChange={this.handleImageChange}
                         handleImageResize={this.handleImageResize}
                         handleIntroductionChange={this.handleIntroductionChange}
@@ -745,8 +967,8 @@ class CreateStepper extends Component {
                     />
                     <StepButtonList
                         handleCardSubmit={this.handleCardSubmit}
+                        handleContentTypeSelect={this.handleContentTypeSelect}
                         handleDialogClose={this.handleDialogClose}
-                        handleFormSelect={this.handleFormSelect}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
                         handleTemplateDelete={this.handleTemplateDelete}

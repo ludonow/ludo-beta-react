@@ -51,6 +51,12 @@ class ImageUploadAndPreview extends Component {
         this.resizePreviewImage = this.resizePreviewImage.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.imageLocation) {
+            this.handleImagePreview(this.props.imageLocation);
+        }
+    }
+
     handleDrop(files) {
         if (files.length > 1) {
             window.alert('一次只能上傳一張圖片');
@@ -121,36 +127,65 @@ class ImageUploadAndPreview extends Component {
 
     render() {
         const {
+            imageLocation,
             images,
             resizedHeight,
-            resizedWidth
+            resizedWidth,
         } = this.props;
 
         if (images.length === 0) {
-            return (
-                <ImageZoneWrapper>
-                    <DropZoneWrapper>
-                        <DropZone
-                            accept="image/*"
-                            multiple={false}
-                            onDrop={this.handleDrop}
-                            style={{}}
-                        >
-                            <IconWrapper>
-                                <FixedSizedIcon
-                                    src={cameraIconSrc}
-                                    title="上傳圖片"
-                                />
-                            </IconWrapper>
-                            <Button
-                                backgroundColor="#FF6E6E"
-                                fontSize="0.7rem"
-                                label="上傳圖片"
+            if (imageLocation) {
+                return (
+                    <ImageZoneWrapper>
+                        <PreviewWrapper>
+                            <PreviewImage
+                                onClick={this.handleImageEnlargeOpen}
+                                resizedHeight={resizedHeight}
+                                resizedWidth={resizedWidth}
+                                src={imageLocation}
                             />
-                        </DropZone>
-                    </DropZoneWrapper>
-                </ImageZoneWrapper>
-            );
+                                <DropZone
+                                    accept="image/jpeg, image/png"
+                                    maxSize={100*1024*1024}
+                                    multiple={false}
+                                    onDrop={this.handleDrop}
+                                    style={{}}
+                                >
+                                    <Button
+                                        backgroundColor="#FF6E6E"
+                                        fontSize="0.7rem"
+                                        label="重新上傳"
+                                    />
+                                </DropZone>
+                        </PreviewWrapper>
+                    </ImageZoneWrapper>
+                )
+            } else {
+                return (
+                    <ImageZoneWrapper>
+                        <DropZoneWrapper>
+                            <DropZone
+                                accept="image/*"
+                                multiple={false}
+                                onDrop={this.handleDrop}
+                                style={{}}
+                            >
+                                <IconWrapper>
+                                    <FixedSizedIcon
+                                        src={cameraIconSrc}
+                                        title="上傳圖片"
+                                    />
+                                </IconWrapper>
+                                <Button
+                                    backgroundColor="#FF6E6E"
+                                    fontSize="0.7rem"
+                                    label="上傳圖片"
+                                />
+                            </DropZone>
+                        </DropZoneWrapper>
+                    </ImageZoneWrapper>
+                );
+            }
         } else if (images.length === 1) {
             const userSelectedImage = images[0];
             return (
