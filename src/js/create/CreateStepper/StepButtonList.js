@@ -148,6 +148,11 @@ const StepButtonList = ({
                             />
                         : null
                     }
+                    {
+                        isSubmitting ?
+                            <LoadingIcon />
+                        : null
+                    }
                 </ButtonListWrapper>
             );
         default:

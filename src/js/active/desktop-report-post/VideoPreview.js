@@ -18,7 +18,7 @@ const VideoPreviewWrapper = styled.div`
 
 const VideoPreview = ({
     handleVideoChange,
-    video
+    video,
 }) => (
     <VideoPreviewWrapper>
         {

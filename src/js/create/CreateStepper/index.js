@@ -514,7 +514,13 @@ class CreateStepper extends Component {
     }
 
     handleStepNext() {
-        if (this.state.contentType && this.state.step === 0) {
+        const {
+            contentType,
+            isMyTemplate,
+            step,
+        } = this.state;
+
+        if (contentType && step === 0 && !isMyTemplate) {
             this.handleStepChange(2);
         } else {
             this.handleStepChange(1);
@@ -522,7 +528,17 @@ class CreateStepper extends Component {
     }
 
     handleStepPrev() {
-        this.handleStepChange(-1);
+        const {
+            contentType,
+            isMyTemplate,
+            step,
+        } = this.state;
+
+        if (contentType && step === 2 && !isMyTemplate) {
+            this.handleStepChange(-2);
+        } else {
+            this.handleStepChange(-1);
+        }
     }
 
     handleTagAdd(tag) {
@@ -614,10 +630,9 @@ class CreateStepper extends Component {
                 const { getUserBasicData, handleShouldProfileUpdate } = this.props;
                 getUserBasicData();
                 handleShouldProfileUpdate(true);
-                window.alert('編輯成功');
-                browserHistory.push('/cardList');
+                window.alert('已變更儲存');
             } else {
-                if (window.confirm('編輯Ludo模板時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+                if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
                 this.setState({
@@ -626,7 +641,7 @@ class CreateStepper extends Component {
             }
         })
         .catch(error => {
-            if (window.confirm('編輯Ludo模板時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            if (window.confirm('修改Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                 window.open("https://www.facebook.com/messages/t/ludonow");
             }
             this.setState({
@@ -664,7 +679,6 @@ class CreateStepper extends Component {
                 }
             })
             .then(imageLocation => {
-                console.log(imageLocation);
                 const { ludoCreateForm } = this.state;
                 const ludoTemplateForm = {
                     ...ludoCreateForm,
@@ -675,7 +689,6 @@ class CreateStepper extends Component {
                 return axios.post('/apis/ludo', ludoTemplateForm)
             })
             .then((response) => {
-                console.log(response);
                 if (response.data.status === '200') {
                     const { ludo_id } = response.data;
                     /* get ludo information after create ludo post */
