@@ -9,7 +9,7 @@ import {
     getBonusPeriodIndexFromPeriod,
     getPeriodDisplayByPeriod,
     periodList
-} from '../components/bonusPeriod';
+} from '../assets/bonusPeriod';
 
 // styled components
 const DescriptionWrapper = styled.div`

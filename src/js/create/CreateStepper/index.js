@@ -5,11 +5,11 @@ import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../../axios-config';
+import { CustomScrollBarCSS } from '../../baseStyle';
 import Content from './Content/index';
 import DiscardAlert from '../../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
-import { CustomScrollBarCSS } from '../../baseStyle';
 
 promiseFinally.shim();
 
@@ -516,11 +516,12 @@ class CreateStepper extends Component {
     handleStepNext() {
         const {
             contentType,
+            isAtTemplatePage,
             isMyTemplate,
             step,
         } = this.state;
 
-        if (contentType && step === 0 && !isMyTemplate) {
+        if (isAtTemplatePage && contentType && step === 0 && !isMyTemplate) {
             this.handleStepChange(2);
         } else {
             this.handleStepChange(1);
@@ -530,11 +531,12 @@ class CreateStepper extends Component {
     handleStepPrev() {
         const {
             contentType,
+            isAtTemplatePage,
             isMyTemplate,
             step,
         } = this.state;
 
-        if (contentType && step === 2 && !isMyTemplate) {
+        if (isAtTemplatePage && contentType && step === 2 && !isMyTemplate) {
             this.handleStepChange(-2);
         } else {
             this.handleStepChange(-1);

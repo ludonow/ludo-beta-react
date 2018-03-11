@@ -15,9 +15,7 @@ const CardListLoadingIcon = ({
         {
             isLoadingCardList ?
                 <LoadingIconWrapper>
-                    <img
-                        src={LoadingIcon}
-                    />
+                    <img src={LoadingIcon} />
                 </LoadingIconWrapper>
             : null
         }

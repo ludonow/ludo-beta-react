@@ -16,7 +16,7 @@ exports.clean = function(path) {
     };
 }
 
-exports.copyImages = function(srcpath, destpath) {
+exports.copyFiles = function(srcpath, destpath) {
     return {
         context: srcpath,
         plugins: [

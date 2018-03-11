@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { animalImageArray, colorArray } from './avatarImage';
+import {
+    animalImageList,
+    colorList,
+} from '../assets/avatarImage';
 
 const AvatarWrapper = styled.div`
     ${props => props.usedInReport ? "position : absolute;" : ""}
@@ -39,8 +42,8 @@ const Avatar = ({
                 :
                     <img
                         className="avatar-container__photo"
-                        src={animalImageArray[avatarImageIndex]}
-                        style={{'backgroundColor': colorArray[avatarBackgroundColorIndex]}} 
+                        src={animalImageList[avatarImageIndex]}
+                        style={{'backgroundColor': colorList[avatarBackgroundColorIndex]}} 
                     />
             }
         </div>

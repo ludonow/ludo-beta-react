@@ -8,7 +8,6 @@ import DesktopNavbar from './Navbar/Desktop';
 import Header from './Header';
 import Main from './Main';
 import MobileNavbar from './Navbar/Mobile';
-import Sidebar from './sidebar/Sidebar';
 
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

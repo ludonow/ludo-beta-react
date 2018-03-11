@@ -7,8 +7,8 @@ import {
     bonusPeriodIconList,
     getBonusPeriodIndexFromPeriod,
     periodList
-} from './bonusPeriod';
-import { labelList } from './reportInterval';
+} from '../assets/bonusPeriod';
+import { labelList } from '../assets/reportInterval';
 import viewIcon from '../../images/eye.svg';
 import Button from './Button';
 import CircleButton from './CircleButton';

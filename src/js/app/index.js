@@ -34,11 +34,10 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 // const headMetaimg = document.getElementsByTagName('head')[0].appendChild(Metaimg);
 
 /* add favIcon */
-/* <link rel="shortcut icon" href="./images/favicon.png"> */
-// const faveIcon = document.createElement('link');
-// faveIcon.setAttribute('rel', 'shortcut icon');
-// faveIcon.setAttribute('href', '../../images/favicon.png');
-// const headFav = document.getElementsByTagName('head')[0].appendChild(faveIcon);
+const faveIcon = document.createElement('link');
+faveIcon.setAttribute('rel', 'shortcut icon');
+faveIcon.setAttribute('href', '../../images/favicon.png');
+const headFav = document.getElementsByTagName('head')[0].appendChild(faveIcon);
 
 const div = document.createElement("div");
 div.setAttribute("id", "app");

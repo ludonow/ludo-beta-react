@@ -1,5 +1,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import cameraIconSrc from '../../images/active/camera-icon.png';
+import videoIconSrc from '../../images/active/video-icon.png';
+
+const defaultIconInfoList = [
+    {
+        payload: 'image',
+        src: cameraIconSrc,
+        title: '圖片形式'
+    },
+    {
+        payload: 'video',
+        src: videoIconSrc,
+        title: '影片形式'
+    }
+];
 
 const IconButtonListWrapper = styled.div`
     display: inline-flex;
@@ -46,5 +61,9 @@ const TypeSelectButtonList = ({
         }
     </IconButtonListWrapper>
 );
+
+TypeSelectButtonList.defaultProps = {
+    iconInfoList: defaultIconInfoList,
+};
 
 export default TypeSelectButtonList;

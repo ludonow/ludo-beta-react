@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
-import { labelList } from '../../../reportInterval';
+import { labelList } from '../../../../assets/reportInterval';
 
 // styled components
 const StyledRadioButtonGroup = styled(RadioButtonGroup)`

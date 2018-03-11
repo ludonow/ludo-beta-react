@@ -3,23 +3,8 @@ import React, { Component } from 'react';
 import BasicDataForm from './BasicDataForm/index';
 import BonusPeriodSelectForm from '../../BonusPeriodSelectForm';
 import CardPreview from '../../CardPreview';
-import Draft from '../../../active/desktop-report-post/Draft';
+import Draft from '../../../LudoPage/DesktopReportPost/Draft';
 import TypeSelectButtonList from '../../../components/TypeSelectButtonList';
-import cameraIconSrc from '../../../../images/active/camera-icon.png';
-import videoIconSrc from '../../../../images/active/video-icon.png';
-
-const iconInfoList = [
-    {
-        payload: 'image',
-        src: cameraIconSrc,
-        title: '圖片形式'
-    },
-    {
-        payload: 'video',
-        src: videoIconSrc,
-        title: '影片形式'
-    }
-];
 
 const Content = ({
     contentType,
@@ -68,10 +53,7 @@ const Content = ({
             )
         case 1:
             return (
-                <TypeSelectButtonList
-                    handleTypeSelect={handleContentTypeSelect}
-                    iconInfoList={iconInfoList}
-                />
+                <TypeSelectButtonList handleTypeSelect={handleContentTypeSelect} />
             )
         case 2:
             return (
