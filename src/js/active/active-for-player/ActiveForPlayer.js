@@ -12,6 +12,7 @@ import DesktopReportPost from '../desktop-report-post/DesktopReportPost';
 import MobileReports from '../MobileReports';
 import MobileOpenedLudo from '../../opened/MobileOpenedLudo.js'
 import DesktopSubmitButton from './DesktopSubmitButton';
+import LudoStageArray from '../../../data/LudoStageArray.json';
 
 const panel_width = window.innerWidth * 0.7;
 
@@ -80,6 +81,13 @@ const ReportTabs = styled.div`
 
     .panel_report {
         background-color: transparent;
+    }
+`;
+const ButtomContainer = styled.div`
+    position:fixed;
+
+    .button1 {
+        bottom: 100px;
     }
 `;
 
@@ -223,7 +231,7 @@ export default class ActiveForPlayer extends Component {
                                     selectedClassName="selected_panel"
                                 >   
                                     {
-                                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
+                                        router_ludoPageIndex === 1 || router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
                                             <ActiveReports {...this.props} />    
                                         : null
                                     }
@@ -253,11 +261,21 @@ export default class ActiveForPlayer extends Component {
                     }
                     {
                         router_ludoPageIndex === 1 ?
-                            <DesktopSubmitButton
-                                disabled={isDeleteButtonDisabled}
-                                label="刪除戰局"
-                                onClick={this.handleSubmit}
-                            />
+                            <ButtomContainer>
+                                <DesktopReportPost
+                                    currentUserId={currentUserId}
+                                    handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
+                                    handleShouldReportUpdate={this.props.handleShouldReportUpdate}
+                                    ludoId={params.ludo_id}
+                                    router_currentFormValue={router_currentFormValue}
+                                    className="button1"
+                                />
+                                <DesktopSubmitButton
+                                    disabled={isDeleteButtonDisabled}
+                                    label="刪除戰局"
+                                    onClick={this.handleSubmit}
+                                />
+                            </ButtomContainer>
                         :null
                     }
                 </MediaQuery>

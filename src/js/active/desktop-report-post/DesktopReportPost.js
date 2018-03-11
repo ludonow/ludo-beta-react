@@ -231,6 +231,7 @@ class DesktopReportPost extends Component {
                 player: whoIsUser,
                 video
             };
+            console.log(ludoReportPost);
             axios.post('/apis/report', ludoReportPost)
             .then(response => {
                 if (response.data.status === '200') {
@@ -344,8 +345,9 @@ class DesktopReportPost extends Component {
             text,
             video
         } = this.state;
+        const { className } = this.props;
         return (
-            <DesktopReportPostWrapper>
+            <DesktopReportPostWrapper className={ className }>
                 <ToggleButton
                     onClick={this.handleDialogOpen}
                     label="我要回報"

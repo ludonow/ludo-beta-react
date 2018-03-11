@@ -8,8 +8,6 @@ import ReportButton from './ReportButton';
 import ReportList from './ReportList';
 import ReportText from './ReportText';
 
-const userPhotoUrl = '../../images/animals/bat.png';
-
 const MobileReportContainer = styled.div`
     /* margin-top: -40px; */
 `;
@@ -80,6 +78,9 @@ export default class MobileReports extends Component {
             tags,
             title,
         } = router_currentFormValue;
+        console.log(starter_id);
+        console.log(currentUserId);
+        console.log(player_id);
         return (
             <MobileReportContainer>
                 <DarkBackGround
@@ -96,7 +97,7 @@ export default class MobileReports extends Component {
                                 avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                                 avatarImageIndex={comments_nick[starter_id][0]}
                                 isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
-                                userPhotoUrl={userPhotoUrl}
+                                userPhotoUrl={userBasicData.photo}
                             />
                         </Tab>
                         <Tab 
@@ -117,7 +118,7 @@ export default class MobileReports extends Component {
                                 avatarBackgroundColorIndex={comments_nick[player_id][1]}
                                 avatarImageIndex={comments_nick[player_id][0]}
                                 isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
-                                userPhotoUrl={userPhotoUrl}
+                                userPhotoUrl={userBasicData.photo}
                             />
                         </Tab>
                     </TabList>
