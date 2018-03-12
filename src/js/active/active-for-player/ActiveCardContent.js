@@ -1,66 +1,46 @@
 import React, { Component } from 'react';
-import MediaQuery from 'react-responsive';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
+import ReactPlayer from 'react-player';
+import Lightbox from 'react-image-lightbox';
 
 import tagIcon from '../../../images/active/tag-icon.png';
-import ReportButton from '../ReportButton';
-import CommentBox from '../CommentBox';
-import {labelList} from '../../components/reportInterval.js'; 
-
-const panel_width = window.innerHeight * 0.7;
+import { labelList } from '../../components/reportInterval.js'; 
 
 const CardContainer = styled.div`
-    display:inline;
-    text-align:center;
-    width:85%;
-`;
-const CardTitle = styled.div`
-    font-size:20px;
-`;
-
-const CardDays = styled.div`
-    padding-top: 15px;
-    font-size: 15px;
-    display: inline-flex;
-`;
-
-const ReportCycle = styled.div`
-    width: 79px;
-	height: 26px;
-	background-color: #ff5757;
-    border: solid 1px #ff5757;
-    border-radius:20px;
-	font-family: MHeiHK;
-	font-size: 12px;
-	font-weight: bold;
-	line-height: 1.21;
-	text-align: center;
-    color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left:14px;
+    display: inline;
+    text-align: center;
+    width: 85%;
 `;
 
 const CardContent = styled.div`
-    width: 100%;
+    color: #484848;
 	font-size: 14px;
 	line-height: 1.2;
+    margin-top: 35px;
 	text-align: left;
-    color: #484848;
-    margin-top:35px;
     white-space: pre-wrap;
+    width: 100%;
+`;
+
+const CardDays = styled.div`
+    display: inline-flex;
+    font-size: 15px;
+    padding-top: 15px;
 `;
 
 const CardImage = styled.div`
-    max-width: 100%;
-    margin-top:42px;
+    margin-top: 42px;
+
+    img {
+        cursor: zoom-in;
+        height: 250px;
+        max-width: 100%;
+    }
 `;
 
 const CardTags = styled.div`
     margin: 22px 0;
-    text-align:left;
+    text-align: left;
     .ludo-tag {
         display: inline-block;
         margin: 5px;
@@ -77,33 +57,111 @@ const CardTags = styled.div`
     }
 `;
 
-export default class ActiveCardContent extends Component {
+const CardTitle = styled.div`
+    font-size: 20px;
+`;
+
+const CardVideo = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 42px;
+`;
+
+const ReportCycle = styled.div`
+    align-items: center;
+	background-color: #ff5757;
+    border: solid 1px #ff5757;
+    border-radius: 20px;
+    color: #ffffff;
+    display: inline-flex;
+	font-family: MHeiHK;
+	font-size: 12px;
+	font-weight: bold;
+	height: 26px;
+    justify-content: center;
+	line-height: 1.21;
+    margin-left: 14px;
+	text-align: center;
+    width: 79px;
+`;
+
+class ActiveCardContent extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isImageLightBoxOpen: false,
+        };
+        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
+        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
+    }
+
+    handleImageLightboxClose() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
+    }
+
+    handleImageLightboxOpen() {
+        this.setState({
+            isImageLightBoxOpen: true
+        });
     }
 
     render() {
-        const currentFormValue = this.props.router_currentFormValue;
+        const { router_currentFormValue } = this.props;
         const {
             category_id,
             checkpoint,
             duration,
+            image_location,
             introduction,
             marbles,
             tags,
             title,
-        } = currentFormValue;
+            video,
+        } = router_currentFormValue;
 
-        const renderedInterval = currentFormValue.interval ? Number(currentFormValue.interval) : 1;
-        
-        return  (
+        const {
+            isImageLightBoxOpen,
+        } = this.state;
+
+        const renderedInterval = router_currentFormValue.interval ? Number(router_currentFormValue.interval) : 1;
+
+        return (
             <CardContainer>
-                <CardTitle>{title}</CardTitle>
-                <CardDays>遊戲天數：{duration}天</CardDays>
-                <ReportCycle>{labelList[Number(renderedInterval)-1]}</ReportCycle>
-                <CardContent>{introduction}</CardContent>
-                <CardImage><img /></CardImage>
-                <CardTags><img src={tagIcon} />
+                <CardTitle>
+                    {title}
+                </CardTitle>
+                <CardDays>
+                    遊戲天數：{duration}天
+                </CardDays>
+                <ReportCycle>
+                    {labelList[Number(renderedInterval)-1]}
+                </ReportCycle>
+                <CardContent>
+                    {introduction}
+                </CardContent>
+                {
+                    video ?
+                        <CardVideo>
+                            <ReactPlayer
+                                url={video}
+                            />
+                        </CardVideo>
+                    : null
+                }
+                {
+                    image_location ?
+                        <CardImage>
+                            <img
+                                onClick={this.handleImageLightboxOpen}
+                                src={image_location}
+                            />
+                        </CardImage>
+                    : null
+                }
+                <CardTags>
+                    <img src={tagIcon} />
                     {
                         tags.length ?
                             tags.map((tagString, index) => {
@@ -116,7 +174,17 @@ export default class ActiveCardContent extends Component {
                         : null
                     }
                 </CardTags>
+                {
+                    isImageLightBoxOpen ?
+                        <Lightbox
+                            mainSrc={image_location}
+                            onCloseRequest={this.handleImageLightboxClose}
+                        />
+                    : null
+                }
             </CardContainer>
-        )
+        );
     }
 }
+
+export default ActiveCardContent;

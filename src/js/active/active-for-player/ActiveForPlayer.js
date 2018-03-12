@@ -13,6 +13,7 @@ import MobileReports from '../MobileReports';
 import MobileOpenedLudo from '../../opened/MobileOpenedLudo.js'
 import DesktopSubmitButton from './DesktopSubmitButton';
 import LudoStageArray from '../../../data/LudoStageArray.json';
+import settings_icon from '../../../images/active/settings.svg';
 
 const panel_width = window.innerWidth * 0.7;
 
@@ -89,6 +90,16 @@ const ButtomContainer = styled.div`
     .button1 {
         bottom: 100px;
     }
+`;
+
+const SettingsButton = styled.button`
+    position: fixed;
+    height: 40px;
+    width: 40px;
+    bottom: 0;
+    border:none;
+    padding:0px;
+    background:transparent;
 `;
 
 export default class ActiveForPlayer extends Component {
@@ -268,13 +279,11 @@ export default class ActiveForPlayer extends Component {
                                     handleShouldReportUpdate={this.props.handleShouldReportUpdate}
                                     ludoId={params.ludo_id}
                                     router_currentFormValue={router_currentFormValue}
-                                    className="button1"
+                                    className=""
                                 />
-                                <DesktopSubmitButton
-                                    disabled={isDeleteButtonDisabled}
-                                    label="刪除戰局"
-                                    onClick={this.handleSubmit}
-                                />
+                                <SettingsButton>
+                                    <img src={settings_icon}></img>
+                                </SettingsButton>
                             </ButtomContainer>
                         :null
                     }

@@ -7,8 +7,8 @@ import { ButtonListWrapper } from '../../baseStyle';
 
 const StepButtonList = ({
     handleCardSubmit,
+    handleContentTypeSelect,
     handleDialogClose,
-    handleFormSelect,
     handleStepNext,
     handleStepPrev,
     handleTemplateDelete,
@@ -45,6 +45,22 @@ const StepButtonList = ({
                         onClick={handleStepPrev}
                     />
                     <Button
+                        backgroundColor={'#B1B1B1'}
+                        data="text"
+                        label="文字回報"
+                        onClick={handleContentTypeSelect}
+                    />
+                </ButtonListWrapper>
+            );
+        case 2:
+            return (
+                <ButtonListWrapper>
+                    <Button
+                        backgroundColor={'#B1B1B1'}
+                        label="上一步"
+                        onClick={handleStepPrev}
+                    />
+                    <Button
                         backgroundColor={'#717171'}
                         disabled={isPreviewButtonDisabled}
                         label="下一步"
@@ -52,7 +68,7 @@ const StepButtonList = ({
                     />
                 </ButtonListWrapper>
             );
-        case 2:
+        case 3:
             return (
                 <ButtonListWrapper>
                     <Button
@@ -68,7 +84,7 @@ const StepButtonList = ({
                     />
                 </ButtonListWrapper>
             );
-        case 3:
+        case 4:
             return (
                 <ButtonListWrapper>
                     <Button
@@ -132,6 +148,11 @@ const StepButtonList = ({
                             />
                         : null
                     }
+                    {
+                        isSubmitting ?
+                            <LoadingIcon />
+                        : null
+                    }
                 </ButtonListWrapper>
             );
         default:
@@ -149,8 +170,8 @@ const StepButtonList = ({
 
 StepButtonList.propTypes = {
     handleCardSubmit: PropTypes.func.isRequired,
+    handleContentTypeSelect: PropTypes.func.isRequired,
     handleDialogClose: PropTypes.func.isRequired,
-    handleFormSelect: PropTypes.func.isRequired,
     handleStepNext: PropTypes.func.isRequired,
     handleStepPrev: PropTypes.func.isRequired,
     handleTemplateDelete: PropTypes.func.isRequired,

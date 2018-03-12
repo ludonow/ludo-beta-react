@@ -60,7 +60,7 @@ const Draft = ({
     resizedWidth,
     setImageLocation,
     text,
-    video
+    video,
 }) => {
     switch(reportType) {
         case 'image':

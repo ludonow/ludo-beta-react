@@ -10,14 +10,14 @@ import StepButtonList from './StepButtonList';
 const ludoStepTitles = [
     '創建卡片',
     '遊戲條件',
-    '種類選擇',
+    '加分時段選擇',
     '卡片預覽'
 ];
 
 const templateStepTitles = [
     '創建模板',
     '遊戲條件',
-    '種類選擇',
+    '加分時段選擇',
     '預覽'
 ];
 
@@ -30,8 +30,8 @@ export default class MobileCreateCard extends Component {
             ludoCreateForm: {
                 category_id: 1,
                 checkpoint: [3],
+                contentType: '',
                 duration: 3,
-                form: '',
                 image_location: '',
                 interval: 1,
                 introduction: '',

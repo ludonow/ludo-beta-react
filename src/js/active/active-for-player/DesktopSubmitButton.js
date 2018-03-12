@@ -8,6 +8,10 @@ const ButtonWrapper = styled.div`
     margin: 30px auto;
     position: fixed;
     z-index: 10;
+
+    .hide {
+        display:none;
+    }
 `;
 
 const DesktopSubmitButton = ({

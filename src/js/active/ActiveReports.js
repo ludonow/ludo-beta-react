@@ -27,83 +27,83 @@ import uploadIcon from '../../images/active/upload-icon.png';
 const panel_width = window.innerWidth * 0.7;
 
 const CardTitle = styled.div`
-    font-size:20px;
+    font-size: 20px;
 `;
 
 const CardDays = styled.div`
-    padding-top: 15px;
-    font-size: 15px;
     display: inline-flex;
+    font-size: 15px;
+    padding-top: 15px;
 `;
 
 const ReportCycle = styled.div`
-    width: 79px;
-	height: 26px;
-	background-color: #ff5757;
+    align-items: center;
+    background-color: #ff5757;
     border: solid 1px #ff5757;
     border-radius:20px;
-	font-size: 12px;
-	font-weight: bold;
-	line-height: 1.21;
-	text-align: center;
     color: #ffffff;
     display: inline-flex;
-    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    height: 26px;
     justify-content: center;
-    margin-left:14px;
+    line-height: 1.21;
+    margin-left: 14px;
+    text-align: center;
+    width: 79px;
 `;
 
 const ReportPanelWrapper = styled.div`
-    display:inline;
-    text-align:center;
+    display: inline;
+    text-align: center;
 `;
 
 const ReportListContainer = styled.div`
+    align-items: flex-start;
+    display: inline-flex;
+    /* height: 291px; */
+    justify-content: center;
     margin-top: 15px;
     width: ${props => props.width}px;
-    /* height:291px; */
-    display:inline-flex;
-    justify-content:center;
-    align-items:flex-start;
-	/* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)); */
+    /* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)); */
 `;
 
 const ReportList = styled.div`
-    display: flex;
     /* align-items: center;     */
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    margin: 0 7px;
     width: ${props => props.width}px;
-    flex-wrap:wrap;
-    margin:0 7px 0 7px;
 `;
 
 const NoReportText = styled.div`
-	font-size: 22.5px;
-	font-weight: 500;
-	line-height: 1.22;
-	letter-spacing: 14.5px;
-	text-align: center;
-    color: #ffffff;
-    height:291px;
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width:100%;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0));
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 22.5px;
+    font-weight: 500;
+    height: 291px;
+    justify-content: center;
+    letter-spacing: 14.5px;
+    line-height: 1.22;
+    text-align: center;
+    width: 100%;
 `;
 
 const SingleReport = styled.div`
-    background:white;
-    margin:0 0px 28px 0px;
-    display:flex;
-    width:100%;
-    flex-direction:column;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    margin: 0 0px 28px 0px;
+    width: 100%;
 `;
 
 const ReportTime = styled.div`
-    font-size:12px;
-    margin-top:52px;
-    margin-left:20px;
+    font-size: 12px;
+    margin-top: 52px;
+    margin-left: 20px;
 `;
 
 const ReportContent = styled.div`
@@ -120,6 +120,7 @@ const ReportContent = styled.div`
         width: 90%;
     }
     img {
+        cursor: zoom-in;
         display: flex;
         margin-top: 20px;
         width: 100%;
@@ -153,10 +154,10 @@ export default class ActiveReports extends React.Component {
             starterReportList: [],
             whoIsUser: ''
         };
-        this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
         this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
         this.handleImageDrop = this.handleImageDrop.bind(this);
-        this.handleImageEnlarge = this.handleImageEnlarge.bind(this);
+        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
+        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
         this.handleImageRemove = this.handleImageRemove.bind(this);
         this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
         this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
@@ -228,12 +229,6 @@ export default class ActiveReports extends React.Component {
             }
             this.props.handleHasGotNewReport(false);
         }
-    }
-
-    handleCloseLightbox() {
-        this.setState({
-            isImageLightBoxOpen: false
-        });
     }
 
     handleEditImageReportClick(event) {
@@ -355,7 +350,13 @@ export default class ActiveReports extends React.Component {
         }
     }
 
-    handleImageEnlarge(event) {
+    handleImageLightboxClose() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
+    }
+
+    handleImageLightboxOpen(event) {
         this.setState({
             enlargeImageLocation: event.currentTarget.src,
             isImageLightBoxOpen: true
@@ -543,10 +544,22 @@ export default class ActiveReports extends React.Component {
     }
 
     render() {
-        const { files,
-            isEditingWhichPlayerReportIndex, isEditingWhichStarterReportIndex,
-            isEditingImageReport, isEditingImageReportIndex, isEditingTextReport, isEditingTextReportIndex,
-            isEditReportButtonClickable, isImageUploaded, playerReportList, starterReportList, avatarStyle, whoIsUser
+        const {
+            avatarStyle,
+            enlargeImageLocation,
+            files,
+            isEditingImageReport,
+            isEditingImageReportIndex,
+            isEditingTextReport,
+            isEditingTextReportIndex,
+            isEditingWhichPlayerReportIndex,
+            isEditingWhichStarterReportIndex,
+            isEditReportButtonClickable,
+            isImageLightBoxOpen,
+            isImageUploaded,
+            playerReportList,
+            starterReportList,
+            whoIsUser,
         } = this.state;
        
         let config = [{
@@ -564,7 +577,7 @@ export default class ActiveReports extends React.Component {
         const {
             currentUserId,
             router_currentFormValue,
-            userBasicData
+            userBasicData,
         } = this.props;
 
         const {
@@ -627,12 +640,12 @@ export default class ActiveReports extends React.Component {
                                             <div>
                                                 <img
                                                     className="report-content report-content__image"
-                                                    onClick={this.handleImageEnlarge}
+                                                    onClick={this.handleImageLightboxOpen}
                                                     src={reportObject.image_location}
                                                 />
                                                 { reportObject.video ?
                                                     <ReactPlayer
-                                                        controls="true"
+                                                        controls={true}
                                                         url={reportObject.video}
                                                         width="100%"
                                                     />
@@ -656,6 +669,7 @@ export default class ActiveReports extends React.Component {
                     </ReportList>
                     {   
                         LudoStageArray[this.props.router_ludoPageIndex] != "OpenedForStarter" ?
+                        
                         <ReportList width={panel_width/2}>
                             <Avatar
                                 avatarBackgroundColorIndex={comments_nick[player_id][1]}
@@ -700,12 +714,12 @@ export default class ActiveReports extends React.Component {
                                                 <div>
                                                     <img
                                                         className="report-content report-content__image"
-                                                        onClick={this.handleImageEnlarge}
+                                                        onClick={this.handleImageLightboxOpen}
                                                         src={reportObject.image_location}
                                                     />
                                                     { reportObject.video ? 
                                                         <ReactPlayer
-                                                            controls="true"
+                                                            controls={true}
                                                             url={reportObject.video}
                                                             width="100%"
                                                         />
@@ -743,6 +757,14 @@ export default class ActiveReports extends React.Component {
                         <div>搶先成為第一個回報的人吧！</div>
                     </NoReportText> */}
                 </ReportListContainer>
+                {
+                    isImageLightBoxOpen ?
+                        <Lightbox
+                            mainSrc={enlargeImageLocation}
+                            onCloseRequest={this.handleImageLightboxClose}
+                        />
+                    : null
+                }
             </ReportPanelWrapper>
         );
     }

@@ -49,9 +49,7 @@ exports.devServer = function(options) {
         },
         plugins: [
             // Enable multi-pass compilation for enhanced performance in larger projects. Good default.
-            new webpack.HotModuleReplacementPlugin({
-                multiStep: true
-            })
+            new webpack.HotModuleReplacementPlugin()
         ],
         watchOptions: {
             // Delay the rebuild after the first change

@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 import BasicDataForm from './BasicDataForm/index';
 import BonusPeriodSelectForm from '../../BonusPeriodSelectForm';
 import CardPreview from '../../CardPreview';
 import Draft from '../../../active/desktop-report-post/Draft';
-// import TypeSelectButtonList from '../../../active/desktop-report-post/TypeSelectButtonList';
+import TypeSelectButtonList from '../../../components/TypeSelectButtonList';
+import cameraIconSrc from '../../../../images/active/camera-icon.png';
+import videoIconSrc from '../../../../images/active/video-icon.png';
 
-// styled components
+const iconInfoList = [
+    {
+        payload: 'image',
+        src: cameraIconSrc,
+        title: '圖片形式'
+    },
+    {
+        payload: 'video',
+        src: videoIconSrc,
+        title: '影片形式'
+    }
+];
 
 const Content = ({
+    contentType,
     duration,
-    form,
     handleCheckPointChange,
+    handleContentTypeSelect,
     handleDurationChange,
-    handleFormSelect,
     handleImageChange,
     handleImageResize,
     handleIntroductionChange,
@@ -56,6 +68,13 @@ const Content = ({
             )
         case 1:
             return (
+                <TypeSelectButtonList
+                    handleTypeSelect={handleContentTypeSelect}
+                    iconInfoList={iconInfoList}
+                />
+            )
+        case 2:
+            return (
                 <Draft
                     handleImageChange={handleImageChange}
                     handleImageResize={handleImageResize}
@@ -64,7 +83,7 @@ const Content = ({
                     handleVideoChange={handleVideoChange}
                     imageLocation={imageLocation}
                     images={images}
-                    reportType="text"
+                    reportType={contentType}
                     resizedHeight={resizedHeight}
                     resizedWidth={resizedWidth}
                     setImageLocation={setImageLocation}
@@ -72,14 +91,14 @@ const Content = ({
                     video={video}
                 />
             )
-        case 2:
+        case 3:
             return (
                 <BonusPeriodSelectForm
                     handlePeriodChange={handlePeriodChange}
                     period={period}
                 />
             )
-        case 3:
+        case 4:
             return (
                 <CardPreview
                     duration={duration}
