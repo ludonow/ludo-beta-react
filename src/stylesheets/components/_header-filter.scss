@@ -5,13 +5,3 @@
     align-self: center;
     justify-content: center;
 }
-
-.filter-button-container {
-    display: flex;
-    align-self: center;
-    .filter-button {
-        @extend .ludo-button;
-        @extend .round-radius-button;
-        font-size: 0.9rem;
-    }
-}

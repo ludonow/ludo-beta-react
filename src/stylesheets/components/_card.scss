@@ -35,13 +35,6 @@ $grid-item--friend_width: 170px;
     width: $grid-item--friend_width;
 }
 
-.stamp {
-    @extend .grid-item;
-    @extend %fixed;
-    @extend %right;
-    @extend %bottom;
-}
-
 .card {
     background-color: white;
     @include box-shadow(0px, 1px, 2px, 0px, rgba(0,0,0,0.2));
@@ -91,44 +84,12 @@ $grid-item--friend_width: 170px;
         align-items: center;
         flex-direction: column;
 
-        .card-star {
-            height: 50px;
-        }
-
-        .category-icon {
-            width: 100px;
-            height: 100px;
-        }
-
         .title {
             margin: 20px;
         }
 
         .duration {
             margin-bottom: 15px;
-        }
-
-        .card-marble {
-            @include backface-visibility(hidden);
-            text-align: center;
-
-            .card-marble__icon {
-              @include backface-visibility(hidden);
-
-                width: 25px;
-                height: 25px;
-            }
-
-            .card-marble__number {
-                @include backface-visibility(hidden);
-                @extend %absolute;
-                left: 0;
-                right: 0;
-                margin: auto;
-                font-size: 12px;
-                color: white;
-                line-height: 25px;
-            }
         }
     }
     .card-views {
@@ -156,33 +117,32 @@ $grid-item--friend_width: 170px;
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
 
+    .card-information {
+        padding:50px 0;
+        min-height: 105px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction: column;
 
-    .card-information{
-      padding:50px 0;
-      min-height: 105px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction: column;
+        .card-introduction {
+            @extend %flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            margin-bottom: 20px;
+            padding-top: 40px;
+            padding-right: 30px;
+            padding-left: 30px;
+            line-height: 1.3;
+        }
 
-      .card-introduction {
-          @extend %flex;
-          align-items: center;
-          justify-content: center;
-          height: 50px;
-          margin-bottom: 20px;
-          padding-top: 40px;
-          padding-right: 30px;
-          padding-left: 30px;
-          line-height: 1.3;
-      }
-
-      .card-hashtags {
-          @extend %relative;
-          padding-right: 20px;
-          padding-left: 20px;
-          margin-bottom:20px;
-      }
+        .card-hashtags {
+            @extend %relative;
+            padding-right: 20px;
+            padding-left: 20px;
+            margin-bottom:20px;
+        }
     }
     .card-button_circle {
         @include circle(40px, #fff);

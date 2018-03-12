@@ -1,38 +1,17 @@
-$g_form-width: 620px;
-$g_form-height: 535px;
-
 .form-and-list {
     width: $grid-item_total-width*5;
     display: inline-flex;
     margin-top: 5px;
 }
 
-.form {
-    width: $g_form-width;
-    height: $g_form-height;
+.form-item {
+    @extend .grid-item;
 }
-
-.form--bystander {
-    @extend %relative;
-    width: 50%;
-    right: 15px;
-    padding-top: 0;
+.form-card {
+    @extend .card;
 }
-
-.form-ludo-list-container {
-    width: $grid-item_total-width*2 + 4;  // TODO: find out unknown reason for card container width too small
-    margin-left: 30px;
+.form-card.card-back {
+    @extend %absolute;
+    left: 10px;
+    width: 200px;
 }
-
-    .form-item {
-        @extend .grid-item;
-    }
-        .form-card {
-            @extend .card;
-        }
-        .form-card.card-back {
-            @extend %absolute;
-            left: 10px;
-            // top: 7px;
-            width: 200px;
-        }

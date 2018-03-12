@@ -80,7 +80,6 @@ export default class HeaderFBPhoto extends Component {
             targetOrigin
         } = this.state;
         return (
-            /* components/_header-profile.scss */
             <AvatarPhotoWrapper
                 onClick={this.handleProfileIconClick}
                 onMouseOver={this.handleTooltipDisplay}

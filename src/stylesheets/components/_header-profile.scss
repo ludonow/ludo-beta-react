@@ -1,28 +1,5 @@
-.header-profile {
-    @extend %flex;
-    align-items: center;
-    justify-content: center;
-    @extend %relative;
-}
-
 .header-log-in {
     @extend %as_tall_as_parent;
     @extend %flex;
     align-items: center;
 }
-    .header-profile-icon {
-        @extend %clickable;
-        width: $g_header_height_md_min * 0.6;
-        height: $g_header_height_md_min * 0.6;
-        margin-right: 20px;
-    }
-
-.header-fb-photo {
-    @extend .header-log-in;
-}
-    .facebook-avatar {
-        width:50px;
-        height:50px;
-        @extend .profile-icon;
-        @extend %round_border;
-    }

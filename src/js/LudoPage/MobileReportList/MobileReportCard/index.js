@@ -13,6 +13,10 @@ const Report = styled.div`
     margin: 0;
 `;
 
+const VideoWrapper = styled.div`
+    padding: 10px;
+`;
+
 class ReportCard extends Component {
     constructor(props) {
         super(props);
@@ -172,11 +176,14 @@ class ReportCard extends Component {
                     reportObject={reportObject}
                 />
                 { reportObject.video ?
-                        <ReactPlayer
-                            controls="true"
-                            url={reportObject.video}
-                            width="100%"
-                        />
+                        <VideoWrapper>
+                            <ReactPlayer
+                                controls="true"
+                                height="auto"
+                                url={reportObject.video}
+                                width="100%"
+                            />
+                        </VideoWrapper>
                     : null
                 }
                 <ReportText

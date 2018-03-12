@@ -1,55 +1,51 @@
-.comment-form {
+.single-comment-container {
+    @extend %relative;
+    @extend %as_wide_as_parent;
+    @extend %flex;
+    align-items: center;
+    background-color: $gray;
 }
-.comment-list {
-}
-    .single-comment-container {
-        @extend %relative;
-        @extend %as_wide_as_parent;
-        @extend %flex;
-        align-items: center;
-        background-color: $gray;
+.comment-avatar-container {
+    @extend %flex;
+    align-self: flex-start;
+    justify-content: center;
+    width: 10%;
+    height: 40px;
+    margin: 5px;
+    .comment__avatar {
+        width: 35px;
+        height: 35px;
+        border: solid 2px #707070;
+        border-radius: 50%;
     }
-        .comment-avatar-container {
-            @extend %flex;
-            align-self: flex-start;
-            justify-content: center;
-            width: 10%;
-            height: 40px;
-            margin: 5px;
-            .comment__avatar {
-                width: 35px;
-                height: 35px;
-                border: solid 2px #707070;
-                border-radius: 50%;
-            }
-        }
-        .comment__message {
-            width: 80%;
-            margin: 5px;
-            font-size: 14px;
-            line-height: 1.5;
-            padding: 5px;
-            text-align: left;
-            white-space: pre-wrap;
+}
+.comment__message {
+    width: 80%;
+    margin: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 5px;
+    text-align: left;
+    white-space: pre-wrap;
 
-            &::-webkit-scrollbar {
-                width: 8px;
-            }
-            /* Handle */
-            &::-webkit-scrollbar-thumb {
-                -webkit-border-radius: 10px;
-                border-radius: 10px;
-                background-color: $g_background_gray;
-                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-            }
-        }
-        textarea.comment__message {
-            border: none;
-            margin: 5px;
-            padding: 0;
-            resize: none;
-            width: 90%;
-        }
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background-color: $g_background_gray;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    }
+}
+textarea.comment__message {
+    border: none;
+    margin: 5px;
+    padding: 0;
+    resize: none;
+    width: 90%;
+}
 
 .comment-button {
     @extend %flex;

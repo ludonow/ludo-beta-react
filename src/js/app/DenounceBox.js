@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import axios from '../axios-config';
-
+import styled from 'styled-components';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+
+import axios from '../axios-config';
+
+const StyledRaisedButton = styled(RaisedButton)`
+    margin: 0 5px;
+`;
 
 export default class DenounceBox extends Component {
     constructor(props) {
@@ -103,13 +108,11 @@ export default class DenounceBox extends Component {
     render() {
         /* components/_denounce-box.scss */
         const actions = [
-            <RaisedButton
-                className="denounce-button"
+            <StyledRaisedButton
                 label="取消"
                 onTouchTap={this.props.onRequestClose}
             />,
-            <RaisedButton
-                className="denounce-button"
+            <StyledRaisedButton
                 label="確定送出"
                 primary
                 onTouchTap={this.handleDenounceSend}

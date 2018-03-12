@@ -5,7 +5,7 @@ import MobileReportCard from './MobileReportCard/index';
 import MobileCommentBox from './MobileCommentBox/index';
 
 const MobileReportListWrapper = styled.div`
-    margin-bottom: 65px;
+    margin-bottom: 80px;
     padding: 20px 30px 0 30px;
 `;
 
