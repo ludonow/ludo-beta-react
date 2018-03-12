@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { browserHistory } from 'react-router';
 
-import Button, { StyledButton } from '../components/Button';
 import {
     StyledAnchor,
     StyledDialog,
     StyledLink,
 } from '../baseStyle';
+import { baseUrl } from '../baseurl-config';
+import Button, { StyledButton } from '../components/Button';
 import StepperCloseIcon from '../components/StepperCloseIcon';
 import rightArrowIcon from '../../images/login/right-arrow.png';
 
@@ -144,7 +145,7 @@ class LoginRecommend extends Component {
                     </StyledButton>
                 </ButtonWrapper>
                 <ButtonWrapper>
-                    <StyledLink to="/signup">
+                    <StyledLink to={`${baseUrl}/signup`}>
                         <Button
                             backgroundColor="#B2B2B2"
                             fontSize="16px"

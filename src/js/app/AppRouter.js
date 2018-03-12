@@ -6,28 +6,21 @@ import MessengerCustomerChat from 'react-messenger-customer-chat';
 import axios from '../axios-config';
 import { baseUrl } from '../baseurl-config';
 
-import ActiveForBystander from '../active/active-for-bystander/ActiveForBystander';
-import ActiveForPlayer from '../active/active-for-player/ActiveForPlayer';
 import App from './App';
 import Bind from '../Bind/index';
 import Create from '../create/Create';
 import EmailConfirm from '../EmailConfirm/index';
 import EmailConfirmAlert from '../EmailConfirm/alert';
-import Friend from '../friend/Friend';
-import Invite from '../create/Invite';
 import Login from '../Login/index.js';
-import LoginRecommend from '../LoginRecommend/index.js';
-import LudoEdit from '../ludo-edit/LudoEdit';
-import MobileReportForm from '../active/mobile-report-form/MobileReportForm';
+import LoginRecommend from '../LoginRecommend/index';
+import LudoPage from '../LudoPage/index.js';
+import MobileReportForm from '../LudoPage/MobileReportForm/index';
 import MyCardList from '../MyCardList/index';
-import OpenedForStarter from '../opened/opened-for-starter/OpenedForStarter';
-import OpenedForBystander from '../opened/opened-for-bystander/OpenedForBystander';
 import Playground from '../playground/Playground';
-import Profile from '../profile/Profile';
 import Search from '../Search/index';
 import SignUp from '../SignUp/index';
 import Template from '../create/Template';
-import Tutorial from '../Tutorial/index.js';
+import Tutorial from '../Tutorial/index';
 import TutorialSlideShow from '../Tutorial/SlideShow';
 import LoadingPage from '../LoadingPage';
 /*
@@ -44,25 +37,22 @@ import LoadingPage from '../LoadingPage';
     9           stage 0 not login (same as 0, may be modified in the future)
 */
 /*
-    0,2 OpenedForBystander
+    0, 2 OpenedForBystander
     1 OpenedForStarter
     5 ActiveForBystander
 */
 const ludoPageArray = [
-    ActiveForPlayer,
-    ActiveForPlayer,
-    ActiveForPlayer,
-    ActiveForPlayer,
-    ActiveForPlayer,
-    ActiveForPlayer,
-    ActiveForPlayer,
+    LudoPage,
+    LudoPage,
+    LudoPage,
+    LudoPage,
+    LudoPage,
+    LudoPage,
+    LudoPage,
     Template,
     Template,
     Template
 ];
-
-// TODO: modify auth 6 to ActiveForBystander
-const ludoPageArrayForEdit = ludoPageArray.slice(0, 1).concat([LudoEdit], ludoPageArray.slice(2));
 
 const isLoggedIn = (nextState, replace, callback) => {
     /* TODO: Look up the detail usage of replace function */
@@ -127,37 +117,6 @@ const ludoRedirect = (nextState, replace, callback) => {
     });
 };
 
-const ludoEditRedirect = (nextState, replace, callback) => {
-    const { ludo_id }= nextState.params;
-    axios.get(`/apis/ludo/${ludo_id}`)
-    .then((response) => {
-        if (response.data.status === '200') {
-            if (response.data.auth != 1) {
-                /* TODO: Figure out how to use same url redirect to other component */
-                callback();
-                browserHistory.push(`/ludo/${ludo_id}`);
-            } else {
-                router_ludoPageIndex = response.data.auth;
-                router_currentFormValue = response.data.ludo;
-                router_currentLudoId = response.data.ludo.ludo_id;
-                callback();
-            }
-        } else {
-            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-        }
-    })
-    .catch((error) => {
-        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-            window.open("https://www.facebook.com/messages/t/ludonow");
-            // console.log(error);
-        }
-    });
-};
-
-
-
 /* TODO: find out usage of getComponent callback */
 const AppRouter = () => (
     <div>
@@ -188,16 +147,6 @@ const AppRouter = () => (
                 <Route
                     component={EmailConfirmAlert}
                     path="email-confirm-alert"
-                />
-                <Route
-                    component={Friend}
-                    onEnter={isLoggedIn}
-                    path="friend"
-                />
-                <Route
-                    component={Invite}
-                    onEnter={isLoggedIn}
-                    path="invite/:friend_id"
                 />
                 <Route
                     component={LoadingPage}
@@ -252,23 +201,6 @@ const AppRouter = () => (
                     path="ludo/:ludo_id/mobile-report-form"
                 />
                 <Route
-                    getComponent={(nextState, cb) => {
-                        const Component = ludoPageArrayForEdit[router_ludoPageIndex];
-                        cb(
-                            null,
-                            props =>
-                                <Component
-                                    {...props}
-                                    router_currentFormValue={router_currentFormValue}
-                                    router_currentLudoId={router_currentLudoId}
-                                />
-                        );
-                    }} 
-                    onEnter={[isLoggedIn, ludoEditRedirect]}
-                    onLeave={ludoRedirect}
-                    path="ludo-edit/:ludo_id"
-                />
-                <Route
                     component={MyCardList}
                     onEnter={isLoggedIn}
                     path="myCardList"
@@ -280,11 +212,6 @@ const AppRouter = () => (
                 <Route
                     component={Playground}
                     path="playground"
-                />
-                <Route
-                    component={Profile}
-                    onEnter={isLoggedIn}
-                    path="profile(/:userId)"
                 />
                 <Route
                     component={Search}

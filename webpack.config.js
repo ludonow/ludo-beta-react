@@ -7,6 +7,7 @@ const webpack = require('webpack');
 
 const PATHS = {
     build: path.resolve(__dirname, 'build'),
+    favicon: path.resolve(__dirname, 'src', 'favicon.ico'),
     index: path.resolve(__dirname, 'src', 'js', 'app', 'index.js'),
     images: path.resolve(__dirname, 'src', 'images'),
     imagesbuild: path.resolve(__dirname, 'build', 'images'),
@@ -116,7 +117,8 @@ switch(process.env.npm_lifecycle_event) {
                 }
             },
             parts.clean(PATHS.build),
-            parts.copyImages(PATHS.images, PATHS.imagesbuild),
+            parts.copyFiles(PATHS.images, PATHS.imagesbuild),
+            parts.copyFiles(PATHS.favicon, PATHS.build),
             parts.setFreeVariable(
                 'process.env.NODE_ENV',
                 'production'
@@ -134,7 +136,7 @@ switch(process.env.npm_lifecycle_event) {
             {
                 devtool: 'eval-source-map'
             },
-            parts.copyImages(PATHS.images, PATHS.imagesbuild),
+            parts.copyFiles(PATHS.images, PATHS.imagesbuild),
             parts.devServer({
                 // Customize host/port here if needed
                 host: process.env.HOST,

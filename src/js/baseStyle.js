@@ -65,6 +65,19 @@ export const CustomScrollBarCSS = `
     }
 `;
 
+export const PreviewImage = styled.img`
+    height: ${props => props.resizedHeight ? props.resizedHeight + 'px' : '320px'};
+    margin: 0 auto;
+    width: ${props => props.resizedWidth ? props.resizedWidth + 'px' : '250px'};
+`;
+
+export const PreviewWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 15px auto;
+`;
+
 export const StyledAnchor = styled.a`
     color: ${props => props.color ? props.color : 'white'};
     font-family: ${props => props.fontFamily ? props.fontFamily : 'Helvetica'};

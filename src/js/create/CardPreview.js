@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { CustomScrollBarCSS } from '../baseStyle';
 import {
     bonusPeriodIconList,
     getBonusPeriodIndexFromPeriod,
     periodList
-} from '../components/bonusPeriod';
+} from '../assets/bonusPeriod';
+import { labelList } from '../assets/reportInterval';
 import Button from '../components/Button';
-import { CustomScrollBarCSS } from '../baseStyle';
-import { labelList } from './reportInterval';
 import {
     BackPeriodIconWrapper,
     CardBackBackgroundColorList,

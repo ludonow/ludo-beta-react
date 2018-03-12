@@ -2,80 +2,154 @@
 - data (放測試的假資料)
 - images
 - js (主要程式碼)
-    - active
-        - active-for-bystander
-            - ActiveBystanderForm.js
-            - ActiveForBystander.js
-        - active-for-player
-            - ActiveForPlayer.js
-            - ActivePlayerForm.js
-        - ActiveReports.js
-        - CommentBox.js
-        - CommentEditButton.js
-        - CommentExpandMoreButton.js
-        - CommentForm.js
-        - CommentList.js
-        - ReportEditButton.js
-        - ReportExpandMoreButton.js
     - app
-        - header
-            - Header.js
-            - HeaderClock.js
+        - Header
+            - SearchBar
+                - common.js
+                - DesktopSearchBar.js
+                - MobileSearchBar.js
+            - HamburgerIcon.js
             - HeaderFBPhoto.js
-            - HeaderFuel.js
-            - HeaderLevel.js
+            - HeaderFilter.js
+            - HeaderLeft.js
             - HeaderLogin.js
-            - HeaderLogo.js
-            - HeaderMarbles.js
-            - HeaderRate.js
-        - search ([未來刪除]此資料夾之後應該用不到了)
-            - Search.js
-            - SearchCard.js
-        - sidebar 
-            - Sidebar.js
-            - SidebarCreate.js
-            - SidebarFriend.js
-            - SidebarPlayground.js
-            - SidebarProfile.js
-            - SidebarReadPlayground.js
-            - SidebarSportsPlayground.js
+            - HeaderPrevPageArrow.js
+            - HeaderRight.js
+            - index.js
+            - Logo.js
+        - Navbar
+            - common.js
+            - Desktop.js
+            - Mobile.js
         - App.js (API串接大多都在這個檔案裡，僅次於AppRouter，為第二層的component)
         - AppRouter.js (決定哪個網址連到哪個component，最上層的component)
-        - DenounceBox.js (檢舉的小框框)
+        - DenounceBox.js (送出檢舉訊息的彈跳視窗)
+        - FormsyHOCInput.js
         - index.js (產生index.html的js)
         - Login.js (登入頁面)
         - LudoList.js (OpenedForStarter和OpenedForBystander右邊的ludolist)
+        - Main.js
+    - assets
+        - avatarImage.js
+        - bonusPeriod.js
+        - reportInterval.js
+    - Bind
+        - index.js
+    - components
+        - Avatar.js
+        - Button.js
+        - Card.js
+        - CardListLoadingIcon.js
+        - CircleButton.js
+        - DiscardAlert.js
+        - LoadingIcon.js
+        - MobileCardContent.js
+        - StepperCloseIcon.js
+        - TypeSelectButtonList.js
+        - UpDownToggleButton.js
+    - containers
+        - CardListContainer.js
     - create
+        - CreateStepper
+            - Content
+                - BasicDataForm
+                    - CustomHandle.js
+                    - index.js
+                    - ReportIntervaButtonList.js
+                    - Slider.js
+                    - TagList.js
+                    - TextInput.js
+                - index.js
+            - index.js
+            - StepButtonList.js
+        - mobile-create-card
+            - CardTitle.js
+            - CreateFormTextField.js
+            - DayForm.js
+            - MobileCreateCard.js
+            - MobileCreateForm.js
+            - StepButtonList.js
+            - Tags.js
         - Create.js
         - CreateForm.js
-    - friend ([未來使用]此資料夾底下的程式碼目前還沒用到)
-        - Friend.js
-        - FriendList.js
-    - ludo-edit
-        - LudoEdit.js
-        - LudoEditForm.js
-    - opened
-        - opened-for-bystander
-            - OpendBystanderForm.js
-            - OpendForBystander.js
-        - opened-for-starter
-            - OpendForStarter.js
-            - OpendStarterForm.js
+        - Template.js
+        - TemplateForm.js
+    - EmailConfirm
+        - alert.js
+        - index.js
+    - Login
+        - index.js
+    - LoginRecommend
+        - index.js
+    - LudoPage
+        - DesktopReportList
+            - DesktopCommentBox
+                - CommentEditButton.js
+                - CommentExpandMoreButton.js
+                - CommentForm.js
+                - CommentList.js
+                - index.js
+            - DesktopReportDate.js
+            - DesktopReportEditButton.js
+            - DesktopReportExpandMoreButton.js
+            - index.js
+        - DesktopReportPost
+            - Content.js
+            - Draft.js
+            - ErrorMessage.js
+            - ImageUploadAndPreview.js
+            - index.js
+            - ReportPreview.js
+            - StepButtonList.js
+            - ToggleButton.js
+            - VideoPreview.js
+        - MobileReportForm
+            - index.js
+            - MobileImageUpload.js
+            - MobileReportText.js
+            - VideoPreview.js
+        - MobileReportList
+            - MobileCommentBox
+                - MobileCommentList
+                    - index.js
+                    - MobileCommentEditButton.js
+                    - MobileCommentExpandMoreButton.js
+                - index.js
+                - MobileCommentForm.js
+            - MobileReportCard
+                - index.js
+                - MobileReportEditButton.js
+                - MobileReportExpandMoreButton.js
+                - ReportImage.js
+                - ReportTags.js
+                - ReportText.js
+            - index.js
+        - DesktopCardContent.js
+        - index.js
+        - MobilePlayingLudo.js
+        - MobileReadyLudo.js
+        - MobileReportButtonList.js
+    - MyCardList
+        - index.js
     - playground
+        - CardList.js
+        - PersonalCardList.js
         - Playground.js
-        - PlaygroundLudoList.js (跟app資料夾裡的LudoList非常類似，之後重構應該可以合併)
         - QuickStart.js
-    - profile
-        - Profile.js
-        - ProfileCategoryTabs.js
-        - ProfileContent.js
-        - ProfileHistory.js
-        - ProfileLudoCard.js
-        - ProfileLudoList.js
-        - ProfilePrize.js ([未來使用]現在個人頁面還沒有放成就)
-        - ProfileStatistic.js 
+    - Search
+        - index.js
+    - SignUp
+        - index.js
+    - Tutorial
+        - decorators.js
+        - imageList.js
+        - index.js
+        - SlideShow.js
     - axios-config.js
     - axios-fakedata-config.js (連接data資料夾假資料的axios設定，後端功能未完成時使用)
+    - baseStyle.js
+    - baseurl-config.js
+    - LoadingPage.js
 - stylesheets (放CSS和SASS)
     - components
         - _card.scss
@@ -84,9 +158,9 @@
         - _form.scss
         - _friend-list.scss ([未來使用])
         - _header-clock.scss ([未來刪除])
+        - _header-filter.scss
         - _header-fuel.scss
         - _header-level.scss
-        - _header-logo.scss
         - _header-marbles.scss
         - _header-profile.scss
         - _header-rate.scss
@@ -94,6 +168,8 @@
         - _ludo-create-information.scss
         - _ludo-detail-information.scss
         - _marbles.scss
+        - _mobile-create.scss
+        - _mobile-report-form.scss
         - _playground-quick-start.scss
         - _profile-card-single-ludo.scss
         - _profile-card.scss
@@ -102,10 +178,13 @@
         - _profile-ludo.scss
         - _profile-prize.scss
         - _profile-statistic.scss
+        - _report-avatar.scss
         - _report-form.scss
         - _report-list.scss
         - _single-report.scss
+        - _slider.scss
         - _submit-button.scss
+        - _tabs.scss
         - _tags.scss
     - helpers
         - _default.scss
@@ -123,7 +202,28 @@
         - _profile.scss
         - _right-sidebar.scss
     - vendor (第三方套件的css)
+        - font-awesome
+            - _animated.scss
+            - _bordered-pulled.scss
+            - _core.scss
+            - _fixed-width.scss
+            - _icons.scss
+            - _larger.scss
+            - _list.scss
+            - _mixins.scss
+            - _path.scss
+            - _rotated-flipped.scss
+            - _screen-reader.scss
+            - _stacked.scss
+            - _variables.scss
+            - font-awesome.scss
         - fonts
+            - fontawesome-webfont.eot
+            - fontawesome-webfont.svg
+            - fontawesome-webfont.ttf
+            - fontawesome-webfont.woff
+            - fontawesome-webfont.woff2
+            - FontAwesome.otf
             - rw-widgets.eot
             - rw-widgets.svg
             - rw-widgets.ttf
@@ -131,6 +231,12 @@
         - img
             - loader-big.gif
             - loading.gif
+        - rc-slider
+            - custom.css
+            - index.css
+        - rc-tooltip
+            - bootstrap_white.css
+            - bootstrap.css
         - react-widgets
             - bootstrap-theme.scss
             - core.scss
@@ -144,7 +250,7 @@
             - selectlist.scss
             - varaibles.scss
         - react-component-slider.css
-    - ie.scss
+        - react-tabs.scss
     - main.scss (import其他scss)
-    - print.scss
     - screen.scss
+- favicon.ico
