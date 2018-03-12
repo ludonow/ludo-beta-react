@@ -11,6 +11,8 @@ import DesktopReportList from './DesktopReportList/index';
 import DesktopReportPost from './DesktopReportPost/index';
 import MobilePlayingLudo from './MobilePlayingLudo';
 import MobileReadyLudo from './MobileReadyLudo';
+import LudoStageArray from '../../data/LudoStageArray.json';
+import settings_icon from '../../images/active/settings.svg';
 
 const panel_width = window.innerWidth * 0.7;
 
@@ -85,6 +87,23 @@ const ReportTabs = styled.div`
     .panel_report {
         background-color: transparent;
     }
+`;
+const ButtomContainer = styled.div`
+    position:fixed;
+
+    .button1 {
+        bottom: 100px;
+    }
+`;
+
+const SettingsButton = styled.button`
+    position: fixed;
+    height: 40px;
+    width: 40px;
+    bottom: 0;
+    border:none;
+    padding:0px;
+    background:transparent;
 `;
 
 class LudoPage extends Component {
@@ -227,7 +246,7 @@ class LudoPage extends Component {
                                     selectedClassName="selected_panel"
                                 >   
                                     {
-                                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
+                                        router_ludoPageIndex === 1 || router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
                                             <DesktopReportList {...this.props} />    
                                         : null
                                     }
@@ -267,6 +286,9 @@ class LudoPage extends Component {
                                     margin="30px auto"
                                     onClick={this.handleSubmit}
                                 />
+                                <SettingsButton>
+                                    <img src={settings_icon}></img>
+                                </SettingsButton>
                             </ButtonWrapper>
                         :null
                     }

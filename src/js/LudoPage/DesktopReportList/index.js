@@ -18,6 +18,7 @@ import Avatar from '../../components/Avatar';
 import DesktopCommentBox from './DesktopCommentBox/index';
 import DesktopReportEditButton from './DesktopReportEditButton';
 import DesktopReportExpandMoreButton from './DesktopReportExpandMoreButton';
+import LudoStageArray from '../../../data/LudoStageArray.json';
 
 const panel_width = window.innerWidth * 0.7;
 
@@ -640,7 +641,7 @@ class DesktopReportList extends React.Component {
                                                 />
                                                 { reportObject.video ?
                                                     <ReactPlayer
-                                                        controls="true"
+                                                        controls={true}
                                                         url={reportObject.video}
                                                         width="100%"
                                                     />
@@ -662,77 +663,87 @@ class DesktopReportList extends React.Component {
                             )
                         }
                     </ReportList>
-                    <ReportList width={panel_width/2}>
-                        <Avatar
-                            avatarBackgroundColorIndex={comments_nick[player_id][1]}
-                            avatarImageIndex={comments_nick[player_id][0]}
-                            isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
-                            userPhotoUrl={userBasicData.photo}
-                            usedInReport={true}
-                        />
-                        {
-                            this.state.playerReportList.map((reportObject, index) => {
-                                return (
-                                    <SingleReport key={`player-report-${index}`} >
-                                        {
-                                            whoIsUser === 'player' ?
-                                                <DesktopReportEditButton
-                                                    anchorEl={this.state.anchorEl}
-                                                    handleEditTextReportClick={this.handleEditTextReportClick}
-                                                    handleEditImageReportClick={this.handleEditImageReportClick}
-                                                    handleReportDelete={this.handleReportDelete}
-                                                    handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                                                    index={index}
-                                                    isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
-                                                    isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                    onRequestClose={this.handleRequestClose}
-                                                    reportList={playerReportList}
-                                                    whichList="player"
-                                                />
-                                            :
-                                                <DesktopReportExpandMoreButton
-                                                    anchorEl={this.state.anchorEl}
-                                                    handleReportDenounce={this.handleReportDenounce}
-                                                    handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                                                    index={index}
-                                                    isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
-                                                    isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                    onRequestClose={this.handleRequestClose}
-                                                    reportList={playerReportList}
-                                                    whichList="player"
-                                                />
-                                        }
-                                        <ReportContent>
-                                            <div>
-                                                <img
-                                                    className="report-content report-content__image"
-                                                    onClick={this.handleImageLightboxOpen}
-                                                    src={reportObject.image_location}
-                                                />
-                                                { reportObject.video ? 
-                                                    <ReactPlayer
-                                                        controls="true"
-                                                        url={reportObject.video}
-                                                        width="100%"
+                    {   
+                        LudoStageArray[this.props.router_ludoPageIndex] != "OpenedForStarter" ?
+                        
+                        <ReportList width={panel_width/2}>
+                            <Avatar
+                                avatarBackgroundColorIndex={comments_nick[player_id][1]}
+                                avatarImageIndex={comments_nick[player_id][0]}
+                                isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
+                                userPhotoUrl={userBasicData.photo}
+                                usedInReport={true}
+                            />
+                            {
+                                this.state.playerReportList.map((reportObject, index) => {
+                                    return (
+                                        <SingleReport key={`player-report-${index}`} >
+                                            {
+                                                whoIsUser === 'player' ?
+                                                    <DesktopReportEditButton
+                                                        anchorEl={this.state.anchorEl}
+                                                        handleEditTextReportClick={this.handleEditTextReportClick}
+                                                        handleEditImageReportClick={this.handleEditImageReportClick}
+                                                        handleReportDelete={this.handleReportDelete}
+                                                        handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
+                                                        index={index}
+                                                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                                                        isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                        onRequestClose={this.handleRequestClose}
+                                                        reportList={playerReportList}
+                                                        whichList="player"
                                                     />
-                                                    : null
-                                                }
-                                                <div className="report_word" >
-                                                    {reportObject.content}
+                                                :
+                                                    <DesktopReportExpandMoreButton
+                                                        anchorEl={this.state.anchorEl}
+                                                        handleReportDenounce={this.handleReportDenounce}
+                                                        handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                                                        index={index}
+                                                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                                                        isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                        onRequestClose={this.handleRequestClose}
+                                                        reportList={playerReportList}
+                                                        whichList="player"
+                                                    />
+                                            }
+                                            <ReportContent>
+                                                <div>
+                                                    <img
+                                                        className="report-content report-content__image"
+                                                        onClick={this.handleImageLightboxOpen}
+                                                        src={reportObject.image_location}
+                                                    />
+                                                    { reportObject.video ? 
+                                                        <ReactPlayer
+                                                            controls={true}
+                                                            url={reportObject.video}
+                                                            width="100%"
+                                                        />
+                                                        : null
+                                                    }
+                                                    <div className="report_word" >
+                                                        {reportObject.content}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </ReportContent>
-                                        <DesktopCommentBox
-                                            commentListFromDatabase={reportObject.comments}
-                                            reportId={reportObject.report_id}
-                                            whoIsUser={whoIsUser}
-                                            {...this.props}
-                                        />
-                                    </SingleReport>
-                                )}
-                            )
-                        }
-                    </ReportList>
+                                            </ReportContent>
+                                            <DesktopCommentBox
+                                                commentListFromDatabase={reportObject.comments}
+                                                reportId={reportObject.report_id}
+                                                whoIsUser={whoIsUser}
+                                                {...this.props}
+                                            />
+                                        </SingleReport>
+                                    )}
+                                )
+                            }
+                        </ReportList>
+                        : 
+                        <ReportList width={panel_width/2}>
+                            <NoReportText>
+                                <div>對手尋找中！</div>
+                            </NoReportText> 
+                        </ReportList>
+                    }
                     {/* <ReportList width={panel_width/2}>
                         <NoReportText>
                             <div>等等呢！玩家還在努力喔！</div>
