@@ -15,7 +15,6 @@ import HeaderRight from './HeaderRight';
 import Logo from './Logo';
 import MobileSearchBar from './SearchBar/MobileSearchBar';
 import Playground from '../../playground/Playground';
-import Profile from '../../profile/Profile';
 import Create from '../../create/Create';
 
 import { A } from './SearchBar/common';

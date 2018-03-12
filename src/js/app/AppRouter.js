@@ -17,7 +17,6 @@ import LudoPage from '../LudoPage/index.js';
 import MobileReportForm from '../LudoPage/MobileReportForm/index';
 import MyCardList from '../MyCardList/index';
 import Playground from '../playground/Playground';
-import Profile from '../profile/Profile';
 import Search from '../Search/index';
 import SignUp from '../SignUp/index';
 import Template from '../create/Template';
@@ -213,11 +212,6 @@ const AppRouter = () => (
                 <Route
                     component={Playground}
                     path="playground"
-                />
-                <Route
-                    component={Profile}
-                    onEnter={isLoggedIn}
-                    path="profile(/:userId)"
                 />
                 <Route
                     component={Search}

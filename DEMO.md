@@ -12,16 +12,6 @@ RWD做完後，每個功能都再用手機以及平板試試看；
 ### log out
 [FB登出](https://www.youtube.com/watch?v=EPJYJ1zsSJU)
 
-## profile
-[個人頁面](https://www.youtube.com/watch?v=5VqGi69z_8I)   
-- 之前參與過
-- 等待他人加入
-- 正在進行中   
-這三個卡片上面七個icon代表七個種類
-點擊有數字的種類下面會跳出該種類自己有參與的Ludo
-點擊有標題的小卡片會連到該ludo
-在這個頁面測試看看按鈕隨便點會不會出什麼bug
-
 ## ludo
 ### create
 [創立新ludo](https://www.youtube.com/watch?v=U5INU8mKnnM)
