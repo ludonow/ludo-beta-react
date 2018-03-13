@@ -7,6 +7,7 @@ import axios from '../axios-config';
 import { baseUrl } from '../baseurl-config';
 
 import App from './App';
+import BikeFestivalCertificate from '../Certificate/BikeFestival';
 import Bind from '../Bind/index';
 import Create from '../create/Create';
 import EmailConfirm from '../EmailConfirm/index';
@@ -234,6 +235,20 @@ const AppRouter = () => (
                     path="tutorial/slide-show"
                 />
             </Route>
+            <Route
+                getComponent={(nextState, cb) => {
+                    cb(
+                        null,
+                        props =>
+                            <BikeFestivalCertificate
+                                {...props}
+                                currentLudoData={router_currentFormValue}
+                            />
+                    );
+                }}
+                onEnter={ludoRedirect}
+                path="certificate/bike-festival/:ludo_id"
+            />
         </Router>
         <MediaQuery minWidth={768}>
             <MessengerCustomerChat
