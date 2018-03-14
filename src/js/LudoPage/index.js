@@ -286,9 +286,9 @@ class LudoPage extends Component {
                                     margin="30px auto"
                                     onClick={this.handleSubmit}
                                 />
-                                <SettingsButton>
+                                {/* <SettingsButton>
                                     <img src={settings_icon}></img>
-                                </SettingsButton>
+                                </SettingsButton> */}
                             </ButtonWrapper>
                         :null
                     }
