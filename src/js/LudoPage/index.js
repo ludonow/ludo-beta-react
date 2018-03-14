@@ -13,12 +13,18 @@ import MobilePlayingLudo from './MobilePlayingLudo';
 import MobileReadyLudo from './MobileReadyLudo';
 import LudoStageArray from '../../data/LudoStageArray.json';
 import settings_icon from '../../images/active/settings.svg';
+import cancel_settings_icon from '../../images/active/cancel_settings.svg';
 
 const panel_width = window.innerWidth * 0.7;
 
 const ButtonWrapper = styled.div`
     bottom: 0;
     position: fixed;
+    display:flex;
+
+    .no-position-fixed {
+        position:relative !important;
+    }
 `;
 
 const CardDetailContainer = styled.div`
@@ -88,21 +94,15 @@ const ReportTabs = styled.div`
         background-color: transparent;
     }
 `;
-const ButtomContainer = styled.div`
-    position:fixed;
-
-    .button1 {
-        bottom: 100px;
-    }
-`;
 
 const SettingsButton = styled.button`
-    position: fixed;
+    /* position: fixed; */
     height: 40px;
     width: 40px;
     bottom: 0;
     border:none;
     padding:0px;
+    margin-top:30px;
     background:transparent;
 `;
 
@@ -112,8 +112,10 @@ class LudoPage extends Component {
         this.state = {
             isDeleteButtonDisabled: false,
             isJoinButtonDisabled: false,
+            showDeleteButton:false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changeButton = this.changeButton.bind(this);
     }
 
     componentWillMount() {
@@ -122,6 +124,11 @@ class LudoPage extends Component {
 
     componentWillUnmount() {
         this.props.handleIsOpeningActivePage(false);
+    }
+
+    changeButton(event) {
+        event.preventDefault();
+        this.setState({showDeleteButton: !this.state.showDeleteButton})
     }
 
     handleSubmit(event) {
@@ -280,6 +287,35 @@ class LudoPage extends Component {
                     {
                         router_ludoPageIndex === 1 ?
                             <ButtonWrapper>
+<<<<<<< HEAD
+                                {
+                                    this.state.showDeleteButton ?
+                                    <Button
+                                        disabled={isDeleteButtonDisabled}
+                                        label="刪除戰局"
+                                        margin="30px auto"
+                                        backgroundColor="#FF6060"
+                                        onClick={this.handleSubmit}
+                                    />
+                                    :
+                                    <DesktopReportPost
+                                        currentUserId={currentUserId}
+                                        handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
+                                        handleShouldReportUpdate={this.props.handleShouldReportUpdate}
+                                        ludoId={params.ludo_id}
+                                        router_currentFormValue={router_currentFormValue}
+                                        className="no-position-fixed"
+                                    />
+                                }
+                                <SettingsButton onClick={this.changeButton}>
+                                {
+                                    this.state.showDeleteButton ?
+                                    <img src={cancel_settings_icon}></img>
+                                    :
+                                    <img src={settings_icon}></img>
+                                }
+                                </SettingsButton>
+=======
                                 <Button
                                     disabled={isDeleteButtonDisabled}
                                     label="刪除戰局"
@@ -289,6 +325,7 @@ class LudoPage extends Component {
                                 {/* <SettingsButton>
                                     <img src={settings_icon}></img>
                                 </SettingsButton> */}
+>>>>>>> 93887a0cfce91443adcc07f78f1271ddc65a04ea
                             </ButtonWrapper>
                         :null
                     }
