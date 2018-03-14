@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import cameraIconSrc from '../../images/active/camera-icon.png';
-import videoIconSrc from '../../images/active/video-icon.png';
+
+import cameraIconSrc from '../../images/camera-icon.png';
+import videoIconSrc from '../../images/video-icon.png';
 
 const defaultIconInfoList = [
     {

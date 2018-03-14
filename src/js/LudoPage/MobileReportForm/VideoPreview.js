@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import TextField from 'material-ui/TextField';
 
-import videoIconSrc from '../../../images/active/video-icon.png';
+import videoIconSrc from '../../../images/video-icon.png';
 
 const IconWrapper = styled.div`
     display: flex;
