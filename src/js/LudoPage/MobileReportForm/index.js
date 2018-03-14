@@ -7,6 +7,11 @@ import MobileImageUpload from './MobileImageUpload';
 import MobileReportText from './MobileReportText';
 import VideoPreview from './VideoPreview';
 
+const FormWrapper = styled.div`
+    margin-bottom: 70px;
+    padding: 5%;
+`;
+
 const ReportButtonWrapper = styled.div`
     bottom: 0;
     padding: 0.8rem 0;
@@ -153,7 +158,6 @@ export default class MobileReportForm extends Component {
         });
     }
 
-    /* components/mobile-report-form.scss */
     render() {
         const {
             content,
@@ -163,7 +167,7 @@ export default class MobileReportForm extends Component {
 
         return (
             <form>
-                <div className="mobile-report-form">
+                <FormWrapper>
                     <MobileReportText
                         onChange={this.handleTextChange}
                         content={content}
@@ -173,7 +177,7 @@ export default class MobileReportForm extends Component {
                         handleVideoChange={this.handleVideoChange}
                         video={video}
                     />
-                </div>
+                </FormWrapper>
                 <ReportButtonComponent
                     onClick={this.handleButtonClick}
                     disabled={isReportButtonDisabled}
