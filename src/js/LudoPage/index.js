@@ -215,6 +215,7 @@ class LudoPage extends Component {
         const {
             isDeleteButtonDisabled,
             isJoinButtonDisabled,
+            showDeleteButton,
         } = this.state;
         return (
             <CardDetailContainer>
@@ -287,45 +288,33 @@ class LudoPage extends Component {
                     {
                         router_ludoPageIndex === 1 ?
                             <ButtonWrapper>
-<<<<<<< HEAD
                                 {
-                                    this.state.showDeleteButton ?
-                                    <Button
-                                        disabled={isDeleteButtonDisabled}
-                                        label="刪除戰局"
-                                        margin="30px auto"
-                                        backgroundColor="#FF6060"
-                                        onClick={this.handleSubmit}
-                                    />
+                                    showDeleteButton ?
+                                        <Button
+                                            disabled={isDeleteButtonDisabled}
+                                            label="刪除戰局"
+                                            margin="30px auto"
+                                            backgroundColor="#FF6060"
+                                            onClick={this.handleSubmit}
+                                        />
                                     :
-                                    <DesktopReportPost
-                                        currentUserId={currentUserId}
-                                        handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
-                                        handleShouldReportUpdate={this.props.handleShouldReportUpdate}
-                                        ludoId={params.ludo_id}
-                                        router_currentFormValue={router_currentFormValue}
-                                        className="no-position-fixed"
-                                    />
+                                        <DesktopReportPost
+                                            currentUserId={currentUserId}
+                                            handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
+                                            handleShouldReportUpdate={this.props.handleShouldReportUpdate}
+                                            ludoId={params.ludo_id}
+                                            router_currentFormValue={router_currentFormValue}
+                                            className="no-position-fixed"
+                                        />
                                 }
                                 <SettingsButton onClick={this.changeButton}>
-                                {
-                                    this.state.showDeleteButton ?
-                                    <img src={cancel_settings_icon}></img>
-                                    :
-                                    <img src={settings_icon}></img>
-                                }
+                                    {
+                                        showDeleteButton ?
+                                            <img src={cancel_settings_icon} />
+                                        :
+                                            <img src={settings_icon} />
+                                    }
                                 </SettingsButton>
-=======
-                                <Button
-                                    disabled={isDeleteButtonDisabled}
-                                    label="刪除戰局"
-                                    margin="30px auto"
-                                    onClick={this.handleSubmit}
-                                />
-                                {/* <SettingsButton>
-                                    <img src={settings_icon}></img>
-                                </SettingsButton> */}
->>>>>>> 93887a0cfce91443adcc07f78f1271ddc65a04ea
                             </ButtonWrapper>
                         :null
                     }
