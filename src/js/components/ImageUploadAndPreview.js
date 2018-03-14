@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import DropZone from 'react-dropzone';
+import Lightbox from 'react-image-lightbox';
 
-import cameraIconSrc from '../../../images/active/camera-icon.png';
-import axios from '../../axios-config';
-import Button from '../../components/Button';
+import cameraIconSrc from '../../images/camera-icon.png';
+import axios from '../axios-config';
+import Button from './Button';
 
 const DropZoneWrapper = styled.div`
     cursor: pointer;
@@ -24,7 +25,10 @@ const ImageZoneWrapper = styled.div`
     align-items: center;
     display: flex;
     justify-content: center;
-    width: 35vw;
+
+    @media (min-width: 769px) {
+        width: 35vw;
+    }
 `;
 
 const PreviewImage = styled.img`
@@ -45,8 +49,14 @@ const MAX_WIDTH = 250;
 class ImageUploadAndPreview extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            enlargeImageLocation: '',
+            isImageLightBoxOpen: false,
+        };
         this.handleDrop = this.handleDrop.bind(this);
         // this.handleImageUpload = this.handleImageUpload.bind(this);
+        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
+        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
         this.handleImagePreview = this.handleImagePreview.bind(this);
         this.resizePreviewImage = this.resizePreviewImage.bind(this);
     }
@@ -96,6 +106,19 @@ class ImageUploadAndPreview extends Component {
     //     });
     // }
 
+    handleImageLightboxClose() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
+    }
+
+    handleImageLightboxOpen(event) {
+        this.setState({
+            enlargeImageLocation: event.currentTarget.src,
+            isImageLightBoxOpen: true
+        });
+    }
+
     handleImagePreview(imageUrl) {
         const image = new Image();
         image.src = imageUrl;
@@ -133,6 +156,11 @@ class ImageUploadAndPreview extends Component {
             resizedWidth,
         } = this.props;
 
+        const {
+            enlargeImageLocation,
+            isImageLightBoxOpen,
+        } = this.state;
+
         if (images.length === 0) {
             if (imageLocation) {
                 return (
@@ -144,19 +172,19 @@ class ImageUploadAndPreview extends Component {
                                 resizedWidth={resizedWidth}
                                 src={imageLocation}
                             />
-                                <DropZone
-                                    accept="image/jpeg, image/png"
-                                    maxSize={100*1024*1024}
-                                    multiple={false}
-                                    onDrop={this.handleDrop}
-                                    style={{}}
-                                >
-                                    <Button
-                                        backgroundColor="#FF6E6E"
-                                        fontSize="0.7rem"
-                                        label="重新上傳"
-                                    />
-                                </DropZone>
+                            <DropZone
+                                accept="image/jpeg, image/png"
+                                maxSize={100*1024*1024}
+                                multiple={false}
+                                onDrop={this.handleDrop}
+                                style={{}}
+                            >
+                                <Button
+                                    backgroundColor="#FF6E6E"
+                                    fontSize="0.7rem"
+                                    label="重新上傳"
+                                />
+                            </DropZone>
                         </PreviewWrapper>
                     </ImageZoneWrapper>
                 )
@@ -192,25 +220,33 @@ class ImageUploadAndPreview extends Component {
                 <ImageZoneWrapper>
                     <PreviewWrapper>
                         <PreviewImage
-                            onClick={this.handleImageEnlargeOpen}
+                            onClick={this.handleImageLightboxOpen}
                             resizedHeight={resizedHeight}
                             resizedWidth={resizedWidth}
                             src={userSelectedImage.preview}
                         />
-                            <DropZone
-                                accept="image/jpeg, image/png"
-                                maxSize={100*1024*1024}
-                                multiple={false}
-                                onDrop={this.handleDrop}
-                                style={{}}
-                            >
-                                <Button
-                                    backgroundColor="#FF6E6E"
-                                    fontSize="0.7rem"
-                                    label="重新上傳"
-                                />
-                            </DropZone>
+                        <DropZone
+                            accept="image/jpeg, image/png"
+                            maxSize={100*1024*1024}
+                            multiple={false}
+                            onDrop={this.handleDrop}
+                            style={{}}
+                        >
+                        <Button
+                            backgroundColor="#FF6E6E"
+                            fontSize="0.7rem"
+                            label="重新上傳"
+                        />
+                        </DropZone>
                     </PreviewWrapper>
+                    {
+                        isImageLightBoxOpen ?
+                            <Lightbox
+                                mainSrc={enlargeImageLocation}
+                                onCloseRequest={this.handleImageLightboxClose}
+                            />
+                        : null
+                    }
                 </ImageZoneWrapper>
             );
         }

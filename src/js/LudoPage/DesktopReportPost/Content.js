@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import TypeSelectButtonList from '../../components/TypeSelectButtonList';
-import Draft from './Draft';
+import Draft from '../../components/Draft';
 import ErrorMessage from './ErrorMessage';
 import ReportPreview from './ReportPreview';
 

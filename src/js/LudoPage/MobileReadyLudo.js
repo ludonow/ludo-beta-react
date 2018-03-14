@@ -214,10 +214,12 @@ class MobileReadyLudo extends Component {
 
         const {
             comments_nick,
+            image_location,
             introduction,
             starter_id,
             tags,
             title,
+            video,
         } = router_currentFormValue;
 
         const {
@@ -279,10 +281,12 @@ class MobileReadyLudo extends Component {
                     </TabPanel>
                     <TabPanel>
                         <MobileCardContent
+                            image_location={image_location}
                             introduction={introduction}
                             interval={router_currentFormValue.interval ? Number(router_currentFormValue.interval) : 1}
                             tags={tags}
                             title={title}
+                            video={video}
                         />
                         <SubmitButton
                             handleDeleteClick={this.handleDeleteClick}

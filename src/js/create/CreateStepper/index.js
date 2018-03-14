@@ -180,7 +180,6 @@ class CreateStepper extends Component {
             isCardSubmitButtonDisabled: true,
             isSubmitting: true,
         });
-        const { contentType } = this.state;
         if (!this.props.currentUserId) {
             if (window.confirm('登入後即可發佈卡片！點選「確定」後進入登入頁面。')) {
                 browserHistory.push('/login');
@@ -191,6 +190,7 @@ class CreateStepper extends Component {
             }
         } else {
             const {
+                contentType,
                 images,
                 ludoCreateForm,
             } = this.state;
@@ -207,8 +207,8 @@ class CreateStepper extends Component {
                     if (response.data.status === '200') {
                         return response.data.location;
                     } else {
-                        console.error('CreateStepper handleTemplateSubmit response status from server is not OK, which is: ', response);
-                        const errorMessage = 'CreateStepper handleTemplateSubmit response message from server: ' + response.data.message;
+                        console.error('CreateStepper handleCardSubmit response status from server is not OK, which is: ', response);
+                        const errorMessage = 'CreateStepper handleCardSubmit response message from server: ' + response.data.message;
                         throw new Error(errorMessage);
                     }
                 })
@@ -971,6 +971,7 @@ class CreateStepper extends Component {
                         interval={interval}
                         introduction={introduction}
                         isAtTemplatePage={isAtTemplatePage}
+                        isSubmitting={isSubmitting}
                         period={period}
                         resizedHeight={resizedHeight}
                         resizedWidth={resizedWidth}

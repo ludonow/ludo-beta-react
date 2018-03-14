@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button';
-import LoadingIcon from '../../components/LoadingIcon';
 import { ButtonListWrapper } from '../../baseStyle';
 
 const StepButtonList = ({
@@ -47,7 +46,7 @@ const StepButtonList = ({
                     <Button
                         backgroundColor={'#B1B1B1'}
                         data="text"
-                        label="文字回報"
+                        label="純文字"
                         onClick={handleContentTypeSelect}
                     />
                 </ButtonListWrapper>
@@ -146,11 +145,6 @@ const StepButtonList = ({
                                 padding="8px"
                                 width="100px"
                             />
-                        : null
-                    }
-                    {
-                        isSubmitting ?
-                            <LoadingIcon />
                         : null
                     }
                 </ButtonListWrapper>

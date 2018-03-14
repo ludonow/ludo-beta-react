@@ -3,14 +3,21 @@ import DropZone from 'react-dropzone';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
-import { CustomScrollBarCSS } from '../../baseStyle';
+import { CustomScrollBarCSS } from '../baseStyle';
 import ImageUploadAndPreview from './ImageUploadAndPreview';
 import VideoPreview from './VideoPreview';
 
 // styled-components
 const ImageDraftWrapper = styled.div`
-    display: inline-flex;
     width: 100%;
+
+    @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+    }
+    @media (min-width: 769px) {
+        display: inline-flex;
+    }
 `;
 
 const TextAreaWrapper = styled.div`
