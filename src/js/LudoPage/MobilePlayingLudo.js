@@ -74,9 +74,6 @@ class MobilePlayingLudo extends Component {
             tags,
             title,
         } = router_currentFormValue;
-        console.log(starter_id);
-        console.log(currentUserId);
-        console.log(player_id);
         return (
             <div>
                 <DarkBackGround display={this.state.isShowingDarkBackGround} />

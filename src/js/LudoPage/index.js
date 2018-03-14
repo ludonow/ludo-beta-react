@@ -287,6 +287,7 @@ class LudoPage extends Component {
                     {
                         router_ludoPageIndex === 1 ?
                             <ButtonWrapper>
+<<<<<<< HEAD
                                 {
                                     this.state.showDeleteButton ?
                                     <Button
@@ -314,6 +315,17 @@ class LudoPage extends Component {
                                     <img src={settings_icon}></img>
                                 }
                                 </SettingsButton>
+=======
+                                <Button
+                                    disabled={isDeleteButtonDisabled}
+                                    label="刪除戰局"
+                                    margin="30px auto"
+                                    onClick={this.handleSubmit}
+                                />
+                                {/* <SettingsButton>
+                                    <img src={settings_icon}></img>
+                                </SettingsButton> */}
+>>>>>>> 93887a0cfce91443adcc07f78f1271ddc65a04ea
                             </ButtonWrapper>
                         :null
                     }
