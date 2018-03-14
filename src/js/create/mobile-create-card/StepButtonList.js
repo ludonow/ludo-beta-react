@@ -1,59 +1,27 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { ButtonListWrapper } from '../../baseStyle';
+import Button from '../../components/Button';
+
+const StyledButtonListWrapper = ButtonListWrapper.extend`
+    button {
+        font-size: 16px;
+        margin: 0 10px;
+        padding: 8px 0;
+    }
+`;
+
 const DeleteButtonStyle = {
     backgroundColor: '#f24150',
     marginTop: '10px'
 };
 
-// child components
-class StepButton extends Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(event) {
-        event.preventDefault();
-        this.props.handleStepChange(this.props.stepVariation);
-    }
-
-    render() {
-        const {
-            disabled,
-            label
-        } = this.props;
-        return (
-            <button
-                className="ludo-button disabled-button"
-                disabled={disabled}
-                onClick={this.handleClick}
-            >
-                {label}
-            </button>
-        );
-    }
-}
-
-const SubmitButton = ({
-    deleteButton,
-    disabled,
-    handleClick,
-    label
-}) => (
-    <button
-        className="ludo-button disabled-button"
-        disabled={disabled}
-        onClick={handleClick}
-        style={deleteButton ? DeleteButtonStyle : {}}
-    >
-        {label}
-    </button>
-);
-
 const StepButtonList = ({
     handleCardSubmit,
-    handleStepChange,
+    handleContentTypeSelect,
+    handleStepNext,
+    handleStepPrev,
     handleTemplateDelete,
     handleTemplateModify,
     handleTemplateSubmit,
@@ -61,92 +29,115 @@ const StepButtonList = ({
     isCreatedByCurrentUser,
     isLudoSubmitButtonDisabled,
     isNextStepButtonDisabled,
+    isPreviewButtonDisabled,
     isTemplateDeleteButtonDisabled,
     isTemplateSubmitButtonDisabled,
     maxStep,
-    step
+    step,
 }) => {
     switch (step) {
         case 0:
             return (
-                <div className="button-container">
-                    <StepButton
+                <StyledButtonListWrapper>
+                    <Button
                         disabled={isNextStepButtonDisabled}
-                        handleStepChange={handleStepChange}
                         label="下一步"
-                        stepVariation={1}
+                        onClick={handleStepNext}
                     />
-                </div>
+                </StyledButtonListWrapper>
             );
         case 1:
             return (
-                <div className="button-container">
-                    <StepButton
-                        handleStepChange={handleStepChange}
+                <StyledButtonListWrapper>
+                    <Button
                         label="上一步"
-                        stepVariation={-1}
+                        onClick={handleStepPrev}
                     />
-                    <StepButton
+                    <Button
                         disabled={isNextStepButtonDisabled}
-                        handleStepChange={handleStepChange}
                         label="下一步"
-                        stepVariation={1}
+                        onClick={handleStepNext}
                     />
-                </div>
+                </StyledButtonListWrapper>
             );
         case 2:
             return (
-                <div className="button-container">
-                    <StepButton
-                        handleStepChange={handleStepChange}
+                <StyledButtonListWrapper>
+                    <Button
                         label="上一步"
-                        stepVariation={-1}
+                        onClick={handleStepPrev}
                     />
-                    <StepButton
-                        disabled={isNextStepButtonDisabled}
-                        handleStepChange={handleStepChange}
-                        label="預覽"
-                        stepVariation={1}
+                    <Button
+                        data="text"
+                        label="純文字"
+                        onClick={handleContentTypeSelect}
                     />
-                </div>
+                </StyledButtonListWrapper>
             );
         case 3:
             return (
-                <div className="button-container">
-                    <SubmitButton
-                        handleClick={handleTemplateModify}
+                <StyledButtonListWrapper>
+                    <Button
+                        label="上一步"
+                        onClick={handleStepPrev}
+                    />
+                    <Button
+                        disabled={isNextStepButtonDisabled}
+                        label="下一步"
+                        onClick={handleStepNext}
+                    />
+                </StyledButtonListWrapper>
+            );
+        case 4:
+            return (
+                <StyledButtonListWrapper>
+                    <Button
+                        label="上一步"
+                        onClick={handleStepPrev}
+                    />
+                    <Button
+                        disabled={isPreviewButtonDisabled}
+                        label="預覽"
+                        onClick={handleStepNext}
+                    />
+                </StyledButtonListWrapper>
+            );
+        case 5:
+            return (
+                <StyledButtonListWrapper>
+                    <Button
                         label="修改"
-                        stepVariation={-1}
+                        onClick={handleTemplateModify}
                     />
                     {
                         !isAtTemplatePage ?
-                            <SubmitButton
+                            <Button
                                 disabled={isTemplateSubmitButtonDisabled}
                                 label="建立模板"
-                                handleClick={handleTemplateSubmit}
+                                onClick={handleTemplateSubmit}
                             />
                         : null
                     }
                     {
                         isAtTemplatePage ?
-                            <SubmitButton
+                            <Button
                                 disabled={isLudoSubmitButtonDisabled}
                                 label="開始玩囉"
-                                handleClick={handleCardSubmit}
+                                onClick={handleCardSubmit}
                             />
                         : null
                     }
                     {
                         isAtTemplatePage && isCreatedByCurrentUser ?
-                            <SubmitButton
+                            <Button
                                 deleteButton
                                 disabled={isTemplateDeleteButtonDisabled}
                                 label="刪除模板"
-                                handleClick={handleTemplateDelete}
+                                onClick={handleTemplateDelete}
                             />
                         : null
                     }
-                </div>
+                </StyledButtonListWrapper>
             );
         default:
             return (

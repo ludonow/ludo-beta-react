@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import ReactPlayer from 'react-player';
 
-import videoIconSrc from '../../../images/active/video-icon.png';
-import { PreviewImage, PreviewWrapper } from '../../baseStyle';
+import videoIconSrc from '../../images/video-icon.png';
+import {
+    PreviewImage,
+    PreviewWrapper,
+} from '../baseStyle';
 
 const IconWrapper = styled.div`
     text-align: center;
@@ -13,7 +16,10 @@ const IconWrapper = styled.div`
 const VideoPreviewWrapper = styled.div`
     margin: 0 2vw;
     max-height: 40vh;
-    width: 40vw;
+
+    @media (min-width: 769px) {
+        width: 40vw;
+    }
 `;
 
 const VideoPreview = ({

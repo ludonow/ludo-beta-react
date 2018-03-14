@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
+import ReactPlayer from 'react-player';
 import { cyan800, deepOrange200, grey800 } from 'material-ui/styles/colors';
 
 const RoundRadiusTag = styled.span`
@@ -15,6 +16,16 @@ const CardContentWrapper = styled.div`
     color: white;
 `;
 
+const CardImage = styled.div`
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 200px;
+    }
+`;
+
 const CardInterval = styled.div`
     display: flex;
     flex-flow: row wrap;
@@ -28,7 +39,7 @@ const CardIntroduction = styled.div`
     font-size: 0.8rem;
     font-weight: bold;
     line-height: 1.3;
-    margin-bottom: 70px;
+    margin: 30px auto 70px auto;
     white-space: pre-line;
 `;
 
@@ -53,6 +64,9 @@ const CardTag = RoundRadiusTag.extend`
     margin: 5px;
 `;
 
+const CardVideo = styled.div`
+`;
+
 const IntervalTag = RoundRadiusTag.extend`
     display: flex;
     align-items: center;
@@ -60,35 +74,82 @@ const IntervalTag = RoundRadiusTag.extend`
     background-color: ${deepOrange200};
 `;
 
-const MobileCardContent = ({
-    interval,
-    introduction,
-    tags,
-    title
-}) => (
-    <CardContentWrapper>
-        <CardTitle>
-            {title}
-        </CardTitle>
-        <CardTags>
-            {
-                tags.map((tag, index) => (
-                    <CardTag
-                        key={`introducton-${index}`}
-                    >
-                        #{tag}
-                    </CardTag>
-                ))
-            }
-        </CardTags>
-        <CardInterval>
-            <IntervalTag>每{interval}天回報</IntervalTag>
-        </CardInterval>
-        <CardIntroduction>
-            {introduction}
-        </CardIntroduction>
-    </CardContentWrapper>
-);
+class MobileCardContent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isImageLightBoxOpen: false,
+        };
+        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
+        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
+    }
+
+    handleImageLightboxClose() {
+        this.setState({
+            isImageLightBoxOpen: false
+        });
+    }
+
+    handleImageLightboxOpen() {
+        this.setState({
+            isImageLightBoxOpen: true
+        });
+    }
+
+    render() {
+        const {
+            image_location,
+            interval,
+            introduction,
+            tags,
+            title,
+            video,
+        } = this.props;
+        return (
+            <CardContentWrapper>
+                <CardTitle>
+                    {title}
+                </CardTitle>
+                <CardTags>
+                    {
+                        tags.map((tag, index) => (
+                            <CardTag
+                                key={`introducton-${index}`}
+                            >
+                                #{tag}
+                            </CardTag>
+                        ))
+                    }
+                </CardTags>
+                <CardInterval>
+                    <IntervalTag>每{interval}天回報</IntervalTag>
+                </CardInterval>
+                {
+                    video ?
+                        <CardVideo>
+                            <ReactPlayer
+                                url={video}
+                            />
+                        </CardVideo>
+                    : null
+                }
+                {
+                    image_location ?
+                        <CardImage>
+                            <img
+                                onClick={this.handleImageLightboxOpen}
+                                src={image_location}
+                            />
+                        </CardImage>
+                    : null
+                }
+                <CardIntroduction>
+                    {introduction}
+                </CardIntroduction>
+            </CardContentWrapper>
+        );
+    }
+}
 
 MobileCardContent.propTypes = {
     interval: PropTypes.number.isRequired,

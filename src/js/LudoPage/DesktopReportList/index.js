@@ -11,7 +11,6 @@ import Popover from 'material-ui/Popover';
 import ReactPlayer from 'react-player';
 import Textarea from 'react-textarea-autosize';
 
-import uploadIcon from '../../../images/active/upload-icon.png';
 import axios from '../../axios-config';
 import { labelList } from '../../assets/reportInterval'; 
 import Avatar from '../../components/Avatar';

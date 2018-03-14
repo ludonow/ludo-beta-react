@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
-import Tags from './Tags';
+import TagList from './TagList';
 
 // override material ui
 const hintStyle = {
@@ -22,14 +22,8 @@ export default class CreateFormTextField extends Component {
         this.state = {
             typingTag: ''
         };
-        this.handleIntroductionChange = this.handleIntroductionChange.bind(this);
         this.handleTagInputChange = this.handleTagInputChange.bind(this);
         this.handleTagInputKeyUp = this.handleTagInputKeyUp.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
-    }
-
-    handleIntroductionChange(event) {
-        this.props.handleIntroductionChange(event.currentTarget.value);
     }
 
     handleTagInputChange(event) {
@@ -51,23 +45,21 @@ export default class CreateFormTextField extends Component {
         }
     }
 
-    handleTitleChange(event) {
-        this.props.handleTitleChange(event.currentTarget.value);
-    }
-
     render() {
         const {
+            handleIntroductionChange,
             handleTagDelete,
+            handleTitleChange,
             introduction,
+            tags,
             title,
-            tags
         } = this.props;
         return (
             <div className="mobile-create-form">
                 <TextField
                     fullWidth
                     hintText="標題名稱(必填)"
-                    onChange={this.handleTitleChange}
+                    onChange={handleTitleChange}
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
                     value={title}
@@ -77,7 +69,7 @@ export default class CreateFormTextField extends Component {
                     hintStyle={hintStyle}
                     hintText="簡介(必填)"
                     multiLine
-                    onChange={this.handleIntroductionChange}
+                    onChange={handleIntroductionChange}
                     rows={10}
                     rowsMax={10}
                     underlineFocusStyle={styles.underlineStyle}
@@ -93,7 +85,7 @@ export default class CreateFormTextField extends Component {
                     underlineFocusStyle={styles.underlineStyle}
                     underlineStyle={styles.underlineStyle}
                 />
-                <Tags
+                <TagList
                     handleTagDelete={handleTagDelete}
                     tags={tags}
                 />

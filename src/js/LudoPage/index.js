@@ -296,9 +296,15 @@ class LudoPage extends Component {
                 <MediaQuery maxWidth={768}>
                     {
                         router_ludoPageIndex < 3 ?
-                            <MobileReadyLudo {...this.props} />
+                            <MobileReadyLudo
+                                router_currentFormValue={router_currentFormValue}
+                                {...this.props}
+                            />
                         :
-                            <MobilePlayingLudo {...this.props} />
+                            <MobilePlayingLudo
+                                router_currentFormValue={router_currentFormValue}
+                                {...this.props}
+                            />
                     }
                 </MediaQuery>
             </CardDetailContainer>

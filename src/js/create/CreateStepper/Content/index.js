@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import BasicDataForm from './BasicDataForm/index';
 import BonusPeriodSelectForm from '../../BonusPeriodSelectForm';
 import CardPreview from '../../CardPreview';
-import Draft from '../../../LudoPage/DesktopReportPost/Draft';
+import Draft from '../../../components/Draft';
+import LoadingIcon from '../../../components/LoadingIcon';
 import TypeSelectButtonList from '../../../components/TypeSelectButtonList';
 
 const Content = ({
@@ -26,6 +27,7 @@ const Content = ({
     interval,
     introduction,
     isAtTemplatePage,
+    isSubmitting,
     period,
     resizedHeight,
     resizedWidth,
@@ -82,15 +84,22 @@ const Content = ({
             )
         case 4:
             return (
-                <CardPreview
-                    duration={duration}
-                    interval={interval}
-                    introduction={introduction}
-                    isAtTemplatePage={isAtTemplatePage}
-                    period={period}
-                    tags={tags}
-                    title={title}
-                />
+                <div>
+                    {
+                        isSubmitting ?
+                            <LoadingIcon />
+                        :
+                            <CardPreview
+                                duration={duration}
+                                interval={interval}
+                                introduction={introduction}
+                                isAtTemplatePage={isAtTemplatePage}
+                                period={period}
+                                tags={tags}
+                                title={title}
+                            />
+                    }
+                </div>
             )
         default:
             return (

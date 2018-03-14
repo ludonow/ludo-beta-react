@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-const CardTitle = (props) => (
+const CardTitle = ({ title }) => (
     <div className="card-title">
-        {props.title}
+        {title}
     </div>
 );
 

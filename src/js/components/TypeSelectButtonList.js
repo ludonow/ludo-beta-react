@@ -17,20 +17,36 @@ const defaultIconInfoList = [
 ];
 
 const IconButtonListWrapper = styled.div`
-    display: inline-flex;
-    justify-content: center;
     margin-bottom: 50px;
     width: 100%;
+
+    @media (max-width: 768px) {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+    @media (min-width: 769px) {
+        display: inline-flex;
+        justify-content: center;
+    }
 `;
 
 const IconButtonWrapper = styled.div`
     align-items: center;
-    border-left: ${props => props.firstItem ? 'none' : '1px #C9C9C9 solid'};
-    border-right: ${props => props.lastItem ? 'none' : '1px #C9C9C9 solid'};
     display: flex;
-    height: 12.5vw;
     justify-content: center;
     width: 100%;
+
+    @media (max-width: 768px) {
+        border-bottom: ${props => props.lastItem ? 'none' : '1px #C9C9C9 solid'};
+        border-top: ${props => props.firstItem ? 'none' : '1px #C9C9C9 solid'};
+        padding: 30px 0;
+    }
+    @media (min-width: 769px) {
+        border-left: ${props => props.firstItem ? 'none' : '1px #C9C9C9 solid'};
+        border-right: ${props => props.lastItem ? 'none' : '1px #C9C9C9 solid'};
+        height: 12.5vw;
+    }
     
     img {
         cursor: pointer;
@@ -48,7 +64,8 @@ const TypeSelectButtonList = ({
             iconInfoList.map((iconInfo, index) => (
                 <IconButtonWrapper
                     firstItem={index === 0}
-                    lastItem={index === iconInfoList.length}
+                    lastItem={index === (iconInfoList.length - 1)}
+                    key={`type-${index}`}
                 >
                     <img
                         data-payload={iconInfo.payload}
