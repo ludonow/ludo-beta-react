@@ -291,20 +291,20 @@ class LudoPage extends Component {
                                 {
                                     showDeleteButton ?
                                         <Button
+                                            backgroundColor="#FF6060"
                                             disabled={isDeleteButtonDisabled}
                                             label="刪除戰局"
                                             margin="30px auto"
-                                            backgroundColor="#FF6060"
                                             onClick={this.handleSubmit}
                                         />
                                     :
                                         <DesktopReportPost
+                                            className="no-position-fixed"
                                             currentUserId={currentUserId}
                                             handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
                                             handleShouldReportUpdate={this.props.handleShouldReportUpdate}
                                             ludoId={params.ludo_id}
                                             router_currentFormValue={router_currentFormValue}
-                                            className="no-position-fixed"
                                         />
                                 }
                                 <SettingsButton onClick={this.changeButton}>
