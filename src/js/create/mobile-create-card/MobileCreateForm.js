@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import BonusPeriodSelectForm from '../BonusPeriodSelectForm';
 import CardPreview from '../CardPreview';
 import CreateFormTextField from './CreateFormTextField';
 import DayForm from './DayForm';
+import TypeSelectButtonList from '../../components/TypeSelectButtonList';
 
 const MobileCreateForm = ({
     duration,
