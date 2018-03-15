@@ -10,8 +10,8 @@ const AvatarWrapper = styled.div`
     ${props => props.usedInReport ? "position : absolute;" : ""}
     .avatar-in-comments {
         .avatar-container__photo  {
-            height: 40px;
-            width: 40px;
+            height: 35px;
+            width: 35px;
         }
     }
     .avatar-in-report {
