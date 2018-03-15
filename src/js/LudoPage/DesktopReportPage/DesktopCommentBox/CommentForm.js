@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Textarea from 'react-textarea-autosize';
 
 import axios from '../../../axios-config';
+import Avatar from '../../../components/Avatar';
 
 class CommentForm extends Component {
     constructor(props) {
@@ -14,23 +17,30 @@ class CommentForm extends Component {
 
     handleCommentSubmit(event) {
         if (event.keyCode == 13 && !event.shiftKey) {
+            const {
+                currentLudoId,
+                reportId,
+                updateTempCommentList,
+                updateTempCommentListAfterPost,
+            } = this.props;
+
             event.preventDefault();
             const commentContent = event.target.value;
             this.setState({
                 commentContent
             });
-            this.props.updateTempCommentList(commentContent);
+            updateTempCommentList(commentContent);
 
             const commentPost = {
                 'content': commentContent,
-                'ludo_id': this.props.router_currentLudoId,
-                'report_id': this.props.reportId,
+                'ludo_id': currentLudoId,
+                'report_id': reportId,
                 'type': 'report'
             };
             axios.post('/apis/comment', commentPost)
             .then((response) => {
                 if (response.data.status === '200') {
-                    this.props.updateTempCommentListAfterPost(response.data.comment.comments);
+                    updateTempCommentListAfterPost(response.data.comment.comments);
                 } else {
                     console.error('CommentForm post response from server: ', response);
                     console.error('CommentForm post message from server: ', response.data.message);
@@ -48,23 +58,21 @@ class CommentForm extends Component {
     }
 
     render() {
+        const {
+            userPhotoUrl,
+        } = this.props;
+
         return (
             /* components/_comment.scss */
             <div className="single-comment-container">
                 <div className="comment-avatar-container">
-                    {
-                        /* show user's photo */
-                        this.props.currentUserId ?
-                            <img
-                                className="comment__avatar"
-                                src={this.props.userBasicData.photo}
-                            />
-                        :
-                            <img
-                                className="comment__avatar"
-                                src="https://api.fnkr.net/testimg/350x200/00CED1/FFF/?text=img+placeholder"
-                            />
-                    }
+                    <Avatar
+                        avatarBackgroundColorIndex={0}
+                        avatarImageIndex={0}
+                        isThisBelongToCurrentUser={true}
+                        usedInComments={true}
+                        userPhotoUrl={userPhotoUrl}
+                    />
                 </div>
                 <Textarea
                     className="comment__message"
@@ -76,5 +84,13 @@ class CommentForm extends Component {
         );
     }
 }
+
+CommentForm.propTypes = {
+    currentLudoId: PropTypes.string.isRequired,
+    reportId: PropTypes.string.isRequired,
+    updateTempCommentList: PropTypes.func.isRequired,
+    updateTempCommentListAfterPost: PropTypes.func.isRequired,
+    usePhotoUrl: PropTypes.string,
+};
 
 export default CommentForm;

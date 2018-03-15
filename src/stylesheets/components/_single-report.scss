@@ -68,11 +68,6 @@
         }
     }
 }
-    .player-report-comment-box-container {
-        @extend %relative;
-        @extend %bottom;
-        @extend %as_wide_as_parent;
-    }
 
 .report-icon-button {
     @extend %as_wide_as_parent;

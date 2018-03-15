@@ -1,25 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import processString from 'react-process-string';
 import styled from 'styled-components';
-import DropZone from 'react-dropzone';
-import IconButton from 'material-ui/IconButton';
-import Lightbox from 'react-image-lightbox';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
-import Popover from 'material-ui/Popover';
+import LightBox from 'react-image-lightbox';
 import ReactPlayer from 'react-player';
-import Textarea from 'react-textarea-autosize';
 
 import axios from '../../axios-config';
 import { labelList } from '../../assets/reportInterval'; 
-import Avatar from '../../components/Avatar';
-import DesktopCommentBox from './DesktopCommentBox/index';
-import DesktopReportEditButton from './DesktopReportEditButton';
-import DesktopReportExpandMoreButton from './DesktopReportExpandMoreButton';
+import { withEither, withMaybe } from '../../components/higher-order-components/index';
 import LudoStageArray from '../../../data/LudoStageArray.json';
+import ReportList, { ReportListWrapper } from './ReportList';
 
-const panel_width = window.innerWidth * 0.7;
+const panelWidth = window.innerWidth * 0.7;
 
 const CardTitle = styled.div`
     font-size: 20px;
@@ -29,6 +20,29 @@ const CardDays = styled.div`
     display: inline-flex;
     font-size: 15px;
     padding-top: 15px;
+`;
+
+const NoOpponentDescription = styled.div`
+    align-items: center;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0));
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 22.5px;
+    font-weight: 500;
+    height: 291px;
+    justify-content: center;
+    letter-spacing: 14.5px;
+    line-height: 1.22;
+    text-align: center;
+    width: 100%;
+`;
+
+const ReportColumnList = styled.div`
+    align-items: flex-start;
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 15px;
+    width: ${props => props.width}px;
 `;
 
 const ReportCycle = styled.div`
@@ -48,84 +62,37 @@ const ReportCycle = styled.div`
     width: 79px;
 `;
 
-const ReportPanelWrapper = styled.div`
-    display: inline;
-    text-align: center;
-`;
-
-const ReportListContainer = styled.div`
-    align-items: flex-start;
-    display: inline-flex;
-    /* height: 291px; */
-    justify-content: center;
-    margin-top: 15px;
-    width: ${props => props.width}px;
-    /* background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0)); */
-`;
-
-const ReportList = styled.div`
-    /* align-items: center;     */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0 7px;
-    width: ${props => props.width}px;
-`;
-
-const NoReportText = styled.div`
-    align-items: center;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0));
-    color: #ffffff;
-    display: inline-flex;
-    font-size: 22.5px;
-    font-weight: 500;
-    height: 291px;
-    justify-content: center;
-    letter-spacing: 14.5px;
-    line-height: 1.22;
-    text-align: center;
-    width: 100%;
-`;
-
-const SingleReport = styled.div`
-    background: white;
-    display: flex;
-    flex-direction: column;
-    margin: 0 0px 28px 0px;
-    width: 100%;
-`;
-
 const ReportTime = styled.div`
     font-size: 12px;
     margin-top: 52px;
     margin-left: 20px;
 `;
 
-const ReportContent = styled.div`
-    display: flex;
-    font-size: 14px;
-    justify-content: center;
-    line-height: 1.1rem;
-    margin-bottom: 50px;
-    text-align: left;
-    white-space: pre-wrap;
-    width: 100%;
-
-    div {
-        width: 90%;
-    }
-    img {
-        cursor: zoom-in;
-        display: flex;
-        margin-top: 20px;
-        width: 100%;
-    }
-    .report_word {
-        margin: 20px auto 0 auto;
-    }
+const Wrapper = styled.div`
+    display: inline;
+    text-align: center;
 `;
 
-class DesktopReportList extends React.Component {
+// rendering condition function
+const isStageOfCardReady = (props) => props.isStageOfCardReady;
+const nullConditionFn = (props) => !props.isOpen;
+
+// child comopnents
+const LightBoxWithNullCondition = withMaybe(nullConditionFn)(LightBox);
+
+const NoOpponent = ({
+    panelWidth,
+}) => (
+    <ReportListWrapper width={panelWidth/2}>
+        <NoOpponentDescription>
+            對手尋找中！
+        </NoOpponentDescription>
+    </ReportListWrapper>
+);
+
+const PlayerReportListWithNoOpponent = withEither(isStageOfCardReady, NoOpponent)(ReportList);
+
+class DesktopReportPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -287,12 +254,12 @@ class DesktopReportList extends React.Component {
                         if(response.data.status === '200') {
                             this.props.handleShouldReportUpdate(true);
                         } else {
-                            console.error('DesktopReportList handleFinishReportEditText report put else response from server: ', response);
+                            console.error('DesktopReportPage handleFinishReportEditText report put else response from server: ', response);
                             window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                         }
                     })
                     .catch((error) => {
-                        console.error('DesktopReportList handleFinishReportEditText report put error', error);
+                        console.error('DesktopReportPage handleFinishReportEditText report put error', error);
                         window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                     });
                 }
@@ -330,12 +297,12 @@ class DesktopReportList extends React.Component {
                         image_location: response.data.location
                     });
                 } else {
-                    console.error('DesktopReportList handleImageDrop response from server: ', response);
-                    console.error('DesktopReportList handleImageDrop message from server: ', response.data.message);
+                    console.error('DesktopReportPage handleImageDrop response from server: ', response);
+                    console.error('DesktopReportPage handleImageDrop message from server: ', response.data.message);
                 }
             })
             .catch(error => {
-                console.error('DesktopReportList handleImageDrop error', error);
+                console.error('DesktopReportPage handleImageDrop error', error);
             });
         } else if (files.length > 1) {
             this.setState({
@@ -415,12 +382,12 @@ class DesktopReportList extends React.Component {
                     });
                     this.props.handleShouldReportUpdate(true);
                 } else {
-                    console.error('DesktopReportList handleImageReportModifyConfirmClick report put else response from server: ', response);
+                    console.error('DesktopReportPage handleImageReportModifyConfirmClick report put else response from server: ', response);
                     window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
                 }
             })
             .catch( error => {
-                console.error('DesktopReportList handleImageReportModifyConfirmClick report put error', error);
+                console.error('DesktopReportPage handleImageReportModifyConfirmClick report put error', error);
                 window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
             });
         }
@@ -478,7 +445,7 @@ class DesktopReportList extends React.Component {
                 currentTargetReportId: report_id,
             });
         } else {
-            console.error('DesktopReportList handleReportDenounce report_id does not exist');
+            console.error('DesktopReportPage handleReportDenounce report_id does not exist');
         }
         this.setState({
             isPopOverOfExpandMoreOpen: false
@@ -540,6 +507,7 @@ class DesktopReportList extends React.Component {
 
     render() {
         const {
+            anchorEl,
             avatarStyle,
             enlargeImageLocation,
             files,
@@ -552,6 +520,8 @@ class DesktopReportList extends React.Component {
             isEditReportButtonClickable,
             isImageLightBoxOpen,
             isImageUploaded,
+            isPopOverOfEditOpen,
+            isPopOverOfExpandMoreOpen,
             playerReportList,
             starterReportList,
             whoIsUser,
@@ -571,7 +541,9 @@ class DesktopReportList extends React.Component {
 
         const {
             currentUserId,
+            handleShouldReportUpdate,
             router_currentFormValue,
+            router_ludoPageIndex,
             userBasicData,
         } = this.props;
 
@@ -586,186 +558,72 @@ class DesktopReportList extends React.Component {
         const renderedInterval = router_currentFormValue.interval ? Number(router_currentFormValue.interval) : 1;
 
         return (
-            <ReportPanelWrapper>
+            <Wrapper>
                 <CardTitle>{title}</CardTitle>
                 <CardDays>遊戲天數：{duration}天</CardDays>
                 <ReportCycle>{labelList[Number(renderedInterval)-1]}</ReportCycle>
-                <ReportListContainer width={panel_width}>
-                    <ReportList width={panel_width/2}>
-                        <Avatar
-                            avatarBackgroundColorIndex={comments_nick[starter_id][1]}
-                            avatarImageIndex={comments_nick[starter_id][0]}
-                            isThisBelongToCurrentUser={(router_currentFormValue.starter_id == currentUserId)}
-                            userPhotoUrl={userBasicData.photo}
-                            usedInReport={true}
-                        />
-                        {
-                            this.state.starterReportList.map((reportObject, index) => {
-                                return (
-                                    <SingleReport key={`starter-report-${index}`} >
-                                        {
-                                            whoIsUser === 'starter' ?
-                                                <DesktopReportEditButton
-                                                    anchorEl={this.state.anchorEl}
-                                                    handleEditTextReportClick={this.handleEditTextReportClick}
-                                                    handleEditImageReportClick={this.handleEditImageReportClick}
-                                                    handleReportDelete={this.handleReportDelete}
-                                                    handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                                                    index={index}
-                                                    isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
-                                                    isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                    onRequestClose={this.handleRequestClose}
-                                                    reportList={starterReportList}
-                                                    whichList="starter"
-                                                />
-                                            :
-                                                <DesktopReportExpandMoreButton
-                                                    anchorEl={this.state.anchorEl}
-                                                    handleReportDenounce={this.handleReportDenounce}
-                                                    handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                                                    index={index}
-                                                    isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
-                                                    isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                    onRequestClose={this.handleRequestClose}
-                                                    reportList={starterReportList}
-                                                    whichList="starter"
-                                                />
-                                        }
-                                        <ReportContent>
-                                            <div>
-                                                <img
-                                                    className="report-content report-content__image"
-                                                    onClick={this.handleImageLightboxOpen}
-                                                    src={reportObject.image_location}
-                                                />
-                                                { reportObject.video ?
-                                                    <ReactPlayer
-                                                        controls={true}
-                                                        url={reportObject.video}
-                                                        width="100%"
-                                                    />
-                                                    : null
-                                                }
-                                                <div className="report_word" >
-                                                    {reportObject.content}
-                                                </div>
-                                            </div>
-                                        </ReportContent>
-                                        <DesktopCommentBox
-                                            commentListFromDatabase={reportObject.comments}
-                                            reportId={reportObject.report_id}
-                                            whoIsUser={whoIsUser}
-                                            {...this.props}
-                                        />
-                                    </SingleReport>
-                                )}
-                            )
-                        }
-                    </ReportList>
-                    {   
-                        LudoStageArray[this.props.router_ludoPageIndex] != "OpenedForStarter" ?
-                        
-                        <ReportList width={panel_width/2}>
-                            <Avatar
-                                avatarBackgroundColorIndex={comments_nick[player_id][1]}
-                                avatarImageIndex={comments_nick[player_id][0]}
-                                isThisBelongToCurrentUser={(router_currentFormValue.player_id == currentUserId)}
-                                userPhotoUrl={userBasicData.photo}
-                                usedInReport={true}
-                            />
-                            {
-                                this.state.playerReportList.map((reportObject, index) => {
-                                    return (
-                                        <SingleReport key={`player-report-${index}`} >
-                                            {
-                                                whoIsUser === 'player' ?
-                                                    <DesktopReportEditButton
-                                                        anchorEl={this.state.anchorEl}
-                                                        handleEditTextReportClick={this.handleEditTextReportClick}
-                                                        handleEditImageReportClick={this.handleEditImageReportClick}
-                                                        handleReportDelete={this.handleReportDelete}
-                                                        handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                                                        index={index}
-                                                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
-                                                        isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
-                                                        onRequestClose={this.handleRequestClose}
-                                                        reportList={playerReportList}
-                                                        whichList="player"
-                                                    />
-                                                :
-                                                    <DesktopReportExpandMoreButton
-                                                        anchorEl={this.state.anchorEl}
-                                                        handleReportDenounce={this.handleReportDenounce}
-                                                        handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                                                        index={index}
-                                                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
-                                                        isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
-                                                        onRequestClose={this.handleRequestClose}
-                                                        reportList={playerReportList}
-                                                        whichList="player"
-                                                    />
-                                            }
-                                            <ReportContent>
-                                                <div>
-                                                    <img
-                                                        className="report-content report-content__image"
-                                                        onClick={this.handleImageLightboxOpen}
-                                                        src={reportObject.image_location}
-                                                    />
-                                                    { reportObject.video ? 
-                                                        <ReactPlayer
-                                                            controls={true}
-                                                            url={reportObject.video}
-                                                            width="100%"
-                                                        />
-                                                        : null
-                                                    }
-                                                    <div className="report_word" >
-                                                        {reportObject.content}
-                                                    </div>
-                                                </div>
-                                            </ReportContent>
-                                            <DesktopCommentBox
-                                                commentListFromDatabase={reportObject.comments}
-                                                reportId={reportObject.report_id}
-                                                whoIsUser={whoIsUser}
-                                                {...this.props}
-                                            />
-                                        </SingleReport>
-                                    )}
-                                )
-                            }
-                        </ReportList>
-                        : 
-                        <ReportList width={panel_width/2}>
-                            <NoReportText>
-                                <div>對手尋找中！</div>
-                            </NoReportText> 
-                        </ReportList>
-                    }
-                    {/* <ReportList width={panel_width/2}>
-                        <NoReportText>
-                            <div>等等呢！玩家還在努力喔！</div>
-                        </NoReportText> 
-                    </ReportList> */}
-                    {/* <NoReportText>
-                        <div>搶先成為第一個回報的人吧！</div>
-                    </NoReportText> */}
-                </ReportListContainer>
-                {
-                    isImageLightBoxOpen ?
-                        <Lightbox
-                            mainSrc={enlargeImageLocation}
-                            onCloseRequest={this.handleImageLightboxClose}
-                        />
-                    : null
-                }
-            </ReportPanelWrapper>
+                <ReportColumnList width={panelWidth}>
+                    <ReportList
+                        anchorEl={anchorEl}
+                        commentsNick={comments_nick}
+                        currentUserId={currentUserId}
+                        handleEditTextReportClick={this.handleEditTextReportClick}
+                        handleEditImageReportClick={this.handleEditImageReportClick}
+                        handleImageLightboxOpen={this.handleImageLightboxOpen}
+                        handleReportDelete={this.handleReportDelete}
+                        handleReportDenounce={this.handleReportDenounce}
+                        handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
+                        handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                        handleRequestClose={this.handleRequestClose}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                        isMyReport={whoIsUser === 'starter'}
+                        isPopOverOfEditOpen={isPopOverOfEditOpen}
+                        isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
+                        isStageOfCardReady={LudoStageArray[router_ludoPageIndex] === 'OpenedForStarter'}
+                        label="starter"
+                        panelWidth={panelWidth}
+                        reportList={starterReportList}
+                        reportUserId={starter_id}
+                        userPhotoUrl={userBasicData.photo}
+                        {...this.props}
+                    />
+                    <PlayerReportListWithNoOpponent
+                        anchorEl={anchorEl}
+                        commentsNick={comments_nick}
+                        currentUserId={currentUserId}
+                        handleEditTextReportClick={this.handleEditTextReportClick}
+                        handleEditImageReportClick={this.handleEditImageReportClick}
+                        handleImageLightboxOpen={this.handleImageLightboxOpen}
+                        handleReportDelete={this.handleReportDelete}
+                        handleReportDenounce={this.handleReportDenounce}
+                        handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
+                        handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                        handleRequestClose={this.handleRequestClose}
+                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                        isMyReport={whoIsUser === 'player'}
+                        isPopOverOfEditOpen={isPopOverOfEditOpen}
+                        isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
+                        isStageOfCardReady={LudoStageArray[router_ludoPageIndex] === 'OpenedForStarter'}
+                        label="player"
+                        panelWidth={panelWidth}
+                        reportList={playerReportList}
+                        reportUserId={player_id}
+                        userPhotoUrl={userBasicData.photo}
+                        {...this.props}
+                    />
+                </ReportColumnList>
+                <LightBoxWithNullCondition
+                    isOpen={isImageLightBoxOpen}
+                    mainSrc={enlargeImageLocation}
+                    onCloseRequest={this.handleImageLightboxClose}
+                />
+            </Wrapper>
         );
     }
 }
 
-DesktopReportList.defaultProps = {
+DesktopReportPage.defaultProps = {
     'router_currentFormValue': {
         'comments_nick': {
             'a': [0, 0],
@@ -776,4 +634,4 @@ DesktopReportList.defaultProps = {
     }
 }
 
-export default DesktopReportList;
+export default DesktopReportPage;

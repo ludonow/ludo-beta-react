@@ -8,6 +8,12 @@ import {
 
 const AvatarWrapper = styled.div`
     ${props => props.usedInReport ? "position : absolute;" : ""}
+    .avatar-in-comments {
+        .avatar-container__photo  {
+            height: 40px;
+            width: 40px;
+        }
+    }
     .avatar-in-report {
         height: 43px;
         margin-left: -30px;
@@ -28,26 +34,35 @@ const Avatar = ({
     avatarBackgroundColorIndex,
     avatarImageIndex,
     isThisBelongToCurrentUser,
+    usedInComments,
+    usedInReport,
     userPhotoUrl,
-    usedInReport
-}) => (
-    <AvatarWrapper usedInReport={usedInReport}>
-        <div className={usedInReport ? "avatar-in-report" : "avatar-container"}>
-            {
-                isThisBelongToCurrentUser ?
-                    <img
-                        className="avatar-container__photo"
-                        src={userPhotoUrl}
-                    />
-                :
-                    <img
-                        className="avatar-container__photo"
-                        src={animalImageList[avatarImageIndex]}
-                        style={{'backgroundColor': colorList[avatarBackgroundColorIndex]}} 
-                    />
-            }
-        </div>
-    </AvatarWrapper>
-);
+}) => {
+    let className = '';
+    if (!usedInComments) {
+        className = usedInReport ? "avatar-in-report" : "avatar-container";
+    } else {
+        className = "avatar-in-comments";
+    }
+    return (
+        <AvatarWrapper usedInReport={usedInReport}>
+            <div className={className}>
+                {
+                    isThisBelongToCurrentUser ?
+                        <img
+                            className="avatar-container__photo"
+                            src={userPhotoUrl}
+                        />
+                    :
+                        <img
+                            className="avatar-container__photo"
+                            src={animalImageList[avatarImageIndex]}
+                            style={{'backgroundColor': colorList[avatarBackgroundColorIndex]}} 
+                        />
+                }
+            </div>
+        </AvatarWrapper>
+    );
+}
 
 export default Avatar;

@@ -7,6 +7,12 @@ import { baseUrl } from '../../../baseurl-config';
 import MobileCommentForm from './MobileCommentForm';
 import MobileCommentList from './MobileCommentList/index';
 
+const CommentBoxWrapper = styled.div`
+    bottom: 0;
+    position: relative;
+    width: 100%;
+`;
+
 const LoginButtonWrapper = styled.div`
     padding: 8px 0;
     text-align: center;
@@ -70,8 +76,7 @@ class MobileCommentBox extends Component {
             userBasicData
         } = this.props;
         return (
-            /* components/_single-report.scss */
-            <div className="player-report-comment-box-container">
+            <CommentBoxWrapper>
                 {router_currentFormValue ?
                     <MobileCommentList
                         commentsNick={router_currentFormValue.comments_nick}
@@ -102,7 +107,7 @@ class MobileCommentBox extends Component {
                     :
                         <LoginButton />
                 }
-            </div>
+            </CommentBoxWrapper>
         );
     }
 }

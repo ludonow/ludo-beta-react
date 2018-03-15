@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Popover from 'material-ui/Popover';
 import Textarea from 'react-textarea-autosize';
 
@@ -7,6 +8,7 @@ import {
     animalImageList,
     colorList,
 } from '../../../assets/avatarImage';
+import Avatar from '../../../components/Avatar';
 import CommentEditButton from './CommentEditButton';
 import CommentExpandMoreButton from './CommentExpandMoreButton';
 
@@ -55,7 +57,7 @@ class CommentList extends Component {
             } else {
                 console.error('isOldOrNew error');
             }
-            if(comment_id) {
+            if (comment_id) {
                 axios.delete(`apis/comment/report/${this.props.reportId}/${comment_id}`)
                 .then((response) => {
                     if(response.data.status === '200') {
@@ -204,45 +206,49 @@ class CommentList extends Component {
     render() {
         const {
             commentListFromDatabase,
-            tempCommentList
+            commentsNick,
+            currentUserId,
+            handleDenounceBoxOpen,
+            isMyReport,
+            reportId,
+            shouldShowCommentListFromDatabase,
+            userPhotoUrl,
+            tempCommentList,
         } = this.props;
+
         const {
+            anchorEl,
             isEditingComment,
-            isEditingCommentIndex
+            isEditingCommentIndex,
+            isPopOverOfEditOpen,
+            isPopOverOfExpandMoreOpen,
         } = this.state;
+
         return (
             /* components/_comment.scss */
             <div className="comment-list">
                 {
                     /* display temp comments right after user create a new comment */
                     commentListFromDatabase
-                    && this.props.shouldShowCommentListFromDatabase
-                    && this.props.router_currentFormValue
-                    && this.props.router_currentFormValue.comments_nick
+                    && shouldShowCommentListFromDatabase
+                    && commentsNick
                     ?
                         commentListFromDatabase.map((commentObject, index) => {
-                            animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
-                            colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
+                            animalIndex = commentsNick[commentObject.user_id][0];
+                            colorIndex = commentsNick[commentObject.user_id][1];
                             return (
                                 <div
                                     className="single-comment-container"
                                     key={`comment-${index}`}
                                 >
                                     <div className="comment-avatar-container">
-                                        {
-                                            /* show specific animal avatar image if comment user is not current user */
-                                            commentObject.user_id === this.props.currentUserId ?
-                                            <img
-                                                className="comment__avatar"
-                                                src={this.props.userBasicData.photo}
-                                            />
-                                            :
-                                            <img
-                                                className="comment__avatar"
-                                                src={animalImageList[animalIndex]}
-                                                style={{backgroundColor: colorList[colorIndex]}}
-                                            />
-                                        }
+                                        <Avatar
+                                            avatarBackgroundColorIndex={colorIndex}
+                                            avatarImageIndex={animalIndex}
+                                            isThisBelongToCurrentUser={commentObject.user_id === currentUserId}
+                                            usedInComments={true}
+                                            userPhotoUrl={userPhotoUrl}
+                                        />
                                     </div>
                                     <div className="comment__message">
                                         {
@@ -260,69 +266,58 @@ class CommentList extends Component {
                                         }
                                     </div>
                                     {
-                                        commentObject.user_id == this.props.currentUserId ?
+                                        commentObject.user_id === currentUserId ?
                                             <CommentEditButton
-                                                anchorEl={this.state.anchorEl}
+                                                anchorEl={anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentDelete={this.handleCommentDelete}
                                                 handleCommentEditButtonTouchTap={this.handleCommentEditButtonTouchTap}
                                                 handleCommentTextEdit={this.handleCommentTextEdit}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
-                                                isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                isPopOverOfEditOpen={isPopOverOfEditOpen}
                                                 isOldOrNew="old"
                                             />
                                         :
                                             <CommentExpandMoreButton
-                                                anchorEl={this.state.anchorEl}
+                                                anchorEl={anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
-                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
+                                                handleDenounceBoxOpen={handleDenounceBoxOpen}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
-                                                isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                                                 isOldOrNew="old"
-                                                reportId={this.props.reportId}
+                                                reportId={reportId}
                                             />
                                     }
                                 </div>
                             );
                         })
-                    :
-                        null
-                    }
-                    {
-                        /* show temp comments right after user create a new comment */
-                        tempCommentList
-                        && !(this.props.shouldShowCommentListFromDatabase)
-                        && this.props.router_currentFormValue
-                        && this.props.router_currentFormValue.comments_nick
-                        ?
+                    : null
+                }
+                {
+                    /* show temp comments right after user create a new comment */
+                    tempCommentList
+                    && !(shouldShowCommentListFromDatabase)
+                    && commentsNick
+                    ?
                         tempCommentList.map((commentObject, index) => {
-                            if (this.props.router_currentFormValue && this.props.router_currentFormValue.comments_nick) {
-                                animalIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][0];
-                                colorIndex = this.props.router_currentFormValue.comments_nick[commentObject.user_id][1];
-                            }
+                            animalIndex = commentsNick[commentObject.user_id][0];
+                            colorIndex = commentsNick[commentObject.user_id][1];
                             return (
                                 <div
                                     className="single-comment-container"
                                     key={`new-comment-${index}`}
                                 >
                                     <div className="comment-avatar-container">
-                                        {
-                                            /* show specific animal avatar image if comment user is not current user */
-                                            commentObject.user_id === this.props.currentUserId ?
-                                            <img
-                                                className="comment__avatar"
-                                                src={this.props.userBasicData.photo}
-                                            />
-                                            :
-                                            <img
-                                                className="comment__avatar"
-                                                src={animalImageArray[animalIndex]}
-                                                style={{backgroundColor: colorList[colorIndex]}}
-                                            />
-                                        }
+                                        <Avatar
+                                            avatarBackgroundColorIndex={colorIndex}
+                                            avatarImageIndex={animalIndex}
+                                            isThisBelongToCurrentUser={commentObject.user_id === currentUserId}
+                                            usedInComments={true}
+                                            userPhotoUrl={userPhotoUrl}
+                                        />
                                     </div>
                                     <div className="comment__message">
                                         {
@@ -340,40 +335,54 @@ class CommentList extends Component {
                                         }
                                     </div>
                                     {
-                                        commentObject.user_id == this.props.currentUserId ?
+                                        commentObject.user_id === currentUserId ?
                                             <CommentEditButton
-                                                anchorEl={this.state.anchorEl}
+                                                anchorEl={anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentDelete={this.handleCommentDelete}
                                                 handleCommentEditButtonTouchTap={this.handleCommentEditButtonTouchTap}
                                                 handleCommentTextEdit={this.handleCommentTextEdit}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
-                                                isPopOverOfEditOpen={this.state.isPopOverOfEditOpen}
+                                                isPopOverOfEditOpen={isPopOverOfEditOpen}
                                                 isOldOrNew="new"
                                             />
                                         :
                                             <CommentExpandMoreButton
-                                                anchorEl={this.state.anchorEl}
+                                                anchorEl={anchorEl}
                                                 commentId={commentObject.comment_id}
                                                 handleCommentExpandMoreButtonTouchTap={this.handleCommentExpandMoreButtonTouchTap}
-                                                handleDenounceBoxOpen={this.props.handleDenounceBoxOpen}
+                                                handleDenounceBoxOpen={handleDenounceBoxOpen}
                                                 handleRequestClose={this.handleRequestClose}
                                                 index={index}
-                                                isPopOverOfExpandMoreOpen={this.state.isPopOverOfExpandMoreOpen}
+                                                isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                                                 isOldOrNew="new"
-                                                reportId={this.props.reportId}
+                                                reportId={reportId}
                                             />
                                     }
                                 </div>
                             )
                         })
-                        :
-                        null
+                    : null
                 }
             </div>
         );
     }
 }
+
+CommentList.propTypes = {
+    commentListFromDatabase: PropTypes.array.isRequired,
+    commentsNick: PropTypes.object.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    getCommentListAfterEdit: PropTypes.func.isRequired,
+    handleDenounceBoxOpen: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    isMyReport: PropTypes.bool.isRequired,
+    reportId: PropTypes.string.isRequired,
+    shouldShowCommentListFromDatabase: PropTypes.bool.isRequired,
+    tempCommentList: PropTypes.array.isRequired,
+    updateTempCommentListAfterPost: PropTypes.func.isRequired,
+    userPhotoUrl: PropTypes.string,
+};
 
 export default CommentList;

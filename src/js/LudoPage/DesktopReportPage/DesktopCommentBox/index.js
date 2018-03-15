@@ -4,9 +4,15 @@ import styled from 'styled-components';
 
 import axios from '../../../axios-config';
 import { baseUrl } from '../../../baseurl-config';
-
+import { withEither } from '../../../components/higher-order-components/index';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+
+const CommentBoxWrapper = styled.div`
+    bottom: 0;
+    position: relative;
+    width: 100%;
+`;
 
 const LoginButtonWrapper = styled.div`
     padding: 8px 0;
@@ -20,6 +26,9 @@ const LoginButton = () => (
         </Link>
     </LoginButtonWrapper>
 );
+
+const isUserNotLoggedIn = (props) => !props.currentUserId;
+const CommentFormWithNotLogin = withEither(isUserNotLoggedIn, LoginButton)(CommentForm);
 
 class CommentBox extends Component {
     constructor(props) {
@@ -58,28 +67,48 @@ class CommentBox extends Component {
     }
 
     render() {
-        const { shouldShowCommentListFromDatabase, tempCommentList } = this.state;
+        const {
+            commentListFromDatabase,
+            commentsNick,
+            currentLudoId,
+            currentUserId,
+            handleDenounceBoxOpen,
+            handleShouldReportUpdate,
+            isMyReport,
+            reportId,
+            userPhotoUrl,
+        } = this.props;
+
+        const {
+            shouldShowCommentListFromDatabase,
+            tempCommentList,
+        } = this.state;
+
         return (
-            /* components/_single-report.scss */
-            <div className="player-report-comment-box-container">
+            <CommentBoxWrapper>
                 <CommentList
+                    commentListFromDatabase={commentListFromDatabase}
+                    commentsNick={commentsNick}
+                    currentUserId={currentUserId}
                     getCommentListAfterEdit={this.getCommentListAfterEdit}
+                    handleDenounceBoxOpen={handleDenounceBoxOpen}
+                    handleShouldReportUpdate={handleShouldReportUpdate}
+                    isMyReport={isMyReport}
+                    reportId={reportId}
                     shouldShowCommentListFromDatabase={shouldShowCommentListFromDatabase}
                     tempCommentList={tempCommentList}
                     updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                    {...this.props}
+                    userPhotoUrl={userPhotoUrl}
                 />
-                {
-                    this.props.currentUserId ?
-                        <CommentForm
-                            updateTempCommentList={this.updateTempCommentList}
-                            updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
-                            {...this.props}
-                        />
-                    :
-                        <LoginButton />
-                }
-            </div>
+                <CommentFormWithNotLogin
+                    currentLudoId={currentLudoId}
+                    currentUserId={currentUserId}
+                    reportId={reportId}
+                    updateTempCommentList={this.updateTempCommentList}
+                    updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}
+                    userPhotoUrl={userPhotoUrl}
+                />
+            </CommentBoxWrapper>
         );
     }
 }

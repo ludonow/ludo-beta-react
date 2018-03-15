@@ -15,12 +15,9 @@ function formatDate (dateString) {
 }
 
 /* components/_single-report.scss */
-const DesktopReportDate = ({
-    index,
-    reportList,
-}) => (
+const DesktopReportDate = ({ createDate }) => (
     <div className="report-date">
-        {formatDate(reportList[index].CreatedAt)}
+        {formatDate(createDate)}
     </div>
 );
 

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import axios from '../axios-config';
 import Button from '../components/Button';
 import DesktopCardContent from './DesktopCardContent';
-import DesktopReportList from './DesktopReportList/index';
+import DesktopReportPage from './DesktopReportPage/index';
 import DesktopReportPost from './DesktopReportPost/index';
 import MobilePlayingLudo from './MobilePlayingLudo';
 import MobileReadyLudo from './MobileReadyLudo';
@@ -255,7 +255,9 @@ class LudoPage extends Component {
                                 >   
                                     {
                                         router_ludoPageIndex === 1 || router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
-                                            <DesktopReportList {...this.props} />    
+                                            <DesktopReportPage
+                                                {...this.props}
+                                            />
                                         : null
                                     }
                                 </TabPanel>

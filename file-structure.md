@@ -36,6 +36,8 @@
     - Bind
         - index.js
     - components
+        - higher-order-components
+            - index.js
         - Avatar.js
         - Button.js
         - Card.js
@@ -82,17 +84,22 @@
     - LoginRecommend
         - index.js
     - LudoPage
-        - DesktopReportList
+        - DesktopReportPage
             - DesktopCommentBox
                 - CommentEditButton.js
                 - CommentExpandMoreButton.js
                 - CommentForm.js
                 - CommentList.js
                 - index.js
-            - DesktopReportDate.js
-            - DesktopReportEditButton.js
-            - DesktopReportExpandMoreButton.js
+            - ReportIconButton
+                - DesktopReportDate.js
+                - EditButton.js
+                - ExpandMoreButton.js
+                - index.js
             - index.js
+            - ReportInfo.js
+            - ReportList.js
+            - SingleReport.js
         - DesktopReportPost
             - Content.js
             - Draft.js
@@ -129,6 +136,7 @@
         - MobilePlayingLudo.js
         - MobileReadyLudo.js
         - MobileReportButtonList.js
+        - ReportEditForm.js
     - MyCardList
         - index.js
     - playground
