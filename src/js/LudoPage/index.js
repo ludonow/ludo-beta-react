@@ -5,34 +5,36 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
 import axios from '../axios-config';
-import Button from '../components/Button';
+import { withEither, withMaybe } from '../components/higher-order-components/index';
 import DesktopCardContent from './DesktopCardContent';
 import DesktopReportPage from './DesktopReportPage/index';
 import DesktopReportPost from './DesktopReportPost/index';
+import FooterButton from './FooterButton';
 import MobilePlayingLudo from './MobilePlayingLudo';
 import MobileReadyLudo from './MobileReadyLudo';
 import LudoStageArray from '../../data/LudoStageArray.json';
-import settings_icon from '../../images/active/settings.svg';
-import cancel_settings_icon from '../../images/active/cancel_settings.svg';
+
+const getIsStageOfCardReady = (playerId) => {
+    return playerId === '0';
+};
+
+// rendering condition function
+const isUserAuthToViewMobileReadyLudo = (props) => {
+    const authToViewMobileReadyLudo = [ 0, 1, 2 ];
+    return authToViewMobileReadyLudo.includes(props.router_ludoPageIndex);
+};
+
+// child components
+const MobileLudoPage = withEither(isUserAuthToViewMobileReadyLudo, MobileReadyLudo)(MobilePlayingLudo);
 
 const panel_width = window.innerWidth * 0.7;
-
-const ButtonWrapper = styled.div`
-    bottom: 0;
-    position: fixed;
-    display:flex;
-
-    .no-position-fixed {
-        position:relative !important;
-    }
-`;
 
 const CardDetailContainer = styled.div`
     .container {
         display: flex;
         justify-content: center;
-        margin-bottom: 100px;   
-        width:${panel_width}px; 
+        margin-bottom: 100px;
+        width:${panel_width}px;
     }
 `;
 
@@ -47,12 +49,11 @@ const ReportTabs = styled.div`
 
     .tab_list {
         align-items: center;
-        display:flex;
+        display: flex;
         justify-content: center;
         width: 100%;
     }
     .tab {
-        /*border-bottom: 3px solid #727272;*/
         color: #FFFFFF;
         display: block;
         font-size: 15px;
@@ -70,11 +71,9 @@ const ReportTabs = styled.div`
 
     .panel_container {
         align-items: center;
-        /* background-color: #ffffff; */
-        /* display:flex; */
         justify-content: center;
-        margin-top:29px;
-        width :100%;
+        margin-top: 29px;
+        width: 100%;
     }
 
     .panel {
@@ -95,40 +94,44 @@ const ReportTabs = styled.div`
     }
 `;
 
-const SettingsButton = styled.button`
-    /* position: fixed; */
-    height: 40px;
-    width: 40px;
-    bottom: 0;
-    border:none;
-    padding:0px;
-    margin-top:30px;
-    background:transparent;
-`;
-
 class LudoPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isDeleteButtonDisabled: false,
             isJoinButtonDisabled: false,
-            showDeleteButton:false,
+            isReportDialogOpen: false,
+            isShowingDeleteButton: false,
         };
+        this.handleFooterButtonChange = this.handleFooterButtonChange.bind(this);
+        this.handleReportDialogClose = this.handleReportDialogClose.bind(this);
+        this.handleReportDialogOpen = this.handleReportDialogOpen.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.changeButton = this.changeButton.bind(this);
     }
 
     componentWillMount() {
-        this.props.handleIsOpeningActivePage(true);
+        this.props.handleIsOpeningReportPage(true);
     }
 
     componentWillUnmount() {
-        this.props.handleIsOpeningActivePage(false);
+        this.props.handleIsOpeningReportPage(false);
     }
 
-    changeButton(event) {
+    handleFooterButtonChange(event) {
         event.preventDefault();
-        this.setState({showDeleteButton: !this.state.showDeleteButton})
+        this.setState(
+            prevState => ({
+                isShowingDeleteButton: !prevState.isShowingDeleteButton, 
+            })
+        );
+    }
+
+    handleReportDialogClose() {
+        this.setState({ isReportDialogOpen: false });
+    }
+
+    handleReportDialogOpen() {
+        this.setState({ isReportDialogOpen: true });
     }
 
     handleSubmit(event) {
@@ -207,15 +210,23 @@ class LudoPage extends Component {
     /* components/_report-form.scss */
     render() {
         const {
+            currentLudoReportData,
             currentUserId,
+            handleDenounceBoxOpen,
+            handleHasGotNewReport,
+            handleShouldProfileUpdate,
+            handleShouldReportUpdate,
+            hasGotNewReport,
             params,
             router_currentFormValue,
             router_ludoPageIndex,
+            userBasicData,
         } = this.props;
         const {
             isDeleteButtonDisabled,
             isJoinButtonDisabled,
-            showDeleteButton,
+            isReportDialogOpen,
+            isShowingDeleteButton,
         } = this.state;
         return (
             <CardDetailContainer>
@@ -252,88 +263,46 @@ class LudoPage extends Component {
                                 <TabPanel
                                     className="panel panel_report"
                                     selectedClassName="selected_panel"
-                                >   
-                                    {
-                                        router_ludoPageIndex === 1 || router_ludoPageIndex === 3 || router_ludoPageIndex === 4 || router_ludoPageIndex === 5 || router_ludoPageIndex === 6 ?
-                                            <DesktopReportPage
-                                                {...this.props}
-                                            />
-                                        : null
-                                    }
+                                >
+                                    <DesktopReportPage
+                                        currentLudoReportData={currentLudoReportData}
+                                        currentUserId={currentUserId}
+                                        handleDenounceBoxOpen={handleDenounceBoxOpen}
+                                        handleHasGotNewReport={handleHasGotNewReport}
+                                        handleShouldReportUpdate={handleShouldReportUpdate}
+                                        hasGotNewReport={hasGotNewReport}
+                                        isStageOfCardReady={getIsStageOfCardReady(router_currentFormValue.player_id)}
+                                        ludoId={params.ludo_id}
+                                        router_currentFormValue={router_currentFormValue}
+                                        userPhotoUrl={userBasicData ? userBasicData.photo : ''}
+                                    />
                                 </TabPanel>
                             </div>
                         </Tabs>
                     </ReportTabs>
-                    {
-                        router_ludoPageIndex === 3 || router_ludoPageIndex === 4 ?
-                            <DesktopReportPost
-                                currentUserId={currentUserId}
-                                handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
-                                handleShouldReportUpdate={this.props.handleShouldReportUpdate}
-                                ludoId={params.ludo_id}
-                                router_currentFormValue={router_currentFormValue}
-                            />
-                        : null
-                    }
-                    {
-                        router_ludoPageIndex === 0 || router_ludoPageIndex === 2 ?
-                            <ButtonWrapper>
-                                <Button
-                                    disabled={isJoinButtonDisabled}
-                                    label="加入戰局"
-                                    margin="30px auto"
-                                    onClick={this.handleSubmit}
-                                />
-                            </ButtonWrapper>
-                        :null
-                    }
-                    {
-                        router_ludoPageIndex === 1 ?
-                            <ButtonWrapper>
-                                {
-                                    showDeleteButton ?
-                                        <Button
-                                            backgroundColor="#FF6060"
-                                            disabled={isDeleteButtonDisabled}
-                                            label="刪除戰局"
-                                            margin="30px auto"
-                                            onClick={this.handleSubmit}
-                                        />
-                                    :
-                                        <DesktopReportPost
-                                            className="no-position-fixed"
-                                            currentUserId={currentUserId}
-                                            handleShouldProfileUpdate={this.props.handleShouldProfileUpdate}
-                                            handleShouldReportUpdate={this.props.handleShouldReportUpdate}
-                                            ludoId={params.ludo_id}
-                                            router_currentFormValue={router_currentFormValue}
-                                        />
-                                }
-                                <SettingsButton onClick={this.changeButton}>
-                                    {
-                                        showDeleteButton ?
-                                            <img src={cancel_settings_icon} />
-                                        :
-                                            <img src={settings_icon} />
-                                    }
-                                </SettingsButton>
-                            </ButtonWrapper>
-                        :null
-                    }
+                    <FooterButton
+                        handleFooterButtonChange={this.handleFooterButtonChange}
+                        handleLudoDelete={this.handleSubmit}
+                        handleReportDialogOpen={this.handleReportDialogOpen}
+                        handleSubmit={this.handleSubmit}
+                        isJoinButtonDisabled={isJoinButtonDisabled}
+                        isShowingDeleteButton={isShowingDeleteButton}
+                        router_ludoPageIndex={router_ludoPageIndex}
+                    />
+                    <DesktopReportPost
+                        currentUserId={currentUserId}
+                        handleReportDialogClose={this.handleReportDialogClose}
+                        handleShouldProfileUpdate={handleShouldProfileUpdate}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        isReportDialogOpen={isReportDialogOpen}
+                        ludoId={params.ludo_id}
+                        router_currentFormValue={router_currentFormValue}
+                    />
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
-                    {
-                        router_ludoPageIndex < 3 ?
-                            <MobileReadyLudo
-                                router_currentFormValue={router_currentFormValue}
-                                {...this.props}
-                            />
-                        :
-                            <MobilePlayingLudo
-                                router_currentFormValue={router_currentFormValue}
-                                {...this.props}
-                            />
-                    }
+                    <MobileLudoPage
+                        {...this.props}
+                    />
                 </MediaQuery>
             </CardDetailContainer>
         );

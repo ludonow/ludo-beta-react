@@ -35,7 +35,7 @@ export default class App extends React.Component {
             isInfiniteLoading: false,
             isLoadingCardList: false,
             isNavbarVisible: false,
-            isOpeningActivePage: false,
+            isOpeningReportPage: false,
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
             isOpeningProfilePage: false,
@@ -65,10 +65,10 @@ export default class App extends React.Component {
         this.handleDenounceBoxRequestClose = this.handleDenounceBoxRequestClose.bind(this);
         this.handleDenounceBoxOpen = this.handleDenounceBoxOpen.bind(this);
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
-        this.handleIsOpeningActivePage = this.handleIsOpeningActivePage.bind(this);
         this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
         this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
+        this.handleIsOpeningReportPage = this.handleIsOpeningReportPage.bind(this);
         this.handleNavbarClose = this.handleNavbarClose.bind(this);
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.handlePersonalCardListClose = this.handlePersonalCardListClose.bind(this);
@@ -125,8 +125,8 @@ export default class App extends React.Component {
             }
         }
 
-        const { isOpeningActivePage, shouldReportUpdate } = this.state;
-        if (isOpeningActivePage && shouldReportUpdate) {
+        const { isOpeningReportPage, shouldReportUpdate } = this.state;
+        if (isOpeningReportPage && shouldReportUpdate) {
             this.getReportOfCurrentLudo(this.props.params.ludo_id);
             this.handleShouldReportUpdate(false);
         }
@@ -398,9 +398,9 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsOpeningActivePage(boolean) {
+    handleIsOpeningReportPage(boolean) {
         this.setState({
-            isOpeningActivePage: boolean
+            isOpeningReportPage: boolean
         });
     }
 
@@ -560,10 +560,10 @@ export default class App extends React.Component {
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
-                                handleIsOpeningActivePage: this.handleIsOpeningActivePage,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
                                 handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
+                                handleIsOpeningReportPage: this.handleIsOpeningReportPage,
                                 handlePersonalCardListClose: this.handlePersonalCardListClose,
                                 handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,
                                 handleShouldProfileUpdate: this.handleShouldProfileUpdate,

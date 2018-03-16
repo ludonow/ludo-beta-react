@@ -178,7 +178,7 @@ class ReportCard extends Component {
                 { reportObject.video ?
                         <VideoWrapper>
                             <ReactPlayer
-                                controls="true"
+                                controls={true}
                                 height="auto"
                                 url={reportObject.video}
                                 width="100%"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import processString from 'react-process-string';
 import styled from 'styled-components';
 import LightBox from 'react-image-lightbox';
@@ -135,12 +136,7 @@ class DesktopReportPage extends Component {
     }
 
     componentWillMount() {
-        this.props.handleIsOpeningActivePage(true);
         this.props.handleShouldReportUpdate(true);
-    }
-
-    componentWillUnmount() {
-        this.props.handleIsOpeningActivePage(false);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -287,7 +283,7 @@ class DesktopReportPage extends Component {
                 files,
                 isImageUploaded: true
             });
-            const { ludoId }= this.props.params;
+            const { ludoId }= this.props;
             const imgPost = new FormData();
             imgPost.append('file', files[0]);
             axios.post('/apis/report-image', imgPost)
@@ -541,10 +537,12 @@ class DesktopReportPage extends Component {
 
         const {
             currentUserId,
+            handleDenounceBoxOpen,
             handleShouldReportUpdate,
+            isStageOfCardReady,
+            ludoId,
             router_currentFormValue,
-            router_ludoPageIndex,
-            userBasicData,
+            userPhotoUrl,
         } = this.props;
 
         const {
@@ -566,7 +564,9 @@ class DesktopReportPage extends Component {
                     <ReportList
                         anchorEl={anchorEl}
                         commentsNick={comments_nick}
+                        currentLudoId={ludoId}
                         currentUserId={currentUserId}
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleEditTextReportClick={this.handleEditTextReportClick}
                         handleEditImageReportClick={this.handleEditImageReportClick}
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
@@ -580,18 +580,18 @@ class DesktopReportPage extends Component {
                         isMyReport={whoIsUser === 'starter'}
                         isPopOverOfEditOpen={isPopOverOfEditOpen}
                         isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
-                        isStageOfCardReady={LudoStageArray[router_ludoPageIndex] === 'OpenedForStarter'}
                         label="starter"
                         panelWidth={panelWidth}
                         reportList={starterReportList}
                         reportUserId={starter_id}
-                        userPhotoUrl={userBasicData.photo}
-                        {...this.props}
+                        userPhotoUrl={userPhotoUrl}
                     />
                     <PlayerReportListWithNoOpponent
                         anchorEl={anchorEl}
                         commentsNick={comments_nick}
+                        currentLudoId={ludoId}
                         currentUserId={currentUserId}
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleEditTextReportClick={this.handleEditTextReportClick}
                         handleEditImageReportClick={this.handleEditImageReportClick}
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
@@ -600,17 +600,17 @@ class DesktopReportPage extends Component {
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
                         handleRequestClose={this.handleRequestClose}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
                         isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
                         isMyReport={whoIsUser === 'player'}
                         isPopOverOfEditOpen={isPopOverOfEditOpen}
                         isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
-                        isStageOfCardReady={LudoStageArray[router_ludoPageIndex] === 'OpenedForStarter'}
+                        isStageOfCardReady={isStageOfCardReady}
                         label="player"
                         panelWidth={panelWidth}
                         reportList={playerReportList}
                         reportUserId={player_id}
-                        userPhotoUrl={userBasicData.photo}
-                        {...this.props}
+                        userPhotoUrl={userPhotoUrl}
                     />
                 </ReportColumnList>
                 <LightBoxWithNullCondition
@@ -623,6 +623,19 @@ class DesktopReportPage extends Component {
     }
 }
 
+DesktopReportPage.propTypes = {
+    currentLudoReportData: PropTypes.array.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    handleDenounceBoxOpen: PropTypes.func.isRequired,
+    handleHasGotNewReport: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    hasGotNewReport: PropTypes.bool.isRequired,
+    isStageOfCardReady: PropTypes.bool.isRequired,
+    ludoId: PropTypes.string.isRequired,
+    router_currentFormValue: PropTypes.object.isRequired,
+    userPhotoUrl: PropTypes.string,
+};
+
 DesktopReportPage.defaultProps = {
     'router_currentFormValue': {
         'comments_nick': {
@@ -632,6 +645,6 @@ DesktopReportPage.defaultProps = {
         'player_id': 'a',
         'starter_id': 'b'
     }
-}
+};
 
 export default DesktopReportPage;

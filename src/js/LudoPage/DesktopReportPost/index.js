@@ -9,7 +9,6 @@ import DiscardAlert from '../../components/DiscardAlert';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
 import Content from './Content';
 import StepButtonList from './StepButtonList';
-import ToggleButton from './ToggleButton';
 
 promiseFinally.shim();
 
@@ -21,7 +20,6 @@ const initialState = {
     isPreviewButtonDisabled: true,
     isReporting: false,
     isSubmitting: false,
-    open: false,
     step: 0,
     text: '',
     reportType: '',
@@ -71,8 +69,6 @@ class DesktopReportPost extends Component {
         super();
         this.state = initialState;
         this.handleCloseClick = this.handleCloseClick.bind(this);
-        this.handleDialogClose = this.handleDialogClose.bind(this);
-        this.handleDialogOpen = this.handleDialogOpen.bind(this);
         this.handleDiscardAlertClose = this.handleDiscardAlertClose.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
         this.handleImageResize = this.handleImageResize.bind(this);
@@ -90,16 +86,8 @@ class DesktopReportPost extends Component {
         if (isReporting) {
             this.setState({ isDiscardAlertOpen: true });
         } else {
-            this.handleDialogClose();
+            this.props.handleReportDialogClose();
         }
-    }
-
-    handleDialogClose() {
-        this.setState(initialState);
-    }
-
-    handleDialogOpen() {
-        this.setState({ open: true });
     }
 
     handleDiscardAlertClose() {
@@ -149,8 +137,13 @@ class DesktopReportPost extends Component {
     handleSubmit(event) {
         event.preventDefault();
         this.setState({
-            isSubmitting: true
+            isSubmitting: true,
         });
+        const {
+            handleReportDialogClose,
+            handleShouldProfileUpdate,
+            handleShouldReportUpdate,
+        } = this.props;
         const { reportType } = this.state;
         if (reportType === 'image') {
             const imagePost = new FormData();
@@ -188,9 +181,9 @@ class DesktopReportPost extends Component {
             })
             .then(response => {
                 if (response.data.status === '200') {
-                    this.props.handleShouldProfileUpdate(true);
-                    this.props.handleShouldReportUpdate(true);
-                    this.handleDialogClose();
+                    handleReportDialogClose();
+                    handleShouldProfileUpdate(true);
+                    handleShouldReportUpdate(true);
                 } else {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
@@ -235,9 +228,9 @@ class DesktopReportPost extends Component {
             axios.post('/apis/report', ludoReportPost)
             .then(response => {
                 if (response.data.status === '200') {
-                    this.props.handleShouldProfileUpdate(true);
-                    this.props.handleShouldReportUpdate(true);
-                    this.handleDialogClose();
+                    handleReportDialogClose();
+                    handleShouldProfileUpdate(true);
+                    handleShouldReportUpdate(true);
                 } else {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
@@ -337,7 +330,6 @@ class DesktopReportPost extends Component {
             isDiscardAlertOpen,
             isPreviewButtonDisabled,
             isSubmitting,
-            open,
             reportType,
             resizedHeight,
             resizedWidth,
@@ -345,17 +337,18 @@ class DesktopReportPost extends Component {
             text,
             video
         } = this.state;
-        const { className } = this.props;
+        const {
+            className,
+            handleReportDialogClose,
+            isReportDialogOpen,
+        } = this.props;
         return (
             <DesktopReportPostWrapper className={ className }>
-                <ToggleButton
-                    onClick={this.handleDialogOpen}
-                    label="我要回報"
-                />
+
                 <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
-                    open={open}
+                    open={isReportDialogOpen}
                     style={dialogStyle}
                     title={titles[step]}
                     titleStyle={titleStyle}
@@ -364,9 +357,9 @@ class DesktopReportPost extends Component {
                         handleCloseClick={this.handleCloseClick}
                     />
                     <Content
-                        handleDialogClose={this.handleDialogClose}
                         handleImageChange={this.handleImageChange}
                         handleImageResize={this.handleImageResize}
+                        handleReportDialogClose={handleReportDialogClose}
                         handleReportTypeClick={this.handleReportTypeClick}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
@@ -383,7 +376,7 @@ class DesktopReportPost extends Component {
                         video={video}
                     />
                     <StepButtonList
-                        handleDialogClose={this.handleDialogClose}
+                        handleReportDialogClose={handleReportDialogClose}
                         handleReportTypeClick={this.handleReportTypeClick}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
@@ -394,8 +387,8 @@ class DesktopReportPost extends Component {
                     />
                 </StyledDialog>
                 <DiscardAlert
-                    handleDialogClose={this.handleDialogClose}
                     handleDiscardAlertClose={this.handleDiscardAlertClose}
+                    handleReportDialogClose={handleReportDialogClose}
                     isDiscardAlertOpen={isDiscardAlertOpen}
                 />
             </DesktopReportPostWrapper>

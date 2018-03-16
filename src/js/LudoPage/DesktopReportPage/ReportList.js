@@ -18,6 +18,7 @@ export const ReportListWrapper = styled.div`
 const ReportList = ({
     anchorEl,
     commentsNick,
+    currentLudoId,
     currentUserId,
     handleDenounceBoxOpen,
     handleEditTextReportClick,
@@ -37,7 +38,6 @@ const ReportList = ({
     panelWidth,
     reportList,
     reportUserId,
-    router_currentLudoId,
     userPhotoUrl,
 }) => (
     <ReportListWrapper width={panelWidth/2}>
@@ -56,7 +56,7 @@ const ReportList = ({
                     commentsNick={commentsNick}
                     comments={reportObject.comments}
                     content={reportObject.content}
-                    currentLudoId={router_currentLudoId}
+                    currentLudoId={currentLudoId}
                     currentUserId={currentUserId}
                     handleDenounceBoxOpen={handleDenounceBoxOpen}
                     handleEditTextReportClick={handleEditTextReportClick}

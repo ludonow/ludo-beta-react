@@ -371,7 +371,7 @@ class CommentList extends Component {
 }
 
 CommentList.propTypes = {
-    commentListFromDatabase: PropTypes.array.isRequired,
+    commentListFromDatabase: PropTypes.array,
     commentsNick: PropTypes.object.isRequired,
     currentUserId: PropTypes.string.isRequired,
     getCommentListAfterEdit: PropTypes.func.isRequired,

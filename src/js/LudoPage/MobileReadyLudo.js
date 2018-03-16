@@ -114,12 +114,7 @@ class MobileReadyLudo extends Component {
     }
 
     componentWillMount() {
-        this.props.handleIsOpeningActivePage(true);
         this.props.handleShouldReportUpdate(true);
-    }
-
-    componentWillUnmount() {
-        this.props.handleIsOpeningActivePage(false);
     }
 
     handleCardContentTabClick() {
@@ -328,7 +323,6 @@ MobileReadyLudo.propTypes = {
     ).isRequired,
     currentUserId: PropTypes.string.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
-    handleIsOpeningActivePage: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     params: PropTypes.shape({
         ludo_id: PropTypes.string
