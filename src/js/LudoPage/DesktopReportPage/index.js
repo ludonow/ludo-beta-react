@@ -85,9 +85,7 @@ const nullConditionFn = (props) => !props.isOpen;
 // child comopnents
 const LightBoxWithNullCondition = withMaybe(nullConditionFn)(LightBox);
 
-const NoOpponent = ({
-    panelWidth,
-}) => (
+const NoOpponent = ({ panelWidth }) => (
     <ReportListWrapper width={panelWidth/2}>
         <NoOpponentDescription>
             對手尋找中！
@@ -101,214 +99,26 @@ class DesktopReportPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTargetId: '',
+            anchorEl: {},
             enlargeImageLocation: '',
             files: [],
-            imageLocation: '',
             isEditingWhichPlayerReportIndex: -1,
             isEditingWhichStarterReportIndex: -1,
-            isEditingImageReport: false,
-            isEditingImageReportIndex: [],
-            isEditingTextReport: false,
-            isEditingTextReportIndex: [],
-            isEditReportButtonClickable: false,
             isImageLightBoxOpen: false,
-            isImageUploaded: false,
             isPopOverOfEditOpen: false,
             isPopOverOfExpandMoreOpen: false,
-            reportTextContent: '',
-            playerReportList: [],
-            starterReportList: [],
-            whoIsUser: ''
         };
-        this.handleEditImageReportClick = this.handleEditImageReportClick.bind(this);
-        this.handleImageDrop = this.handleImageDrop.bind(this);
         this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
         this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
-        this.handleImageRemove = this.handleImageRemove.bind(this);
-        this.handleImageReportEditCancelClick = this.handleImageReportEditCancelClick.bind(this);
-        this.handleImageReportModifyConfirmClick = this.handleImageReportModifyConfirmClick.bind(this);
-        this.handleEditTextReportClick = this.handleEditTextReportClick.bind(this);
-        this.handleFinishReportEditText = this.handleFinishReportEditText.bind(this);
         this.handleReportDelete = this.handleReportDelete.bind(this);
         this.handleReportDenounce = this.handleReportDenounce.bind(this);
         this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
-        this.handleReportTextChange = this.handleReportTextChange.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
-        this.shuffleArray = this.shuffleArray.bind(this);
     }
 
     componentWillMount() {
         this.props.handleShouldReportUpdate(true);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        /* classify report data by starter or player */
-        if (nextProps.hasGotNewReport) {
-            const {
-                currentLudoReportData,
-                currentUserId,
-                router_currentFormValue,
-            } = nextProps;
-            let whoIsUser = '';
-            if (currentUserId) {
-                if (router_currentFormValue.starter_id === currentUserId) {
-                    whoIsUser = 'starter';
-                } else if (router_currentFormValue.player_id === currentUserId) {
-                    whoIsUser = 'player';
-                } else {
-                    whoIsUser = 'bystander';
-                }
-            }
-            const newStarterReportList = currentLudoReportData.filter((reportObject) => {
-                if (reportObject.user_id === router_currentFormValue.starter_id) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            const newPlayerReportList = currentLudoReportData.filter((reportObject) => {
-                if (reportObject.user_id === router_currentFormValue.player_id) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            const playerReportList = newPlayerReportList.sort(compareByCreatedDate);
-            const starterReportList = newStarterReportList.sort(compareByCreatedDate);
-
-            this.setState({
-                playerReportList,
-                starterReportList,
-                whoIsUser,
-            });
-            if (!this.state.isEditReportButtonClickable) {
-                this.setState({
-                    isEditReportButtonClickable: true
-                });
-            }
-            this.props.handleHasGotNewReport(false);
-        }
-    }
-
-    handleEditImageReportClick(event) {
-        event.preventDefault();
-        /* clear the image-editing array and put user click target into image-editing array */
-        const reportIndex = Number(event.currentTarget.id.slice(-1));
-        const { isEditingImageReport, isEditingImageReportIndex } = this.state;
-        const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
-        const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        const SPIndex = (event.currentTarget.id).slice(0, 1);
-        if (!isInEditingArray) {
-            isEditingImageReportIndex.splice(0, isEditingImageReportIndex.length);
-            isEditingImageReportIndex.push(`${SPIndex}${String(reportIndex)}`);
-        }
-        this.setState({
-            isEditingImageReport: true,
-            isEditingImageReportIndex,
-            isPopOverOfEditOpen: false
-        });
-    }
-
-    handleEditTextReportClick(event) {
-        event.preventDefault();
-        /* put user click target into text-editing array */
-        const reportIndex = Number(event.currentTarget.id.slice(-1));
-        const { isEditingTextReport, isEditingTextReportIndex } = this.state;
-        const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-        const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        const SPIndex = (event.currentTarget.id).slice(0, 1);
-        if (!isInEditingArray) {
-            isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
-            isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
-        }
-        this.setState({
-            isEditingTextReport: true,
-            isEditingTextReportIndex,
-            isPopOverOfEditOpen: false
-        });
-    }
-
-    handleFinishReportEditText(event) {
-        if (event.keyCode == 13 && !event.shiftKey) {
-            event.preventDefault();
-            /* send put request to server to modify text report content */
-            if (this.state.reportTextContent) {
-                const reportPutBody = {
-                    content: this.state.reportTextContent,
-                    image_location: ''
-                };
-                const SPIndex = (event.currentTarget.id).slice(0, 1);
-                const arrayIndex = Number(event.currentTarget.id.slice(-1));
-                let report_id = null;
-                if (SPIndex == 's') {
-                    report_id = this.state.starterReportList[arrayIndex].report_id;
-                } else if (SPIndex == 'p') {
-                    report_id = this.state.playerReportList[arrayIndex].report_id;
-                }
-                if (report_id) {
-                    axios.put(`/apis/report/${report_id}`, reportPutBody)
-                    .then((response) => {
-                        if(response.data.status === '200') {
-                            this.props.handleShouldReportUpdate(true);
-                        } else {
-                            console.error('DesktopReportPage handleFinishReportEditText report put else response from server: ', response);
-                            window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('DesktopReportPage handleFinishReportEditText report put error', error);
-                        window.alert(`文字回報修改時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-                    });
-                }
-            }
-            /* transfer the text report to the original display instead of textarea by taking the element out of editing text array */
-            const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-            const { isEditingTextReport, isEditingTextReportIndex } = this.state;
-            const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
-            const isInEditingArray = (indexAtWhatPositionInArray != -1);
-            if (isInEditingArray) {
-                isEditingTextReportIndex.splice(indexAtWhatPositionInArray, 1);
-                this.setState({
-                    isEditingTextReportIndex,
-                    isEditingTextReport: false
-                });
-            } else {
-                console.error('text report edit index isInEditingArray error');
-            }
-        }
-    }
-
-    handleImageDrop(files) {
-        if (files.length == 1) {
-            this.setState({
-                files,
-                isImageUploaded: true
-            });
-            const { ludoId }= this.props;
-            const imgPost = new FormData();
-            imgPost.append('file', files[0]);
-            axios.post('/apis/report-image', imgPost)
-            .then(response => {
-                if (response.data.status === '200') {
-                    this.setState({
-                        image_location: response.data.location
-                    });
-                } else {
-                    console.error('DesktopReportPage handleImageDrop response from server: ', response);
-                    console.error('DesktopReportPage handleImageDrop message from server: ', response.data.message);
-                }
-            })
-            .catch(error => {
-                console.error('DesktopReportPage handleImageDrop error', error);
-            });
-        } else if (files.length > 1) {
-            this.setState({
-                files: []
-            });
-            window.alert('一次只能上傳一張圖片');
-        }
     }
 
     handleImageLightboxClose() {
@@ -324,74 +134,6 @@ class DesktopReportPage extends Component {
         });
     }
 
-    handleImageRemove(event) {
-        event.preventDefault();
-        // const imageIndex = Number(event.currentTarget.value);  // For multiple picture upload
-        this.setState({
-            files: [],
-            isImageUploaded: false
-        });
-    }
-
-    handleImageReportEditCancelClick(event) {
-        event.preventDefault();
-        /* drop the user click target out of image-editing array */
-        const reportIndex = event.currentTarget.id.slice(0,1) + event.currentTarget.id.slice(-1);
-        const { isEditingImageReport, isEditingImageReportIndex } = this.state;
-        const indexAtWhatPositionInArray = isEditingImageReportIndex.indexOf(reportIndex);
-        const isInEditingArray = (indexAtWhatPositionInArray != -1);
-        if (isInEditingArray) {
-            isEditingImageReportIndex.splice(indexAtWhatPositionInArray, 1);
-            this.setState({
-                isEditingImageReport: false,
-                isEditingImageReportIndex
-            });
-        } else {
-            console.error('report edit index error');
-        }
-    }
-
-    handleImageReportModifyConfirmClick(event) {
-        event.preventDefault();
-        const reportPutBody = {
-            content: '',
-            image_location: this.state.image_location
-        };
-        const SPIndex = (event.currentTarget.id).slice(0, 1);
-        const arrayIndex = Number(event.currentTarget.id.slice(-1));
-        let report_id = null;
-        if (SPIndex == 's') {
-            reportPutBody.content = this.state.starterReportList[arrayIndex].content;
-            report_id = this.state.starterReportList[arrayIndex].report_id;
-        } else if (SPIndex == 'p') {
-            reportPutBody.content = this.state.playerReportList[arrayIndex].content;
-            report_id = this.state.playerReportList[arrayIndex].report_id;
-        }
-        if (report_id) {
-            axios.put(`/apis/report/${report_id}`, reportPutBody)
-            .then( response => {
-                if(response.data.status === '200') {
-                    /* remove the specific element in image-edit array */
-                    this.setState({
-                        files: [],
-                        image_location: '',
-                        isEditingImageReportIndex: [],
-                        isImageUploaded: false,
-                        reportTextContent: '',
-                    });
-                    this.props.handleShouldReportUpdate(true);
-                } else {
-                    console.error('DesktopReportPage handleImageReportModifyConfirmClick report put else response from server: ', response);
-                    window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-                }
-            })
-            .catch( error => {
-                console.error('DesktopReportPage handleImageReportModifyConfirmClick report put error', error);
-                window.alert(`回報編輯時發生錯誤，請重試一次；若問題依然發生，請通知開發人員`);
-            });
-        }
-    }
-
     handleReportDelete(event) {
         const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
         if (isSureToDelelteReport) {
@@ -400,9 +142,9 @@ class DesktopReportPage extends Component {
             const arrayIndex = Number(event.currentTarget.id.slice(-1));
             let report_id = null;
             if (SPIndex == 's') {
-                report_id = this.state.starterReportList[arrayIndex].report_id;
+                report_id = this.props.starterReportList[arrayIndex].report_id;
             } else if (SPIndex == 'p') {
-                report_id = this.state.playerReportList[arrayIndex].report_id;
+                report_id = this.props.playerReportList[arrayIndex].report_id;
             }
             this.setState({
                 isPopOverOfEditOpen: false
@@ -433,9 +175,9 @@ class DesktopReportPage extends Component {
         const arrayIndex = Number(event.currentTarget.id.slice(-1));
         let report_id = null;
         if (SPIndex === 's') {
-            report_id = this.state.starterReportList[arrayIndex].report_id;
+            report_id = this.props.starterReportList[arrayIndex].report_id;
         } else if (SPIndex === 'p') {
-            report_id = this.state.playerReportList[arrayIndex].report_id;
+            report_id = this.props.playerReportList[arrayIndex].report_id;
         } else {
             console.error('handleReportDenounce SPIndex is not correct');
         }
@@ -483,10 +225,6 @@ class DesktopReportPage extends Component {
         });
     }
 
-    handleReportTextChange(event) {
-        this.setState({reportTextContent: event.currentTarget.value});
-    }
-
     handleRequestClose() {
         this.setState({
             isPopOverOfEditOpen: false,
@@ -494,36 +232,16 @@ class DesktopReportPage extends Component {
         });
     }
 
-    shuffleArray(array) {
-        let randomNumber, tempVariable, index;
-        for (index = array.length; index; index-- ) {
-            randomNumber = Math.floor(Math.random() * index);
-            tempVariable = array[index - 1];
-            array[index - 1] = array[randomNumber];
-            array[randomNumber] = tempVariable;
-        }
-    }
-
     render() {
         const {
             anchorEl,
-            avatarStyle,
             enlargeImageLocation,
             files,
-            isEditingImageReport,
-            isEditingImageReportIndex,
-            isEditingTextReport,
-            isEditingTextReportIndex,
             isEditingWhichPlayerReportIndex,
             isEditingWhichStarterReportIndex,
-            isEditReportButtonClickable,
             isImageLightBoxOpen,
-            isImageUploaded,
             isPopOverOfEditOpen,
             isPopOverOfExpandMoreOpen,
-            playerReportList,
-            starterReportList,
-            whoIsUser,
         } = this.state;
        
         let config = [{
@@ -545,7 +263,9 @@ class DesktopReportPage extends Component {
             handleShouldReportUpdate,
             isStageOfCardReady,
             ludoId,
+            playerReportList,
             router_currentFormValue,
+            starterReportList,
             userPhotoUrl,
         } = this.props;
 
@@ -580,7 +300,7 @@ class DesktopReportPage extends Component {
                         handleRequestClose={this.handleRequestClose}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
-                        isMyReport={whoIsUser === 'starter'}
+                        isMyReport={router_currentFormValue.starter_id === currentUserId}
                         isPopOverOfEditOpen={isPopOverOfEditOpen}
                         isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                         label="starter"
@@ -595,8 +315,6 @@ class DesktopReportPage extends Component {
                         currentLudoId={ludoId}
                         currentUserId={currentUserId}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
-                        handleEditTextReportClick={this.handleEditTextReportClick}
-                        handleEditImageReportClick={this.handleEditImageReportClick}
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
                         handleReportDelete={this.handleReportDelete}
                         handleReportDenounce={this.handleReportDenounce}
@@ -606,7 +324,7 @@ class DesktopReportPage extends Component {
                         handleRequestClose={this.handleRequestClose}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
-                        isMyReport={whoIsUser === 'player'}
+                        isMyReport={router_currentFormValue.player_id === currentUserId}
                         isPopOverOfEditOpen={isPopOverOfEditOpen}
                         isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                         isStageOfCardReady={isStageOfCardReady}
@@ -628,16 +346,15 @@ class DesktopReportPage extends Component {
 }
 
 DesktopReportPage.propTypes = {
-    currentLudoReportData: PropTypes.array.isRequired,
     currentUserId: PropTypes.string.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
-    handleHasGotNewReport: PropTypes.func.isRequired,
     handleReportDialogOpenWithData: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
-    hasGotNewReport: PropTypes.bool.isRequired,
     isStageOfCardReady: PropTypes.bool.isRequired,
     ludoId: PropTypes.string.isRequired,
+    playerReportList: PropTypes.array,
     router_currentFormValue: PropTypes.object.isRequired,
+    starterReportList: PropTypes.array,
     userPhotoUrl: PropTypes.string,
 };
 

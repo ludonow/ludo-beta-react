@@ -86,7 +86,6 @@ class DesktopReportPost extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.editingForm && nextProps.editingForm.report_id !== this.state.reportId) {
-            console.log('componentWillReceiveProps');
             const { editingForm } = nextProps;
             const reportId = editingForm.report_id;
             if (editingForm.image_location) {

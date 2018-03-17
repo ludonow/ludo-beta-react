@@ -252,13 +252,10 @@ class DesktopLudoPage extends Component {
 
     render() {
         const {
-            currentLudoReportData,
             currentUserId,
             handleDenounceBoxOpen,
-            handleHasGotNewReport,
             handleShouldProfileUpdate,
             handleShouldReportUpdate,
-            hasGotNewReport,
             ludoId,
             router_currentFormValue,
             router_ludoPageIndex,
@@ -270,6 +267,7 @@ class DesktopLudoPage extends Component {
             isJoinButtonDisabled,
             isReportDialogOpen,
             isShowingDeleteButton,
+            reportList,
         } = this.state;
 
         return (
@@ -305,16 +303,15 @@ class DesktopLudoPage extends Component {
                                 selectedClassName="selected_panel"
                             >
                                 <DesktopReportPage
-                                    currentLudoReportData={currentLudoReportData}
                                     currentUserId={currentUserId}
                                     handleDenounceBoxOpen={handleDenounceBoxOpen}
-                                    handleHasGotNewReport={handleHasGotNewReport}
                                     handleReportDialogOpenWithData={this.handleReportDialogOpenWithData}
                                     handleShouldReportUpdate={handleShouldReportUpdate}
-                                    hasGotNewReport={hasGotNewReport}
                                     isStageOfCardReady={getIsStageOfCardReady(router_currentFormValue.player_id)}
                                     ludoId={ludoId}
+                                    playerReportList={reportList.player}
                                     router_currentFormValue={router_currentFormValue}
+                                    starterReportList={reportList.starter}
                                     userPhotoUrl={userBasicData ? userBasicData.photo : ''}
                                 />
                             </TabPanel>
