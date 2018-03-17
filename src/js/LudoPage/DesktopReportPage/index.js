@@ -101,8 +101,8 @@ class DesktopReportPage extends Component {
             enlargeImageLocation: '',
             files: [],
             imageLocation: '',
-            isEditingWhichPlayerReportIndex: '',
-            isEditingWhichStarterReportIndex: '',
+            isEditingWhichPlayerReportIndex: -1,
+            isEditingWhichStarterReportIndex: -1,
             isEditingImageReport: false,
             isEditingImageReportIndex: [],
             isEditingTextReport: false,
@@ -576,7 +576,7 @@ class DesktopReportPage extends Component {
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
                         handleRequestClose={this.handleRequestClose}
                         handleShouldReportUpdate={handleShouldReportUpdate}
-                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
+                        isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
                         isMyReport={whoIsUser === 'starter'}
                         isPopOverOfEditOpen={isPopOverOfEditOpen}
                         isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}

@@ -65,8 +65,8 @@ const titleStyle = {
 };
 
 class DesktopReportPost extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = initialState;
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDiscardAlertClose = this.handleDiscardAlertClose.bind(this);
@@ -80,6 +80,11 @@ class DesktopReportPost extends Component {
         this.handleVideoChange = this.handleVideoChange.bind(this);
         this.setImageLocation = this.setImageLocation.bind(this);
     }
+
+    // componentDidMount() {
+    //     this.setState({
+    //     });
+    // }
 
     handleCloseClick() {
         const { isReporting } = this.state;
@@ -335,7 +340,7 @@ class DesktopReportPost extends Component {
             resizedWidth,
             step,
             text,
-            video
+            video,
         } = this.state;
         const {
             className,
@@ -344,7 +349,6 @@ class DesktopReportPost extends Component {
         } = this.props;
         return (
             <DesktopReportPostWrapper className={ className }>
-
                 <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
@@ -353,9 +357,7 @@ class DesktopReportPost extends Component {
                     title={titles[step]}
                     titleStyle={titleStyle}
                 >
-                    <StepperCloseIcon
-                        handleCloseClick={this.handleCloseClick}
-                    />
+                    <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
                     <Content
                         handleImageChange={this.handleImageChange}
                         handleImageResize={this.handleImageResize}

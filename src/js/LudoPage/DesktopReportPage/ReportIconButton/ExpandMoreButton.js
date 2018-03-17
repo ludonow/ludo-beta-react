@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/Menu';
@@ -17,17 +18,17 @@ const ExpandMoreButton = ({
     createDate,
     handleReportDenounce,
     handleReportExpandMoreButtonTouchTap,
+    handleRequestClose,
     index,
     isPopOverOfExpandMoreOpen,
-    onRequestClose,
-    whichList,
+    label,
 }) => (
     <div>
         <div className="report-icon-button">
             <DesktopReportDate createDate={createDate} />
             <IconButton
                 className="desktop_edit_button"
-                id={`${whichList}-report-expand-more-${index}`}
+                id={`${label}-report-expand-more-${index}`}
                 onTouchTap={handleReportExpandMoreButtonTouchTap}
                 tooltip="更多"
             >
@@ -37,13 +38,13 @@ const ExpandMoreButton = ({
         <Popover
             anchorEl={anchorEl}
             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-            onRequestClose={onRequestClose}
+            onRequestClose={handleRequestClose}
             open={isPopOverOfExpandMoreOpen}
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
         >
             <Menu>
                 <MenuItem
-                    id={`${whichList}-report-denounce-${index}`}
+                    id={`${label}-report-denounce-${index}`}
                     innerDivStyle={style}
                     onTouchTap={handleReportDenounce}
                     primaryText="檢舉此回報"
@@ -52,5 +53,16 @@ const ExpandMoreButton = ({
         </Popover>
     </div>
 );
+
+ExpandMoreButton.propTypes = {
+    anchorEl: PropTypes.object,
+    createDate: PropTypes.string.isRequired,
+    handleReportDenounce: PropTypes.func.isRequired,
+    handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
+    handleRequestClose: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    isPopOverOfExpandMoreOpen: PropTypes.bool.isRequired,
+    label: PropTypes.string.isRequired,
+};
 
 export default ExpandMoreButton;

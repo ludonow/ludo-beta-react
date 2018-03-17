@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Avatar from '../../components/Avatar';
@@ -61,10 +62,12 @@ const ReportList = ({
                     handleDenounceBoxOpen={handleDenounceBoxOpen}
                     handleEditTextReportClick={handleEditTextReportClick}
                     handleEditImageReportClick={handleEditImageReportClick}
+                    handleImageLightboxOpen={handleImageLightboxOpen}
                     handleReportDelete={handleReportDelete}
                     handleReportDenounce={handleReportDenounce}
                     handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
                     handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
+                    handleRequestClose={handleRequestClose}
                     handleShouldReportUpdate={handleShouldReportUpdate}
                     imageLocation={reportObject.image_location}
                     index={index}
@@ -73,7 +76,7 @@ const ReportList = ({
                     isPopOverOfEditOpen={isPopOverOfEditOpen}
                     isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                     key={`${label}-report-${index}`}
-                    onRequestClose={handleRequestClose}
+                    label={label}
                     reportId={reportObject.report_id}
                     reportList={reportList}
                     userPhotoUrl={userPhotoUrl}
@@ -83,5 +86,31 @@ const ReportList = ({
         }
     </ReportListWrapper>
 );
+
+ReportList.propTypes = {
+    anchorEl: PropTypes.object,
+    commentsNick: PropTypes.object.isRequired,
+    currentLudoId: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    handleDenounceBoxOpen: PropTypes.func.isRequired,
+    handleEditTextReportClick: PropTypes.func.isRequired,
+    handleEditImageReportClick: PropTypes.func.isRequired,
+    handleImageLightboxOpen: PropTypes.func.isRequired,
+    handleReportDelete: PropTypes.func.isRequired,
+    handleReportDenounce: PropTypes.func.isRequired,
+    handleReportEditButtonTouchTap: PropTypes.func.isRequired,
+    handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
+    handleRequestClose: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    isEditingWhichReportIndex: PropTypes.number.isRequired,
+    isMyReport: PropTypes.bool.isRequired,
+    isPopOverOfEditOpen: PropTypes.bool.isRequired,
+    isPopOverOfExpandMoreOpen: PropTypes.bool.isRequired,
+    label: PropTypes.string.isRequired,
+    panelWidth: PropTypes.number.isRequired,
+    reportList: PropTypes.array.isRequired,
+    reportUserId: PropTypes.string.isRequired,
+    userPhotoUrl: PropTypes.string.isRequired,
+};
 
 export default ReportList;

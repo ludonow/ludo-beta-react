@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/Menu';
@@ -20,18 +21,18 @@ const EditButton = ({
     handleEditTextReportClick,
     handleReportDelete,
     handleReportEditButtonTouchTap,
+    handleRequestClose,
     index,
     isEditingWhichReportIndex,
     isPopOverOfEditOpen,
-    onRequestClose,
-    whichList,
+    label,
 }) => (
     <div>
         <div className="report-icon-button">
             <DesktopReportDate createDate={createDate} />
             <StyledIconButton
                 className="desktop_edit_button"
-                id={`${whichList}-report-edit-${index}`}
+                id={`${label}-report-edit-${index}`}
                 onTouchTap={handleReportEditButtonTouchTap}
                 tooltip="編輯"
             >
@@ -41,19 +42,19 @@ const EditButton = ({
         <Popover
             anchorEl={anchorEl}
             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-            onRequestClose={onRequestClose}
+            onRequestClose={handleRequestClose}
             open={isPopOverOfEditOpen}
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
         >
             <Menu>
                 {/* <MenuItem
                     disabled={!reportList[isEditingWhichReportIndex].content}
-                    id={`${whichList}-text-edit-${isEditingWhichReportIndex}`}
+                    id={`${label}-text-edit-${isEditingWhichReportIndex}`}
                     onTouchTap={handleEditTextReportClick}
                     primaryText="編輯文字回報"
                 /> */}
                 <MenuItem
-                    id={`${whichList}-report-delete-${isEditingWhichReportIndex}`}
+                    id={`${label}-report-delete-${isEditingWhichReportIndex}`}
                     onTouchTap={handleReportDelete}
                     primaryText="刪除此回報"
                 />
@@ -61,5 +62,19 @@ const EditButton = ({
         </Popover>
     </div>
 );
+
+EditButton.propTypes = {
+    anchorEl: PropTypes.object,
+    createDate: PropTypes.string.isRequired,
+    handleEditImageReportClick: PropTypes.func.isRequired,
+    handleEditTextReportClick: PropTypes.func.isRequired,
+    handleReportDelete: PropTypes.func.isRequired,
+    handleReportEditButtonTouchTap: PropTypes.func.isRequired,
+    handleRequestClose: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
+    isEditingWhichReportIndex: PropTypes.number.isRequired,
+    isPopOverOfEditOpen: PropTypes.bool.isRequired,
+    label: PropTypes.string.isRequired,
+};
 
 export default EditButton;

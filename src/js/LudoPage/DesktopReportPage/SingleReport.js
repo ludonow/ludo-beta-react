@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import DesktopCommentBox from './DesktopCommentBox/index';
@@ -37,6 +38,7 @@ const SingleReport = ({
     isMyReport,
     isPopOverOfEditOpen,
     isPopOverOfExpandMoreOpen,
+    label,
     reportId,
     reportList,
     userPhotoUrl,
@@ -52,14 +54,14 @@ const SingleReport = ({
             handleReportDenounce={handleReportDenounce}
             handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
             handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
+            handleRequestClose={handleRequestClose}
             index={index}
             isEditingWhichReportIndex={isEditingWhichReportIndex}
             isMyReport={isMyReport}
             isPopOverOfEditOpen={isPopOverOfEditOpen}
             isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
-            onRequestClose={handleRequestClose}
+            label={label}
             reportList={reportList}
-            whichList="player"
         />
         <ReportInfo
             content={content}
@@ -80,5 +82,36 @@ const SingleReport = ({
         />
     </SingleReportWrapper>
 );
+
+SingleReport.propTypes = {
+    anchorEl: PropTypes.object,
+    createDate: PropTypes.string.isRequired,
+    commentsNick: PropTypes.object.isRequired,
+    comments: PropTypes.array.isRequired,
+    content: PropTypes.string.isRequired,
+    currentLudoId: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    handleDenounceBoxOpen: PropTypes.func.isRequired,
+    handleEditTextReportClick: PropTypes.func.isRequired,
+    handleEditImageReportClick: PropTypes.func.isRequired,
+    handleImageLightboxOpen: PropTypes.func.isRequired,
+    handleReportDelete: PropTypes.func.isRequired,
+    handleReportDenounce: PropTypes.func.isRequired,
+    handleReportEditButtonTouchTap: PropTypes.func.isRequired,
+    handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
+    handleRequestClose: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    imageLocation: PropTypes.string,
+    index: PropTypes.number.isRequired,
+    isEditingWhichReportIndex: PropTypes.number.isRequired,
+    isMyReport: PropTypes.bool.isRequired,
+    isPopOverOfEditOpen: PropTypes.bool.isRequired,
+    isPopOverOfExpandMoreOpen: PropTypes.bool.isRequired,
+    label: PropTypes.string.isRequired,
+    reportId: PropTypes.string.isRequired,
+    reportList: PropTypes.array.isRequired,
+    userPhotoUrl: PropTypes.string.isRequired,
+    video: PropTypes.string,
+};
 
 export default SingleReport;
