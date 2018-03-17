@@ -286,7 +286,6 @@ class CreateStepper extends Component {
                         isSubmitting: false
                     });
                 });
-                
             } else { // not isUpdatingImage
                 const cardCreateFormWithoutImageLocation = {
                     ...cardCreateForm,

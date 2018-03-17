@@ -226,7 +226,7 @@ class DesktopLudoPage extends Component {
                         handleShouldProfileUpdate(true);
                         browserHistory.push('/cardList');
                     } else {
-                        if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，，請點擊「確定」回報此問題給開發團隊')) {
+                        if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
                         this.setState({

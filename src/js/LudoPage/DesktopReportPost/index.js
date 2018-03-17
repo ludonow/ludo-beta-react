@@ -22,6 +22,7 @@ const initialState = {
     isReporting: false,
     isSubmitting: false,
     step: 0,
+    submitType: 'post',
     text: '',
     reportId: '',
     reportType: '',
@@ -75,12 +76,14 @@ class DesktopReportPost extends Component {
         this.handleDiscardConfirm = this.handleDiscardConfirm.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
         this.handleImageResize = this.handleImageResize.bind(this);
+        this.handlePutSubmit = this.handlePutSubmit.bind(this);
         this.handleReportTypeClick = this.handleReportTypeClick.bind(this);
         this.handleStepNext = this.handleStepNext.bind(this);
         this.handleStepPrev = this.handleStepPrev.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
+        this.isUpdatingImage = this.isUpdatingImage.bind(this);
         this.setImageLocation = this.setImageLocation.bind(this);
     }
 
@@ -97,6 +100,7 @@ class DesktopReportPost extends Component {
                     reportId,
                     reportType,
                     step: 1,
+                    submitType: 'put',
                     text: editingForm.content,
                 });
             } else if (editingForm.video) {
@@ -107,6 +111,7 @@ class DesktopReportPost extends Component {
                     reportId,
                     reportType,
                     step: 1,
+                    submitType: 'put',
                     text: editingForm.content,
                     video: editingForm.video,
                 });
@@ -118,6 +123,7 @@ class DesktopReportPost extends Component {
                     reportId,
                     reportType,
                     step: 1,
+                    submitType: 'put',
                     text: editingForm.content,
                 });
             }
@@ -155,6 +161,102 @@ class DesktopReportPost extends Component {
             resizedHeight,
             resizedWidth
         });
+    }
+
+    handlePutSubmit(event) {
+        event.preventDefault();
+        this.setState({ isSubmitting: true });
+
+        const {
+            imageLocation,
+            images,
+            reportId,
+            reportType,
+            text,
+            video,
+        } = this.state;
+
+        let reportPutBody = {};
+
+        const isUpdatingImage = this.isUpdatingImage(reportType, images);
+        if (isUpdatingImage) {
+            const imagePost = new FormData();
+            imagePost.append('file', images[0]);
+            axios.post('/apis/report-image', imagePost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    return response.data.location;
+                } else {
+                    console.error('DesktopReportPost handlePutSubmit response status from server is not OK, which is: ', response);
+                    const errorMessage = 'DesktopReportPost handlePutSubmit response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
+                }
+            })
+            .then(imageLocation => {
+                reportPutBody = {
+                    content: text,
+                    image_location: imageLocation,
+                };
+                return axios.put(`/apis/report/${reportId}`, reportPutBody)
+            })
+            .then((response) => {
+                if (response.data.status === '200') {
+                    const {
+                        handleReportDialogClose,
+                        handleShouldProfileUpdate,
+                        handleShouldReportUpdate,
+                    } = this.props;
+                    handleReportDialogClose();
+                    handleShouldProfileUpdate(true);
+                    handleShouldReportUpdate(true);
+                } else {
+                    if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({ isSubmitting: false });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('送出回報編輯資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({ isSubmitting: false });
+            });
+        } else {
+            if (reportType === 'video') {
+                reportPutBody = {
+                    content: text,
+                    video,
+                };
+            } else {
+                reportPutBody = { content: text };
+            }
+
+            axios.put(`/apis/report/${reportId}`, reportPutBody)
+            .then((response) => {
+                if (response.data.status === '200') {
+                    const {
+                        handleReportDialogClose,
+                        handleShouldProfileUpdate,
+                        handleShouldReportUpdate,
+                    } = this.props;
+                    handleReportDialogClose();
+                    handleShouldProfileUpdate(true);
+                    handleShouldReportUpdate(true);
+                } else {
+                    if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({ isSubmitting: false });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('送出回報編輯資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({ isSubmitting: false });
+            });
+        }
     }
 
     handleReportTypeClick(event) {
@@ -363,6 +465,14 @@ class DesktopReportPost extends Component {
         }
     }
 
+    isUpdatingImage(contentType, images) {
+        if (contentType === 'image' && images.length === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     setImageLocation(imageLocation) {
         this.setState({
             imageLocation,
@@ -381,6 +491,7 @@ class DesktopReportPost extends Component {
             resizedHeight,
             resizedWidth,
             step,
+            submitType,
             text,
             video,
         } = this.state;
@@ -423,7 +534,7 @@ class DesktopReportPost extends Component {
                         handleReportTypeClick={this.handleReportTypeClick}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
-                        handleSubmit={this.handleSubmit}
+                        handleSubmit={submitType === 'put' ? this.handlePutSubmit : this.handleSubmit}
                         isPreviewButtonDisabled={isPreviewButtonDisabled}
                         isSubmitting={isSubmitting}
                         step={step}
