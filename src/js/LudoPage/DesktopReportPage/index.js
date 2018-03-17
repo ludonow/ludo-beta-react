@@ -11,7 +11,6 @@ import Popover from 'material-ui/Popover';
 import axios from '../../axios-config';
 import { labelList } from '../../assets/reportInterval'; 
 import { withEither, withMaybe } from '../../components/higher-order-components/index';
-import LudoStageArray from '../../../data/LudoStageArray.json';
 import ReportList, { ReportListWrapper } from './ReportList';
 
 function compareByCreatedDate(a, b) {
