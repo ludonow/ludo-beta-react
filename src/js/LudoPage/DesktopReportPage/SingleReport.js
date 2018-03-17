@@ -87,7 +87,7 @@ SingleReport.propTypes = {
     anchorEl: PropTypes.object,
     createDate: PropTypes.string.isRequired,
     commentsNick: PropTypes.object.isRequired,
-    comments: PropTypes.array.isRequired,
+    comments: PropTypes.array,
     content: PropTypes.string.isRequired,
     currentLudoId: PropTypes.string.isRequired,
     currentUserId: PropTypes.string.isRequired,
