@@ -4,6 +4,9 @@ import processString from 'react-process-string';
 import styled from 'styled-components';
 import LightBox from 'react-image-lightbox';
 import ReactPlayer from 'react-player';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import Popover from 'material-ui/Popover';
 
 import axios from '../../axios-config';
 import { labelList } from '../../assets/reportInterval'; 
@@ -113,6 +116,7 @@ class DesktopReportPage extends Component {
         this.handleReportDelete = this.handleReportDelete.bind(this);
         this.handleReportDenounce = this.handleReportDenounce.bind(this);
         this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
+        this.handleReportEditing = this.handleReportEditing.bind(this);
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
     }
@@ -209,6 +213,19 @@ class DesktopReportPage extends Component {
         });
     }
 
+    handleReportEditing(event) {
+        const fields = event.currentTarget.id.split('-');
+        const characterOfUser = String(fields[0]);
+        const arrayIndex =  Number(fields[fields.length - 1]);
+        const targetReportObject = {
+            arrayIndex,
+            characterOfUser,
+        };
+
+        this.props.handleReportDialogOpenWithData(targetReportObject);
+        this.handleRequestClose();
+    }
+
     handleReportExpandMoreButtonTouchTap(event) {
         /* This prevents ghost click. */
         event.preventDefault();
@@ -286,23 +303,15 @@ class DesktopReportPage extends Component {
                 <ReportCycle>{labelList[Number(renderedInterval)-1]}</ReportCycle>
                 <ReportColumnList width={panelWidth}>
                     <ReportList
-                        anchorEl={anchorEl}
                         commentsNick={comments_nick}
                         currentLudoId={ludoId}
                         currentUserId={currentUserId}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
-                        handleReportDelete={this.handleReportDelete}
-                        handleReportDenounce={this.handleReportDenounce}
-                        handleReportDialogOpenWithData={handleReportDialogOpenWithData}
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                        handleRequestClose={this.handleRequestClose}
                         handleShouldReportUpdate={handleShouldReportUpdate}
-                        isEditingWhichReportIndex={isEditingWhichStarterReportIndex}
                         isMyReport={router_currentFormValue.starter_id === currentUserId}
-                        isPopOverOfEditOpen={isPopOverOfEditOpen}
-                        isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                         label="starter"
                         panelWidth={panelWidth}
                         reportList={starterReportList}
@@ -310,23 +319,15 @@ class DesktopReportPage extends Component {
                         userPhotoUrl={userPhotoUrl}
                     />
                     <PlayerReportListWithNoOpponent
-                        anchorEl={anchorEl}
                         commentsNick={comments_nick}
                         currentLudoId={ludoId}
                         currentUserId={currentUserId}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
-                        handleReportDelete={this.handleReportDelete}
-                        handleReportDenounce={this.handleReportDenounce}
-                        handleReportDialogOpenWithData={handleReportDialogOpenWithData}
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                        handleRequestClose={this.handleRequestClose}
                         handleShouldReportUpdate={handleShouldReportUpdate}
-                        isEditingWhichReportIndex={isEditingWhichPlayerReportIndex}
                         isMyReport={router_currentFormValue.player_id === currentUserId}
-                        isPopOverOfEditOpen={isPopOverOfEditOpen}
-                        isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                         isStageOfCardReady={isStageOfCardReady}
                         label="player"
                         panelWidth={panelWidth}
@@ -340,6 +341,44 @@ class DesktopReportPage extends Component {
                     mainSrc={enlargeImageLocation}
                     onCloseRequest={this.handleImageLightboxClose}
                 />
+                <Popover
+                    anchorEl={anchorEl}
+                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                    onRequestClose={this.handleRequestClose}
+                    open={isPopOverOfEditOpen}
+                    style={{overflowY: 'hidden'}}
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                >
+                    <Menu>
+                        <MenuItem
+                            id={anchorEl.id}
+                            onTouchTap={this.handleReportEditing}
+                            primaryText="編輯此回報"
+                        />
+                        <MenuItem
+                            id={anchorEl.id}
+                            onTouchTap={this.handleReportDelete}
+                            primaryText="刪除此回報"
+                        />
+                    </Menu>
+                </Popover>
+                <Popover
+                    anchorEl={anchorEl}
+                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                    onRequestClose={this.handleRequestClose}
+                    open={isPopOverOfExpandMoreOpen}
+                    style={{overflowY: 'hidden'}}
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                >
+                    <Menu>
+                        <MenuItem
+                            id={anchorEl.id}
+                            innerDivStyle={{ 'fontSize': '14px' }}
+                            onTouchTap={this.handleReportDenounce}
+                            primaryText="檢舉此回報"
+                        />
+                    </Menu>
+                </Popover>
             </Wrapper>
         );
     }
