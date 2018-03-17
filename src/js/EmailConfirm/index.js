@@ -15,6 +15,7 @@ const initialState = {
     open: true,
 };
 
+// styled comopnents
 const StyledForm = styled(Formsy.Form)`
     display: flex;
     justify-content: center;
@@ -61,6 +62,7 @@ class EmailConfirm extends Component {
     }
 
     handleSubmit(emailObject) {
+        this.setState({ isSubmitButtonDisabled: true });
         axios.post(`/apis/validate/email/${this.props.currentUserId}`, emailObject)
         .then((response) => {
             if (response.data.status === '200') {
@@ -68,17 +70,16 @@ class EmailConfirm extends Component {
                 browserHistory.push('/email-confirm-alert');
             } else {
                 this.setState({
-                    errorMessageFromServer: response.data.message[0]
+                    errorMessageFromServer: response.data.message[0],
+                    isSubmitButtonDisabled: false
                 });
-                if (window.confirm('送出信箱確認訊息時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
-                    window.open("https://www.facebook.com/messages/t/ludonow");
-                }
             }
         })
         .catch((error) => {
             if (window.confirm('送出信箱確認訊息時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                 window.open("https://www.facebook.com/messages/t/ludonow");
             }
+            this.setState({ isSubmitButtonDisabled: false });
         });
     }
 
