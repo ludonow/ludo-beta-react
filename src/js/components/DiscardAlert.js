@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import styled from 'styled-components';
 
@@ -37,8 +38,8 @@ const titleStyle = {
 const DiscardAlert = ({
     alertTitle,
     buttonLabel,
-    handleDialogClose,
     handleDiscardAlertClose,
+    handleDiscardConfirm,
     isDiscardAlertOpen,
 }) => (
     <Dialog
@@ -59,10 +60,18 @@ const DiscardAlert = ({
             <Button
                 backgroundColor={'#FF6262'}
                 label={buttonLabel ? buttonLabel : '捨棄'}
-                onClick={handleDialogClose}
+                onClick={handleDiscardConfirm}
             />
         </ButtonListWrapper>
     </Dialog>
 );
+
+DiscardAlert.propTypes = {
+    alertTitle: PropTypes.string,
+    buttonLabel: PropTypes.string,
+    handleDiscardAlertClose: PropTypes.func.isRequired,
+    handleDiscardConfirm: PropTypes.func.isRequired,
+    isDiscardAlertOpen: PropTypes.bool.isRequired,
+};
 
 export default DiscardAlert;

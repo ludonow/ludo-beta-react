@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import IconButton from 'material-ui/IconButton';
@@ -17,10 +17,9 @@ const StyledIconButton = styled(IconButton)`
 const EditButton = ({
     anchorEl,
     createDate,
-    handleEditImageReportClick,
-    handleEditTextReportClick,
     handleReportDelete,
     handleReportEditButtonTouchTap,
+    handleReportEditing,
     handleRequestClose,
     index,
     isEditingWhichReportIndex,
@@ -47,12 +46,11 @@ const EditButton = ({
             targetOrigin={{horizontal: 'right', vertical: 'top'}}
         >
             <Menu>
-                {/* <MenuItem
-                    disabled={!reportList[isEditingWhichReportIndex].content}
-                    id={`${label}-text-edit-${isEditingWhichReportIndex}`}
-                    onTouchTap={handleEditTextReportClick}
-                    primaryText="編輯文字回報"
-                /> */}
+                <MenuItem
+                    id={`${label}-report-edit-${isEditingWhichReportIndex}`}
+                    onTouchTap={handleReportEditing}
+                    primaryText="編輯此回報"
+                />
                 <MenuItem
                     id={`${label}-report-delete-${isEditingWhichReportIndex}`}
                     onTouchTap={handleReportDelete}
@@ -66,9 +64,8 @@ const EditButton = ({
 EditButton.propTypes = {
     anchorEl: PropTypes.object,
     createDate: PropTypes.string.isRequired,
-    handleEditImageReportClick: PropTypes.func.isRequired,
-    handleEditTextReportClick: PropTypes.func.isRequired,
     handleReportDelete: PropTypes.func.isRequired,
+    handleReportDialogOpenWithData: PropTypes.func.isRequired,
     handleReportEditButtonTouchTap: PropTypes.func.isRequired,
     handleRequestClose: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,

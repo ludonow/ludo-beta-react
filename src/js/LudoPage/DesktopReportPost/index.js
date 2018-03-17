@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
@@ -22,6 +23,7 @@ const initialState = {
     isSubmitting: false,
     step: 0,
     text: '',
+    reportId: '',
     reportType: '',
     resizedHeight: 250,
     resizedWidth: 250,
@@ -70,6 +72,7 @@ class DesktopReportPost extends Component {
         this.state = initialState;
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDiscardAlertClose = this.handleDiscardAlertClose.bind(this);
+        this.handleDiscardConfirm = this.handleDiscardConfirm.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
         this.handleImageResize = this.handleImageResize.bind(this);
         this.handleReportTypeClick = this.handleReportTypeClick.bind(this);
@@ -81,10 +84,46 @@ class DesktopReportPost extends Component {
         this.setImageLocation = this.setImageLocation.bind(this);
     }
 
-    // componentDidMount() {
-    //     this.setState({
-    //     });
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.editingForm && nextProps.editingForm.report_id !== this.state.reportId) {
+            console.log('componentWillReceiveProps');
+            const { editingForm } = nextProps;
+            const reportId = editingForm.report_id;
+            if (editingForm.image_location) {
+                const reportType = 'image';
+                this.setState({
+                    imageLocation: editingForm.image_location,
+                    isPreviewButtonDisabled: false,
+                    isReporting: true,
+                    reportId,
+                    reportType,
+                    step: 1,
+                    text: editingForm.content,
+                });
+            } else if (editingForm.video) {
+                const reportType = 'video';
+                this.setState({
+                    isPreviewButtonDisabled: false,
+                    isReporting: true,
+                    reportId,
+                    reportType,
+                    step: 1,
+                    text: editingForm.content,
+                    video: editingForm.video,
+                });
+            } else {
+                const reportType = 'text';
+                this.setState({
+                    isPreviewButtonDisabled: false,
+                    isReporting: true,
+                    reportId,
+                    reportType,
+                    step: 1,
+                    text: editingForm.content,
+                });
+            }
+        }
+    }
 
     handleCloseClick() {
         const { isReporting } = this.state;
@@ -97,6 +136,11 @@ class DesktopReportPost extends Component {
 
     handleDiscardAlertClose() {
         this.setState({ isDiscardAlertOpen: false });
+    }
+
+    handleDiscardConfirm() {
+        this.handleDiscardAlertClose();
+        this.props.handleReportDialogClose();
     }
 
     handleImageChange(image) {
@@ -167,11 +211,11 @@ class DesktopReportPost extends Component {
                 const {
                     currentUserId,
                     ludoId,
-                    router_currentFormValue
+                    router_currentFormValue,
                 } = this.props;
                 const {
                     text,
-                    video
+                    video,
                 } = this.state;
                 let whoIsUser = '';
                 (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
@@ -215,11 +259,11 @@ class DesktopReportPost extends Component {
             const {
                 currentUserId,
                 ludoId,
-                router_currentFormValue
+                router_currentFormValue,
             } = this.props;
             const {
                 text,
-                video
+                video,
             } = this.state;
             let whoIsUser = '';
             (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
@@ -229,7 +273,6 @@ class DesktopReportPost extends Component {
                 player: whoIsUser,
                 video
             };
-            console.log(ludoReportPost);
             axios.post('/apis/report', ludoReportPost)
             .then(response => {
                 if (response.data.status === '200') {
@@ -343,12 +386,11 @@ class DesktopReportPost extends Component {
             video,
         } = this.state;
         const {
-            className,
             handleReportDialogClose,
             isReportDialogOpen,
         } = this.props;
         return (
-            <DesktopReportPostWrapper className={ className }>
+            <DesktopReportPostWrapper>
                 <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
@@ -390,12 +432,24 @@ class DesktopReportPost extends Component {
                 </StyledDialog>
                 <DiscardAlert
                     handleDiscardAlertClose={this.handleDiscardAlertClose}
+                    handleDiscardConfirm={this.handleDiscardConfirm}
                     handleReportDialogClose={handleReportDialogClose}
                     isDiscardAlertOpen={isDiscardAlertOpen}
                 />
             </DesktopReportPostWrapper>
         );
     }
-} 
+}
+
+DesktopReportPost.propTypes = {
+    currentUserId: PropTypes.string.isRequired,
+    editForm: PropTypes.object,
+    ludoId: PropTypes.string.isRequired,
+    handleReportDialogClose: PropTypes.func.isRequired,
+    handleShouldProfileUpdate: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    isReportDialogOpen: PropTypes.bool.isRequired,
+    router_currentFormValue: PropTypes.object.isRequired,
+};
 
 export default DesktopReportPost;

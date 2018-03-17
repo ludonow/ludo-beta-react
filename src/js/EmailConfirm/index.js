@@ -126,8 +126,8 @@ class EmailConfirm extends Component {
                 <DiscardAlert
                     alertTitle="信箱未確認完成將無法收到遊戲通知，確定要關閉嗎"
                     buttonLabel="關閉"
-                    handleDialogClose={this.handleDialogClose}
                     handleDiscardAlertClose={this.handleDiscardAlertClose}
+                    handleDiscardConfirm={this.handleDialogClose}
                     isDiscardAlertOpen={isDiscardAlertOpen}
                 />
             </Dialog>

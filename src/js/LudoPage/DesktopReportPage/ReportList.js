@@ -22,11 +22,10 @@ const ReportList = ({
     currentLudoId,
     currentUserId,
     handleDenounceBoxOpen,
-    handleEditTextReportClick,
-    handleEditImageReportClick,
     handleImageLightboxOpen,
     handleReportDelete,
     handleReportDenounce,
+    handleReportDialogOpenWithData,
     handleReportEditButtonTouchTap,
     handleReportExpandMoreButtonTouchTap,
     handleRequestClose,
@@ -60,10 +59,9 @@ const ReportList = ({
                     currentLudoId={currentLudoId}
                     currentUserId={currentUserId}
                     handleDenounceBoxOpen={handleDenounceBoxOpen}
-                    handleEditTextReportClick={handleEditTextReportClick}
-                    handleEditImageReportClick={handleEditImageReportClick}
                     handleImageLightboxOpen={handleImageLightboxOpen}
                     handleReportDelete={handleReportDelete}
+                    handleReportDialogOpenWithData={handleReportDialogOpenWithData}
                     handleReportDenounce={handleReportDenounce}
                     handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
                     handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
@@ -78,7 +76,6 @@ const ReportList = ({
                     key={`${label}-report-${index}`}
                     label={label}
                     reportId={reportObject.report_id}
-                    reportList={reportList}
                     userPhotoUrl={userPhotoUrl}
                     video={reportObject.video}
                 />
@@ -93,11 +90,10 @@ ReportList.propTypes = {
     currentLudoId: PropTypes.string.isRequired,
     currentUserId: PropTypes.string.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
-    handleEditTextReportClick: PropTypes.func.isRequired,
-    handleEditImageReportClick: PropTypes.func.isRequired,
     handleImageLightboxOpen: PropTypes.func.isRequired,
     handleReportDelete: PropTypes.func.isRequired,
     handleReportDenounce: PropTypes.func.isRequired,
+    handleReportDialogOpenWithData: PropTypes.func.isRequired,
     handleReportEditButtonTouchTap: PropTypes.func.isRequired,
     handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
     handleRequestClose: PropTypes.func.isRequired,

@@ -11,6 +11,10 @@ import { withEither, withMaybe } from '../../components/higher-order-components/
 import LudoStageArray from '../../../data/LudoStageArray.json';
 import ReportList, { ReportListWrapper } from './ReportList';
 
+function compareByCreatedDate(a, b) {
+    return new Date(b.CreatedAt) - new Date(a.CreatedAt);
+}
+
 const panelWidth = window.innerWidth * 0.7;
 
 const CardTitle = styled.div`
@@ -142,24 +146,21 @@ class DesktopReportPage extends Component {
     componentWillReceiveProps(nextProps) {
         /* classify report data by starter or player */
         if (nextProps.hasGotNewReport) {
-            const { currentUserId, router_currentFormValue } = nextProps;
+            const {
+                currentLudoReportData,
+                currentUserId,
+                router_currentFormValue,
+            } = nextProps;
             let whoIsUser = '';
             if (currentUserId) {
-                if (router_currentFormValue.starter_id == currentUserId) {
+                if (router_currentFormValue.starter_id === currentUserId) {
                     whoIsUser = 'starter';
-                } else if (router_currentFormValue.player_id == currentUserId) {
+                } else if (router_currentFormValue.player_id === currentUserId) {
                     whoIsUser = 'player';
                 } else {
                     whoIsUser = 'bystander';
                 }
             }
-            const { starterReportList, playerReportList } = this.state;
-            this.setState({
-                starterReportList: [],
-                playerReportList: [],
-                whoIsUser
-            });
-            const { currentLudoReportData } = nextProps;
             const newStarterReportList = currentLudoReportData.filter((reportObject) => {
                 if (reportObject.user_id === router_currentFormValue.starter_id) {
                     return true;
@@ -174,11 +175,13 @@ class DesktopReportPage extends Component {
                     return false;
                 }
             });
+            const playerReportList = newPlayerReportList.sort(compareByCreatedDate);
+            const starterReportList = newStarterReportList.sort(compareByCreatedDate);
 
             this.setState({
-                playerReportList: newPlayerReportList,
-                starterReportList: newStarterReportList,
-                whoIsUser
+                playerReportList,
+                starterReportList,
+                whoIsUser,
             });
             if (!this.state.isEditReportButtonClickable) {
                 this.setState({
@@ -216,7 +219,7 @@ class DesktopReportPage extends Component {
         const indexAtWhatPositionInArray = isEditingTextReportIndex.indexOf(reportIndex);
         const isInEditingArray = (indexAtWhatPositionInArray != -1);
         const SPIndex = (event.currentTarget.id).slice(0, 1);
-        if(!isInEditingArray) {
+        if (!isInEditingArray) {
             isEditingTextReportIndex.splice(0, isEditingTextReportIndex.length);
             isEditingTextReportIndex.push(`${SPIndex}${String(reportIndex)}`);
         }
@@ -538,6 +541,7 @@ class DesktopReportPage extends Component {
         const {
             currentUserId,
             handleDenounceBoxOpen,
+            handleReportDialogOpenWithData,
             handleShouldReportUpdate,
             isStageOfCardReady,
             ludoId,
@@ -567,11 +571,10 @@ class DesktopReportPage extends Component {
                         currentLudoId={ludoId}
                         currentUserId={currentUserId}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
-                        handleEditTextReportClick={this.handleEditTextReportClick}
-                        handleEditImageReportClick={this.handleEditImageReportClick}
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
                         handleReportDelete={this.handleReportDelete}
                         handleReportDenounce={this.handleReportDenounce}
+                        handleReportDialogOpenWithData={handleReportDialogOpenWithData}
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
                         handleRequestClose={this.handleRequestClose}
@@ -597,6 +600,7 @@ class DesktopReportPage extends Component {
                         handleImageLightboxOpen={this.handleImageLightboxOpen}
                         handleReportDelete={this.handleReportDelete}
                         handleReportDenounce={this.handleReportDenounce}
+                        handleReportDialogOpenWithData={handleReportDialogOpenWithData}
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
                         handleRequestClose={this.handleRequestClose}
@@ -628,6 +632,7 @@ DesktopReportPage.propTypes = {
     currentUserId: PropTypes.string.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
     handleHasGotNewReport: PropTypes.func.isRequired,
+    handleReportDialogOpenWithData: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     hasGotNewReport: PropTypes.bool.isRequired,
     isStageOfCardReady: PropTypes.bool.isRequired,

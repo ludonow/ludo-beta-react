@@ -1001,8 +1001,8 @@ class CreateStepper extends Component {
                         step={step}
                     />
                     <DiscardAlert
-                        handleDialogClose={this.handleDialogClose}
                         handleDiscardAlertClose={this.handleDiscardAlertClose}
+                        handleDiscardConfirm={this.handleDialogClose}
                         isDiscardAlertOpen={isDiscardAlertOpen}
                     />
                 </StyledDialog>

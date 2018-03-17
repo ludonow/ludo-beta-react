@@ -111,7 +111,6 @@ const ludoRedirect = (nextState, replace, callback) => {
         }
     })
     .catch((error) => {
-        console.log(error);
         if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
             window.open("https://www.facebook.com/messages/t/ludonow");
         }
