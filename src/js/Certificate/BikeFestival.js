@@ -38,10 +38,11 @@ const Date = styled.span`
 `;
 
 const Introduction = styled.div`
+    width: 8.35cm;
 `;
 
 const Label = styled.div`
-    width: 4cm;
+    width: 2.15cm;
 `;
 
 const LogoWrapper = styled.div`
@@ -74,6 +75,7 @@ const ContentRow = Row.extend`
 const IntroductionWrapper = ContentRow.extend`
     display: inline-flex;
     margin: 0;
+    width: 100%;
 `;
 const StyledRow = Row.extend`
     border-bottom: 1px solid black;
@@ -130,7 +132,7 @@ const BikeFestival = ({
                     姓&emsp;&emsp;名：{userName}
                 </ContentRow>
                 <ContentRow>
-                    系&emsp;&emsp;所：{removeNCKU(currentLudoData.tags[0])}
+                    系&emsp;&emsp;所：{currentLudoData.tags.length > 0 ? removeNCKU(currentLudoData.tags[0]) : '科系'}
                 </ContentRow>
                 <ContentRow>
                     執行時間：
