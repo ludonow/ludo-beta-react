@@ -299,6 +299,7 @@ class CreateStepper extends Component {
                         /* get ludo information after create ludo post */
                         axios.get(`/apis/ludo/${ludo_id}`)
                         .then((response) => {
+                            console.log(response);
                             /*
                                 response.data.status
                                 200: everything's fine;

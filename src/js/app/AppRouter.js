@@ -94,6 +94,8 @@ const isLoggedIn = (nextState, replace, callback) => {
 let router_ludoPageIndex = null;
 let router_currentFormValue = {};
 let router_currentLudoId = '';
+let statisticData = {};
+let userName = '';
 
 const ludoRedirect = (nextState, replace, callback) => {
     const { ludo_id }= nextState.params;
@@ -117,6 +119,45 @@ const ludoRedirect = (nextState, replace, callback) => {
     });
 };
 
+const getLudoStatisticData = (nextState, replace, callback) => {
+    const { 
+        ludoId,
+        userId,
+    } = nextState.params;
+    axios.get(`/apis/ludo/${ludoId}`)
+    .then((response) => {
+        if (response.data.status === '200') {
+            router_currentFormValue = response.data.ludo;
+        } else {
+            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+        }
+    })
+    .catch((error) => {
+        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            window.open("https://www.facebook.com/messages/t/ludonow");
+        }
+    });
+    axios.get(`/apis/ludo/${ludoId}/statistic/${userId}`)
+    .then((response) => {
+        if (response.data.status == 200) {
+            statisticData = response.data.data;
+            userName = response.data.userName;
+            callback();
+        } else {
+            if (window.confirm('取得Ludo卡片統計資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+        }
+    })
+    .catch((error) => {
+        if (window.confirm('取得Ludo卡片統計資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            window.open("https://www.facebook.com/messages/t/ludonow");
+        }
+    });
+};
+
 /* TODO: find out usage of getComponent callback */
 const AppRouter = () => (
     <div>
@@ -124,8 +165,7 @@ const AppRouter = () => (
             <Route
                 component={App}
                 path={`${baseUrl}/`}
-            >   
-                {/* <IndexRoute component={Playground} /> */}
+            >
                 <IndexRedirect to="cardList" />
                 <Route
                     component={Bind}
@@ -240,13 +280,14 @@ const AppRouter = () => (
                         null,
                         props =>
                             <BikeFestivalCertificate
-                                {...props}
                                 currentLudoData={router_currentFormValue}
+                                statisticData={statisticData}
+                                userName={userName}
                             />
                     );
                 }}
-                onEnter={ludoRedirect}
-                path="certificate/bike-festival/:ludo_id"
+                onEnter={getLudoStatisticData}
+                path="certificate/bike-festival/:ludoId/statistic/:userId"
             />
         </Router>
         <MediaQuery minWidth={768}>
