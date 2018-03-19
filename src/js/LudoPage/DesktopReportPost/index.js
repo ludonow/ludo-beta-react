@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
@@ -21,7 +22,9 @@ const initialState = {
     isReporting: false,
     isSubmitting: false,
     step: 0,
+    submitType: 'post',
     text: '',
+    reportId: '',
     reportType: '',
     resizedHeight: 250,
     resizedWidth: 250,
@@ -70,21 +73,62 @@ class DesktopReportPost extends Component {
         this.state = initialState;
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDiscardAlertClose = this.handleDiscardAlertClose.bind(this);
+        this.handleDiscardConfirm = this.handleDiscardConfirm.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
         this.handleImageResize = this.handleImageResize.bind(this);
+        this.handlePutSubmit = this.handlePutSubmit.bind(this);
         this.handleReportTypeClick = this.handleReportTypeClick.bind(this);
         this.handleStepNext = this.handleStepNext.bind(this);
         this.handleStepPrev = this.handleStepPrev.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
+        this.isUpdatingImage = this.isUpdatingImage.bind(this);
         this.setImageLocation = this.setImageLocation.bind(this);
     }
 
-    // componentDidMount() {
-    //     this.setState({
-    //     });
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.editingForm && nextProps.editingForm.report_id !== this.state.reportId) {
+            const { editingForm } = nextProps;
+            const reportId = editingForm.report_id;
+            if (editingForm.image_location) {
+                const reportType = 'image';
+                this.setState({
+                    imageLocation: editingForm.image_location,
+                    isPreviewButtonDisabled: false,
+                    isReporting: true,
+                    reportId,
+                    reportType,
+                    step: 1,
+                    submitType: 'put',
+                    text: editingForm.content,
+                });
+            } else if (editingForm.video) {
+                const reportType = 'video';
+                this.setState({
+                    isPreviewButtonDisabled: false,
+                    isReporting: true,
+                    reportId,
+                    reportType,
+                    step: 1,
+                    submitType: 'put',
+                    text: editingForm.content,
+                    video: editingForm.video,
+                });
+            } else {
+                const reportType = 'text';
+                this.setState({
+                    isPreviewButtonDisabled: false,
+                    isReporting: true,
+                    reportId,
+                    reportType,
+                    step: 1,
+                    submitType: 'put',
+                    text: editingForm.content,
+                });
+            }
+        }
+    }
 
     handleCloseClick() {
         const { isReporting } = this.state;
@@ -97,6 +141,11 @@ class DesktopReportPost extends Component {
 
     handleDiscardAlertClose() {
         this.setState({ isDiscardAlertOpen: false });
+    }
+
+    handleDiscardConfirm() {
+        this.handleDiscardAlertClose();
+        this.props.handleReportDialogClose();
     }
 
     handleImageChange(image) {
@@ -112,6 +161,102 @@ class DesktopReportPost extends Component {
             resizedHeight,
             resizedWidth
         });
+    }
+
+    handlePutSubmit(event) {
+        event.preventDefault();
+        this.setState({ isSubmitting: true });
+
+        const {
+            imageLocation,
+            images,
+            reportId,
+            reportType,
+            text,
+            video,
+        } = this.state;
+
+        let reportPutBody = {};
+
+        const isUpdatingImage = this.isUpdatingImage(reportType, images);
+        if (isUpdatingImage) {
+            const imagePost = new FormData();
+            imagePost.append('file', images[0]);
+            axios.post('/apis/report-image', imagePost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    return response.data.location;
+                } else {
+                    console.error('DesktopReportPost handlePutSubmit response status from server is not OK, which is: ', response);
+                    const errorMessage = 'DesktopReportPost handlePutSubmit response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
+                }
+            })
+            .then(imageLocation => {
+                reportPutBody = {
+                    content: text,
+                    image_location: imageLocation,
+                };
+                return axios.put(`/apis/report/${reportId}`, reportPutBody)
+            })
+            .then((response) => {
+                if (response.data.status === '200') {
+                    const {
+                        handleReportDialogClose,
+                        handleShouldProfileUpdate,
+                        handleShouldReportUpdate,
+                    } = this.props;
+                    handleReportDialogClose();
+                    handleShouldProfileUpdate(true);
+                    handleShouldReportUpdate(true);
+                } else {
+                    if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({ isSubmitting: false });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('送出回報編輯資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({ isSubmitting: false });
+            });
+        } else {
+            if (reportType === 'video') {
+                reportPutBody = {
+                    content: text,
+                    video,
+                };
+            } else {
+                reportPutBody = { content: text };
+            }
+
+            axios.put(`/apis/report/${reportId}`, reportPutBody)
+            .then((response) => {
+                if (response.data.status === '200') {
+                    const {
+                        handleReportDialogClose,
+                        handleShouldProfileUpdate,
+                        handleShouldReportUpdate,
+                    } = this.props;
+                    handleReportDialogClose();
+                    handleShouldProfileUpdate(true);
+                    handleShouldReportUpdate(true);
+                } else {
+                    if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({ isSubmitting: false });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('送出回報編輯資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({ isSubmitting: false });
+            });
+        }
     }
 
     handleReportTypeClick(event) {
@@ -167,11 +312,11 @@ class DesktopReportPost extends Component {
                 const {
                     currentUserId,
                     ludoId,
-                    router_currentFormValue
+                    router_currentFormValue,
                 } = this.props;
                 const {
                     text,
-                    video
+                    video,
                 } = this.state;
                 let whoIsUser = '';
                 (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
@@ -215,11 +360,11 @@ class DesktopReportPost extends Component {
             const {
                 currentUserId,
                 ludoId,
-                router_currentFormValue
+                router_currentFormValue,
             } = this.props;
             const {
                 text,
-                video
+                video,
             } = this.state;
             let whoIsUser = '';
             (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
@@ -229,7 +374,6 @@ class DesktopReportPost extends Component {
                 player: whoIsUser,
                 video
             };
-            console.log(ludoReportPost);
             axios.post('/apis/report', ludoReportPost)
             .then(response => {
                 if (response.data.status === '200') {
@@ -321,6 +465,14 @@ class DesktopReportPost extends Component {
         }
     }
 
+    isUpdatingImage(contentType, images) {
+        if (contentType === 'image' && images.length === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     setImageLocation(imageLocation) {
         this.setState({
             imageLocation,
@@ -339,16 +491,16 @@ class DesktopReportPost extends Component {
             resizedHeight,
             resizedWidth,
             step,
+            submitType,
             text,
             video,
         } = this.state;
         const {
-            className,
             handleReportDialogClose,
             isReportDialogOpen,
         } = this.props;
         return (
-            <DesktopReportPostWrapper className={ className }>
+            <DesktopReportPostWrapper>
                 <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
@@ -382,7 +534,7 @@ class DesktopReportPost extends Component {
                         handleReportTypeClick={this.handleReportTypeClick}
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
-                        handleSubmit={this.handleSubmit}
+                        handleSubmit={submitType === 'put' ? this.handlePutSubmit : this.handleSubmit}
                         isPreviewButtonDisabled={isPreviewButtonDisabled}
                         isSubmitting={isSubmitting}
                         step={step}
@@ -390,12 +542,24 @@ class DesktopReportPost extends Component {
                 </StyledDialog>
                 <DiscardAlert
                     handleDiscardAlertClose={this.handleDiscardAlertClose}
+                    handleDiscardConfirm={this.handleDiscardConfirm}
                     handleReportDialogClose={handleReportDialogClose}
                     isDiscardAlertOpen={isDiscardAlertOpen}
                 />
             </DesktopReportPostWrapper>
         );
     }
-} 
+}
+
+DesktopReportPost.propTypes = {
+    currentUserId: PropTypes.string.isRequired,
+    editForm: PropTypes.object,
+    ludoId: PropTypes.string.isRequired,
+    handleReportDialogClose: PropTypes.func.isRequired,
+    handleShouldProfileUpdate: PropTypes.func.isRequired,
+    handleShouldReportUpdate: PropTypes.func.isRequired,
+    isReportDialogOpen: PropTypes.bool.isRequired,
+    router_currentFormValue: PropTypes.object.isRequired,
+};
 
 export default DesktopReportPost;

@@ -17,24 +17,15 @@ export const ReportListWrapper = styled.div`
 `;
 
 const ReportList = ({
-    anchorEl,
     commentsNick,
     currentLudoId,
     currentUserId,
     handleDenounceBoxOpen,
-    handleEditTextReportClick,
-    handleEditImageReportClick,
     handleImageLightboxOpen,
-    handleReportDelete,
-    handleReportDenounce,
     handleReportEditButtonTouchTap,
     handleReportExpandMoreButtonTouchTap,
-    handleRequestClose,
     handleShouldReportUpdate,
-    isEditingWhichReportIndex,
     isMyReport,
-    isPopOverOfEditOpen,
-    isPopOverOfExpandMoreOpen,
     label,
     panelWidth,
     reportList,
@@ -52,7 +43,6 @@ const ReportList = ({
         {
             reportList.length !== 0 && reportList.map((reportObject, index) => (
                 <SingleReport
-                    anchorEl={anchorEl}
                     createDate={reportObject.CreatedAt}
                     commentsNick={commentsNick}
                     comments={reportObject.comments}
@@ -60,25 +50,16 @@ const ReportList = ({
                     currentLudoId={currentLudoId}
                     currentUserId={currentUserId}
                     handleDenounceBoxOpen={handleDenounceBoxOpen}
-                    handleEditTextReportClick={handleEditTextReportClick}
-                    handleEditImageReportClick={handleEditImageReportClick}
                     handleImageLightboxOpen={handleImageLightboxOpen}
-                    handleReportDelete={handleReportDelete}
-                    handleReportDenounce={handleReportDenounce}
                     handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
                     handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
-                    handleRequestClose={handleRequestClose}
                     handleShouldReportUpdate={handleShouldReportUpdate}
                     imageLocation={reportObject.image_location}
                     index={index}
-                    isEditingWhichReportIndex={isEditingWhichReportIndex}
                     isMyReport={isMyReport}
-                    isPopOverOfEditOpen={isPopOverOfEditOpen}
-                    isPopOverOfExpandMoreOpen={isPopOverOfExpandMoreOpen}
                     key={`${label}-report-${index}`}
                     label={label}
                     reportId={reportObject.report_id}
-                    reportList={reportList}
                     userPhotoUrl={userPhotoUrl}
                     video={reportObject.video}
                 />
@@ -88,24 +69,15 @@ const ReportList = ({
 );
 
 ReportList.propTypes = {
-    anchorEl: PropTypes.object,
     commentsNick: PropTypes.object.isRequired,
     currentLudoId: PropTypes.string.isRequired,
     currentUserId: PropTypes.string.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
-    handleEditTextReportClick: PropTypes.func.isRequired,
-    handleEditImageReportClick: PropTypes.func.isRequired,
     handleImageLightboxOpen: PropTypes.func.isRequired,
-    handleReportDelete: PropTypes.func.isRequired,
-    handleReportDenounce: PropTypes.func.isRequired,
     handleReportEditButtonTouchTap: PropTypes.func.isRequired,
     handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
-    handleRequestClose: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
-    isEditingWhichReportIndex: PropTypes.number.isRequired,
     isMyReport: PropTypes.bool.isRequired,
-    isPopOverOfEditOpen: PropTypes.bool.isRequired,
-    isPopOverOfExpandMoreOpen: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
     panelWidth: PropTypes.number.isRequired,
     reportList: PropTypes.array.isRequired,

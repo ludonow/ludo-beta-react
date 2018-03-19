@@ -286,7 +286,6 @@ class CreateStepper extends Component {
                         isSubmitting: false
                     });
                 });
-                
             } else { // not isUpdatingImage
                 const cardCreateFormWithoutImageLocation = {
                     ...cardCreateForm,
@@ -300,6 +299,7 @@ class CreateStepper extends Component {
                         /* get ludo information after create ludo post */
                         axios.get(`/apis/ludo/${ludo_id}`)
                         .then((response) => {
+                            console.log(response);
                             /*
                                 response.data.status
                                 200: everything's fine;
@@ -1001,8 +1001,8 @@ class CreateStepper extends Component {
                         step={step}
                     />
                     <DiscardAlert
-                        handleDialogClose={this.handleDialogClose}
                         handleDiscardAlertClose={this.handleDiscardAlertClose}
+                        handleDiscardConfirm={this.handleDialogClose}
                         isDiscardAlertOpen={isDiscardAlertOpen}
                     />
                 </StyledDialog>
