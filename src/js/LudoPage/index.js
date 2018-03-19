@@ -34,6 +34,7 @@ class LudoPage extends Component {
         const {
             currentLudoReportData,
             currentUserId,
+            getUserBasicData,
             handleDenounceBoxOpen,
             handleHasGotNewReport,
             handleShouldProfileUpdate,
@@ -51,6 +52,7 @@ class LudoPage extends Component {
                     <DesktopLudoPage
                         currentLudoReportData={currentLudoReportData}
                         currentUserId={currentUserId}
+                        getUserBasicData={getUserBasicData}
                         handleDenounceBoxOpen={handleDenounceBoxOpen}
                         handleHasGotNewReport={handleHasGotNewReport}
                         handleShouldProfileUpdate={handleShouldProfileUpdate}
