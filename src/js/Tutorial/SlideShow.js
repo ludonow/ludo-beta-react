@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
 
@@ -9,14 +9,6 @@ import {
     mobileImageList
 } from './imageList';
 import { baseUrl } from '../baseurl-config';
-import Button from '../components/Button';
-
-const ButtonWrapper = styled.div`
-    bottom: 0;
-    margin-bottom: 15px;
-    position: fixed;
-    width: 90%;
-`;
 
 const ImageWrapper = styled.div`
     align-items: center;
@@ -73,12 +65,6 @@ const SlideShow = () => {
                     ))
                 }
             </Carousel>
-            <ButtonWrapper>
-                <Button
-                    label="跳過教學"
-                    onClick={handleClick}
-                />
-            </ButtonWrapper>
         </Wrapper>
     );
 }
