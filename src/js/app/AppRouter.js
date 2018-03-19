@@ -89,35 +89,13 @@ const isLoggedIn = (nextState, replace, callback) => {
     .catch((error) => {
         callback(error);
     })
-};
+}
 
 let router_ludoPageIndex = null;
 let router_currentFormValue = {};
 let router_currentLudoId = '';
 let statisticData = {};
 let userName = '';
-
-const ludoRedirect = (nextState, replace, callback) => {
-    const { ludo_id }= nextState.params;
-    axios.get(`/apis/ludo/${ludo_id}`)
-    .then((response) => {
-        if (response.data.status === '200') {
-            router_ludoPageIndex = response.data.auth;
-            router_currentFormValue = response.data.ludo;
-            router_currentLudoId = response.data.ludo.ludo_id;
-            callback();
-        } else {
-            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-        }
-    })
-    .catch((error) => {
-        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-            window.open("https://www.facebook.com/messages/t/ludonow");
-        }
-    });
-};
 
 const getLudoStatisticData = (nextState, replace, callback) => {
     const { 
@@ -156,7 +134,39 @@ const getLudoStatisticData = (nextState, replace, callback) => {
             window.open("https://www.facebook.com/messages/t/ludonow");
         }
     });
-};
+}
+
+const ludoRedirect = (nextState, replace, callback) => {
+    const { ludo_id }= nextState.params;
+    axios.get(`/apis/ludo/${ludo_id}`)
+    .then((response) => {
+        if (response.data.status === '200') {
+            router_ludoPageIndex = response.data.auth;
+            router_currentFormValue = response.data.ludo;
+            router_currentLudoId = response.data.ludo.ludo_id;
+            callback();
+        } else {
+            if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
+        }
+    })
+    .catch((error) => {
+        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+            window.open("https://www.facebook.com/messages/t/ludonow");
+        }
+    });
+}
+
+const TutorialRedirect = (nextState, replace, callback) => {
+    const viewTutorialDate = localStorage.getItem('viewTutorialDate');
+    if (viewTutorialDate !== '2018-03-19') {
+        localStorage.setItem('viewTutorialDate', '2018-03-19');
+        browserHistory.push('/tutorial');
+    } else {
+        callback();
+    }
+}
 
 /* TODO: find out usage of getComponent callback */
 const AppRouter = () => (
@@ -173,6 +183,7 @@ const AppRouter = () => (
                 />
                 <Route
                     component={Playground}
+                    onEnter={TutorialRedirect}
                     path="cardList"
                 />
                 <Route

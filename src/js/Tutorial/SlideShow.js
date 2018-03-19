@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
 
@@ -9,6 +9,14 @@ import {
     mobileImageList
 } from './imageList';
 import { baseUrl } from '../baseurl-config';
+import Button from '../components/Button';
+
+const ButtonWrapper = styled.div`
+    bottom: 0;
+    margin-bottom: 15px;
+    position: fixed;
+    width: 90%;
+`;
 
 const ImageWrapper = styled.div`
     align-items: center;
@@ -45,6 +53,7 @@ const Wrapper = styled.div`
 const SlideShow = () => {
     const width = window.innerWidth || document.body.clientWidth;
     const imageList = (width <= 768) ? mobileImageList : desktopImageList;
+    const handleClick = (event) => { browserHistory.push('/cardList') }
 
     return (
         <Wrapper>
@@ -64,6 +73,12 @@ const SlideShow = () => {
                     ))
                 }
             </Carousel>
+            <ButtonWrapper>
+                <Button
+                    label="跳過教學"
+                    onClick={handleClick}
+                />
+            </ButtonWrapper>
         </Wrapper>
     );
 }
