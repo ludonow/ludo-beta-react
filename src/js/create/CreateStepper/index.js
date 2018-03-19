@@ -178,6 +178,7 @@ class CreateStepper extends Component {
         event.preventDefault();
         this.setState({
             isCardSubmitButtonDisabled: true,
+            isEditing: false,
             isSubmitting: true,
         });
         if (!this.props.currentUserId) {
@@ -291,15 +292,13 @@ class CreateStepper extends Component {
                     ...cardCreateForm,
                     image_location: '',
                 };
-                const createForm = (contentType === 'image') ? cardCreateForm : cardCreateFormWithoutImageLocation;
-                axios.post('/apis/ludo', createForm)
+                axios.post('/apis/ludo', cardCreateFormWithoutImageLocation)
                 .then((response) => {
                     if (response.data.status === '200') {
                         const { ludo_id } = response.data;
                         /* get ludo information after create ludo post */
                         axios.get(`/apis/ludo/${ludo_id}`)
                         .then((response) => {
-                            console.log(response);
                             /*
                                 response.data.status
                                 200: everything's fine;
@@ -663,6 +662,7 @@ class CreateStepper extends Component {
     handleTemplateSubmit(event) {
         event.preventDefault();
         this.setState({
+            isEditing: false,
             isSubmitting: true,
             isTemplateSubmitButtonDisabled: true
         });
