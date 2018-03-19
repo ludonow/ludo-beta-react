@@ -14,7 +14,7 @@ const SingleReportWrapper = styled.div`
     width: 100%;
 `;
 
-const SingleReport =  ({
+const SingleReport = ({
     createDate,
     commentsNick,
     comments,
