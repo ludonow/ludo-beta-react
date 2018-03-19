@@ -9,10 +9,10 @@ import tutorialOpen from '../../images/tutorial/open.png';
 import SlideShow from './SlideShow';
 
 const ButtonWrapper = styled.div`
-    align-items: flex-end;
     display: flex;
+    flex-direction: column;
     height: 100%;
-    justify-content: center;
+    justify-content: flex-end;
 `;
 
 const ImageWrapper = styled.div`
@@ -41,7 +41,13 @@ const Tutorial = () => (
             <StyledLink to={`${baseUrl}/tutorial/slide-show`}>
                 <Button
                     label="開始"
-                    margin="0 auto 50px auto"
+                    margin="0 auto 10px auto"
+                />
+            </StyledLink>
+            <StyledLink to={`${baseUrl}/cardList`}>
+                <Button
+                    label="跳過教學"
+                    margin="0 auto 10px auto"
                 />
             </StyledLink>
         </ButtonWrapper>

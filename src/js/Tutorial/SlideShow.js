@@ -45,6 +45,7 @@ const Wrapper = styled.div`
 const SlideShow = () => {
     const width = window.innerWidth || document.body.clientWidth;
     const imageList = (width <= 768) ? mobileImageList : desktopImageList;
+    const handleClick = (event) => { browserHistory.push('/cardList') }
 
     return (
         <Wrapper>
