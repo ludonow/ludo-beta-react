@@ -6,6 +6,11 @@ import styled from 'styled-components';
 import axios from '../axios-config';
 import Avatar from '../components/Avatar';
 import MobileCardContent from '../components/MobileCardContent';
+import MobileReportList from './MobileReportList';
+import MobileReportButton from './MobileReportButton';
+import mobileCancelSettingsIcon from '../../images/active/mobile-cancel-settings.svg';
+import mobileSettingsIcon from '../../images/active/mobile-settings.svg';
+
 
 const CardContentTab = styled.div`
     align-items: center;
@@ -71,33 +76,133 @@ const TextCenter = styled.div`
     text-align: center;
 `;
 
+const MobileSettingsIconButton = styled.button`
+    background: transparent;
+    border: none;
+    bottom: 0;
+    height: 40px;
+    padding: 0px;
+    width: 50px;
+    position: fixed;
+    margin-left: -140px;
+    margin-bottom: 16px;
+    z-index:3;
+`;
+
 // child components
-const SubmitButton = ({
-    handleDeleteClick,
-    handleJoinClick,
-    isCurrentUserLudoCreator,
-    isDeleteButtonDisabled,
-    isJoinButtonDisabled
-}) => (
-    <SubmitButtonWrapper>
-        {
-            isCurrentUserLudoCreator ?
-                <StyledSubmitButton
-                    disabled={isDeleteButtonDisabled}
-                    onClick={handleDeleteClick}
-                >
-                    刪除戰局
-                </StyledSubmitButton>
-            :
-                <StyledSubmitButton
-                    disabled={isJoinButtonDisabled}
-                    onClick={handleJoinClick}
-                >
-                    加入戰局
-                </StyledSubmitButton>
-        }
-    </SubmitButtonWrapper>
-);
+class SubmitButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showDeleteButton: false
+        };
+        this.handleMobileSettingsIconButtonOnClick = this.handleMobileSettingsIconButtonOnClick.bind(this);
+    }
+
+    handleMobileSettingsIconButtonOnClick(e) {
+        e.preventDefault();
+        this.setState(
+            prevState => ({
+                showDeleteButton: !prevState.showDeleteButton, 
+            })
+        );
+    }
+
+    render() {
+        const {
+            handleDeleteClick,
+            handleJoinClick,
+            isCurrentUserLudoCreator,
+            isDeleteButtonDisabled,
+            isJoinButtonDisabled,
+            ludo_id,
+        } = this.props;
+        return (
+            <SubmitButtonWrapper>
+                <MobileSettingsIconButton onClick={this.handleMobileSettingsIconButtonOnClick}>
+                    {
+                        this.state.showDeleteButton ?
+                            <img src={mobileCancelSettingsIcon}/>
+                        :
+                            <img src={mobileSettingsIcon}/>
+                    }
+                    
+                </MobileSettingsIconButton>
+                {
+                    isCurrentUserLudoCreator && !this.state.showDeleteButton ?
+                        <MobileReportButton
+                            label="我要回報"
+                            url={`/ludo/${ludo_id}/mobile-report-form`}
+                        />
+                    :
+                        null
+                }
+                {
+                    isCurrentUserLudoCreator && this.state.showDeleteButton ?
+                        <StyledSubmitButton
+                            disabled={isDeleteButtonDisabled}
+                            onClick={handleDeleteClick}
+                        >
+                            刪除戰局
+                        </StyledSubmitButton>
+                    :
+                        <StyledSubmitButton
+                            disabled={isJoinButtonDisabled}
+                            onClick={handleJoinClick}
+                        >
+                            加入戰局
+                        </StyledSubmitButton>
+                }
+            </SubmitButtonWrapper>
+        )
+    }
+}
+// const SubmitButtonEx = ({
+//     handleDeleteClick,
+//     handleJoinClick,
+//     isCurrentUserLudoCreator,
+//     isDeleteButtonDisabled,
+//     isJoinButtonDisabled,
+//     showDeleteButton,
+//     ludo_id,
+// }) => (
+//     <SubmitButtonWrapper>
+//         <MobileSettingsIconButton onClick={handleMobileSettingsIconButtonOnClick()}>
+//             {
+//                 showDeleteButton ?
+//                     <img src={mobileCancelSettingsIcon}/>
+//                 :
+//                     <img src={mobileSettingsIcon}/>
+//             }
+            
+//         </MobileSettingsIconButton>
+//         {
+//             isCurrentUserLudoCreator && !showDeleteButton ?
+//                 <MobileReportButton
+//                     label="我要回報"
+//                     url={`/ludo/${ludo_id}/mobile-report-form`}
+//                 />
+//             :
+//                 null
+//         }
+//         {
+//             isCurrentUserLudoCreator && showDeleteButton ?
+//                 <StyledSubmitButton
+//                     disabled={isDeleteButtonDisabled}
+//                     onClick={handleDeleteClick}
+//                 >
+//                     刪除戰局
+//                 </StyledSubmitButton>
+//             :
+//                 <StyledSubmitButton
+//                     disabled={isJoinButtonDisabled}
+//                     onClick={handleJoinClick}
+//                 >
+//                     加入戰局
+//                 </StyledSubmitButton>
+//         }
+//     </SubmitButtonWrapper>
+// );
 
 class MobileReadyLudo extends Component {
     constructor(props) {
@@ -263,15 +368,22 @@ class MobileReadyLudo extends Component {
                     </TabList>
 
                     <TabPanel>
-                        <TextCenter>
-                            尚未開始遊戲
-                        </TextCenter>
+                        <MobileReportList
+                            currentUserId={currentUserId}
+                            handleDenounceBoxOpen={handleDenounceBoxOpen}
+                            handleShouldReportUpdate={handleShouldReportUpdate}
+                            isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
+                            reportList={currentLudoReportData.filter(reportObject => reportObject.user_id == router_currentFormValue.starter_id)}
+                            router_currentFormValue={router_currentFormValue}
+                            userBasicData={userBasicData}
+                        />
                         <SubmitButton
                             handleDeleteClick={this.handleDeleteClick}
                             handleJoinClick={this.handleJoinClick}
                             isDeleteButtonDisabled={isDeleteButtonDisabled}
                             isJoinButtonDisabled={isJoinButtonDisabled}
                             isCurrentUserLudoCreator={isCurrentUserLudoCreator}
+                            ludo_id={params.ludo_id}
                         />
                     </TabPanel>
                     <TabPanel>
@@ -289,6 +401,7 @@ class MobileReadyLudo extends Component {
                             isDeleteButtonDisabled={isDeleteButtonDisabled}
                             isJoinButtonDisabled={isJoinButtonDisabled}
                             isCurrentUserLudoCreator={isCurrentUserLudoCreator}
+                            ludo_id={params.ludo_id}
                         />
                     </TabPanel>
                     <TabPanel>
@@ -301,6 +414,7 @@ class MobileReadyLudo extends Component {
                             isDeleteButtonDisabled={isDeleteButtonDisabled}
                             isJoinButtonDisabled={isJoinButtonDisabled}
                             isCurrentUserLudoCreator={isCurrentUserLudoCreator}
+                            ludo_id={params.ludo_id}
                         />
                     </TabPanel>
                 </Tabs>
