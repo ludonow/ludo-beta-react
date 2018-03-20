@@ -15,6 +15,7 @@ import EmailConfirm from '../EmailConfirm/index';
 import EmailConfirmAlert from '../EmailConfirm/alert';
 import Login from '../Login/index.js';
 import LoginRecommend from '../LoginRecommend/index';
+import LudoNotFoundPage from '../404';
 import LudoPage from '../LudoPage/index.js';
 import MobileReportForm from '../LudoPage/MobileReportForm/index';
 import MyCardList from '../MyCardList/index';
@@ -135,6 +136,8 @@ const ludoRedirect = (nextState, replace, callback) => {
             router_currentFormValue = response.data.ludo;
             router_currentLudoId = response.data.ludo.ludo_id;
             callback();
+        } else if (response.data.status === '404') {
+            browserHistory.replace('/404');
         } else {
             if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                 window.open("https://www.facebook.com/messages/t/ludonow");
@@ -167,6 +170,10 @@ const AppRouter = () => (
                 path={`${baseUrl}/`}
             >
                 <IndexRedirect to="cardList" />
+                <Route
+                    component={LudoNotFoundPage}
+                    path="404"
+                />
                 <Route
                     component={Bind}
                     path="bind"
