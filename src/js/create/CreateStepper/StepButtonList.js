@@ -11,8 +11,8 @@ const StepButtonList = ({
     handleStepNext,
     handleStepPrev,
     handleTemplateDelete,
-    handleTemplateEdit,
     handleTemplateModify,
+    handleTemplateSave,
     handleTemplateSubmit,
     isAtTemplatePage,
     isCardSubmitButtonDisabled,
@@ -20,6 +20,8 @@ const StepButtonList = ({
     isNextStepButtonDisabled,
     isPreviewButtonDisabled,
     isSubmitting,
+    isTemplateDeleteButtonDisabled,
+    isTemplateSaveButtonDisabled,
     isTemplateSubmitButtonDisabled,
     step,
 }) => {
@@ -99,7 +101,7 @@ const StepButtonList = ({
                         !isAtTemplatePage ?
                             <Button
                                 backgroundColor={'#FF704E'}
-                                disabled={isSubmitting && isTemplateSubmitButtonDisabled}
+                                disabled={isSubmitting || isTemplateSubmitButtonDisabled}
                                 fontSize="14px"
                                 label="創建模板"
                                 onClick={handleTemplateSubmit}
@@ -112,7 +114,7 @@ const StepButtonList = ({
                         isAtTemplatePage ?
                             <Button
                                 backgroundColor={'#2e968c'}
-                                disabled={isSubmitting && isCardSubmitButtonDisabled}
+                                disabled={isSubmitting || isCardSubmitButtonDisabled}
                                 fontSize="14px"
                                 label="開始玩囉"
                                 onClick={handleCardSubmit}
@@ -125,7 +127,7 @@ const StepButtonList = ({
                         isAtTemplatePage && isMyTemplate ?
                             <Button
                                 backgroundColor={'rgb(242, 65, 80)'}
-                                disabled={isSubmitting}
+                                disabled={isSubmitting || isTemplateDeleteButtonDisabled}
                                 fontSize="14px"
                                 label="刪除模板"
                                 onClick={handleTemplateDelete}
@@ -138,10 +140,10 @@ const StepButtonList = ({
                         isAtTemplatePage && isMyTemplate ?
                             <Button
                                 backgroundColor={'#4267b2'}
-                                disabled={isSubmitting}
+                                disabled={isSubmitting || isTemplateSaveButtonDisabled}
                                 fontSize="14px"
                                 label="儲存變更"
-                                onClick={handleTemplateEdit}
+                                onClick={handleTemplateSave}
                                 padding="8px"
                                 width="100px"
                             />
@@ -169,6 +171,8 @@ StepButtonList.propTypes = {
     handleStepNext: PropTypes.func.isRequired,
     handleStepPrev: PropTypes.func.isRequired,
     handleTemplateDelete: PropTypes.func.isRequired,
+    handleTemplateModify: PropTypes.func.isRequired,
+    handleTemplateSave: PropTypes.func.isRequired,
     handleTemplateSubmit: PropTypes.func.isRequired,
     isAtTemplatePage: PropTypes.bool.isRequired,
     isCardSubmitButtonDisabled: PropTypes.bool.isRequired,
@@ -176,6 +180,8 @@ StepButtonList.propTypes = {
     isNextStepButtonDisabled: PropTypes.bool.isRequired,
     isPreviewButtonDisabled: PropTypes.bool.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
+    isTemplateDeleteButtonDisabled: PropTypes.bool.isRequired,
+    isTemplateSaveButtonDisabled: PropTypes.bool.isRequired,
     isTemplateSubmitButtonDisabled: PropTypes.bool.isRequired,
     step: PropTypes.number.isRequired,
 };

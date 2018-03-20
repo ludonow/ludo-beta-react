@@ -24,6 +24,8 @@ const initialState = {
     isNextStepButtonDisabled: true,
     isPreviewButtonDisabled: true,
     isSubmitting: false,
+    isTemplateDeleteButtonDisabled: false,
+    isTemplateSaveButtonDisabled: false,
     isTemplateSubmitButtonDisabled: true,
     ludoCreateForm: {
         category_id: 1,
@@ -105,8 +107,8 @@ class CreateStepper extends Component {
         this.handleTagAdd = this.handleTagAdd.bind(this);
         this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleTemplateDelete = this.handleTemplateDelete.bind(this);
-        this.handleTemplateEdit = this.handleTemplateEdit.bind(this);
         this.handleTemplateModify = this.handleTemplateModify.bind(this);
+        this.handleTemplateSave = this.handleTemplateSave.bind(this);
         this.handleTemplateSubmit = this.handleTemplateSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleVideoChange = this.handleVideoChange.bind(this);
@@ -195,11 +197,11 @@ class CreateStepper extends Component {
                 images,
                 ludoCreateForm,
             } = this.state;
-            const isUpdatingImage = this.isUpdatingImage(contentType, images);
-            const cardCreateForm = {
+            let defaultCardCreateForm = {
                 ...ludoCreateForm,
                 template_id: this.props.templateId,
             };
+            const isUpdatingImage = this.isUpdatingImage(contentType, images);
             if (isUpdatingImage) {
                 const imagePost = new FormData();
                 imagePost.append('file', images[0]);
@@ -215,7 +217,7 @@ class CreateStepper extends Component {
                 })
                 .then(imageLocation => {
                     const cardCreateFormWithUpdatedImage = {
-                        ...cardCreateForm,
+                        ...defaultCardCreateForm,
                         image_location: imageLocation,
                     };
                     return axios.post('/apis/ludo', cardCreateFormWithUpdatedImage)
@@ -289,8 +291,9 @@ class CreateStepper extends Component {
                 });
             } else { // not isUpdatingImage
                 const cardCreateFormWithoutImageLocation = {
-                    ...cardCreateForm,
+                    ...defaultCardCreateForm,
                     image_location: '',
+                    video: contentType === 'text' ? '' : defaultCardCreateForm.video,
                 };
                 axios.post('/apis/ludo', cardCreateFormWithoutImageLocation)
                 .then((response) => {
@@ -616,39 +619,99 @@ class CreateStepper extends Component {
         }
     }
 
-    handleTemplateEdit(event) {
+    handleTemplateSave(event) {
         event.preventDefault();
+        const {
+            getUserBasicData,
+            handleShouldProfileUpdate,
+            templateId,
+        } = this.props;
+        const {
+            contentType,
+            images,
+            ludoCreateForm,
+        } = this.state;
         const ludoTemplateForm = {
-            ...this.state.ludoCreateForm,
+            ...ludoCreateForm,
             type: 'modify',
         };
         this.setState({
-            isTemplateDeleteButtonDisabled: true
+            isEditing: false,
+            isTemplateSaveButtonDisabled: true
         });
-        axios.put(`/apis/ludo/${this.props.templateId}`, ludoTemplateForm)
-        .then(response => {
-            if (response.data.status == '200') {
-                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
-                getUserBasicData();
-                handleShouldProfileUpdate(true);
-                window.alert('已變更儲存');
-            } else {
-                if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+        const isUpdatingImage = this.isUpdatingImage(contentType, images);
+        if (isUpdatingImage) {
+            const imagePost = new FormData();
+            imagePost.append('file', images[0]);
+            axios.post('/apis/report-image', imagePost)
+            .then(response => {
+                if (response.data.status === '200') {
+                    return response.data.location;
+                } else {
+                    console.error('CreateStepper handleTemplateSave response status from server is not OK, which is: ', response);
+                    const errorMessage = 'CreateStepper handleTemplateSave response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
+                }
+            })
+            .then(imageLocation => {
+                const ludoTemplateFormWithUpdatedImage = {
+                    ...ludoTemplateForm,
+                    image_location: imageLocation,
+                };
+                return axios.put(`/apis/ludo/${templateId}`, ludoTemplateFormWithUpdatedImage)
+            })
+            .then((response) => {
+                if (response.data.status == '200') {
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    window.alert('已變更儲存');
+                } else {
+                    if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isTemplateSaveButtonDisabled: false
+                    });
+                }
+            })
+            .catch((error) => {
+                if (window.confirm('修改Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
                 this.setState({
-                    isTemplateDeleteButtonDisabled: false
+                    isTemplateSaveButtonDisabled: false
                 });
-            }
-        })
-        .catch(error => {
-            if (window.confirm('修改Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
-            this.setState({
-                isTemplateDeleteButtonDisabled: false
+            })
+            .finally(() => {
+                this.setState({
+                    isSubmitting: false
+                });
             });
-        });
+        } else {
+            axios.put(`/apis/ludo/${templateId}`, ludoTemplateForm)
+            .then(response => {
+                if (response.data.status == '200') {
+                    getUserBasicData();
+                    handleShouldProfileUpdate(true);
+                    window.alert('已變更儲存');
+                } else {
+                    if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isTemplateSaveButtonDisabled: false
+                    });
+                }
+            })
+            .catch(error => {
+                if (window.confirm('修改Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+                this.setState({
+                    isTemplateSaveButtonDisabled: false
+                });
+            });
+        }
     }
 
     handleTemplateModify() {
@@ -921,6 +984,8 @@ class CreateStepper extends Component {
             isNextStepButtonDisabled,
             isPreviewButtonDisabled,
             isSubmitting,
+            isTemplateDeleteButtonDisabled,
+            isTemplateSaveButtonDisabled,
             isTemplateSubmitButtonDisabled,
             ludoCreateForm,
             open,
@@ -988,8 +1053,8 @@ class CreateStepper extends Component {
                         handleStepNext={this.handleStepNext}
                         handleStepPrev={this.handleStepPrev}
                         handleTemplateDelete={this.handleTemplateDelete}
-                        handleTemplateEdit={this.handleTemplateEdit}
                         handleTemplateModify={this.handleTemplateModify}
+                        handleTemplateSave={this.handleTemplateSave}
                         handleTemplateSubmit={this.handleTemplateSubmit}
                         isAtTemplatePage={isAtTemplatePage}
                         isCardSubmitButtonDisabled={isCardSubmitButtonDisabled}
@@ -997,6 +1062,8 @@ class CreateStepper extends Component {
                         isNextStepButtonDisabled={isNextStepButtonDisabled}
                         isPreviewButtonDisabled={isPreviewButtonDisabled}
                         isSubmitting={isSubmitting}
+                        isTemplateDeleteButtonDisabled={isTemplateDeleteButtonDisabled}
+                        isTemplateSaveButtonDisabled={isTemplateSaveButtonDisabled}
                         isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
                         step={step}
                     />
