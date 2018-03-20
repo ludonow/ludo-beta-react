@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import DropZone from 'react-dropzone';
-import Lightbox from 'react-image-lightbox';
+import LightBox from 'react-image-lightbox';
 
 import cameraIconSrc from '../../images/camera-icon.png';
+import { withMaybe } from '../components/higher-order-components/index';
 import axios from '../axios-config';
 import Button from './Button';
 
@@ -32,6 +33,7 @@ const ImageZoneWrapper = styled.div`
 `;
 
 const PreviewImage = styled.img`
+    cursor: zoom-in;
     height: ${props => props.resizedHeight ? props.resizedHeight + 'px' : '320px'};
     margin: 0 auto 15px auto;
     width: ${props => props.resizedWidth ? props.resizedWidth + 'px' : '250px'};
@@ -45,6 +47,9 @@ const PreviewWrapper = styled.div`
 
 const MAX_HEIGHT = 200;
 const MAX_WIDTH = 250;
+
+const isImageLightBoxClose = (props) => !props.isImageLightBoxOpen;
+const ImageLightBox = withMaybe(isImageLightBoxClose)(LightBox);
 
 class ImageUploadAndPreview extends Component {
     constructor(props) {
@@ -167,7 +172,7 @@ class ImageUploadAndPreview extends Component {
                     <ImageZoneWrapper>
                         <PreviewWrapper>
                             <PreviewImage
-                                onClick={this.handleImageEnlargeOpen}
+                                onClick={this.handleImageLightboxOpen}
                                 resizedHeight={resizedHeight}
                                 resizedWidth={resizedWidth}
                                 src={imageLocation}
@@ -186,6 +191,11 @@ class ImageUploadAndPreview extends Component {
                                 />
                             </DropZone>
                         </PreviewWrapper>
+                        <ImageLightBox
+                            isImageLightBoxOpen={isImageLightBoxOpen}
+                            mainSrc={enlargeImageLocation}
+                            onCloseRequest={this.handleImageLightboxClose}
+                        />
                     </ImageZoneWrapper>
                 )
             } else {
@@ -239,14 +249,11 @@ class ImageUploadAndPreview extends Component {
                         />
                         </DropZone>
                     </PreviewWrapper>
-                    {
-                        isImageLightBoxOpen ?
-                            <Lightbox
-                                mainSrc={enlargeImageLocation}
-                                onCloseRequest={this.handleImageLightboxClose}
-                            />
-                        : null
-                    }
+                    <ImageLightBox
+                        isImageLightBoxOpen={isImageLightBoxOpen}
+                        mainSrc={enlargeImageLocation}
+                        onCloseRequest={this.handleImageLightboxClose}
+                    />
                 </ImageZoneWrapper>
             );
         }
