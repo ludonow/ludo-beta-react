@@ -8,7 +8,12 @@ import { StyledLink } from './baseStyle';
 const BackGround = styled.div`
     color: rgba(255, 255, 255, 0.2);
     font-family: Helvetica;
-    font-size: 400px;
+    @media (max-width: 768px) {
+        font-size: 50vw;
+    }
+    @media (min-width: 769px) {
+        font-size: 30vw;
+    }
 `;
 
 const BackGroundWrapper = styled.div`
