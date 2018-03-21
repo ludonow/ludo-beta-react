@@ -8,7 +8,7 @@ export const ButtonListWrapper = styled.div`
     margin: 2vw 0;
 
     button {
-        margin: 0 30px;
+        margin: ${props => props.buttonMargin ? props.buttonMargin : '0 30px'};
     }
 `;
 

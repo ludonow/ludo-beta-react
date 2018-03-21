@@ -17,7 +17,6 @@ import Login from '../Login/index.js';
 import LoginRecommend from '../LoginRecommend/index';
 import LudoNotFoundPage from '../404';
 import LudoPage from '../LudoPage/index.js';
-import MobileReportForm from '../LudoPage/MobileReportForm/index';
 import MyCardList from '../MyCardList/index';
 import Playground from '../playground/Playground';
 import Search from '../Search/index';
@@ -145,9 +144,10 @@ const ludoRedirect = (nextState, replace, callback) => {
         }
     })
     .catch((error) => {
-        if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-            window.open("https://www.facebook.com/messages/t/ludonow");
-        }
+        console.error(error);
+        // if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+        //     window.open("https://www.facebook.com/messages/t/ludonow");
+        // }
     });
 }
 
@@ -232,21 +232,6 @@ const AppRouter = () => (
                     }}
                     onEnter={ludoRedirect}
                     path="ludo/:ludo_id"
-                />
-                <Route
-                    getComponent={(nextState, cb) => {
-                        cb(
-                            null,
-                            props =>
-                                <MobileReportForm
-                                    {...props}
-                                    router_currentFormValue={router_currentFormValue}
-                                    router_currentLudoId={router_currentLudoId}
-                                />
-                        );
-                    }}
-                    onEnter={ludoRedirect}
-                    path="ludo/:ludo_id/mobile-report-form"
                 />
                 <Route
                     component={MyCardList}

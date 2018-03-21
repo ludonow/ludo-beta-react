@@ -21,9 +21,13 @@ const bodyStyle = {
     overflowX: 'hidden'
 };
 
-const contentStyle = {
+const deskTopContentStyle = {
+    maxWidth: 'none',
     width: '35%',
-    maxWidth: 'none'
+};
+const mobileContentStyle = {
+    maxWidth: 'none',
+    width: '80%',
 };
 
 const titleStyle = {
@@ -41,30 +45,35 @@ const DiscardAlert = ({
     handleDiscardAlertClose,
     handleDiscardConfirm,
     isDiscardAlertOpen,
-}) => (
-    <Dialog
-        bodyStyle={bodyStyle}
-        contentStyle={contentStyle}
-        open={isDiscardAlertOpen}
-        onRequestClose={handleDiscardAlertClose}
-        titleStyle={titleStyle}
-        title={alertTitle ? alertTitle : '關閉將捨棄已輸入的內容'}
-    >
-        <ButtonListWrapper>
-            <Button
-                backgroundColor={'#FFFFFF'}
-                label="取消"
-                onClick={handleDiscardAlertClose}
-                textColor={'#707070'}
-            />
-            <Button
-                backgroundColor={'#FF6262'}
-                label={buttonLabel ? buttonLabel : '捨棄'}
-                onClick={handleDiscardConfirm}
-            />
-        </ButtonListWrapper>
-    </Dialog>
-);
+}) => {
+    const width = window.innerWidth || document.body.clientWidth;
+    const contentStyle = (width <= 768) ? mobileContentStyle : deskTopContentStyle;
+
+    return (
+        <Dialog
+            bodyStyle={bodyStyle}
+            contentStyle={contentStyle}
+            open={isDiscardAlertOpen}
+            onRequestClose={handleDiscardAlertClose}
+            titleStyle={titleStyle}
+            title={alertTitle ? alertTitle : '關閉將捨棄已輸入的內容'}
+        >
+            <ButtonListWrapper>
+                <Button
+                    backgroundColor={'#FFFFFF'}
+                    label="取消"
+                    onClick={handleDiscardAlertClose}
+                    textColor={'#707070'}
+                />
+                <Button
+                    backgroundColor={'#FF6262'}
+                    label={buttonLabel ? buttonLabel : '捨棄'}
+                    onClick={handleDiscardConfirm}
+                />
+            </ButtonListWrapper>
+        </Dialog>
+    );
+}
 
 DiscardAlert.propTypes = {
     alertTitle: PropTypes.string,

@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
 import LightBox from 'react-image-lightbox';
-// import Popover from 'material-ui/Popover';
-// import Menu from 'material-ui/Menu';
-// import MenuItem from 'material-ui/MenuItem';
 import {
     Menu,
     MenuItem,
     Popover,
 } from 'material-ui';
 
+import axios from '../axios-config';
 import { withEither, withMaybe } from '../components/higher-order-components/index';
 import DesktopLudoPage from './DesktopLudoPage';
+import FooterButton from './FooterButton';
 import MobileLudoPage from './MobileLudoPage';
 import ReportDialog from './ReportDialog';
 
@@ -38,6 +38,9 @@ class LudoPage extends Component {
                 video: '',
             },
             enlargeImageLocation: '',
+            isDeleteButtonDisabled: false,
+            isJoinButtonDisabled: false,
+            isShowingDeleteButton: false,
             isImageLightBoxOpen: false,
             isPopOverOfEditOpen: false,
             isPopOverOfExpandMoreOpen: false,
@@ -47,6 +50,7 @@ class LudoPage extends Component {
                 starter: [],
             },
         };
+        this.handleFooterButtonChange = this.handleFooterButtonChange.bind(this);
         this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
         this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
         this.handlePopOverClose = this.handlePopOverClose.bind(this);
@@ -58,6 +62,7 @@ class LudoPage extends Component {
         this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
         this.handleReportEditing = this.handleReportEditing.bind(this);
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -104,6 +109,15 @@ class LudoPage extends Component {
         this.props.handleIsOpeningReportPage(false);
     }
 
+    handleFooterButtonChange(event) {
+        event.preventDefault();
+        this.setState(
+            prevState => ({
+                isShowingDeleteButton: !prevState.isShowingDeleteButton, 
+            })
+        );
+    }
+
     handleImageLightboxClose() {
         this.setState({
             isImageLightBoxOpen: false
@@ -125,24 +139,24 @@ class LudoPage extends Component {
     }
 
     handleReportDelete(event) {
+        event.preventDefault();
         const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
         if (isSureToDelelteReport) {
-            // const SPIndex = (event.currentTarget.id).slice(0, 1);
-            const SPIndex = (this.state.anchorEl.id).slice(0, 1);
-            const arrayIndex = Number(event.currentTarget.id.slice(-1));
-            let report_id = null;
-            if (SPIndex == 's') {
-                report_id = this.state.reportList.starter[arrayIndex].report_id;
-            } else if (SPIndex == 'p') {
-                report_id = this.state.reportList.player[arrayIndex].report_id;
-            }
+            const {
+                anchorEl,
+                reportList,
+            } = this.state;
+            const fileds = anchorEl.id.split('-');
+            const reportUser = fileds[0];
+            const arrayIndex = Number(fileds[fileds.length - 1]);
+            const reportId = reportList[reportUser][arrayIndex].report_id;
             this.setState({
                 isPopOverOfEditOpen: false
             });
-            if (report_id) {
+            if (reportId) {
               const { router_currentFormValue } = this.props;
               const { ludo_id } = router_currentFormValue;
-              axios.delete(`apis/report/${report_id}/${ludo_id}`)
+              axios.delete(`apis/report/${reportId}/${ludo_id}`)
                 .then(response => {
                     if(response.data.status === '200'){
                         this.props.handleShouldReportUpdate(true);
@@ -161,19 +175,18 @@ class LudoPage extends Component {
     }
 
     handleReportDenounce(event) {
-        const SPIndex = (this.state.anchorEl.id).slice(0, 1);
-        const arrayIndex = Number(event.currentTarget.id.slice(-1));
-        let report_id = null;
-        if (SPIndex === 's') {
-            report_id = this.state.reportList.starter[arrayIndex].report_id;
-        } else if (SPIndex === 'p') {
-            report_id = this.state.reportList.player[arrayIndex].report_id;
-        } else {
-            console.error('handleReportDenounce SPIndex is not correct');
-        }
-        if (report_id) {
+        event.preventDefault();
+        const {
+            anchorEl,
+            reportList,
+        } = this.state;
+        const fileds = anchorEl.id.split('-');
+        const reportUser = fileds[0];
+        const arrayIndex = Number(fileds[fileds.length - 1]);
+        const reportId = reportList[reportUser][arrayIndex].report_id;
+        if (reportId) {
             this.props.handleDenounceBoxOpen({
-                currentTargetReportId: report_id,
+                currentTargetReportId: reportId,
             });
         } else {
             console.error('DesktopReportPage handleReportDenounce report_id does not exist');
@@ -232,6 +245,84 @@ class LudoPage extends Component {
         });
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+        const {
+            params,
+            router_ludoPageIndex,
+        } = this.props;
+        const ludoId = params.ludo_id;
+        /* TODO: Use notification confirming join */
+        if (router_ludoPageIndex === 0 || router_ludoPageIndex === 2) {
+            if (!this.props.currentUserId) {
+                if (window.confirm('登入後即可加入此卡片！點選「確定」後進入登入頁面。')) {
+                    browserHistory.push('/login');
+                }
+            } else {
+                const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
+                if (isSureToJoin) {
+                    this.setState({
+                        isJoinButtonDisabled: true,
+                    });
+                    const currentFormValue = this.props.router_currentFormValue;
+                    const joinLudoPutbody = {
+                        'duration': currentFormValue.duration,
+                        'marbles': currentFormValue.marbles,
+                        'stage': currentFormValue.stage,
+                        'type': 'match'
+                    };
+                    browserHistory.push({
+                        pathname: `/loading/${ludoId}`,
+                        state: joinLudoPutbody,
+                    });
+                } else {
+                    this.setState({
+                        isJoinButtonDisabled: false,
+                    });
+                }
+            }
+        } else if (router_ludoPageIndex === 1) {
+            this.setState({
+                isDeleteButtonDisabled: true
+            });
+            /* TODO: Use notification confirming delete ludo */
+            const isSureToDelete = window.confirm('你確定要刪除這個Ludo嗎？');
+            if (isSureToDelete) {
+                axios.delete(`/apis/ludo/${ludoId}`)
+                .then(response => {
+                    if (response.data.status == '200') {
+                        const {
+                            getUserBasicData,
+                            handleShouldProfileUpdate,
+                        } = this.props;
+                        getUserBasicData();
+                        handleShouldProfileUpdate(true);
+                        browserHistory.push('/cardList');
+                    } else {
+                        if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
+                            window.open("https://www.facebook.com/messages/t/ludonow");
+                        }
+                        this.setState({
+                            isDeleteButtonDisabled: false,
+                        });
+                    }
+                })
+                .catch(error => {
+                    if (window.confirm('刪除Ludo時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                    this.setState({
+                        isDeleteButtonDisabled: false,
+                    });
+                });
+            } else {
+                this.setState({
+                    isDeleteButtonDisabled: false,
+                });
+            }
+        }
+    }
+
     /* components/_report-form.scss */
     render() {
         const {
@@ -254,9 +345,11 @@ class LudoPage extends Component {
             editingForm,
             enlargeImageLocation,
             isImageLightBoxOpen,
+            isJoinButtonDisabled,
             isPopOverOfEditOpen,
             isPopOverOfExpandMoreOpen,
             isReportDialogOpen,
+            isShowingDeleteButton,
             reportList,
         } = this.state;
 
@@ -303,6 +396,15 @@ class LudoPage extends Component {
                         userPhotoUrl={userBasicData ? userBasicData.photo : ''}
                     />
                 </MediaQuery>
+                <FooterButton
+                    handleFooterButtonChange={this.handleFooterButtonChange}
+                    handleLudoDelete={this.handleSubmit}
+                    handleReportDialogOpen={this.handleReportDialogOpen}
+                    handleSubmit={this.handleSubmit}
+                    isJoinButtonDisabled={isJoinButtonDisabled}
+                    isShowingDeleteButton={isShowingDeleteButton}
+                    router_ludoPageIndex={router_ludoPageIndex}
+                />
                 <ReportDialog
                     currentUserId={currentUserId}
                     editingForm={editingForm}

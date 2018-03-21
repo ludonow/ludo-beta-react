@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import { cyan800, deepOrange200, grey800 } from 'material-ui/styles/colors';
@@ -74,88 +75,66 @@ const IntervalTag = RoundRadiusTag.extend`
     background-color: ${deepOrange200};
 `;
 
-class MobileCardContent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isImageLightBoxOpen: false,
-        };
-        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
-        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
-    }
-
-    handleImageLightboxClose() {
-        this.setState({
-            isImageLightBoxOpen: false
-        });
-    }
-
-    handleImageLightboxOpen() {
-        this.setState({
-            isImageLightBoxOpen: true
-        });
-    }
-
-    render() {
-        const {
-            image_location,
-            interval,
-            introduction,
-            tags,
-            title,
-            video,
-        } = this.props;
-        return (
-            <CardContentWrapper>
-                <CardTitle>
-                    {title}
-                </CardTitle>
-                <CardTags>
-                    {
-                        tags.map((tag, index) => (
-                            <CardTag
-                                key={`introducton-${index}`}
-                            >
-                                #{tag}
-                            </CardTag>
-                        ))
-                    }
-                </CardTags>
-                <CardInterval>
-                    <IntervalTag>每{interval}天回報</IntervalTag>
-                </CardInterval>
-                {
-                    video ?
-                        <CardVideo>
-                            <ReactPlayer
-                                url={video}
-                            />
-                        </CardVideo>
-                    : null
-                }
-                {
-                    image_location ?
-                        <CardImage>
-                            <img
-                                onClick={this.handleImageLightboxOpen}
-                                src={image_location}
-                            />
-                        </CardImage>
-                    : null
-                }
-                <CardIntroduction>
-                    {introduction}
-                </CardIntroduction>
-            </CardContentWrapper>
-        );
-    }
-}
+const MobileCardContent = ({
+    image_location,
+    interval,
+    introduction,
+    tags,
+    title,
+    video,
+}) => (
+    <CardContentWrapper>
+        <CardTitle>
+            {title}
+        </CardTitle>
+        <CardTags>
+            {
+                tags.map((tag, index) => (
+                    <CardTag
+                        key={`introducton-${index}`}
+                    >
+                        #{tag}
+                    </CardTag>
+                ))
+            }
+        </CardTags>
+        <CardInterval>
+            <IntervalTag>每{interval}天回報</IntervalTag>
+        </CardInterval>
+        {
+            video ?
+                <CardVideo>
+                    <ReactPlayer
+                        height="auto"
+                        url={video}
+                        width="100%"
+                    />
+                </CardVideo>
+            : null
+        }
+        {
+            image_location ?
+                <CardImage>
+                    <img
+                        onClick={handleImageLightboxOpen}
+                        src={image_location}
+                    />
+                </CardImage>
+            : null
+        }
+        <CardIntroduction>
+            {introduction}
+        </CardIntroduction>
+    </CardContentWrapper>
+);
 
 MobileCardContent.propTypes = {
+    handleImageLightboxOpen: PropTypes.func.isRequired,
     interval: PropTypes.number.isRequired,
     introduction: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string.isRequired),
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    video: PropTypes.string.isRequired,
 };
 
 export default MobileCardContent;

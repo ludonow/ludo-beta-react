@@ -48,14 +48,23 @@ const ReportDialogWrapper = styled.div`
 const StyledDialog = styled(Dialog)`
     ${CustomScrollBarCSS}
     h3 + div {
-        max-height: 400px !important;
+        @media (max-width: 768px) {
+            max-height: none !important;
+        }
+        @media (min-width: 769px) {
+            max-height: 400px !important;
+        }
     }
 `;
 
 // override material-ui style
-const contentStyle = {
+const deskTopContentStyle = {
     maxWidth: 'none',
     width: '60%',
+};
+const mobileContentStyle = {
+    maxWidth: 'none',
+    width: '95%',
 };
 
 const dialogStyle = {
@@ -482,6 +491,11 @@ class ReportDialog extends Component {
 
     render() {
         const {
+            handleReportDialogClose,
+            isReportDialogOpen,
+        } = this.props;
+
+        const {
             imageLocation,
             images,
             isDiscardAlertOpen,
@@ -495,10 +509,10 @@ class ReportDialog extends Component {
             text,
             video,
         } = this.state;
-        const {
-            handleReportDialogClose,
-            isReportDialogOpen,
-        } = this.props;
+
+        const width = window.innerWidth || document.body.clientWidth;
+        const contentStyle = (width <= 768) ? mobileContentStyle : deskTopContentStyle;
+
         return (
             <ReportDialogWrapper>
                 <StyledDialog

@@ -1,5 +1,4 @@
 ### src資料夾檔案結構 (依字母順序排列)
-- data (放測試的假資料)
 - images
 - js (主要程式碼)
     - app
@@ -26,8 +25,7 @@
         - DenounceBox.js (送出檢舉訊息的彈跳視窗)
         - FormsyHOCInput.js
         - index.js (產生index.html的js)
-        - Login.js (登入頁面)
-        - LudoList.js (OpenedForStarter和OpenedForBystander右邊的ludolist)
+        - LudoList.js
         - Main.js
     - assets
         - avatarImage.js
@@ -35,6 +33,8 @@
         - reportInterval.js
     - Bind
         - index.js
+    - Certificate
+        - BikeFestival.js
     - components
         - higher-order-components
             - index.js
@@ -44,11 +44,13 @@
         - CardListLoadingIcon.js
         - CircleButton.js
         - DiscardAlert.js
+        - Draft.js
+        - ImageUploadAndPreview.js
         - LoadingIcon.js
-        - MobileCardContent.js
         - StepperCloseIcon.js
         - TypeSelectButtonList.js
         - UpDownToggleButton.js
+        - VideoPreview.js
     - containers
         - CardListContainer.js
     - create
@@ -85,36 +87,8 @@
         - index.js
     - LudoPage
         - DesktopReportPage
-            - DesktopCommentBox
-                - CommentEditButton.js
-                - CommentExpandMoreButton.js
-                - CommentForm.js
-                - CommentList.js
-                - index.js
-            - ReportIconButton
-                - DesktopReportDate.js
-                - EditButton.js
-                - ExpandMoreButton.js
-                - index.js
             - index.js
-            - ReportInfo.js
             - ReportList.js
-            - SingleReport.js
-        - DesktopReportPost
-            - Content.js
-            - Draft.js
-            - ErrorMessage.js
-            - ImageUploadAndPreview.js
-            - index.js
-            - ReportPreview.js
-            - StepButtonList.js
-            - ToggleButton.js
-            - VideoPreview.js
-        - MobileReportForm
-            - index.js
-            - MobileImageUpload.js
-            - MobileReportText.js
-            - VideoPreview.js
         - MobileReportList
             - MobileCommentBox
                 - MobileCommentList
@@ -131,10 +105,32 @@
                 - ReportTags.js
                 - ReportText.js
             - index.js
+        - ReportDialog
+            - Content.js
+            - ErrorMessage.js
+            - index.js
+            - ReportPreview.js
+            - StepButtonList.js
+        - SingleReport
+            - CommentBox
+                - CommentEditButton.js
+                - CommentExpandMoreButton.js
+                - CommentForm.js
+                - CommentList.js
+                - index.js
+            - IconButton
+                - DesktopReportDate.js
+                - EditButton.js
+                - ExpandMoreButton.js
+                - index.js
+            - index.js
+            - ReportInfo.js
         - DesktopCardContent.js
+        - DesktopLudoPage.js
+        - FooterButton.js
         - index.js
-        - MobilePlayingLudo.js
-        - MobileReadyLudo.js
+        - MobileCardContent.js
+        - MobileLudoPage.js
         - MobileReportButtonList.js
         - ReportEditForm.js
     - MyCardList

@@ -18,38 +18,42 @@ const StepButtonList = ({
     switch(step) {
         case 0:
             return (
-                <ButtonListWrapper>
+                <ButtonListWrapper buttonMargin="0 10px">
                     <Button
                         backgroundColor={'#B1B1B1'}
                         data="text"
                         label="文字回報"
+                        padding="8px 0"
                         onClick={handleReportTypeClick}
                     />
                 </ButtonListWrapper>
             );
         case 1:
             return (
-                <ButtonListWrapper>
+                <ButtonListWrapper buttonMargin="0 10px">
                     <Button
                         backgroundColor={'#B1B1B1'}
                         label="上一步"
+                        padding="8px 0"
                         onClick={handleStepPrev}
                     />
                     <Button
                         backgroundColor={'#717171'}
                         disabled={isPreviewButtonDisabled}
                         label="預覽"
+                        padding="8px 0"
                         onClick={handleStepNext}
                     />
                 </ButtonListWrapper>
             );
         case 2:
             return (
-                <ButtonListWrapper>
+                <ButtonListWrapper buttonMargin="0 10px">
                     <Button
                         backgroundColor={'#B1B1B1'}
                         disabled={isSubmitting}
                         label="修改"
+                        padding="8px 0"
                         onClick={handleStepPrev}
                     />
                     {
@@ -57,6 +61,7 @@ const StepButtonList = ({
                             <Button
                                 backgroundColor={'#FF704E'}
                                 label="送出回報"
+                                padding="8px 0"
                                 onClick={handleSubmit}
                             />
                         :
@@ -66,10 +71,11 @@ const StepButtonList = ({
             );
         default:
             return (
-                <ButtonListWrapper>
+                <ButtonListWrapper buttonMargin="0 10px">
                     <Button
                         backgroundColor={'#717171'}
                         label="關閉"
+                        padding="8px 0"
                         onClick={handleDialogClose}
                     />
                 </ButtonListWrapper>

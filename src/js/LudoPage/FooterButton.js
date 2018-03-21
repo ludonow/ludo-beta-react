@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Button from '../components/Button';
-import cancelSettingsIcon from '../../images/active/cancel_settings.svg';
-import settingsIcon from '../../images/active/settings.svg';
+import deskTopCancelSettingsIcon from '../../images/active/cancel-settings.svg';
+import deskTopSettingsIcon from '../../images/active/settings.svg';
+import mobileCancelSettingsIcon from '../../images/active/mobile-cancel-settings.svg';
+import mobileSettingsIcon from '../../images/active/mobile-settings.svg';
 
 /*
     router_ludoPageIndex        statement：
@@ -21,9 +23,25 @@ const ButtonWrapper = styled.div`
     bottom: 0;
     display: flex;
     position: fixed;
+`;
 
-    .no-position-fixed {
-        /* position: relative !important; */
+const ButtonListWrapper = styled.div`
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+
+    @media (max-width: 768px) {
+        flex-direction: row-reverse;
+        margin-bottom: 17px;
+        width: calc(100% - 90px);
+    }
+    @media (min-width: 769px) {
+        flex-direction: row;
+        margin-bottom: 30px;
+        width: 100%;
     }
 `;
 
@@ -31,10 +49,16 @@ const SettingsIconButton = styled.button`
     background: transparent;
     border: none;
     bottom: 0;
-    height: 40px;
-    margin-top: 30px;
-    padding: 0px;
-    width: 40px;
+    display: flex;
+
+    img {
+        height: 50px;
+    }
+
+    @media (max-width: 768px) {
+        margin: 0 25px;
+        padding-top: 5px;
+    }
 `;
 
 const FooterButton = ({
@@ -71,24 +95,26 @@ const FooterButton = ({
                 </ButtonWrapper>
             );
         case 1:
+            const width = window.innerWidth || document.body.clientWidth;
+            const cancelSettingsIcon = (width <= 768) ? mobileCancelSettingsIcon : deskTopCancelSettingsIcon;
+            const settingsIcon = (width <= 768) ? mobileSettingsIcon : deskTopSettingsIcon;
             const backgroundColor = isShowingDeleteButton ? '#FF6060' : '';
-            const className = isShowingDeleteButton ? '' : 'no-position-fixed';
             const handleClick = isShowingDeleteButton ? handleLudoDelete : handleReportDialogOpen;
             const label = isShowingDeleteButton ? '刪除戰局' : '我要回報';
             const src = isShowingDeleteButton ? cancelSettingsIcon : settingsIcon;
             return (
-                <ButtonWrapper>
+                <ButtonListWrapper>
                     <Button
                         backgroundColor={backgroundColor}
-                        className={className}
-                        onClick={handleClick}
                         label={label}
-                        margin="30px 0"
+                        margin="0"
+                        padding="10px 30px"
+                        onClick={handleClick}
                     />
                     <SettingsIconButton onClick={handleFooterButtonChange}>
                         <img src={src} />
                     </SettingsIconButton>
-                </ButtonWrapper>
+                </ButtonListWrapper>
             );
         default:
             return (

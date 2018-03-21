@@ -117,15 +117,17 @@ class MobileLudoPage extends Component {
         } = this.props;
         const {
             comments_nick,
+            image_location,
             introduction,
             player_id,
             stage,
             starter_id,
             tags,
             title,
+            video,
         } = router_currentFormValue;
 
-        const playerId = player_id ? player_id : '';
+        const playerId = player_id === '0' ? '' : player_id;
 
         return (
             <div>
@@ -159,9 +161,9 @@ class MobileLudoPage extends Component {
                             selectedClassName="react-tabs__tab--selected mobile-avatar"
                         >
                             <PlayerTab
-                                avatarBackgroundColorIndex={player_id ? comments_nick[player_id][1] : 0}
-                                avatarImageIndex={player_id ? comments_nick[player_id][0]: 0}
-                                isThisBelongToCurrentUser={player_id == currentUserId}
+                                avatarBackgroundColorIndex={stage === 1 ? 0 : comments_nick[player_id][1]}
+                                avatarImageIndex={stage === 1 ? 0 : comments_nick[player_id][0]}
+                                isThisBelongToCurrentUser={player_id === currentUserId}
                                 stage={stage}
                                 userPhotoUrl={userPhotoUrl}
                             />
@@ -184,29 +186,16 @@ class MobileLudoPage extends Component {
                             reportUserId={starter_id}
                             userPhotoUrl={userPhotoUrl}
                         />
-                        <ReportButtonWithNull
-                            currentUserId={currentUserId}
-                            label="我要回報"
-                            playerId={playerId}
-                            stage={stage}
-                            starterId={starter_id}
-                            url={`/ludo/${ludoId}/mobile-report-form`}
-                        />
                     </TabPanel>
                     <TabPanel>
                         <MobileCardContent
+                            handleImageLightboxOpen={handleImageLightboxOpen}
                             interval={router_currentFormValue.interval ? router_currentFormValue.interval : 1}
+                            image_location={image_location}
                             introduction={introduction}
                             tags={tags}
                             title={title}
-                        />
-                        <ReportButtonWithNull
-                            currentUserId={currentUserId}
-                            label="我要回報"
-                            playerId={playerId}
-                            stage={stage}
-                            starterId={starter_id}
-                            url={`/ludo/${ludoId}/mobile-report-form`}
+                            video={video}
                         />
                     </TabPanel>
                     <TabPanel>
@@ -224,14 +213,6 @@ class MobileLudoPage extends Component {
                             reportList={reportList.player}
                             reportUserId={playerId}
                             userPhotoUrl={userPhotoUrl}
-                        />
-                        <ReportButtonWithNull
-                            currentUserId={currentUserId}
-                            label="我要回報"
-                            playerId={playerId}
-                            stage={stage}
-                            starterId={starter_id}
-                            url={`/ludo/${ludoId}/mobile-report-form`}
                         />
                     </TabPanel>
                 </Tabs>
