@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 
-import { withMaybe } from '../../components/higher-order-components/index';
+import { withMaybe } from '../../components/higher-order-components';
 
 const Wrapper = styled.div`
     line-height: 1.1rem;

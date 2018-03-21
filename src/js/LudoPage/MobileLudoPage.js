@@ -1,19 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
+import { withEither, withMaybe } from '../components/higher-order-components';
 import Avatar from '../components/Avatar';
 import MobileCardContent from './MobileCardContent';
 import MobileReportList from './MobileReportList';
 import MobileReportButton from './MobileReportButton';
-
-const MobileCardContentTab = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-size: 0.8rem;
-`;
 
 const DarkBackGround = styled.div`
     position: fixed;
@@ -24,18 +18,75 @@ const DarkBackGround = styled.div`
     visibility: ${props => props.display ? 'visible' : 'hidden'};
 `;
 
-class MobilePlayingLudo extends Component {
+const MobileCardContentTab = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 0.8rem;
+`;
+
+const NoOpponentDescription = styled.div`
+    color: white;
+    text-align: center;
+`;
+
+const NoOpponentTabWrapper = styled.div`
+    align-items: center;
+    display: flex;
+    font-size: 0.8rem;
+    height: 100%;
+    justify-content: center;
+`;
+
+// rendering condition function
+const isStageReady = (props) => props.stage === 1;
+const withNoOpponent = (props) => !props.reportUserId;
+const unAuthToReport = (props) => {
+    const {
+        currentUserId,
+        playerId,
+        stage,
+        starterId,
+    } = props;
+
+    if (currentUserId === playerId && stage === 2) {
+        return false;
+    } else if (currentUserId === starterId) {
+        if (stage === 1 || stage === 2) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
+}
+
+// child comopnents
+const NoOpponent = () => (
+    <NoOpponentDescription>
+        對手尋找中！
+    </NoOpponentDescription>
+);
+const NoOpponentTab = () => (
+    <NoOpponentTabWrapper>
+        尚無對手
+    </NoOpponentTabWrapper>
+);
+
+const PlayerTab = withEither(isStageReady, NoOpponentTab)(Avatar);
+const PlayerReportList = withEither(withNoOpponent, NoOpponent)(MobileReportList);
+const ReportButtonWithNull = withMaybe(unAuthToReport)(MobileReportButton);
+
+class MobileLudoPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isShowingDarkBackGround: true,
         };
         this.handleCardContentTabClick = this.handleCardContentTabClick.bind(this);
-        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
-        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
         this.handlePlayerTabClick = this.handlePlayerTabClick.bind(this);
-        this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
-        this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
     }
 
     handleCardContentTabClick() {
@@ -55,6 +106,9 @@ class MobilePlayingLudo extends Component {
             currentLudoReportData,
             currentUserId,
             handleDenounceBoxOpen,
+            handleImageLightboxOpen,
+            handleReportEditButtonTouchTap,
+            handleReportExpandMoreButtonTouchTap,
             handleShouldReportUpdate,
             ludoId,
             reportList,
@@ -70,6 +124,9 @@ class MobilePlayingLudo extends Component {
             tags,
             title,
         } = router_currentFormValue;
+
+        const playerId = player_id ? player_id : '';
+
         return (
             <div>
                 <DarkBackGround display={this.state.isShowingDarkBackGround} />
@@ -83,7 +140,7 @@ class MobilePlayingLudo extends Component {
                             <Avatar
                                 avatarBackgroundColorIndex={comments_nick[starter_id][1]}
                                 avatarImageIndex={comments_nick[starter_id][0]}
-                                isThisBelongToCurrentUser={router_currentFormValue.starter_id == currentUserId}
+                                isThisBelongToCurrentUser={starter_id == currentUserId}
                                 userPhotoUrl={userPhotoUrl}
                             />
                         </Tab>
@@ -101,10 +158,11 @@ class MobilePlayingLudo extends Component {
                             onClick={this.handlePlayerTabClick}
                             selectedClassName="react-tabs__tab--selected mobile-avatar"
                         >
-                            <Avatar
-                                avatarBackgroundColorIndex={comments_nick[player_id][1]}
-                                avatarImageIndex={comments_nick[player_id][0]}
-                                isThisBelongToCurrentUser={router_currentFormValue.player_id == currentUserId}
+                            <PlayerTab
+                                avatarBackgroundColorIndex={player_id ? comments_nick[player_id][1] : 0}
+                                avatarImageIndex={player_id ? comments_nick[player_id][0]: 0}
+                                isThisBelongToCurrentUser={player_id == currentUserId}
+                                stage={stage}
                                 userPhotoUrl={userPhotoUrl}
                             />
                         </Tab>
@@ -116,9 +174,9 @@ class MobilePlayingLudo extends Component {
                             currentLudoId={ludoId}
                             currentUserId={currentUserId}
                             handleDenounceBoxOpen={handleDenounceBoxOpen}
-                            handleImageLightboxOpen={this.handleImageLightboxOpen}
-                            handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                            handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                            handleImageLightboxOpen={handleImageLightboxOpen}
+                            handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
+                            handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
                             handleShouldReportUpdate={handleShouldReportUpdate}
                             isMyReport={starter_id === currentUserId}
                             label="starter"
@@ -126,14 +184,14 @@ class MobilePlayingLudo extends Component {
                             reportUserId={starter_id}
                             userPhotoUrl={userPhotoUrl}
                         />
-                        {stage === 2 && starter_id == currentUserId || player_id == currentUserId
-                            ?
-                                <MobileReportButton
-                                    label="我要回報"
-                                    url={`/ludo/${ludoId}/mobile-report-form`}
-                                />
-                            : null
-                        }
+                        <ReportButtonWithNull
+                            currentUserId={currentUserId}
+                            label="我要回報"
+                            playerId={playerId}
+                            stage={stage}
+                            starterId={starter_id}
+                            url={`/ludo/${ludoId}/mobile-report-form`}
+                        />
                     </TabPanel>
                     <TabPanel>
                         <MobileCardContent
@@ -142,39 +200,39 @@ class MobilePlayingLudo extends Component {
                             tags={tags}
                             title={title}
                         />
-                        {stage === 2 && (starter_id === currentUserId || player_id === currentUserId)
-                            ?
-                                <MobileReportButton
-                                    label="我要回報"
-                                    url={`/ludo/${ludoId}/mobile-report-form`}
-                                />
-                            : null
-                        }
+                        <ReportButtonWithNull
+                            currentUserId={currentUserId}
+                            label="我要回報"
+                            playerId={playerId}
+                            stage={stage}
+                            starterId={starter_id}
+                            url={`/ludo/${ludoId}/mobile-report-form`}
+                        />
                     </TabPanel>
                     <TabPanel>
-                        <MobileReportList
+                        <PlayerReportList
                             commentsNick={comments_nick}
                             currentLudoId={ludoId}
                             currentUserId={currentUserId}
                             handleDenounceBoxOpen={handleDenounceBoxOpen}
-                            handleImageLightboxOpen={this.handleImageLightboxOpen}
-                            handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                            handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
+                            handleImageLightboxOpen={handleImageLightboxOpen}
+                            handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
+                            handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
                             handleShouldReportUpdate={handleShouldReportUpdate}
                             isMyReport={player_id === currentUserId}
                             label="player"
                             reportList={reportList.player}
-                            reportUserId={player_id}
+                            reportUserId={playerId}
                             userPhotoUrl={userPhotoUrl}
                         />
-                        {stage === 2 && (starter_id === currentUserId || player_id === currentUserId)
-                            ?
-                                <MobileReportButton
-                                    label="我要回報"
-                                    url={`/ludo/${ludoId}/mobile-report-form`}
-                                />
-                            : null
-                        }
+                        <ReportButtonWithNull
+                            currentUserId={currentUserId}
+                            label="我要回報"
+                            playerId={playerId}
+                            stage={stage}
+                            starterId={starter_id}
+                            url={`/ludo/${ludoId}/mobile-report-form`}
+                        />
                     </TabPanel>
                 </Tabs>
             </div>
@@ -182,7 +240,7 @@ class MobilePlayingLudo extends Component {
     }
 }
 
-MobilePlayingLudo.propTypes = {
+MobileLudoPage.propTypes = {
     currentLudoReportData: PropTypes.arrayOf(
         PropTypes.shape({
             CreatedAt: PropTypes.string.isRequired,
@@ -195,8 +253,12 @@ MobilePlayingLudo.propTypes = {
         })
     ).isRequired,
     currentUserId: PropTypes.string.isRequired,
+    editingForm: PropTypes.object.isRequired,
+    getUserBasicData: PropTypes.func.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
-    handleReportDialogOpenWithData: PropTypes.func.isRequired,
+    handleImageLightboxOpen: PropTypes.func.isRequired,
+    handleReportEditButtonTouchTap: PropTypes.func.isRequired,
+    handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     ludoId: PropTypes.string,
     reportList: PropTypes.object,
@@ -204,15 +266,15 @@ MobilePlayingLudo.propTypes = {
     userPhotoUrl: PropTypes.string,
 };
 
-MobilePlayingLudo.defaultProps = {
+MobileLudoPage.defaultProps = {
     'router_currentFormValue': {
         'comments_nick': {
             'a': [0, 0],
             'b': [0, 0]
         },
-        'player_id': 'a',
+        'player_id': '',
         'starter_id': 'b'
     }
 };
 
-export default MobilePlayingLudo;
+export default MobileLudoPage;

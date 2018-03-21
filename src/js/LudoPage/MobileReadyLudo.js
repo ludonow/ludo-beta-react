@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import axios from '../axios-config';
 import Avatar from '../components/Avatar';
-import MobileCardContent from '../components/MobileCardContent';
+import MobileCardContent from './MobileCardContent';
 import MobileReportList from './MobileReportList';
 import MobileReportButton from './MobileReportButton';
 import mobileCancelSettingsIcon from '../../images/active/mobile-cancel-settings.svg';
@@ -442,7 +442,7 @@ MobileReadyLudo.propTypes = {
         ludo_id: PropTypes.string
     }).isRequired,
     router_currentFormValue: PropTypes.object.isRequired,
-    userBasicData: PropTypes.object.isRequired
+    userPhotoUrl: PropTypes.string,
 };
 
 MobileReadyLudo.defaultProps = {

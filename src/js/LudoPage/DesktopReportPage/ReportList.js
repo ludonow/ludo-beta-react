@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Avatar from '../../components/Avatar';
-import DesktopCommentBox from './DesktopCommentBox/index';
-import ReportInfo from './ReportInfo';
-import ReportIconButton from './ReportIconButton/index';
-import SingleReport from './SingleReport';
+import SingleReport from '../SingleReport';
 
 export const ReportListWrapper = styled.div`
     display: flex;

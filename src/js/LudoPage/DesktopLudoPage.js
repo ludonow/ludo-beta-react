@@ -7,12 +7,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import axios from '../axios-config';
 import DesktopCardContent from './DesktopCardContent';
 import DesktopReportPage from './DesktopReportPage/index';
-import DesktopReportPost from './DesktopReportPost/index';
 import FooterButton from './FooterButton';
-
-const compareByCreatedDate = (a, b) => (
-    new Date(b.CreatedAt) - new Date(a.CreatedAt)
-);
 
 const getIsStageOfCardReady = (playerId) => (
     playerId === '0'
@@ -87,61 +82,12 @@ class DesktopLudoPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editingForm: {
-                content: '',
-                image_location: '',
-                report_id: '',
-                video: '',
-            },
             isDeleteButtonDisabled: false,
             isJoinButtonDisabled: false,
-            isReportDialogOpen: false,
             isShowingDeleteButton: false,
-            reportList: {
-                player: [],
-                starter: [],
-            },
         };
         this.handleFooterButtonChange = this.handleFooterButtonChange.bind(this);
-        this.handleReportDialogClose = this.handleReportDialogClose.bind(this);
-        this.handleReportDialogOpen = this.handleReportDialogOpen.bind(this);
-        this.handleReportDialogOpenWithData = this.handleReportDialogOpenWithData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        /* classify report data by starter or player */
-        if (nextProps.hasGotNewReport) {
-            const {
-                currentLudoReportData,
-                router_currentFormValue,
-            } = nextProps;
-
-            const newStarterReportList = currentLudoReportData.filter((reportObject) => {
-                if (reportObject.user_id === router_currentFormValue.starter_id) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            const newPlayerReportList = currentLudoReportData.filter((reportObject) => {
-                if (reportObject.user_id === router_currentFormValue.player_id) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            const playerReportList = newPlayerReportList.sort(compareByCreatedDate);
-            const starterReportList = newStarterReportList.sort(compareByCreatedDate);
-
-            this.setState({
-                reportList: {
-                    player: playerReportList,
-                    starter: starterReportList,
-                }
-            });
-            this.props.handleHasGotNewReport(false);
-        }
     }
 
     handleFooterButtonChange(event) {
@@ -151,26 +97,6 @@ class DesktopLudoPage extends Component {
                 isShowingDeleteButton: !prevState.isShowingDeleteButton, 
             })
         );
-    }
-
-    handleReportDialogClose() {
-        this.setState({ isReportDialogOpen: false });
-    }
-
-    handleReportDialogOpen() {
-        this.setState({ isReportDialogOpen: true });
-    }
-
-    handleReportDialogOpenWithData(targetReportObject) {
-        const { router_currentFormValue } = this.props;
-        const { reportList } = this.state;
-        const currentUserEditingReportList = reportList[targetReportObject.characterOfUser];
-        const editingForm = currentUserEditingReportList[targetReportObject.arrayIndex];
-        
-        this.setState({
-            editingForm,
-            isReportDialogOpen: true,
-        });
     }
 
     handleSubmit(event) {
@@ -253,21 +179,27 @@ class DesktopLudoPage extends Component {
     render() {
         const {
             currentUserId,
+            editingForm,
             handleDenounceBoxOpen,
+            handleImageLightboxOpen,
+            handleReportDialogOpen,
+            handleReportDialogOpenWithData,
+            handleReportEditButtonTouchTap,
+            handleReportExpandMoreButtonTouchTap,
             handleShouldProfileUpdate,
             handleShouldReportUpdate,
+            isReportDialogOpen,
             ludoId,
             router_currentFormValue,
             router_ludoPageIndex,
             userBasicData,
+            reportList,
         } = this.props;
+
         const {
-            editingForm,
             isDeleteButtonDisabled,
             isJoinButtonDisabled,
-            isReportDialogOpen,
             isShowingDeleteButton,
-            reportList,
         } = this.state;
 
         return (
@@ -305,7 +237,10 @@ class DesktopLudoPage extends Component {
                                 <DesktopReportPage
                                     currentUserId={currentUserId}
                                     handleDenounceBoxOpen={handleDenounceBoxOpen}
-                                    handleReportDialogOpenWithData={this.handleReportDialogOpenWithData}
+                                    handleImageLightboxOpen={handleImageLightboxOpen}
+                                    handleReportDialogOpenWithData={handleReportDialogOpenWithData}
+                                    handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
+                                    handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
                                     handleShouldReportUpdate={handleShouldReportUpdate}
                                     isStageOfCardReady={getIsStageOfCardReady(router_currentFormValue.player_id)}
                                     ludoId={ludoId}
@@ -321,21 +256,11 @@ class DesktopLudoPage extends Component {
                 <FooterButton
                     handleFooterButtonChange={this.handleFooterButtonChange}
                     handleLudoDelete={this.handleSubmit}
-                    handleReportDialogOpen={this.handleReportDialogOpen}
+                    handleReportDialogOpen={handleReportDialogOpen}
                     handleSubmit={this.handleSubmit}
                     isJoinButtonDisabled={isJoinButtonDisabled}
                     isShowingDeleteButton={isShowingDeleteButton}
                     router_ludoPageIndex={router_ludoPageIndex}
-                />
-                <DesktopReportPost
-                    currentUserId={currentUserId}
-                    editingForm={editingForm}
-                    handleReportDialogClose={this.handleReportDialogClose}
-                    handleShouldProfileUpdate={handleShouldProfileUpdate}
-                    handleShouldReportUpdate={handleShouldReportUpdate}
-                    isReportDialogOpen={isReportDialogOpen}
-                    ludoId={ludoId}
-                    router_currentFormValue={router_currentFormValue}
                 />
             </Wrapper>
         );
@@ -345,12 +270,21 @@ class DesktopLudoPage extends Component {
 DesktopLudoPage.propTypes = {
     currentLudoReportData: PropTypes.array.isRequired,
     currentUserId: PropTypes.string.isRequired,
+    editingForm: PropTypes.object,
+    getUserBasicData: PropTypes.func.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
     handleHasGotNewReport: PropTypes.func.isRequired,
+    handleImageLightboxOpen: PropTypes.func.isRequired,
+    handleReportDialogOpen: PropTypes.func.isRequired,
+    handleReportDialogOpenWithData: PropTypes.func.isRequired,
+    handleReportEditButtonTouchTap: PropTypes.func.isRequired,
+    handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
     handleShouldProfileUpdate: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     hasGotNewReport: PropTypes.bool.isRequired,
+    isReportDialogOpen: PropTypes.bool.isRequired,
     ludoId: PropTypes.string.isRequired,
+    reportList: PropTypes.object,
     router_currentFormValue: PropTypes.object.isRequired,
     router_ludoPageIndex: PropTypes.number.isRequired,
     userBasicData: PropTypes.object.isRequired,

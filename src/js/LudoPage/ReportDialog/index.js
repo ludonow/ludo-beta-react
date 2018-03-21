@@ -38,7 +38,7 @@ const titles = [
 ];
 
 // style components
-const DesktopReportPostWrapper = styled.div`
+const ReportDialogWrapper = styled.div`
     bottom: 0;
     display: flex;
     justify-content: center;
@@ -67,7 +67,7 @@ const titleStyle = {
     textAlign: 'center'
 };
 
-class DesktopReportPost extends Component {
+class ReportDialog extends Component {
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -187,8 +187,8 @@ class DesktopReportPost extends Component {
                 if (response.data.status === '200') {
                     return response.data.location;
                 } else {
-                    console.error('DesktopReportPost handlePutSubmit response status from server is not OK, which is: ', response);
-                    const errorMessage = 'DesktopReportPost handlePutSubmit response message from server: ' + response.data.message;
+                    console.error('ReportDialog handlePutSubmit response status from server is not OK, which is: ', response);
+                    const errorMessage = 'ReportDialog handlePutSubmit response message from server: ' + response.data.message;
                     throw new Error(errorMessage);
                 }
             })
@@ -303,8 +303,8 @@ class DesktopReportPost extends Component {
                 if (response.data.status === '200') {
                     return response.data.location;
                 } else {
-                    console.error('DesktopReportPost handleSubmit response status from server is not OK, which is: ', response);
-                    const errorMessage = 'DesktopReportPost handleSubmit response message from server: ' + response.data.message;
+                    console.error('ReportDialog handleSubmit response status from server is not OK, which is: ', response);
+                    const errorMessage = 'ReportDialog handleSubmit response message from server: ' + response.data.message;
                     throw new Error(errorMessage);
                 }
             })
@@ -338,15 +338,15 @@ class DesktopReportPost extends Component {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    console.error('DesktopReportPost handleSubmit response data is not OK. The message from server is: ', response.data.message);
+                    console.error('ReportDialog handleSubmit response data is not OK. The message from server is: ', response.data.message);
                     if (response.data.err) {
-                        console.error('DesktopReportPost handleSubmit response data is not OK. The error from server is: ', response.data.err);
+                        console.error('ReportDialog handleSubmit response data is not OK. The error from server is: ', response.data.err);
                         throw new Error(response.data.err);
                     }
                 }
             })
             .catch(error => {
-                console.error('DesktopReportPost handleSubmit catch an error: ', error);
+                console.error('ReportDialog handleSubmit catch an error: ', error);
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
@@ -384,15 +384,15 @@ class DesktopReportPost extends Component {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    console.error('DesktopReportPost handleSubmit response data is not OK. The message from server is: ', response.data.message);
+                    console.error('ReportDialog handleSubmit response data is not OK. The message from server is: ', response.data.message);
                     if (response.data.err) {
-                        console.error('DesktopReportPost handleSubmit response data is not OK. The error from server is: ', response.data.err);
+                        console.error('ReportDialog handleSubmit response data is not OK. The error from server is: ', response.data.err);
                         throw new Error(response.data.err);
                     }
                 }
             })
             .catch(error => {
-                console.error('DesktopReportPost handleSubmit catch an error: ', error);
+                console.error('ReportDialog handleSubmit catch an error: ', error);
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
@@ -500,7 +500,7 @@ class DesktopReportPost extends Component {
             isReportDialogOpen,
         } = this.props;
         return (
-            <DesktopReportPostWrapper>
+            <ReportDialogWrapper>
                 <StyledDialog
                     contentStyle={contentStyle}
                     onRequestClose={this.handleCloseClick}
@@ -546,12 +546,12 @@ class DesktopReportPost extends Component {
                     handleReportDialogClose={handleReportDialogClose}
                     isDiscardAlertOpen={isDiscardAlertOpen}
                 />
-            </DesktopReportPostWrapper>
+            </ReportDialogWrapper>
         );
     }
 }
 
-DesktopReportPost.propTypes = {
+ReportDialog.propTypes = {
     currentUserId: PropTypes.string.isRequired,
     editForm: PropTypes.object,
     ludoId: PropTypes.string.isRequired,
@@ -562,4 +562,4 @@ DesktopReportPost.propTypes = {
     router_currentFormValue: PropTypes.object.isRequired,
 };
 
-export default DesktopReportPost;
+export default ReportDialog;

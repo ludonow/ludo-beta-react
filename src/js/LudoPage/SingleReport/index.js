@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import DesktopCommentBox from './DesktopCommentBox/index';
+import CommentBox from './CommentBox';
+import IconButton from './IconButton';
 import ReportInfo from './ReportInfo';
-import ReportIconButton from './ReportIconButton/index';
 
 const SingleReportWrapper = styled.div`
     background: white;
@@ -35,7 +35,7 @@ const SingleReport = ({
     video,
 }) => (
     <SingleReportWrapper>
-        <ReportIconButton
+        <IconButton
             createDate={createDate}
             handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
             handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
@@ -49,7 +49,7 @@ const SingleReport = ({
             imageLocation={imageLocation}
             video={video}
         />
-        <DesktopCommentBox
+        <CommentBox
             commentListFromDatabase={comments}
             commentsNick={commentsNick}
             currentLudoId={currentLudoId}

@@ -1,21 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import processString from 'react-process-string';
 import styled from 'styled-components';
-import LightBox from 'react-image-lightbox';
-import ReactPlayer from 'react-player';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import Popover from 'material-ui/Popover';
 
-import axios from '../../axios-config';
 import { labelList } from '../../assets/reportInterval'; 
-import { withEither, withMaybe } from '../../components/higher-order-components/index';
+import { withEither } from '../../components/higher-order-components';
 import ReportList, { ReportListWrapper } from './ReportList';
-
-function compareByCreatedDate(a, b) {
-    return new Date(b.CreatedAt) - new Date(a.CreatedAt);
-}
 
 const panelWidth = window.innerWidth * 0.7;
 
@@ -82,11 +71,8 @@ const Wrapper = styled.div`
 
 // rendering condition function
 const isStageOfCardReady = (props) => props.isStageOfCardReady;
-const nullConditionFn = (props) => !props.isOpen;
 
 // child comopnents
-const LightBoxWithNullCondition = withMaybe(nullConditionFn)(LightBox);
-
 const NoOpponent = ({ panelWidth }) => (
     <ReportListWrapper width={panelWidth/2}>
         <NoOpponentDescription>
@@ -97,296 +83,82 @@ const NoOpponent = ({ panelWidth }) => (
 
 const PlayerReportListWithNoOpponent = withEither(isStageOfCardReady, NoOpponent)(ReportList);
 
-class DesktopReportPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            anchorEl: {},
-            enlargeImageLocation: '',
-            files: [],
-            isEditingWhichPlayerReportIndex: -1,
-            isEditingWhichStarterReportIndex: -1,
-            isImageLightBoxOpen: false,
-            isPopOverOfEditOpen: false,
-            isPopOverOfExpandMoreOpen: false,
-        };
-        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
-        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
-        this.handleReportDelete = this.handleReportDelete.bind(this);
-        this.handleReportDenounce = this.handleReportDenounce.bind(this);
-        this.handleReportEditButtonTouchTap = this.handleReportEditButtonTouchTap.bind(this);
-        this.handleReportEditing = this.handleReportEditing.bind(this);
-        this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
-        this.handleRequestClose = this.handleRequestClose.bind(this);
-    }
+const DesktopReportPage = ({
+    currentUserId,
+    handleDenounceBoxOpen,
+    handleImageLightboxOpen,
+    handleReportDialogOpenWithData,
+    handleReportEditButtonTouchTap,
+    handleReportExpandMoreButtonTouchTap,
+    handleShouldReportUpdate,
+    isStageOfCardReady,
+    ludoId,
+    playerReportList,
+    router_currentFormValue,
+    starterReportList,
+    userPhotoUrl,
+}) => {
+    const {
+        comments_nick,
+        duration,
+        player_id,
+        starter_id,
+        title,
+    } = router_currentFormValue;
 
-    componentWillMount() {
-        this.props.handleShouldReportUpdate(true);
-    }
+    const renderedInterval = router_currentFormValue.interval ? Number(router_currentFormValue.interval) : 1;
 
-    handleImageLightboxClose() {
-        this.setState({
-            isImageLightBoxOpen: false
-        });
-    }
-
-    handleImageLightboxOpen(event) {
-        this.setState({
-            enlargeImageLocation: event.currentTarget.src,
-            isImageLightBoxOpen: true
-        });
-    }
-
-    handleReportDelete(event) {
-        const isSureToDelelteReport = window.confirm('你確定要刪除這則回報嗎？(刪除後不可復原)');
-        if (isSureToDelelteReport) {
-            // const SPIndex = (event.currentTarget.id).slice(0, 1);
-            const SPIndex = (this.state.anchorEl.id).slice(0, 1);
-            const arrayIndex = Number(event.currentTarget.id.slice(-1));
-            let report_id = null;
-            if (SPIndex == 's') {
-                report_id = this.props.starterReportList[arrayIndex].report_id;
-            } else if (SPIndex == 'p') {
-                report_id = this.props.playerReportList[arrayIndex].report_id;
-            }
-            this.setState({
-                isPopOverOfEditOpen: false
-            });
-            if (report_id) {
-              const { router_currentFormValue } = this.props;
-              const { ludo_id } = router_currentFormValue;
-              axios.delete(`apis/report/${report_id}/${ludo_id}`)
-                .then(response => {
-                    if(response.data.status === '200'){
-                        this.props.handleShouldReportUpdate(true);
-                    } else {
-                        window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                        console.error(' handleReportDelete else response: ', response);
-                        console.error(' handleReportDelete else message: ', response.data.message);
-                    }
-                })
-                .catch(error => {
-                    window.alert(`刪除回報時發生錯誤，請再次一次；若問題仍然發生，請聯絡開發團隊`);
-                    console.error(' handleReportDelete error: ', error);
-                });
-            }
-        }
-    }
-
-    handleReportDenounce(event) {
-        const SPIndex = (this.state.anchorEl.id).slice(0, 1);
-        const arrayIndex = Number(event.currentTarget.id.slice(-1));
-        let report_id = null;
-        if (SPIndex === 's') {
-            report_id = this.props.starterReportList[arrayIndex].report_id;
-        } else if (SPIndex === 'p') {
-            report_id = this.props.playerReportList[arrayIndex].report_id;
-        } else {
-            console.error('handleReportDenounce SPIndex is not correct');
-        }
-        if (report_id) {
-            this.props.handleDenounceBoxOpen({
-                currentTargetReportId: report_id,
-            });
-        } else {
-            console.error('DesktopReportPage handleReportDenounce report_id does not exist');
-        }
-        this.setState({
-            isPopOverOfExpandMoreOpen: false
-        });
-    }
-
-    handleReportEditButtonTouchTap(event) {
-        /* This prevents ghost click. */
-        event.preventDefault();
-        if (event.currentTarget.id.slice(0, 1) === 's') {
-            const isEditingWhichStarterReportIndex = Number((event.currentTarget.id).slice(-1));
-            this.setState({isEditingWhichStarterReportIndex});
-        } else if (event.currentTarget.id.slice(0, 1) === 'p') {
-            const isEditingWhichPlayerReportIndex = Number((event.currentTarget.id).slice(-1));
-            this.setState({isEditingWhichPlayerReportIndex});
-        }
-        this.setState({
-            anchorEl: event.currentTarget,
-            isPopOverOfEditOpen: true
-        });
-    }
-
-    handleReportEditing(event) {
-        const fields = event.currentTarget.id.split('-');
-        const characterOfUser = String(fields[0]);
-        const arrayIndex =  Number(fields[fields.length - 1]);
-        const targetReportObject = {
-            arrayIndex,
-            characterOfUser,
-        };
-
-        this.props.handleReportDialogOpenWithData(targetReportObject);
-        this.handleRequestClose();
-    }
-
-    handleReportExpandMoreButtonTouchTap(event) {
-        /* This prevents ghost click. */
-        event.preventDefault();
-        if (event.currentTarget.id.slice(0, 1) === 's') {
-            const isEditingWhichStarterReportIndex = Number((event.currentTarget.id).slice(-1));
-            this.setState({isEditingWhichStarterReportIndex});
-        } else if (event.currentTarget.id.slice(0, 1) === 'p') {
-            const isEditingWhichPlayerReportIndex = Number((event.currentTarget.id).slice(-1));
-            this.setState({isEditingWhichPlayerReportIndex});
-        }
-        this.setState({
-            anchorEl: event.currentTarget,
-            isPopOverOfExpandMoreOpen: true
-        });
-    }
-
-    handleRequestClose() {
-        this.setState({
-            isPopOverOfEditOpen: false,
-            isPopOverOfExpandMoreOpen: false
-        });
-    }
-
-    render() {
-        const {
-            anchorEl,
-            enlargeImageLocation,
-            files,
-            isEditingWhichPlayerReportIndex,
-            isEditingWhichStarterReportIndex,
-            isImageLightBoxOpen,
-            isPopOverOfEditOpen,
-            isPopOverOfExpandMoreOpen,
-        } = this.state;
-       
-        let config = [{
-            regex: /(http|https):\/\/(\S+)\.([a-z]{2,}?)(.*?)( |\,|$|\.)/gim,
-            fn: (key, result) => <span key={key}>
-                                     <a target="_blank" href={`${result[1]}://${result[2]}.${result[3]}${result[4]}`}>{result[2]}.{result[3]}{result[4]}</a>{result[5]}
-                                 </span>
-        }, {
-            regex: /(\S+)\.([a-z]{2,}?)(.*?)( |\,|$|\.)/gim,
-            fn: (key, result) => <span key={key}>
-                                     <a target="_blank" href={`http://${result[1]}.${result[2]}${result[3]}`}>{result[1]}.{result[2]}{result[3]}</a>{result[4]}
-                                 </span>
-        }];
-
-        const {
-            currentUserId,
-            handleDenounceBoxOpen,
-            handleReportDialogOpenWithData,
-            handleShouldReportUpdate,
-            isStageOfCardReady,
-            ludoId,
-            playerReportList,
-            router_currentFormValue,
-            starterReportList,
-            userPhotoUrl,
-        } = this.props;
-
-        const {
-            comments_nick,
-            duration,
-            player_id,
-            starter_id,
-            title,
-        } = router_currentFormValue;
-
-        const renderedInterval = router_currentFormValue.interval ? Number(router_currentFormValue.interval) : 1;
-
-        return (
-            <Wrapper>
-                <CardTitle>{title}</CardTitle>
-                <CardDays>遊戲天數：{duration}天</CardDays>
-                <ReportCycle>{labelList[Number(renderedInterval)-1]}</ReportCycle>
-                <ReportColumnList width={panelWidth}>
-                    <ReportList
-                        commentsNick={comments_nick}
-                        currentLudoId={ludoId}
-                        currentUserId={currentUserId}
-                        handleDenounceBoxOpen={handleDenounceBoxOpen}
-                        handleImageLightboxOpen={this.handleImageLightboxOpen}
-                        handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                        handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                        handleShouldReportUpdate={handleShouldReportUpdate}
-                        isMyReport={router_currentFormValue.starter_id === currentUserId}
-                        label="starter"
-                        panelWidth={panelWidth}
-                        reportList={starterReportList}
-                        reportUserId={starter_id}
-                        userPhotoUrl={userPhotoUrl}
-                    />
-                    <PlayerReportListWithNoOpponent
-                        commentsNick={comments_nick}
-                        currentLudoId={ludoId}
-                        currentUserId={currentUserId}
-                        handleDenounceBoxOpen={handleDenounceBoxOpen}
-                        handleImageLightboxOpen={this.handleImageLightboxOpen}
-                        handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
-                        handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                        handleShouldReportUpdate={handleShouldReportUpdate}
-                        isMyReport={router_currentFormValue.player_id === currentUserId}
-                        isStageOfCardReady={isStageOfCardReady}
-                        label="player"
-                        panelWidth={panelWidth}
-                        reportList={playerReportList}
-                        reportUserId={player_id}
-                        userPhotoUrl={userPhotoUrl}
-                    />
-                </ReportColumnList>
-                <LightBoxWithNullCondition
-                    isOpen={isImageLightBoxOpen}
-                    mainSrc={enlargeImageLocation}
-                    onCloseRequest={this.handleImageLightboxClose}
+    return (
+        <Wrapper>
+            <CardTitle>{title}</CardTitle>
+            <CardDays>遊戲天數：{duration}天</CardDays>
+            <ReportCycle>{labelList[Number(renderedInterval)-1]}</ReportCycle>
+            <ReportColumnList width={panelWidth}>
+                <ReportList
+                    commentsNick={comments_nick}
+                    currentLudoId={ludoId}
+                    currentUserId={currentUserId}
+                    handleDenounceBoxOpen={handleDenounceBoxOpen}
+                    handleImageLightboxOpen={handleImageLightboxOpen}
+                    handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
+                    handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
+                    handleShouldReportUpdate={handleShouldReportUpdate}
+                    isMyReport={router_currentFormValue.starter_id === currentUserId}
+                    label="starter"
+                    panelWidth={panelWidth}
+                    reportList={starterReportList}
+                    reportUserId={starter_id}
+                    userPhotoUrl={userPhotoUrl}
                 />
-                <Popover
-                    anchorEl={anchorEl}
-                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                    onRequestClose={this.handleRequestClose}
-                    open={isPopOverOfEditOpen}
-                    style={{overflowY: 'hidden'}}
-                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                    <Menu>
-                        <MenuItem
-                            id={anchorEl.id}
-                            onTouchTap={this.handleReportEditing}
-                            primaryText="編輯此回報"
-                        />
-                        <MenuItem
-                            id={anchorEl.id}
-                            onTouchTap={this.handleReportDelete}
-                            primaryText="刪除此回報"
-                        />
-                    </Menu>
-                </Popover>
-                <Popover
-                    anchorEl={anchorEl}
-                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                    onRequestClose={this.handleRequestClose}
-                    open={isPopOverOfExpandMoreOpen}
-                    style={{overflowY: 'hidden'}}
-                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                    <Menu>
-                        <MenuItem
-                            id={anchorEl.id}
-                            innerDivStyle={{ 'fontSize': '14px' }}
-                            onTouchTap={this.handleReportDenounce}
-                            primaryText="檢舉此回報"
-                        />
-                    </Menu>
-                </Popover>
-            </Wrapper>
-        );
-    }
+                <PlayerReportListWithNoOpponent
+                    commentsNick={comments_nick}
+                    currentLudoId={ludoId}
+                    currentUserId={currentUserId}
+                    handleDenounceBoxOpen={handleDenounceBoxOpen}
+                    handleImageLightboxOpen={handleImageLightboxOpen}
+                    handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
+                    handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
+                    handleShouldReportUpdate={handleShouldReportUpdate}
+                    isMyReport={router_currentFormValue.player_id === currentUserId}
+                    isStageOfCardReady={isStageOfCardReady}
+                    label="player"
+                    panelWidth={panelWidth}
+                    reportList={playerReportList}
+                    reportUserId={player_id}
+                    userPhotoUrl={userPhotoUrl}
+                />
+            </ReportColumnList>
+        </Wrapper>
+    );
 }
 
 DesktopReportPage.propTypes = {
     currentUserId: PropTypes.string.isRequired,
     handleDenounceBoxOpen: PropTypes.func.isRequired,
+    handleImageLightboxOpen: PropTypes.func.isRequired,
     handleReportDialogOpenWithData: PropTypes.func.isRequired,
+    handleReportEditButtonTouchTap: PropTypes.func.isRequired,
+    handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     isStageOfCardReady: PropTypes.bool.isRequired,
     ludoId: PropTypes.string.isRequired,
