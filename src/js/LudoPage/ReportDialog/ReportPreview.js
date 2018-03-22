@@ -10,11 +10,17 @@ import {
 
 const ReportPreviewWrapper = styled.div`
     font-family: "Microsoft JhengHei";
-    margin: 3vw 15vw;
     max-height: 40vh;
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-word;
+
+    @media (max-width: 768px) {
+        margin: 3vw 5vw;
+    }
+    @media (min-width: 769px) {
+        margin: 3vw 15vw;
+    }
 
     ${CustomScrollBarCSS}
 `;
