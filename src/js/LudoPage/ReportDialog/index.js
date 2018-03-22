@@ -421,40 +421,25 @@ class ReportDialog extends Component {
 
     handleTextChange(event) {
         const text = event.currentTarget.value;
-        if (!text) {
+        const {
+            images,
+            reportType,
+            video,
+        } = this.state;
+        if ((images.length === 1 && reportType === 'image') || (video && reportType === 'video')) {
+            this.setState({ isPreviewButtonDisabled: false });
+        }
+        if (!text && reportType === 'text') {
             this.setState({
                 isPreviewButtonDisabled: true,
                 isReporting: false,
-                text
+                text,
             });
         } else {
-            const {
-                images,
-                reportType,
-                video
-            } = this.state;
-
-            if (images && reportType === 'image') {
-                this.setState({
-                    isPreviewButtonDisabled: false,
-                    isReporting: true,
-                    text
-                });
-            }
-            if (text && reportType === 'text') {
-                this.setState({
-                    isPreviewButtonDisabled: false,
-                    isReporting: true,
-                    text
-                });
-            }
-            if (video && reportType === 'video') {
-                this.setState({
-                    isPreviewButtonDisabled: false,
-                    isReporting: true,
-                    text
-                });
-            }
+            this.setState({
+                isReporting: true,
+                text,
+            });
         }
     }
 

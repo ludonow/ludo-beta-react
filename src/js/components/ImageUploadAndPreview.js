@@ -48,6 +48,12 @@ const PreviewWrapper = styled.div`
 const MAX_HEIGHT = 200;
 const MAX_WIDTH = 250;
 
+const reactModalStyle = {
+    overlay: {
+        zIndex: 2000
+    }
+};
+
 const isImageLightBoxClose = (props) => !props.isImageLightBoxOpen;
 const ImageLightBox = withMaybe(isImageLightBoxClose)(LightBox);
 
@@ -60,8 +66,8 @@ class ImageUploadAndPreview extends Component {
         };
         this.handleDrop = this.handleDrop.bind(this);
         // this.handleImageUpload = this.handleImageUpload.bind(this);
-        this.handleImageLightboxClose = this.handleImageLightboxClose.bind(this);
-        this.handleImageLightboxOpen = this.handleImageLightboxOpen.bind(this);
+        this.handleImageLightBoxClose = this.handleImageLightBoxClose.bind(this);
+        this.handleImageLightBoxOpen = this.handleImageLightBoxOpen.bind(this);
         this.handleImagePreview = this.handleImagePreview.bind(this);
         this.resizePreviewImage = this.resizePreviewImage.bind(this);
     }
@@ -111,13 +117,13 @@ class ImageUploadAndPreview extends Component {
     //     });
     // }
 
-    handleImageLightboxClose() {
+    handleImageLightBoxClose() {
         this.setState({
             isImageLightBoxOpen: false
         });
     }
 
-    handleImageLightboxOpen(event) {
+    handleImageLightBoxOpen(event) {
         this.setState({
             enlargeImageLocation: event.currentTarget.src,
             isImageLightBoxOpen: true
@@ -172,7 +178,7 @@ class ImageUploadAndPreview extends Component {
                     <ImageZoneWrapper>
                         <PreviewWrapper>
                             <PreviewImage
-                                onClick={this.handleImageLightboxOpen}
+                                onClick={this.handleImageLightBoxOpen}
                                 resizedHeight={resizedHeight}
                                 resizedWidth={resizedWidth}
                                 src={imageLocation}
@@ -194,7 +200,8 @@ class ImageUploadAndPreview extends Component {
                         <ImageLightBox
                             isImageLightBoxOpen={isImageLightBoxOpen}
                             mainSrc={enlargeImageLocation}
-                            onCloseRequest={this.handleImageLightboxClose}
+                            onCloseRequest={this.handleImageLightBoxClose}
+                            reactModalStyle={reactModalStyle}
                         />
                     </ImageZoneWrapper>
                 )
@@ -230,7 +237,7 @@ class ImageUploadAndPreview extends Component {
                 <ImageZoneWrapper>
                     <PreviewWrapper>
                         <PreviewImage
-                            onClick={this.handleImageLightboxOpen}
+                            onClick={this.handleImageLightBoxOpen}
                             resizedHeight={resizedHeight}
                             resizedWidth={resizedWidth}
                             src={userSelectedImage.preview}
@@ -252,7 +259,8 @@ class ImageUploadAndPreview extends Component {
                     <ImageLightBox
                         isImageLightBoxOpen={isImageLightBoxOpen}
                         mainSrc={enlargeImageLocation}
-                        onCloseRequest={this.handleImageLightboxClose}
+                        onCloseRequest={this.handleImageLightBoxClose}
+                        reactModalStyle={reactModalStyle}
                     />
                 </ImageZoneWrapper>
             );
