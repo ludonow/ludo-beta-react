@@ -21,6 +21,7 @@ const CardImage = styled.div`
     align-items: center;
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 
     img {
         width: 200px;
@@ -76,6 +77,7 @@ const IntervalTag = RoundRadiusTag.extend`
 `;
 
 const MobileCardContent = ({
+    handleImageLightboxOpen,
     image_location,
     interval,
     introduction,

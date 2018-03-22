@@ -22,7 +22,9 @@ import mobileSettingsIcon from '../../images/active/mobile-settings.svg';
 const ButtonWrapper = styled.div`
     bottom: 0;
     display: flex;
+    left: 0;
     position: fixed;
+    width: 100%;
 `;
 
 const ButtonListWrapper = styled.div`
