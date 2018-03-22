@@ -87,24 +87,15 @@
         - index.js
     - LudoPage
         - DesktopReportPage
-            - index.js
-            - ReportList.js
-        - MobileReportList
-            - MobileCommentBox
-                - MobileCommentList
-                    - index.js
-                    - MobileCommentEditButton.js
-                    - MobileCommentExpandMoreButton.js
+            - DesktopReportList
                 - index.js
-                - MobileCommentForm.js
-            - MobileReportCard
-                - index.js
-                - MobileReportEditButton.js
-                - MobileReportExpandMoreButton.js
-                - ReportImage.js
-                - ReportTags.js
-                - ReportText.js
+                - ReportList.js
+            - DesktopCardContent.js
             - index.js
+        - MobileLudoPage
+            - index.js
+            - MobileCardContent.js
+            - MobileReportList.js
         - ReportDialog
             - Content.js
             - ErrorMessage.js
@@ -125,14 +116,8 @@
                 - index.js
             - index.js
             - ReportInfo.js
-        - DesktopCardContent.js
-        - DesktopLudoPage.js
         - FooterButton.js
         - index.js
-        - MobileCardContent.js
-        - MobileLudoPage.js
-        - MobileReportButtonList.js
-        - ReportEditForm.js
     - MyCardList
         - index.js
     - playground

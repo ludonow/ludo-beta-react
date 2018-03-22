@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { labelList } from '../../assets/reportInterval'; 
-import { withEither } from '../../components/higher-order-components';
+import { labelList } from '../../../assets/reportInterval'; 
+import { withEither } from '../../../components/higher-order-components';
 import ReportList, { ReportListWrapper } from './ReportList';
 
 const panelWidth = window.innerWidth * 0.7;

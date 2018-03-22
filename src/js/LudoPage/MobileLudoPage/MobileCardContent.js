@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
-import { cyan800, deepOrange200, grey800 } from 'material-ui/styles/colors';
+import { cyan800, deepOrange200 } from 'material-ui/styles/colors';
 
 const RoundRadiusTag = styled.span`
     border-radius: 20px;

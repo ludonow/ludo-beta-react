@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Avatar from '../../components/Avatar';
-import SingleReport from '../SingleReport';
+import Avatar from '../../../components/Avatar';
+import SingleReport from '../../SingleReport';
 
 export const ReportListWrapper = styled.div`
     display: flex;

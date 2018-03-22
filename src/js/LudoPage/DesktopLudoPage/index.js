@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import DesktopCardContent from './DesktopCardContent';
-import DesktopReportPage from './DesktopReportPage/index';
+import DesktopReportPage from './DesktopReportPage';
 
 const getIsStageOfCardReady = (playerId) => (
     playerId === '0'

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import Lightbox from 'react-image-lightbox';
 
-import tagIcon from '../../images/active/tag-icon.png';
-import { labelList } from '../assets/reportInterval.js'; 
+import tagIcon from '../../../images/active/tag-icon.png';
+import { labelList } from '../../assets/reportInterval.js'; 
 
 const CardDays = styled.div`
     display: inline-flex;

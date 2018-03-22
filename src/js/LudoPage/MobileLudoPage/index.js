@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
-import { withEither, withMaybe } from '../components/higher-order-components';
-import Avatar from '../components/Avatar';
+import { withEither, withMaybe } from '../../components/higher-order-components';
+import Avatar from '../../components/Avatar';
 import MobileCardContent from './MobileCardContent';
 import MobileReportList from './MobileReportList';
-import MobileReportButton from './MobileReportButton';
 
 const DarkBackGround = styled.div`
     position: fixed;
@@ -77,7 +76,6 @@ const NoOpponentTab = () => (
 
 const PlayerTab = withEither(isStageReady, NoOpponentTab)(Avatar);
 const PlayerReportList = withEither(withNoOpponent, NoOpponent)(MobileReportList);
-const ReportButtonWithNull = withMaybe(unAuthToReport)(MobileReportButton);
 
 class MobileLudoPage extends Component {
     constructor(props) {
