@@ -144,6 +144,9 @@ class ReportDialog extends Component {
         if (isReporting) {
             this.setState({ isDiscardAlertOpen: true });
         } else {
+            this.setState({
+                ...initialState
+            });
             this.props.handleReportDialogClose();
         }
     }
@@ -154,6 +157,9 @@ class ReportDialog extends Component {
 
     handleDiscardConfirm() {
         this.handleDiscardAlertClose();
+        this.setState({
+            ...initialState
+        });
         this.props.handleReportDialogClose();
     }
 
@@ -435,8 +441,14 @@ class ReportDialog extends Component {
                 isReporting: false,
                 text,
             });
+        } else if (!text) {
+            this.setState({
+                isReporting: false,
+                text,
+            });
         } else {
             this.setState({
+                isPreviewButtonDisabled: false,
                 isReporting: true,
                 text,
             });
