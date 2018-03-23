@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import { grey200 } from 'material-ui/styles/colors';
-import { CustomScrollBarCSS } from '../../../../baseStyle';
+
+import { CustomScrollBarCSS } from '../../../baseStyle';
 
 // styled components
 const DeleteIconWrapper = styled.div`

@@ -517,7 +517,6 @@ export default class App extends React.Component {
                     handleNavbarToggle={this.handleNavbarToggle}
                     handlePersonalCardListToggle={this.handlePersonalCardListToggle}
                     isNavbarVisible={isNavbarVisible}
-                    isOpeningCreateFormPage={isOpeningCreateFormPage}
                     isOpeningLudoListPage={isOpeningLudoListPage}
                     isPersonalCardListVisible={isPersonalCardListVisible}
                     userBasicData={userBasicData}

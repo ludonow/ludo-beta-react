@@ -10,7 +10,7 @@ import TextInput from './TextInput';
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin-bottom: 20px;
 `;
 
 class BasicDataForm extends Component {

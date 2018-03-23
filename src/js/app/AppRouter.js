@@ -10,7 +10,7 @@ import { baseUrl } from '../baseurl-config';
 import App from './App';
 import BikeFestivalCertificate from '../Certificate/BikeFestival';
 import Bind from '../Bind/index';
-import Create from '../create/Create';
+import CreateStepper from '../CreateStepper';
 import EmailConfirm from '../EmailConfirm/index';
 import EmailConfirmAlert from '../EmailConfirm/alert';
 import Login from '../Login/index.js';
@@ -21,7 +21,6 @@ import MyCardList from '../MyCardList/index';
 import Playground from '../playground/Playground';
 import Search from '../Search/index';
 import SignUp from '../SignUp/index';
-import Template from '../create/Template';
 import Tutorial from '../Tutorial/index';
 import TutorialSlideShow from '../Tutorial/SlideShow';
 import LoadingPage from '../LoadingPage';
@@ -51,9 +50,9 @@ const ludoPageArray = [
     LudoPage,
     LudoPage,
     LudoPage,
-    Template,
-    Template,
-    Template
+    CreateStepper,
+    CreateStepper,
+    CreateStepper
 ];
 
 const isLoggedIn = (nextState, replace, callback) => {
@@ -184,7 +183,7 @@ const AppRouter = () => (
                     path="cardList"
                 />
                 <Route
-                    component={Create}
+                    component={CreateStepper}
                     onEnter={isLoggedIn}
                     path="create"
                 />
@@ -255,7 +254,7 @@ const AppRouter = () => (
                     path="signup"
                 />
                 <Route
-                    component={Template}
+                    component={CreateStepper}
                     path="template/:templateId"
                 />
                 <Route

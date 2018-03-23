@@ -1,12 +1,12 @@
-import React, { Component, PropTypes } from 'react';
-import { browserHistory, Link } from 'react-router';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
 import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import { grey300 } from 'material-ui/styles/colors';
 
 import axios from '../../axios-config';
-
 import DesktopSearchBar from './SearchBar/DesktopSearchBar';
 import HamburgerIcon from './HamburgerIcon';
 import HeaderLeft from './HeaderLeft';
@@ -15,8 +15,6 @@ import HeaderRight from './HeaderRight';
 import Logo from './Logo';
 import MobileSearchBar from './SearchBar/MobileSearchBar';
 import Playground from '../../playground/Playground';
-import Create from '../../create/Create';
-
 import { A } from './SearchBar/common';
 import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
 import magnifierIcon from '../../../images/magnifier.svg';
@@ -70,15 +68,13 @@ const SearchCloseIcon = ({ handleMobileSearchCancelTouchTap }) => (
     </SearchIconWrapper>
 );
 
-export default class Header extends Component {
+class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isSearching: false,
             searchingText: ''
         };
-        this.handleFilterClick = this.handleFilterClick.bind(this);
-        this.handleHistoryFilterClick = this.handleHistoryFilterClick.bind(this);
         this.handleMobileSearchCancelTouchTap = this.handleMobileSearchCancelTouchTap.bind(this);
         this.handleMobileSearchTouchTap = this.handleMobileSearchTouchTap.bind(this);
         this.handlePersonalCardListToggleButtonClick = this.handlePersonalCardListToggleButtonClick.bind(this);
@@ -86,18 +82,7 @@ export default class Header extends Component {
         this.handleSearchSubmitTouchTap = this.handleSearchSubmitTouchTap.bind(this);
         this.handleSearchingTextChange = this.handleSearchingTextChange.bind(this);
         this.handleSearchingTextClear = this.handleSearchingTextClear.bind(this);
-        this.handleTemplateFilterClick = this.handleTemplateFilterClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-    }
-
-    handleFilterClick(event) {
-        this.props.getFilteredLudoList(event.target.value);
-        browserHistory.push('/cardList');
-    }
-
-    handleHistoryFilterClick() {
-        this.props.getFilteredLudoList('stage=3');
-        browserHistory.push('/cardList');
     }
 
     handleMobileSearchCancelTouchTap(event) {
@@ -150,11 +135,6 @@ export default class Header extends Component {
         });
     }
 
-    handleTemplateFilterClick() {
-        this.props.getFilteredLudoList('stage=0');
-        browserHistory.push('/cardList');
-    }
-
     searchSubmit(searchText) {
         const searchParams = {
             "title": searchText
@@ -165,7 +145,6 @@ export default class Header extends Component {
          */
         const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
         browserHistory.push(`/search?stage=1&${filterCondition}`);
-        // this.props.getFilteredLudoList(filterCondition);
     }
 
     render() {
@@ -173,7 +152,6 @@ export default class Header extends Component {
             getFilteredLudoList,
             handleNavbarToggle,
             isNavbarVisible,
-            isOpeningCreateFormPage,
             isOpeningLudoListPage,
             isPersonalCardListVisible,
             userBasicData 
@@ -209,13 +187,9 @@ export default class Header extends Component {
                     }
                     {
                         isSearching ?
-                            <SearchCloseIcon
-                                handleMobileSearchCancelTouchTap={this.handleMobileSearchCancelTouchTap}
-                            />
+                            <SearchCloseIcon handleMobileSearchCancelTouchTap={this.handleMobileSearchCancelTouchTap} />
                         :
-                            <SearchIcon
-                                handleMobileSearchTouchTap={this.handleMobileSearchTouchTap}
-                            />
+                            <SearchIcon handleMobileSearchTouchTap={this.handleMobileSearchTouchTap} />
                     }
                 </StyledMediaQuery>
                 <StyledMediaQuery minWidth={769}>
@@ -244,12 +218,13 @@ export default class Header extends Component {
 };
 
 Header.propTypes = {
-    getFilteredLudoList: PropTypes.func,
-    handleNavbarToggle: PropTypes.func,
-    handlePersonalCardListToggle: PropTypes.func,
-    isNavbarVisible: PropTypes.bool,
-    isOpeningCreateFormPage: PropTypes.bool,
-    isOpeningLudoListPage: PropTypes.bool,
-    isPersonalCardListVisible: PropTypes.bool,
-    userBasicData: PropTypes.object
+    getFilteredLudoList: PropTypes.func.isRequired,
+    handleNavbarToggle: PropTypes.func.isRequired,
+    handlePersonalCardListToggle: PropTypes.func.isRequired,
+    isNavbarVisible: PropTypes.bool.isRequired,
+    isOpeningLudoListPage: PropTypes.bool.isRequired,
+    isPersonalCardListVisible: PropTypes.bool.isRequired,
+    userBasicData: PropTypes.object.isRequired,
 };
+
+export default Header;

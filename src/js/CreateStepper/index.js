@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
-import axios from '../../axios-config';
-import { CustomScrollBarCSS } from '../../baseStyle';
-import Content from './Content/index';
-import DiscardAlert from '../../components/DiscardAlert';
+import axios from '../axios-config';
+import { CustomScrollBarCSS } from '../baseStyle';
+import Content from './Content';
+import DiscardAlert from '../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
-import StepperCloseIcon from '../../components/StepperCloseIcon';
+import StepperCloseIcon from '../components/StepperCloseIcon';
 
 promiseFinally.shim();
 
@@ -60,18 +60,23 @@ const titles = [
 const StyledDialog = styled(Dialog)`
     ${CustomScrollBarCSS}
     h3 + div {
-        max-height: 450px !important;
+        @media (max-width: 768px) {
+            max-height: none !important;
+        }
+        @media (min-width: 769px) {
+            max-height: 450px !important;
+        }
     }
 `;
 
-const Wrapper = styled.div`
-    background-color: white;
-`;
-
 // override material-ui style
-const contentStyle = {
+const deskTopContentStyle = {
+    maxWidth: 'none',
     width: '60%',
-    maxWidth: 'none'
+};
+const mobileContentStyle = {
+    maxWidth: 'none',
+    width: '95%',
 };
 
 const dialogStyle = {
@@ -117,8 +122,16 @@ class CreateStepper extends Component {
     }
 
     componentDidMount() {
-        if (!this.state.isAtTemplatePage && this.props.templateId) {
-            this.getTemplateData(this.props.templateId);
+        const { templateId } = this.props.params;
+        if (templateId) {
+            this.getTemplateData(templateId);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { templateId } = nextProps.params;
+        if (!this.state.isAtTemplatePage && templateId) {
+            this.getTemplateData(templateId);
         }
     }
 
@@ -201,7 +214,7 @@ class CreateStepper extends Component {
             } = this.state;
             let defaultCardCreateForm = {
                 ...ludoCreateForm,
-                template_id: this.props.templateId,
+                template_id: this.props.params.templateId,
             };
             const isUpdatingImage = this.isUpdatingImage(contentType, images);
             if (isUpdatingImage) {
@@ -641,7 +654,7 @@ class CreateStepper extends Component {
         const isSureToDelete = window.confirm('你確定要刪除這個Ludo模板嗎？');
         // const isSureToDelete = window.confirm('Are you sure to delete this template ludo?');
         if (isSureToDelete) {
-            axios.delete(`/apis/ludo/${this.props.templateId}`)
+            axios.delete(`/apis/ludo/${this.props.params.templateId}`)
             .then(response => {
                 if (response.data.status == '200') {
                     const { getUserBasicData, handleShouldProfileUpdate } = this.props;
@@ -678,8 +691,9 @@ class CreateStepper extends Component {
         const {
             getUserBasicData,
             handleShouldProfileUpdate,
-            templateId,
+            params,
         } = this.props;
+        const { templateId } = params;
         const {
             contentType,
             images,
@@ -1068,75 +1082,76 @@ class CreateStepper extends Component {
             video,
         } = ludoCreateForm;
 
+        const width = window.innerWidth || document.body.clientWidth;
+        const contentStyle = (width <= 768) ? mobileContentStyle : deskTopContentStyle;
+
         return (
-            <Wrapper>
-                <StyledDialog
-                    contentStyle={contentStyle}
-                    onRequestClose={this.handleCloseClick}
-                    open={open}
-                    style={dialogStyle}
-                    title={titles[step]}
-                    titleStyle={titleStyle}
-                >
-                    <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
-                    <Content
-                        contentType={contentType}
-                        duration={duration}
-                        handleCheckPointChange={this.handleCheckPointChange}
-                        handleContentTypeSelect={this.handleContentTypeSelect}
-                        handleDurationChange={this.handleDurationChange}
-                        handleImageChange={this.handleImageChange}
-                        handleImageResize={this.handleImageResize}
-                        handleIntroductionChange={this.handleIntroductionChange}
-                        handlePeriodChange={this.handlePeriodChange}
-                        handleStepNext={this.handleStepNext}
-                        handleTagAdd={this.handleTagAdd}
-                        handleTagDelete={this.handleTagDelete}
-                        handleTitleChange={this.handleTitleChange}
-                        handleVideoChange={this.handleVideoChange}
-                        imageLocation={image_location}
-                        images={images}
-                        interval={interval}
-                        introduction={introduction}
-                        isAtTemplatePage={isAtTemplatePage}
-                        isSubmitting={isSubmitting}
-                        period={period}
-                        resizedHeight={resizedHeight}
-                        resizedWidth={resizedWidth}
-                        setImageLocation={this.setImageLocation}
-                        step={step}
-                        tags={tags}
-                        title={title}
-                        video={video}
-                    />
-                    <StepButtonList
-                        handleCardSubmit={this.handleCardSubmit}
-                        handleContentTypeSelect={this.handleContentTypeSelect}
-                        handleDialogClose={this.handleDialogClose}
-                        handleStepNext={this.handleStepNext}
-                        handleStepPrev={this.handleStepPrev}
-                        handleTemplateDelete={this.handleTemplateDelete}
-                        handleTemplateModify={this.handleTemplateModify}
-                        handleTemplateSave={this.handleTemplateSave}
-                        handleTemplateSubmit={this.handleTemplateSubmit}
-                        isAtTemplatePage={isAtTemplatePage}
-                        isCardSubmitButtonDisabled={isCardSubmitButtonDisabled}
-                        isMyTemplate={isMyTemplate}
-                        isNextStepButtonDisabled={isNextStepButtonDisabled}
-                        isPreviewButtonDisabled={isPreviewButtonDisabled}
-                        isSubmitting={isSubmitting}
-                        isTemplateDeleteButtonDisabled={isTemplateDeleteButtonDisabled}
-                        isTemplateSaveButtonDisabled={isTemplateSaveButtonDisabled}
-                        isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
-                        step={step}
-                    />
-                    <DiscardAlert
-                        handleDiscardAlertClose={this.handleDiscardAlertClose}
-                        handleDiscardConfirm={this.handleDialogClose}
-                        isDiscardAlertOpen={isDiscardAlertOpen}
-                    />
-                </StyledDialog>
-            </Wrapper>
+            <StyledDialog
+                contentStyle={contentStyle}
+                onRequestClose={this.handleCloseClick}
+                open={open}
+                style={dialogStyle}
+                title={titles[step]}
+                titleStyle={titleStyle}
+            >
+                <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
+                <Content
+                    contentType={contentType}
+                    duration={duration}
+                    handleCheckPointChange={this.handleCheckPointChange}
+                    handleContentTypeSelect={this.handleContentTypeSelect}
+                    handleDurationChange={this.handleDurationChange}
+                    handleImageChange={this.handleImageChange}
+                    handleImageResize={this.handleImageResize}
+                    handleIntroductionChange={this.handleIntroductionChange}
+                    handlePeriodChange={this.handlePeriodChange}
+                    handleStepNext={this.handleStepNext}
+                    handleTagAdd={this.handleTagAdd}
+                    handleTagDelete={this.handleTagDelete}
+                    handleTitleChange={this.handleTitleChange}
+                    handleVideoChange={this.handleVideoChange}
+                    imageLocation={image_location}
+                    images={images}
+                    interval={interval}
+                    introduction={introduction}
+                    isAtTemplatePage={isAtTemplatePage}
+                    isSubmitting={isSubmitting}
+                    period={period}
+                    resizedHeight={resizedHeight}
+                    resizedWidth={resizedWidth}
+                    setImageLocation={this.setImageLocation}
+                    step={step}
+                    tags={tags}
+                    title={title}
+                    video={video}
+                />
+                <StepButtonList
+                    handleCardSubmit={this.handleCardSubmit}
+                    handleContentTypeSelect={this.handleContentTypeSelect}
+                    handleDialogClose={this.handleDialogClose}
+                    handleStepNext={this.handleStepNext}
+                    handleStepPrev={this.handleStepPrev}
+                    handleTemplateDelete={this.handleTemplateDelete}
+                    handleTemplateModify={this.handleTemplateModify}
+                    handleTemplateSave={this.handleTemplateSave}
+                    handleTemplateSubmit={this.handleTemplateSubmit}
+                    isAtTemplatePage={isAtTemplatePage}
+                    isCardSubmitButtonDisabled={isCardSubmitButtonDisabled}
+                    isMyTemplate={isMyTemplate}
+                    isNextStepButtonDisabled={isNextStepButtonDisabled}
+                    isPreviewButtonDisabled={isPreviewButtonDisabled}
+                    isSubmitting={isSubmitting}
+                    isTemplateDeleteButtonDisabled={isTemplateDeleteButtonDisabled}
+                    isTemplateSaveButtonDisabled={isTemplateSaveButtonDisabled}
+                    isTemplateSubmitButtonDisabled={isTemplateSubmitButtonDisabled}
+                    step={step}
+                />
+                <DiscardAlert
+                    handleDiscardAlertClose={this.handleDiscardAlertClose}
+                    handleDiscardConfirm={this.handleDialogClose}
+                    isDiscardAlertOpen={isDiscardAlertOpen}
+                />
+            </StyledDialog>
         );
     }
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import RcSlider from 'rc-slider';
 import RcTooltip from 'rc-tooltip';
 
-import sliderHandleIcon from '../../../../../images/slider-handle.png'
+import sliderHandleIcon from '../../../../images/slider-handle.png'
 
 const { Handle } = RcSlider;
 

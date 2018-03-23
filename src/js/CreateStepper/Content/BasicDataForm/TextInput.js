@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
@@ -12,7 +13,6 @@ const LabelWrapper = styled.div`
 const Wrapper = styled.div`
     display: inline-flex;
     margin: 0 auto;
-    width: 45%;
 `;
 
 const TextInput = ({

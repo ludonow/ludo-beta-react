@@ -91,6 +91,8 @@ export default class CardPreview extends Component {
             title,
         } = this.props;
 
+        const renderedInterval = interval ? Number(interval): 1;
+
         return (
             <Wrapper>
                 <div className="grid-item">
@@ -134,7 +136,7 @@ export default class CardPreview extends Component {
                                     <Button
                                         backgroundColor="#FF7171 !important"
                                         fontSize="14px !important"
-                                        label={labelList[Number(interval)-1]}
+                                        label={labelList[renderedInterval - 1]}
                                         padding="5px 0 !important"
                                         width="100px !important"
                                     />

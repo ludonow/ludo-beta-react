@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import BasicDataForm from './BasicDataForm/index';
-import BonusPeriodSelectForm from '../../BonusPeriodSelectForm';
-import CardPreview from '../../CardPreview';
-import Draft from '../../../components/Draft';
-import LoadingIcon from '../../../components/LoadingIcon';
-import TypeSelectButtonList from '../../../components/TypeSelectButtonList';
+import BonusPeriodSelectForm from '../BonusPeriodSelectForm';
+import CardPreview from '../CardPreview';
+import Draft from '../../components/Draft';
+import LoadingIcon from '../../components/LoadingIcon';
+import TypeSelectButtonList from '../../components/TypeSelectButtonList';
 
 const Content = ({
     contentType,

@@ -1,8 +1,30 @@
-import React, { PropTypes } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Button from '../../components/Button';
-import { ButtonListWrapper } from '../../baseStyle';
+import Button from '../components/Button';
+import { ButtonListWrapper } from '../baseStyle';
+
+const StyledButtonListWrapper = ButtonListWrapper.extend`
+    button {
+        padding: 8px 0;
+        @media (max-width: 768px) {
+            margin: 0 10px;
+        }
+    }
+`;
+
+const MultipleButtonListWrapper = StyledButtonListWrapper.extend`
+    button {
+        font-size: 14px;
+        @media (max-width: 768px) {
+            margin: 0 1px;
+            width: 75px;
+        }
+        @media (min-width: 769px) {
+            width: 100px;
+        }
+    }
+`;
 
 const StepButtonList = ({
     handleCardSubmit,
@@ -28,18 +50,18 @@ const StepButtonList = ({
     switch(step) {
         case 0:
             return (
-                <ButtonListWrapper>
+                <StyledButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
                         disabled={isNextStepButtonDisabled}
                         label="下一步"
                         onClick={handleStepNext}
                     />
-                </ButtonListWrapper>
+                </StyledButtonListWrapper>
             );
         case 1:
             return (
-                <ButtonListWrapper>
+                <StyledButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
                         label="上一步"
@@ -51,11 +73,11 @@ const StepButtonList = ({
                         label="純文字"
                         onClick={handleContentTypeSelect}
                     />
-                </ButtonListWrapper>
+                </StyledButtonListWrapper>
             );
         case 2:
             return (
-                <ButtonListWrapper>
+                <StyledButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
                         label="上一步"
@@ -67,11 +89,11 @@ const StepButtonList = ({
                         label="下一步"
                         onClick={handleStepNext}
                     />
-                </ButtonListWrapper>
+                </StyledButtonListWrapper>
             );
         case 3:
             return (
-                <ButtonListWrapper>
+                <StyledButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
                         label="上一步"
@@ -83,30 +105,24 @@ const StepButtonList = ({
                         label="預覽"
                         onClick={handleStepNext}
                     />
-                </ButtonListWrapper>
+                </StyledButtonListWrapper>
             );
         case 4:
             return (
-                <ButtonListWrapper>
+                <MultipleButtonListWrapper>
                     <Button
                         backgroundColor={'#B1B1B1'}
                         disabled={isSubmitting}
-                        fontSize="14px"
                         label="修改內容"
                         onClick={handleTemplateModify}
-                        padding="8px"
-                        width="100px"
                     />
                     {
                         !isAtTemplatePage ?
                             <Button
                                 backgroundColor={'#FF704E'}
                                 disabled={isSubmitting || isTemplateSubmitButtonDisabled}
-                                fontSize="14px"
                                 label="創建模板"
                                 onClick={handleTemplateSubmit}
-                                padding="8px"
-                                width="100px"
                             />
                         : null
                     }
@@ -115,11 +131,8 @@ const StepButtonList = ({
                             <Button
                                 backgroundColor={'#2e968c'}
                                 disabled={isSubmitting || isCardSubmitButtonDisabled}
-                                fontSize="14px"
                                 label="開始玩囉"
                                 onClick={handleCardSubmit}
-                                padding="8px"
-                                width="100px"
                             />
                         : null
                     }
@@ -128,11 +141,8 @@ const StepButtonList = ({
                             <Button
                                 backgroundColor={'rgb(242, 65, 80)'}
                                 disabled={isSubmitting || isTemplateDeleteButtonDisabled}
-                                fontSize="14px"
                                 label="刪除模板"
                                 onClick={handleTemplateDelete}
-                                padding="8px"
-                                width="100px"
                             />
                         : null
                     }
@@ -141,25 +151,22 @@ const StepButtonList = ({
                             <Button
                                 backgroundColor={'#4267b2'}
                                 disabled={isSubmitting || isTemplateSaveButtonDisabled}
-                                fontSize="14px"
                                 label="儲存變更"
                                 onClick={handleTemplateSave}
-                                padding="8px"
-                                width="100px"
                             />
                         : null
                     }
-                </ButtonListWrapper>
+                </MultipleButtonListWrapper>
             );
         default:
             return (
-                <ButtonListWrapper>
+                <StyledButtonListWrapper>
                     <Button
                         backgroundColor={'#717171'}
                         label="關閉"
                         onClick={handleDialogClose}
                     />
-                </ButtonListWrapper>
+                </StyledButtonListWrapper>
             );
     }
 };
