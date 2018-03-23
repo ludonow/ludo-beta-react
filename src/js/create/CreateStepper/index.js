@@ -25,7 +25,7 @@ const initialState = {
     isPreviewButtonDisabled: true,
     isSubmitting: false,
     isTemplateDeleteButtonDisabled: false,
-    isTemplateSaveButtonDisabled: false,
+    isTemplateSaveButtonDisabled: true,
     isTemplateSubmitButtonDisabled: true,
     ludoCreateForm: {
         category_id: 1,
@@ -154,6 +154,8 @@ class CreateStepper extends Component {
                     isMyTemplate,
                     isNextStepButtonDisabled: false,
                     isPreviewButtonDisabled: false,
+                    isTemplateSaveButtonDisabled: false,
+                    isTemplateSubmitButtonDisabled: false,
                     ludoCreateForm: response.data.ludo,
                     step: stepOfPreview,
                 });
@@ -399,10 +401,51 @@ class CreateStepper extends Component {
 
     handleContentTypeSelect(event) {
         const contentType = event.currentTarget.dataset.payload;
-        this.setState({
-            contentType,
-            step: 2,
-        });
+        const {
+            images,
+            isAtTemplatePage,
+            ludoCreateForm,
+        } = this.state;
+
+        const {
+            image_location,
+            introduction,
+            video,
+        } = ludoCreateForm;
+        if (
+            (contentType === 'image' && images.length === 1) ||
+            (contentType === 'text' && introduction) ||
+            (contentType === 'video' && video)
+        ) {
+            this.setState({
+                contentType,
+                isCardSubmitButtonDisabled: false,
+                isEditing: true,
+                isPreviewButtonDisabled: false,
+                isTemplateSaveButtonDisabled: false,
+                isTemplateSubmitButtonDisabled: false,
+                step: 2,
+            });
+        } else if (
+            (contentType === 'image' && images.length === 0) ||
+            (isAtTemplatePage && contentType === 'image' && images.length === 0 && !image_location) ||
+            (contentType === 'text' && !introduction) ||
+            (contentType === 'video' && !video)
+        ) {
+            this.setState({
+                contentType,
+                isCardSubmitButtonDisabled: true,
+                isPreviewButtonDisabled: true,
+                isTemplateSaveButtonDisabled: true,
+                isTemplateSubmitButtonDisabled: true,
+                step: 2,
+            });
+        } else {
+            this.setState({
+                contentType,
+                step: 2,
+            });
+        }
     }
 
     handleDialogClose() {
@@ -438,8 +481,11 @@ class CreateStepper extends Component {
     handleImageChange(image) {
         this.setState({
             images: [image],
+            isCardSubmitButtonDisabled: false,
             isEditing: true,
             isPreviewButtonDisabled: false,
+            isTemplateSaveButtonDisabled: false,
+            isTemplateSubmitButtonDisabled: false,
         });
     }
 
@@ -475,8 +521,11 @@ class CreateStepper extends Component {
         } else if (introduction && this.state.contentType === 'text') {
             this.setState(
                 prevState => ({
+                    isCardSubmitButtonDisabled: false,
                     isEditing: true,
                     isPreviewButtonDisabled: false,
+                    isTemplateSaveButtonDisabled: false,
+                    isTemplateSubmitButtonDisabled: false,
                     ludoCreateForm: {
                         ...prevState.ludoCreateForm,
                         introduction
@@ -486,7 +535,10 @@ class CreateStepper extends Component {
         } else {
             this.setState(
                 prevState => ({
+                    isCardSubmitButtonDisabled: true,
                     isPreviewButtonDisabled: true,
+                    isTemplateSaveButtonDisabled: true,
+                    isTemplateSubmitButtonDisabled: true,
                     ludoCreateForm: {
                         ...prevState.ludoCreateForm,
                         introduction
@@ -518,6 +570,7 @@ class CreateStepper extends Component {
     handleStepNext() {
         const {
             contentType,
+            images,
             isAtTemplatePage,
             isMyTemplate,
             step,
@@ -528,6 +581,7 @@ class CreateStepper extends Component {
         } else {
             this.handleStepChange(1);
         }
+
     }
 
     handleStepPrev() {
@@ -932,7 +986,10 @@ class CreateStepper extends Component {
         if (!video) {
             this.setState(
                 prevState => ({
+                    isCardSubmitButtonDisabled: true,
                     isPreviewButtonDisabled: true,
+                    isTemplateSaveButtonDisabled: true,
+                    isTemplateSubmitButtonDisabled: true,
                     ludoCreateForm: {
                         ...prevState.ludoCreateForm,
                         video
@@ -942,8 +999,11 @@ class CreateStepper extends Component {
         } else {
             this.setState(
                 prevState => ({
+                    isCardSubmitButtonDisabled: false,
                     isEditing: true,
                     isPreviewButtonDisabled: false,
+                    isTemplateSaveButtonDisabled: false,
+                    isTemplateSubmitButtonDisabled: false,
                     ludoCreateForm: {
                         ...prevState.ludoCreateForm,
                         video
@@ -964,7 +1024,10 @@ class CreateStepper extends Component {
     setImageLocation(image_location) {
         this.setState(
             prevState => ({
+                isCardSubmitButtonDisabled: false,
                 isPreviewButtonDisabled: false,
+                isTemplateSaveButtonDisabled: false,
+                isTemplateSubmitButtonDisabled: false,
                 ludoCreateForm: {
                     ...prevState.ludoCreateForm,
                     image_location,
