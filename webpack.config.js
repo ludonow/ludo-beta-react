@@ -8,6 +8,7 @@ const webpack = require('webpack');
 const PATHS = {
     build: path.resolve(__dirname, 'build'),
     favicon: path.resolve(__dirname, 'src', 'favicon.ico'),
+    hideImage: path.resolve(__dirname, 'src', 'hideImage.js'),
     index: path.resolve(__dirname, 'src', 'js', 'app', 'index.js'),
     images: path.resolve(__dirname, 'src', 'images'),
     imagesbuild: path.resolve(__dirname, 'build', 'images'),
@@ -94,7 +95,43 @@ const common = {
         filename: '[name].js'
     },
     plugins: [
-        new HtmlWebpackPlugin({ title: 'Ludo' }),
+        new HtmlWebpackPlugin({
+            minify : {
+                collapseWhitespace: true
+            },
+            // Required
+            inject: false,
+            template: require('html-webpack-template'),
+            // Optional
+            appMountId: 'app',
+            bodyHtmlSnippet: '<img id="loading" src="../images/loading.svg" />',
+            headHtmlSnippet: '<style> body img#loading { display: block; margin: 0 auto; width: 50vw; } </style>',
+            meta: [
+                {
+                    name: 'viewport',
+                    content: 'width=device-width, initial-scale=1'
+                },
+                {
+                    name: 'og:title',
+                    content: 'LUDO Now 如荼生活'
+                },
+                {
+                    name: 'og:description',
+                    content: 'LUDO 是一種對生活的態度：生活遊戲化。 我們將提供一個平台網站讓生活中的困難點能被有趣地解決'
+                },
+                {
+                    name: 'og:type',
+                    content: 'website'
+                }
+            ],
+            scripts: [
+                {
+                    src: '/hideImage.js',
+                    type: 'text/javascript'
+                }
+            ],
+            title: 'Ludo'
+        }),
         new webpack.NoEmitOnErrorsPlugin()
     ]
 };
@@ -119,6 +156,7 @@ switch(process.env.npm_lifecycle_event) {
             parts.clean(PATHS.build),
             parts.copyFiles(PATHS.images, PATHS.imagesbuild),
             parts.copyFiles(PATHS.favicon, PATHS.build),
+            parts.copyFiles(PATHS.hideImage, PATHS.build),
             parts.setFreeVariable(
                 'process.env.NODE_ENV',
                 'production'

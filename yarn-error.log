@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js run dev\
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js run build
 
 PATH: 
   C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Git\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Amazon\AWSCLI\;C:\Program Files\Calibre2\;C:\HashiCorp\Vagrant\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\huang yung yu\AppData\Local\.meteor\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Sublime Text 3;"C:\Program Files\Amazon\AWSCLI";C:\Users\huang yung yu\AppData\Local\atom\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\Docker Toolbox;C:\Users\huang yung yu\AppData\Local\Microsoft\WindowsApps;C:\Users\huang yung yu\AppData\Roaming\npm;C:\Users\huang yung yu\AppData\Local\Yarn\bin
@@ -37,7 +37,7 @@ npm manifest:
     },
     "homepage": "https://github.com/YongYuH/Ludo#readme",
     "dependencies": {
-      "axios": "^0.13.1",
+      "axios": "^0.18.0",
       "blueimp-md5": "^2.6.0",
       "formsy-react": "^0.19.0",
       "imports-loader": "^0.6.5",
@@ -63,6 +63,7 @@ npm manifest:
       "react-tap-event-plugin": "^2.0.0",
       "react-textarea-autosize": "^4.0.5",
       "react-widgets": "^3.4.4",
+      "recharts": "^1.0.0-beta.10",
       "styled-components": "^2.2.3"
     },
     "devDependencies": {
@@ -369,11 +370,12 @@ Lockfile:
     version "1.6.0"
     resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
   
-  axios@^0.13.1:
-    version "0.13.1"
-    resolved "https://registry.yarnpkg.com/axios/-/axios-0.13.1.tgz#3e67abfe4333bc9d2d5fe6fbd13b4694eafc8df8"
+  axios@^0.18.0:
+    version "0.18.0"
+    resolved "https://registry.yarnpkg.com/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
     dependencies:
-      follow-redirects "0.0.7"
+      follow-redirects "^1.3.0"
+      is-buffer "^1.1.5"
   
   babel-code-frame@^6.26.0:
     version "6.26.0"
@@ -1457,7 +1459,7 @@ Lockfile:
       isobject "^3.0.0"
       static-extend "^0.1.1"
   
-  classnames@^2.1.2, classnames@^2.2.0, classnames@^2.2.5:
+  classnames@2.2.5, classnames@^2.1.2, classnames@^2.2.0, classnames@^2.2.5:
     version "2.2.5"
     resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
   
@@ -1686,6 +1688,10 @@ Lockfile:
       minimatch "^3.0.4"
       p-limit "^1.0.0"
       serialize-javascript "^1.4.0"
+  
+  core-js@2.5.1:
+    version "2.5.1"
+    resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.1.tgz#ae6874dc66937789b80754ff5428df66819ca50b"
   
   core-js@^1.0.0:
     version "1.2.7"
@@ -1917,6 +1923,60 @@ Lockfile:
     version "0.2.2"
     resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   
+  d3-array@^1.2.0:
+    version "1.2.1"
+    resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.1.tgz#d1ca33de2f6ac31efadb8e050a021d7e2396d5dc"
+  
+  d3-collection@1:
+    version "1.0.4"
+    resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.4.tgz#342dfd12837c90974f33f1cc0a785aea570dcdc2"
+  
+  d3-color@1:
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.0.3.tgz#bc7643fca8e53a8347e2fbdaffa236796b58509b"
+  
+  d3-format@1:
+    version "1.2.2"
+    resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
+  
+  d3-interpolate@1, d3-interpolate@^1.1.5:
+    version "1.1.6"
+    resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.1.6.tgz#2cf395ae2381804df08aa1bf766b7f97b5f68fb6"
+    dependencies:
+      d3-color "1"
+  
+  d3-path@1:
+    version "1.0.5"
+    resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.5.tgz#241eb1849bd9e9e8021c0d0a799f8a0e8e441764"
+  
+  d3-scale@1.0.6:
+    version "1.0.6"
+    resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-1.0.6.tgz#bce19da80d3a0cf422c9543ae3322086220b34ed"
+    dependencies:
+      d3-array "^1.2.0"
+      d3-collection "1"
+      d3-color "1"
+      d3-format "1"
+      d3-interpolate "1"
+      d3-time "1"
+      d3-time-format "2"
+  
+  d3-shape@1.2.0:
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
+    dependencies:
+      d3-path "1"
+  
+  d3-time-format@2:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.1.1.tgz#85b7cdfbc9ffca187f14d3c456ffda268081bb31"
+    dependencies:
+      d3-time "1"
+  
+  d3-time@1:
+    version "1.0.8"
+    resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.0.8.tgz#dbd2d6007bf416fe67a76d17947b784bffea1e84"
+  
   dashdash@^1.12.0:
     version "1.14.1"
     resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -1934,6 +1994,12 @@ Lockfile:
   debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8:
     version "2.6.9"
     resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
+    dependencies:
+      ms "2.0.0"
+  
+  debug@^3.1.0:
+    version "3.1.0"
+    resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
     dependencies:
       ms "2.0.0"
   
@@ -2525,12 +2591,11 @@ Lockfile:
       inherits "^2.0.1"
       readable-stream "^2.0.4"
   
-  follow-redirects@0.0.7:
-    version "0.0.7"
-    resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-0.0.7.tgz#34b90bab2a911aa347571da90f22bd36ecd8a919"
+  follow-redirects@^1.3.0:
+    version "1.4.1"
+    resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.4.1.tgz#d8120f4518190f55aac65bb6fc7b85fcd666d6aa"
     dependencies:
-      debug "^2.2.0"
-      stream-consume "^0.1.0"
+      debug "^3.1.0"
   
   for-in@^0.1.3:
     version "0.1.8"
@@ -4919,7 +4984,7 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
   
-  raf@^3.1.0:
+  raf@^3.1.0, raf@^3.2.0:
     version "3.4.0"
     resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
     dependencies:
@@ -5140,6 +5205,12 @@ Lockfile:
     dependencies:
       lodash "^4.6.1"
   
+  react-resize-detector@1.1.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-1.1.0.tgz#4a9831fa3caad32230478dd0185cbd2aa91a5ebf"
+    dependencies:
+      prop-types "^15.5.10"
+  
   react-responsive@^1.3.4:
     version "1.3.4"
     resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-1.3.4.tgz#95f75a73fc57c6db05a5e422d761e3b41982b00a"
@@ -5157,6 +5228,15 @@ Lockfile:
       invariant "^2.2.1"
       loose-envify "^1.2.0"
       warning "^3.0.0"
+  
+  react-smooth@1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/react-smooth/-/react-smooth-1.0.0.tgz#b29dbebddddb06d21b5b08962167fb9eac1897d8"
+    dependencies:
+      lodash "~4.17.4"
+      prop-types "^15.6.0"
+      raf "^3.2.0"
+      react-transition-group "^2.2.1"
   
   react-tabs@^1.1.0:
     version "1.1.0"
@@ -5189,6 +5269,17 @@ Lockfile:
       dom-helpers "^3.2.0"
       loose-envify "^1.3.1"
       prop-types "^15.5.6"
+      warning "^3.0.0"
+  
+  react-transition-group@^2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.2.1.tgz#e9fb677b79e6455fd391b03823afe84849df4a10"
+    dependencies:
+      chain-function "^1.0.0"
+      classnames "^2.2.5"
+      dom-helpers "^3.2.0"
+      loose-envify "^1.3.1"
+      prop-types "^15.5.8"
       warning "^3.0.0"
   
   react-tween-state@^0.1.5:
@@ -5294,6 +5385,26 @@ Lockfile:
       readable-stream "^2.0.2"
       set-immediate-shim "^1.0.1"
   
+  recharts-scale@0.3.2:
+    version "0.3.2"
+    resolved "https://registry.yarnpkg.com/recharts-scale/-/recharts-scale-0.3.2.tgz#dac7621714a4765d152cb2adbc30c73b831208c9"
+  
+  recharts@^1.0.0-beta.10:
+    version "1.0.0-beta.10"
+    resolved "https://registry.yarnpkg.com/recharts/-/recharts-1.0.0-beta.10.tgz#d3cd15df6b7879d5968da3c942b5fcdaf2504fe1"
+    dependencies:
+      classnames "2.2.5"
+      core-js "2.5.1"
+      d3-interpolate "^1.1.5"
+      d3-scale "1.0.6"
+      d3-shape "1.2.0"
+      lodash "~4.17.4"
+      prop-types "^15.6.0"
+      react-resize-detector "1.1.0"
+      react-smooth "1.0.0"
+      recharts-scale "0.3.2"
+      reduce-css-calc "1.3.0"
+  
   recompose@^0.23.0:
     version "0.23.5"
     resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.23.5.tgz#72ac8261246bec378235d187467d02a721e8b1de"
@@ -5319,7 +5430,7 @@ Lockfile:
       indent-string "^2.1.0"
       strip-indent "^1.0.1"
   
-  reduce-css-calc@^1.2.6:
+  reduce-css-calc@1.3.0, reduce-css-calc@^1.2.6:
     version "1.3.0"
     resolved "https://registry.yarnpkg.com/reduce-css-calc/-/reduce-css-calc-1.3.0.tgz#747c914e049614a4c9cfbba629871ad1d2927716"
     dependencies:
@@ -5959,10 +6070,6 @@ Lockfile:
     dependencies:
       inherits "~2.0.1"
       readable-stream "^2.0.2"
-  
-  stream-consume@^0.1.0:
-    version "0.1.1"
-    resolved "https://registry.yarnpkg.com/stream-consume/-/stream-consume-0.1.1.tgz#d3bdb598c2bd0ae82b8cac7ac50b1107a7996c48"
   
   stream-each@^1.1.0:
     version "1.2.2"
@@ -6703,14 +6810,18 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: Command "dev\\" not found. Did you mean "dev"?
-      at MessageError.Error (native)
-      at new MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:87307:17
-      at next (native)
-      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:116:14
-      at Promise.F (C:\Program Files (x86)\Yarn\lib\cli.js:23451:28)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:95:12
-      at runCommand (C:\Program Files (x86)\Yarn\lib\cli.js:87312:22)
-      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:87412:14)
+  Error: Command failed.
+  Exit code: 2
+  Command: C:\WINDOWS\system32\cmd.exe
+  Arguments: /d /s /c webpack --progress
+  Directory: C:\Users\huang yung yu\Desktop\github\ludo-beta-react
+  Output:
+  
+      at ProcessTermError.Error (native)
+      at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
+      at new ProcessTermError (C:\Program Files (x86)\Yarn\lib\cli.js:226:113)
+      at ChildProcess.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:30281:17)
+      at emitTwo (events.js:106:13)
+      at ChildProcess.emit (events.js:191:7)
+      at maybeClose (internal/child_process.js:886:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
