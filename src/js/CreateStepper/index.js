@@ -67,6 +67,10 @@ const StyledDialog = styled(Dialog)`
             max-height: 450px !important;
         }
     }
+
+    & > div > div {
+        transform: none !important;
+    }
 `;
 
 // override material-ui style
@@ -81,12 +85,12 @@ const mobileContentStyle = {
 
 const dialogStyle = {
     overflowY: 'auto',
-    zIndex: '2',
+    zIndex: '3',
 };
 
 const titleStyle = {
     fontFamily: 'Microsoft JhengHei',
-    textAlign: 'center'
+    textAlign: 'center',
 };
 
 class CreateStepper extends Component {
