@@ -14,14 +14,12 @@ const StyledButtonListWrapper = ButtonListWrapper.extend`
 `;
 
 const MultipleButtonListWrapper = StyledButtonListWrapper.extend`
+    justify-content: space-around;
+
     button {
         font-size: 14px;
         @media (max-width: 768px) {
             margin: 0 1px;
-            width: 75px;
-        }
-        @media (min-width: 769px) {
-            width: 100px;
         }
     }
 `;
@@ -115,6 +113,7 @@ const StepButtonList = ({
                         disabled={isSubmitting}
                         label="修改內容"
                         onClick={handleTemplateModify}
+                        width={isAtTemplatePage ? '75px' : '100px'}
                     />
                     {
                         !isAtTemplatePage ?
@@ -123,6 +122,7 @@ const StepButtonList = ({
                                 disabled={isSubmitting || isTemplateSubmitButtonDisabled}
                                 label="創建模板"
                                 onClick={handleTemplateSubmit}
+                                width={isAtTemplatePage ? '75px' : '100px'}
                             />
                         : null
                     }
@@ -133,6 +133,7 @@ const StepButtonList = ({
                                 disabled={isSubmitting || isCardSubmitButtonDisabled}
                                 label="開始玩囉"
                                 onClick={handleCardSubmit}
+                                width={isAtTemplatePage ? '75px' : '100px'}
                             />
                         : null
                     }
@@ -143,6 +144,7 @@ const StepButtonList = ({
                                 disabled={isSubmitting || isTemplateDeleteButtonDisabled}
                                 label="刪除模板"
                                 onClick={handleTemplateDelete}
+                                width={isAtTemplatePage ? '75px' : '100px'}
                             />
                         : null
                     }
@@ -153,6 +155,7 @@ const StepButtonList = ({
                                 disabled={isSubmitting || isTemplateSaveButtonDisabled}
                                 label="儲存變更"
                                 onClick={handleTemplateSave}
+                                width={isAtTemplatePage ? '75px' : '100px'}
                             />
                         : null
                     }

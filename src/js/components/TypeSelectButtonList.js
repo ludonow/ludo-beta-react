@@ -18,7 +18,6 @@ const defaultIconInfoList = [
 ];
 
 const IconButtonListWrapper = styled.div`
-    margin-bottom: 50px;
     width: 100%;
 
     @media (max-width: 768px) {
@@ -29,6 +28,7 @@ const IconButtonListWrapper = styled.div`
     @media (min-width: 769px) {
         display: inline-flex;
         justify-content: center;
+        margin-bottom: 50px;
     }
 `;
 

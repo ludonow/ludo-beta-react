@@ -7,7 +7,9 @@ import CustomHandle from './CustomHandle';
 const StyledSlider = styled(RcSlider)`
     margin: 80px auto 30px auto;
     padding: 0;
-    width: 60%;
+    @media (min-width: 769px) {
+        width: 60%;
+    }
 `;
 
 // override default component style
