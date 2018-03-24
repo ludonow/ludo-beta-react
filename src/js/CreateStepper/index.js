@@ -5,7 +5,7 @@ import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../axios-config';
-import { CustomScrollBarCSS } from '../baseStyle';
+import { StyledDialog } from '../baseStyle';
 import Content from './Content';
 import DiscardAlert from '../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
@@ -55,25 +55,6 @@ const titles = [
     '加分回報時段',
     '預覽',
 ];
-
-// styled components
-const StyledDialog = styled(Dialog)`
-    ${CustomScrollBarCSS}
-
-    @media (max-width: 768px) {
-        h3 + div {
-            max-height: none !important;
-        }
-        & > div > div {
-            transform: none !important;
-        }
-    }
-    @media (min-width: 769px) {
-        h3 + div {
-            max-height: 450px !important;
-        }
-    }
-`;
 
 // override material-ui style
 const deskTopContentStyle = {

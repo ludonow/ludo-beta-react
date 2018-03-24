@@ -5,7 +5,7 @@ import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../../axios-config';
-import { CustomScrollBarCSS } from '../../baseStyle';
+import { StyledDialog } from '../../baseStyle';
 import DiscardAlert from '../../components/DiscardAlert';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
 import Content from './Content';
@@ -43,18 +43,6 @@ const ReportDialogWrapper = styled.div`
     display: flex;
     justify-content: center;
     position: fixed;
-`;
-
-const StyledDialog = styled(Dialog)`
-    ${CustomScrollBarCSS}
-    h3 + div {
-        @media (max-width: 768px) {
-            max-height: none !important;
-        }
-        @media (min-width: 769px) {
-            max-height: 400px !important;
-        }
-    }
 `;
 
 // override material-ui style
