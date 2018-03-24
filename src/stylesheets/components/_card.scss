@@ -1,13 +1,6 @@
-// padding
-$card_padding: 15px;
-$grid-item_padding: 7px;
 // dimension
 $grid-item_width: 200px;
 $grid-item_total-width: $grid-item_width + 2*13px;
-$detail_equal_to_columns_of_grid_item: 3;
-$grid-item--ludo-detail-information_width: $grid-item_width * $detail_equal_to_columns_of_grid_item + $grid-item_padding * 2 * ($detail_equal_to_columns_of_grid_item - 1);
-$grid-item--profile_width: 520px;
-$grid-item--friend_width: 170px;
 
 .grid {
     @extend %relative;
@@ -17,22 +10,6 @@ $grid-item--friend_width: 170px;
 .grid-item {
     width: $grid-item_width;
     padding: 7px 10px;
-}
-
-.grid-item--ludo-detail-information {
-    width: $grid-item--ludo-detail-information_width;
-    height: 1000px;
-    padding-top: $grid-item_padding;
-}
-
-.grid-item--profile {
-    width: $grid-item--profile_width;
-    padding: $grid-item_padding;
-}
-
-.grid-item--friend {
-    @extend .grid-item;
-    width: $grid-item--friend_width;
 }
 
 .card {
@@ -117,33 +94,6 @@ $grid-item--friend_width: 170px;
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
 
-    .card-information {
-        padding:50px 0;
-        min-height: 105px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        flex-direction: column;
-
-        .card-introduction {
-            @extend %flex;
-            align-items: center;
-            justify-content: center;
-            height: 50px;
-            margin-bottom: 20px;
-            padding-top: 40px;
-            padding-right: 30px;
-            padding-left: 30px;
-            line-height: 1.3;
-        }
-
-        .card-hashtags {
-            @extend %relative;
-            padding-right: 20px;
-            padding-left: 20px;
-            margin-bottom:20px;
-        }
-    }
     .card-button_circle {
         @include circle(40px, #fff);
         line-height: 40px;
@@ -169,32 +119,12 @@ $grid-item--friend_width: 170px;
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
 }
-.card-flip .card-views{
-  opacity: 0;
-}
-.card-flip .card-front-info{
-  opacity: 0;
-
+.card-flip .card-front-info {
+    opacity: 0;
+    visibility: hidden;
 }
 .card-flip .card-back {
     @include backface-visibility(visible);
     @include transition-duration(0.3s);
     @include transition-timing-function(linear);
-}
-.card-flip .card-top__stage {
-    opacity: 0;
-    @include transition-duration(0.3s);
-    @include transition-timing-function(linear);
-}
-.card-flip .card-marble__number {
-  opacity:0;
-  @include transition-duration(0.3s);
-  @include transition-timing-function(linear);
-}
-.card-flip .card-views {
-  opacity: 0;
-}
-.card-flip .card-front-info {
-  opacity: 0;
-  visibility: hidden;
 }
