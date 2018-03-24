@@ -29,7 +29,6 @@ const CustomHandle = ({
         overlay={`${value}天`}
         placement="top"
         prefixCls="custom-rc-slider-tooltip"
-        trigger={[]}
         visible={true}
     >
         <Handle

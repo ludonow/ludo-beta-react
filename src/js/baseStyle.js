@@ -99,6 +99,10 @@ export const StyledDialog = styled(Dialog)`
         h3 + div {
             max-height: 450px !important;
         }
+        & > div > div {
+            top: 64px;
+            transform: none !important;
+        }
     }
 `;
 
