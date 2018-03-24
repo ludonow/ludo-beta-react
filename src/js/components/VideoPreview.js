@@ -15,7 +15,6 @@ const IconWrapper = styled.div`
 
 const VideoPreviewWrapper = styled.div`
     margin: 0 2vw;
-    max-height: 40vh;
 
     @media (min-width: 769px) {
         width: 40vw;

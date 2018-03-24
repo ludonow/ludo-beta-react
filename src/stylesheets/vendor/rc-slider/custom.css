@@ -5,7 +5,7 @@
     visibility: visible;
     box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    z-index: 2;
+    z-index: 3;
 }
 .custom-rc-slider-tooltip * {
     box-sizing: border-box;

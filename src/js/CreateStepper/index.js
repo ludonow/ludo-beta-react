@@ -59,17 +59,19 @@ const titles = [
 // styled components
 const StyledDialog = styled(Dialog)`
     ${CustomScrollBarCSS}
-    h3 + div {
-        @media (max-width: 768px) {
+
+    @media (max-width: 768px) {
+        h3 + div {
             max-height: none !important;
         }
-        @media (min-width: 769px) {
-            max-height: 450px !important;
+        & > div > div {
+            transform: none !important;
         }
     }
-
-    & > div > div {
-        transform: none !important;
+    @media (min-width: 769px) {
+        h3 + div {
+            max-height: 450px !important;
+        }
     }
 `;
 
