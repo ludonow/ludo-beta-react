@@ -53,31 +53,20 @@
         - VideoPreview.js
     - containers
         - CardListContainer.js
-    - create
-        - CreateStepper
-            - Content
-                - BasicDataForm
-                    - CustomHandle.js
-                    - index.js
-                    - ReportIntervaButtonList.js
-                    - Slider.js
-                    - TagList.js
-                    - TextInput.js
+    - CreateStepper
+        - Content
+            - BasicDataForm
+                - CustomHandle.js
                 - index.js
+                - ReportIntervaButtonList.js
+                - Slider.js
+                - TagList.js
+                - TextInput.js
             - index.js
-            - StepButtonList.js
-        - mobile-create-card
-            - CardTitle.js
-            - CreateFormTextField.js
-            - DayForm.js
-            - MobileCreateCard.js
-            - MobileCreateForm.js
-            - StepButtonList.js
-            - Tags.js
-        - Create.js
-        - CreateForm.js
-        - Template.js
-        - TemplateForm.js
+        - BonusPeriodSelectForm.js
+        - CardPreview.js
+        - index.js
+        - StepButtonList.js
     - EmailConfirm
         - alert.js
         - index.js
@@ -143,36 +132,15 @@
     - components
         - _card.scss
         - _comment.scss
-        - _denounce-box.scss
         - _form.scss
-        - _friend-list.scss ([未來使用])
-        - _header-clock.scss ([未來刪除])
         - _header-filter.scss
-        - _header-fuel.scss
-        - _header-level.scss
-        - _header-marbles.scss
         - _header-profile.scss
-        - _header-rate.scss
-        - _login.scss
-        - _ludo-create-information.scss
-        - _ludo-detail-information.scss
-        - _marbles.scss
         - _mobile-create.scss
         - _mobile-report-form.scss
-        - _playground-quick-start.scss
-        - _profile-card-single-ludo.scss
-        - _profile-card.scss
-        - _profile-content.scss
-        - _profile-history.scss
-        - _profile-ludo.scss
-        - _profile-prize.scss
-        - _profile-statistic.scss
         - _report-avatar.scss
         - _report-form.scss
-        - _report-list.scss
         - _single-report.scss
         - _slider.scss
-        - _submit-button.scss
         - _tabs.scss
         - _tags.scss
     - helpers
@@ -183,13 +151,7 @@
         - _reset.scss
         - _variables.scss
     - layout
-        - _create.scss
-        - _friend.scss
         - _header.scss
-        - _main-container.scss
-        - _playground.scss
-        - _profile.scss
-        - _right-sidebar.scss
     - vendor (第三方套件的css)
         - font-awesome
             - _animated.scss
@@ -243,3 +205,4 @@
     - main.scss (import其他scss)
     - screen.scss
 - favicon.ico
+- hideImage.js
