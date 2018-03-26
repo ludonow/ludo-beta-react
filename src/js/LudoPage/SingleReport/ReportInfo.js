@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     padding: 0 20px;
     text-align: left;
     white-space: pre-wrap;
+    word-break: break-word;
 `;
 
 const Component = styled.div`
