@@ -52,6 +52,19 @@ export const CardBackWrapper = styled.div`
     background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};
 `;
 
+const getEntryUrlOfCard = (stage, id) => {
+    switch (stage) {
+        case 0:
+            return `${baseUrl}/template/${id}/card-content`;
+        case 1:
+            return `${baseUrl}/ludo/${id}/card-content`;
+        case 2:
+            return `${baseUrl}/ludo/${id}/report-list`;
+        case 3:
+            return `${baseUrl}/ludo/${id}/report-list`;
+    }
+}
+
 const CardBorderTopWrapper = styled.div`
     align-items: center;
     background-color: ${props => props.backgroundColor ? props.backgroundColor : 'rgba(0,0,0,0.8)'};
@@ -186,18 +199,30 @@ const Card = ({
     isThisCardFlipped,
     singleLudoObject,
 }) => {
-    const bonusPeriodIndex = getBonusPeriodIndexFromPeriod(singleLudoObject.period);
-    const interval = singleLudoObject.interval ? singleLudoObject.interval : 1;
+    const {
+        duration,
+        interval,
+        introduction,
+        ludo_id,
+        period,
+        stage,
+        tags,
+        title,
+        views,
+    } = singleLudoObject;
+
+    const bonusPeriodIndex = getBonusPeriodIndexFromPeriod(period);
+    const renderedInterval = interval ? Number(interval) : 1;
     return (
         <div className="grid-item">
             <CardWrapper
                 className={`card card--playground card-front ${isThisCardFlipped ? 'card-flip' : ''}`}
                 id={index}
-                isHistory={singleLudoObject.stage === 3}
+                isHistory={stage === 3}
                 onClick={handleClick}
             >
                 <CardBackWrapper
-                    backgroundColor={(singleLudoObject.stage === 0) ? 'white' : CardBackBackgroundColorList[bonusPeriodIndex]}
+                    backgroundColor={(stage === 0) ? 'white' : CardBackBackgroundColorList[bonusPeriodIndex]}
                     className="card-back"
                 >
                     <BackPeriodIconWrapper>
@@ -206,16 +231,16 @@ const Card = ({
                     {/* three information: introduction, hashtags, and interval */}
                     <InfoWrapper>
                         <IntroWrapper>
-                            { String(singleLudoObject.introduction).length > 30 ?
-                                String(singleLudoObject.introduction).substring(0, 30) + ' ...'
-                                : String(singleLudoObject.introduction)
+                            { String(introduction).length > 30 ?
+                                String(introduction).substring(0, 30) + ' ...'
+                                : String(introduction)
                             }
                         </IntroWrapper>
                         <Info>
                             {
                                 // TODO: Use presentational component and proptypes to receive ludolist data
-                                Array.isArray(singleLudoObject.tags) && singleLudoObject.tags ?
-                                    singleLudoObject.tags.map((tagString, tagIndex) => {
+                                Array.isArray(tags) && tags ?
+                                    tags.map((tagString, tagIndex) => {
                                         return (
                                             /* components/_tags.scss */
                                             <span
@@ -233,43 +258,43 @@ const Card = ({
                             <Button
                                 backgroundColor="#FF7171 !important"
                                 fontSize="14px !important"
-                                label={labelList[Number(interval)-1]}
+                                label={labelList[renderedInterval - 1]}
                                 padding="5px 0 !important"
                                 width="100px !important"
                             />
                         </Info>
                     </InfoWrapper>
-                    <LinkWrapper isHistory={singleLudoObject.stage === 3}>
+                    <LinkWrapper isHistory={stage === 3}>
                         <Link
                             className="card-button_circle"
-                            to={isAtTemplateListPage ? `${baseUrl}/template/${singleLudoObject.ludo_id}` : `${baseUrl}/ludo/${singleLudoObject.ludo_id}`}
+                            to={getEntryUrlOfCard(stage, ludo_id)}
                         >
-                            <CircleButton stage={singleLudoObject.stage} />
+                            <CircleButton stage={stage} />
                         </Link>
                     </LinkWrapper>
                 </CardBackWrapper>
 
                 <CardFrontWrapper
-                    backgroundColor={(singleLudoObject.stage === 2) ? CardBackBackgroundColorList[bonusPeriodIndex] : 'white'}
+                    backgroundColor={(stage === 2) ? CardBackBackgroundColorList[bonusPeriodIndex] : 'white'}
                     className="card-front-info"
                 >
                     <CardBorderTop
                         bonusPeriodIndex={bonusPeriodIndex}
                         isShowingFrontSide={!isThisCardFlipped}
-                        stage={singleLudoObject.stage}
+                        stage={stage}
                     />
                     <FrontIconWrapper>
                         <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                     </FrontIconWrapper>
-                    <div className="title">{singleLudoObject.title}</div>
-                    <div className="duration">{singleLudoObject.duration}天</div>
+                    <div className="title">{title}</div>
+                    <div className="duration">{duration}天</div>
                 </CardFrontWrapper>
                 <ViewWrapper isShowingFrontSide={!isThisCardFlipped}>
                     <EyeIconWrapper>
                         <img src={viewIcon} />
                     </EyeIconWrapper>
                     <ViewNumberWrapper>
-                        {singleLudoObject.views}
+                        {views}
                     </ViewNumberWrapper>
                 </ViewWrapper>
             </CardWrapper>
