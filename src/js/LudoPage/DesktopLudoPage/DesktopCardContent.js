@@ -4,13 +4,7 @@ import ReactPlayer from 'react-player';
 import Lightbox from 'react-image-lightbox';
 
 import tagIcon from '../../../images/active/tag-icon.png';
-import { labelList } from '../../assets/reportInterval.js'; 
-
-const CardDays = styled.div`
-    display: inline-flex;
-    font-size: 15px;
-    padding-top: 15px;
-`;
+import BasicInfo from './BasicInfo';
 
 const CardImage = styled.div`
     margin-top: 42px;
@@ -41,10 +35,6 @@ const CardTags = styled.div`
     }
 `;
 
-const CardTitle = styled.div`
-    font-size: 20px;
-`;
-
 const CardVideo = styled.div`
     display: flex;
     justify-content: center;
@@ -61,28 +51,10 @@ const IntroductionWrapper = styled.div`
     width: 100%;
 `;
 
-const ReportCycle = styled.div`
-    align-items: center;
-	background-color: #ff5757;
-    border: solid 1px #ff5757;
-    border-radius: 20px;
-    color: #ffffff;
-    display: inline-flex;
-	font-family: MHeiHK;
-	font-size: 12px;
-	font-weight: bold;
-	height: 26px;
-    justify-content: center;
-	line-height: 1.21;
-    margin-left: 14px;
-	text-align: center;
-    width: 79px;
-`;
-
 const Wrapper = styled.div`
-    display: inline;
+    background-color: #fff;
+    padding: 30px 7.5%;
     text-align: center;
-    width: 85%;
 `;
 
 class DesktopCardContent extends Component {
@@ -129,15 +101,11 @@ class DesktopCardContent extends Component {
 
         return (
             <Wrapper>
-                <CardTitle>
-                    {title}
-                </CardTitle>
-                <CardDays>
-                    遊戲天數：{duration}天
-                </CardDays>
-                <ReportCycle>
-                    {labelList[Number(renderedInterval)-1]}
-                </ReportCycle>
+                <BasicInfo
+                    duration={duration}
+                    title={title}
+                    renderedInterval={renderedInterval}
+                />
                 <IntroductionWrapper>
                     {introduction}
                 </IntroductionWrapper>

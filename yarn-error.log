@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js run build
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js run dev
 
 PATH: 
   C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Git\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Amazon\AWSCLI\;C:\Program Files\Calibre2\;C:\HashiCorp\Vagrant\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\huang yung yu\AppData\Local\.meteor\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Sublime Text 3;"C:\Program Files\Amazon\AWSCLI";C:\Users\huang yung yu\AppData\Local\atom\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\Docker Toolbox;C:\Users\huang yung yu\AppData\Local\Microsoft\WindowsApps;C:\Users\huang yung yu\AppData\Roaming\npm;C:\Users\huang yung yu\AppData\Local\Yarn\bin
@@ -78,6 +78,7 @@ npm manifest:
       "extract-text-webpack-plugin": "2.1.2",
       "file-loader": "^0.9.0",
       "html-webpack-plugin": "2.29.0",
+      "html-webpack-template": "^6.1.0",
       "node-sass": "^3.8.0",
       "purify-css": "^1.2.5",
       "purifycss-webpack": "^0.7.0",
@@ -3029,6 +3030,10 @@ Lockfile:
       lodash "^4.17.3"
       pretty-error "^2.0.2"
       toposort "^1.0.0"
+  
+  html-webpack-template@^6.1.0:
+    version "6.1.0"
+    resolved "https://registry.yarnpkg.com/html-webpack-template/-/html-webpack-template-6.1.0.tgz#d96ffdab53131adfa672f981988607807966ad97"
   
   htmlparser2@~3.3.0:
     version "3.3.0"
@@ -6811,9 +6816,9 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 2
+  Exit code: 3221225786
   Command: C:\WINDOWS\system32\cmd.exe
-  Arguments: /d /s /c webpack --progress
+  Arguments: /d /s /c webpack-dev-server --progress --content-base build
   Directory: C:\Users\huang yung yu\Desktop\github\ludo-beta-react
   Output:
   

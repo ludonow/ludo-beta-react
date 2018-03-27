@@ -357,7 +357,9 @@ class LudoPage extends Component {
             <div>
                 <MediaQuery minWidth={769}>
                     <DesktopLudoPage
+                        baseUrlWithSubDomain={location.pathname.split('/').slice(0, -1).join('/')}
                         currentLudoReportData={currentLudoReportData}
+                        currentTab={location.pathname.split('/').pop()}
                         currentUserId={currentUserId}
                         editingForm={editingForm}
                         getUserBasicData={getUserBasicData}

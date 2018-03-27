@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+import { withTab } from './TabList';
 import DesktopCardContent from './DesktopCardContent';
 import DesktopReportPage from './DesktopReportPage';
 
@@ -10,72 +10,20 @@ const getIsStageOfCardReady = (playerId) => (
     playerId === '0'
 );
 
-const panel_width = window.innerWidth * 0.7;
-
-const ReportTabs = styled.div`
-    .tabs {
-        align-items: center;
-        display: block;
-        justify-content: center;
-        padding-top: 23px;
-        width:${panel_width}px; 
-    }
-
-    .tab_list {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-    .tab {
-        color: #FFFFFF;
-        display: block;
-        font-size: 15px;
-        margin: 0 55px;
-        padding-bottom: 4px;
-        text-align: center;
-        width: 85px;
-        cursor: pointer;
-    }
-
-    .selected_tab {
-        border-bottom: 1.5px solid #727272;
-        color: #727272;
-    }
-
-    .panel_container {
-        align-items: center;
-        justify-content: center;
-        margin-top: 29px;
-        width: 100%;
-    }
-
-    .panel {
-        align-items: center;
-        background-color: #ffffff;
-        display: none;
-        justify-content: center;
-        padding-top:29px;
-        width: 100%;
-    }
-
-    .selected_panel {
-        display: flex;
-    }
-
-    .panel_report {
-        background-color: transparent;
-    }
-`;
-
 const Wrapper = styled.div`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     margin-bottom: 100px;
-    width:${panel_width}px;
+    width: 70vw;
 `;
 
+const DesktopCardContentWithTab = withTab(DesktopCardContent);
+const DesktopReportPageWithTab = withTab(DesktopReportPage);
+
 const DesktopLudoPage = ({
+    baseUrlWithSubDomain,
+    currentTab,
     currentUserId,
     editingForm,
     handleDenounceBoxOpen,
@@ -91,59 +39,42 @@ const DesktopLudoPage = ({
     router_currentFormValue,
     router_ludoPageIndex,
     userBasicData,
-}) => (
-    <Wrapper>
-        <ReportTabs>
-            <Tabs
-                className="tabs"
-                defaultIndex={0}
-            >
-                <TabList className="tab_list">
-                    <Tab
-                        className="tab"
-                        selectedClassName="selected_tab"
-                    >
-                        卡片內容
-                    </Tab>
-                    <Tab
-                        className="tab"
-                        selectedClassName="selected_tab"
-                    >
-                        雙人對戰
-                    </Tab>
-                </TabList>
-                <div className="panel_container">
-                    <TabPanel
-                        className="panel"
-                        selectedClassName="selected_panel"
-                    >
-                        <DesktopCardContent router_currentFormValue={router_currentFormValue} />
-                    </TabPanel>
-                    <TabPanel
-                        className="panel panel_report"
-                        selectedClassName="selected_panel"
-                    >
-                        <DesktopReportPage
-                            currentUserId={currentUserId}
-                            handleDenounceBoxOpen={handleDenounceBoxOpen}
-                            handleImageLightboxOpen={handleImageLightboxOpen}
-                            handleReportDialogOpenWithData={handleReportDialogOpenWithData}
-                            handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
-                            handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
-                            handleShouldReportUpdate={handleShouldReportUpdate}
-                            isStageOfCardReady={getIsStageOfCardReady(router_currentFormValue.player_id)}
-                            ludoId={ludoId}
-                            playerReportList={reportList.player}
-                            router_currentFormValue={router_currentFormValue}
-                            starterReportList={reportList.starter}
-                            userPhotoUrl={userBasicData ? userBasicData.photo : ''}
-                        />
-                    </TabPanel>
-                </div>
-            </Tabs>
-        </ReportTabs>
-    </Wrapper>
-);
+}) => {
+    switch(currentTab) {
+        case 'card-content':
+            return (
+                <Wrapper>
+                    <DesktopCardContentWithTab
+                        currentTab={currentTab}
+                        baseUrlWithSubDomain={baseUrlWithSubDomain}
+                        router_currentFormValue={router_currentFormValue}
+                    />
+                </Wrapper>
+            )
+        case 'report-list':
+            return (
+                <Wrapper>
+                    <DesktopReportPageWithTab
+                        currentTab={currentTab}
+                        currentUserId={currentUserId}
+                        handleDenounceBoxOpen={handleDenounceBoxOpen}
+                        handleImageLightboxOpen={handleImageLightboxOpen}
+                        handleReportDialogOpenWithData={handleReportDialogOpenWithData}
+                        handleReportEditButtonTouchTap={handleReportEditButtonTouchTap}
+                        handleReportExpandMoreButtonTouchTap={handleReportExpandMoreButtonTouchTap}
+                        handleShouldReportUpdate={handleShouldReportUpdate}
+                        isStageOfCardReady={getIsStageOfCardReady(router_currentFormValue.player_id)}
+                        ludoId={ludoId}
+                        baseUrlWithSubDomain={baseUrlWithSubDomain}
+                        playerReportList={reportList.player}
+                        router_currentFormValue={router_currentFormValue}
+                        starterReportList={reportList.starter}
+                        userPhotoUrl={userBasicData ? userBasicData.photo : ''}
+                    />
+                </Wrapper>
+            )
+    }
+};
 
 DesktopLudoPage.propTypes = {
     currentUserId: PropTypes.string.isRequired,

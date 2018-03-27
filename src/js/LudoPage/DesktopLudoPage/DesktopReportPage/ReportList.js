@@ -10,7 +10,7 @@ export const ReportListWrapper = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 7px;
-    width: ${props => props.width}px;
+    width: 35vw;
 `;
 
 const ReportList = ({
@@ -24,12 +24,11 @@ const ReportList = ({
     handleShouldReportUpdate,
     isMyReport,
     label,
-    panelWidth,
     reportList,
     reportUserId,
     userPhotoUrl,
 }) => (
-    <ReportListWrapper width={panelWidth/2}>
+    <ReportListWrapper>
         <Avatar
             avatarBackgroundColorIndex={commentsNick[reportUserId][1]}
             avatarImageIndex={commentsNick[reportUserId][0]}
@@ -76,10 +75,9 @@ ReportList.propTypes = {
     handleShouldReportUpdate: PropTypes.func.isRequired,
     isMyReport: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
-    panelWidth: PropTypes.number.isRequired,
     reportList: PropTypes.array.isRequired,
     reportUserId: PropTypes.string.isRequired,
-    userPhotoUrl: PropTypes.string.isRequired,
+    userPhotoUrl: PropTypes.string,
 };
 
 export default ReportList;
