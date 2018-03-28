@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 
-const ButtonListWrapper = styled.div`
+export const ButtonListWrapper = styled.div`
     display: flex;
     justify-content: center;
     & > button {
@@ -15,28 +15,28 @@ const ButtonListWrapper = styled.div`
 `;
 
 // override material-ui style
-const bodyStyle = {
-    backgroundColor: '#374867',
-    border: '1px solid #374867',
-    overflowX: 'hidden'
-};
-
-const deskTopContentStyle = {
-    maxWidth: 'none',
-    width: '35%',
-};
-const mobileContentStyle = {
-    maxWidth: 'none',
-    width: '80%',
-};
-
-const titleStyle = {
-    backgroundColor: '#374867',
-    border: '1px solid #374867',
-    color: 'white',
-    fontFamily: 'Microsoft JhengHei',
-    padding: '2vw 0 2vw 0',
-    textAlign: 'center'
+export const discardDialogStyle = {
+    body: {
+        backgroundColor: '#374867',
+        border: '1px solid #374867',
+        overflowX: 'hidden'
+    },
+    deskTopContent: {
+        maxWidth: 'none',
+        width: '35%',
+    },
+    mobileContent: {
+        maxWidth: 'none',
+        width: '80%',
+    },
+    title: {
+        backgroundColor: '#374867',
+        border: '1px solid #374867',
+        color: 'white',
+        fontFamily: 'Microsoft JhengHei',
+        padding: '2vw 0 2vw 0',
+        textAlign: 'center'
+    },
 };
 
 const DiscardAlert = ({
@@ -47,16 +47,16 @@ const DiscardAlert = ({
     isDiscardAlertOpen,
 }) => {
     const width = window.innerWidth || document.body.clientWidth;
-    const contentStyle = (width <= 768) ? mobileContentStyle : deskTopContentStyle;
+    const contentStyle = (width <= 768) ? discardDialogStyle.mobileContent : discardDialogStyle.deskTopContent;
 
     return (
         <Dialog
-            bodyStyle={bodyStyle}
+            bodyStyle={discardDialogStyle.body}
             contentStyle={contentStyle}
             open={isDiscardAlertOpen}
             onRequestClose={handleDiscardAlertClose}
-            titleStyle={titleStyle}
             title={alertTitle ? alertTitle : '關閉將捨棄已輸入的內容'}
+            titleStyle={discardDialogStyle.title}
         >
             <ButtonListWrapper>
                 <Button

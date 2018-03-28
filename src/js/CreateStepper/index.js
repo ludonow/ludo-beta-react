@@ -6,6 +6,7 @@ import Dialog from 'material-ui/Dialog';
 
 import axios from '../axios-config';
 import { StyledDialog } from '../baseStyle';
+import AutoMatchDialog from './AutoMatchDialog';
 import Content from './Content';
 import DiscardAlert from '../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
@@ -17,6 +18,7 @@ const initialState = {
     contentType: '',
     images: [],
     isAtTemplatePage: false,
+    isAutoMatchDialogOpen: false,
     isDiscardAlertOpen: false,
     isEditing: false,
     isCardSubmitButtonDisabled: true,
@@ -82,6 +84,8 @@ class CreateStepper extends Component {
         this.state = initialState;
         this.getContentTypeByFormData = this.getContentTypeByFormData.bind(this);
         this.getTemplateData = this.getTemplateData.bind(this);
+        this.handleAutoMatchDialogOpen = this.handleAutoMatchDialogOpen.bind(this);
+        this.handleAutoMatchSubmit = this.handleAutoMatchSubmit.bind(this);
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
@@ -176,6 +180,17 @@ class CreateStepper extends Component {
                 isCardSubmitButtonDisabled: false
             });
         });
+    }
+
+    handleAutoMatchDialogOpen() {
+        this.setState({
+            isAutoMatchDialogOpen: true,
+        });
+    }
+
+    handleAutoMatchSubmit(event) {
+        event.preventDefault();
+        console.log('handleAutoMatchSubmit');
     }
 
     handleCardSubmit(event) {
@@ -1042,6 +1057,7 @@ class CreateStepper extends Component {
             contentType,
             images,
             isAtTemplatePage,
+            isAutoMatchDialogOpen,
             isCardSubmitButtonDisabled,
             isDiscardAlertOpen,
             isMyTemplate,
@@ -1113,7 +1129,7 @@ class CreateStepper extends Component {
                     video={video}
                 />
                 <StepButtonList
-                    handleCardSubmit={this.handleCardSubmit}
+                    handleAutoMatchDialogOpen={this.handleAutoMatchDialogOpen}
                     handleContentTypeSelect={this.handleContentTypeSelect}
                     handleDialogClose={this.handleDialogClose}
                     handleStepNext={this.handleStepNext}
@@ -1137,6 +1153,12 @@ class CreateStepper extends Component {
                     handleDiscardAlertClose={this.handleDiscardAlertClose}
                     handleDiscardConfirm={this.handleDialogClose}
                     isDiscardAlertOpen={isDiscardAlertOpen}
+                />
+                <AutoMatchDialog
+                    handleAutoMatchSubmit={this.handleAutoMatchSubmit}
+                    handleCardSubmit={this.handleCardSubmit}
+                    handleRequestClose={this.handleCloseClick}
+                    open={isAutoMatchDialogOpen}
                 />
             </StyledDialog>
         );
