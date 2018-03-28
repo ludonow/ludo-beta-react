@@ -25,7 +25,7 @@ const MultipleButtonListWrapper = StyledButtonListWrapper.extend`
 `;
 
 const StepButtonList = ({
-    handleAutoMatchDialogOpen,
+    handleAutoMatchSearch,
     handleContentTypeSelect,
     handleDialogClose,
     handleStepNext,
@@ -132,7 +132,7 @@ const StepButtonList = ({
                                 backgroundColor={'#2e968c'}
                                 disabled={isSubmitting || isCardSubmitButtonDisabled}
                                 label="開始玩囉"
-                                onClick={handleAutoMatchDialogOpen}
+                                onClick={handleAutoMatchSearch}
                                 width={isAtTemplatePage ? '75px' : '100px'}
                             />
                         : null
@@ -175,7 +175,7 @@ const StepButtonList = ({
 };
 
 StepButtonList.propTypes = {
-    handleAutoMatchDialogOpen: PropTypes.func.isRequired,
+    handleAutoMatchSearch: PropTypes.func.isRequired,
     handleContentTypeSelect: PropTypes.func.isRequired,
     handleDialogClose: PropTypes.func.isRequired,
     handleStepNext: PropTypes.func.isRequired,

@@ -8,14 +8,25 @@ import {
 } from '../components/DiscardAlert';
 import Button from '../components/Button';
 
+const StyledButtonListWrapper = ButtonListWrapper.extend`
+    button {
+        width: 190px;
+    }
+`;
+
+const deskTopContentStyle = {
+    maxWidth: 'none',
+    width: '55%',
+};
+
 const AutoMatchDialog = ({
-    handleAutoMatchSubmit,
+    handleAutoMatchConfirm,
     handleCardSubmit,
     handleRequestClose,
     open,
 }) => {
     const width = window.innerWidth || document.body.clientWidth;
-    const discardDialogContentStyle = (width <= 768) ? discardDialogStyle.mobileContent : discardDialogStyle.deskTopContent;
+    const discardDialogContentStyle = (width <= 768) ? discardDialogStyle.mobileContent : deskTopContentStyle;
 
     return (
         <Dialog
@@ -26,7 +37,7 @@ const AutoMatchDialog = ({
             title="已有其他人開啟之卡片，要加入其他人創建的卡片嗎"
             titleStyle={discardDialogStyle.title}
         >
-            <ButtonListWrapper>
+            <StyledButtonListWrapper>
                 <Button
                     backgroundColor="#FFFFFF"
                     label="仍要創建新卡片"
@@ -36,15 +47,15 @@ const AutoMatchDialog = ({
                 <Button
                     backgroundColor="#FF6262"
                     label="加入已開啟之卡片"
-                    onClick={handleAutoMatchSubmit}
+                    onClick={handleAutoMatchConfirm}
                 />
-            </ButtonListWrapper>
+            </StyledButtonListWrapper>
         </Dialog>
     );
 }
 
 AutoMatchDialog.propTypes = {
-    handleAutoMatchSubmit: PropTypes.func.isRequired,
+    handleAutoMatchConfirm: PropTypes.func.isRequired,
     handleCardSubmit: PropTypes.func.isRequired,
     handleRequestClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,

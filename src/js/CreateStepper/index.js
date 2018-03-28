@@ -84,8 +84,10 @@ class CreateStepper extends Component {
         this.state = initialState;
         this.getContentTypeByFormData = this.getContentTypeByFormData.bind(this);
         this.getTemplateData = this.getTemplateData.bind(this);
+        this.handleAutoMatchDialogClose = this.handleAutoMatchDialogClose.bind(this);
         this.handleAutoMatchDialogOpen = this.handleAutoMatchDialogOpen.bind(this);
-        this.handleAutoMatchSubmit = this.handleAutoMatchSubmit.bind(this);
+        this.handleAutoMatchConfirm = this.handleAutoMatchConfirm.bind(this);
+        this.handleAutoMatchSearch = this.handleAutoMatchSearch.bind(this);
         this.handleCheckPointChange = this.handleCheckPointChange.bind(this);
         this.handleCloseClick = this.handleCloseClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
@@ -182,15 +184,28 @@ class CreateStepper extends Component {
         });
     }
 
+    handleAutoMatchDialogClose() {
+        this.setState({
+            isAutoMatchDialogOpen: false,
+        });
+    }
+
     handleAutoMatchDialogOpen() {
         this.setState({
             isAutoMatchDialogOpen: true,
         });
     }
 
-    handleAutoMatchSubmit(event) {
+    handleAutoMatchConfirm(event) {
         event.preventDefault();
-        console.log('handleAutoMatchSubmit');
+        console.log('handleAutoMatchConfirm');
+        this.handleAutoMatchDialogClose();
+    }
+
+    handleAutoMatchSearch(event) {
+        event.preventDefault();
+        console.log('handleAutoMatchSearch');
+        this.handleAutoMatchDialogOpen();
     }
 
     handleCardSubmit(event) {
@@ -1129,7 +1144,7 @@ class CreateStepper extends Component {
                     video={video}
                 />
                 <StepButtonList
-                    handleAutoMatchDialogOpen={this.handleAutoMatchDialogOpen}
+                    handleAutoMatchSearch={this.handleAutoMatchSearch}
                     handleContentTypeSelect={this.handleContentTypeSelect}
                     handleDialogClose={this.handleDialogClose}
                     handleStepNext={this.handleStepNext}
@@ -1155,9 +1170,9 @@ class CreateStepper extends Component {
                     isDiscardAlertOpen={isDiscardAlertOpen}
                 />
                 <AutoMatchDialog
-                    handleAutoMatchSubmit={this.handleAutoMatchSubmit}
+                    handleAutoMatchConfirm={this.handleAutoMatchConfirm}
                     handleCardSubmit={this.handleCardSubmit}
-                    handleRequestClose={this.handleCloseClick}
+                    handleRequestClose={this.handleAutoMatchDialogClose}
                     open={isAutoMatchDialogOpen}
                 />
             </StyledDialog>
