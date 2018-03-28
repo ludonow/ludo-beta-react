@@ -55,7 +55,7 @@ export const CardBackWrapper = styled.div`
 const getEntryUrlOfCard = (stage, id) => {
     switch (stage) {
         case 0:
-            return `${baseUrl}/template/${id}/card-content`;
+            return `${baseUrl}/template/${id}`;
         case 1:
             return `${baseUrl}/ludo/${id}/card-content`;
         case 2:
