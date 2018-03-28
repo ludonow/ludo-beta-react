@@ -15,6 +15,36 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
+const desktopNavbarUrlList = [
+    'cardList',
+    'cardList?stage=0',
+    'create',
+    'myCardList?stage=1',
+    'myCardList?stage=2',
+    'myCardList?stage=3',
+    'myCardList?stage=0',
+    'tutorial',
+];
+
+const mobileNavbarUrlList = [
+    'cardList',
+    'cardList?stage=0',
+    'create',
+    'myCardList',
+    'logout',
+    'tutorial',
+];
+
+const getSelectedIndex = (subDomain, navbarUrlList) => {
+    let selectedIndex = navbarUrlList.findIndex((navbarUrl) => (subDomain === navbarUrl));
+    if (selectedIndex === -1) {
+        selectedIndex = navbarUrlList.findIndex((navbarUrl) => (subDomain.includes(navbarUrl)));
+        return selectedIndex;
+    } else {
+        return selectedIndex;
+    }
+};
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +57,6 @@ export default class App extends React.Component {
             currentTargetReportId: '',
             currentUserId: '',
             denounceType: 100,
-            filterCondition: '',
             email: '',
             hasGotNewReport: false,
             isCardListFetched: false,
@@ -38,27 +67,19 @@ export default class App extends React.Component {
             isOpeningReportPage: false,
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
-            isOpeningProfilePage: false,
             isPersonalCardListVisible: false,
             lastEvaluatedKey: {},
             ludoList: [],
+            navbarSelectedIndex: 0,
             shouldLudoListUpdate: false,
-            shouldProfileUpdate: false,
             shouldReportUpdate: false,
             shouldUserBasicDataUpdate: false,
-            profileWillLudoData: [],
-            profileLudoingData: [],
-            profileDidLudoData: [],
             userBasicData: {},
-            userProfileData: {}
         };
         this.clearCurrentFormValue = this.clearCurrentFormValue.bind(this);
         this.getCurrentLudoData = this.getCurrentLudoData.bind(this);
         this.getFilteredLudoList = this.getFilteredLudoList.bind(this);
-        this.getProfileData = this.getProfileData.bind(this);
-        this.getProfileWillLudoData = this.getProfileWillLudoData.bind(this);
-        this.getProfileLudoingData = this.getProfileLudoingData.bind(this);
-        this.getProfileDidLudoData = this.getProfileDidLudoData.bind(this);
+        this.getNavbarSelectedIndex = this.getNavbarSelectedIndex.bind(this);
         this.getReportOfCurrentLudo = this.getReportOfCurrentLudo.bind(this);
         this.getUpComingLudoList = this.getUpComingLudoList.bind(this);
         this.getUserBasicData = this.getUserBasicData.bind(this);
@@ -67,7 +88,6 @@ export default class App extends React.Component {
         this.handleHasGotNewReport = this.handleHasGotNewReport.bind(this);
         this.handleIsOpeningCreateFormPage = this.handleIsOpeningCreateFormPage.bind(this);
         this.handleIsOpeningLudoListPage = this.handleIsOpeningLudoListPage.bind(this);
-        this.handleIsOpeningProfilePage = this.handleIsOpeningProfilePage.bind(this);
         this.handleIsOpeningReportPage = this.handleIsOpeningReportPage.bind(this);
         this.handleNavbarClose = this.handleNavbarClose.bind(this);
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
@@ -75,7 +95,6 @@ export default class App extends React.Component {
         this.handlePersonalCardListToggle = this.handlePersonalCardListToggle.bind(this);
         this.handleScrollEvent = this.handleScrollEvent.bind(this);
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
-        this.handleShouldProfileUpdate = this.handleShouldProfileUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
@@ -97,33 +116,19 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        this.handleShouldProfileUpdate(true);
         this.getUserBasicData();
         window.addEventListener('scroll', this.handleScrollEvent);
+        const { location } = this.props;
+        this.getNavbarSelectedIndex(location);
     }
 
     componentDidUpdate() {
         const {
             currentUserId,
             isOpeningLudoListPage,
-            isOpeningProfilePage,
             shouldLudoListUpdate,
-            shouldProfileUpdate,
             shouldUserBasicDataUpdate
         } = this.state;
-
-        if (currentUserId && shouldProfileUpdate) {
-            /**
-             * Update profile data after the user did some ludo action and is going to open profile page
-             */
-            if (isOpeningProfilePage) {
-                this.getProfileData();
-                this.getProfileWillLudoData(currentUserId);
-                this.getProfileLudoingData(currentUserId);
-                this.getProfileDidLudoData(currentUserId);
-                this.handleShouldProfileUpdate(false);
-            }
-        }
 
         const { isOpeningReportPage, shouldReportUpdate } = this.state;
         if (isOpeningReportPage && shouldReportUpdate) {
@@ -134,6 +139,12 @@ export default class App extends React.Component {
         if (shouldUserBasicDataUpdate) {
             this.getUserBasicData();
             this.handleShouldUserBasicDataUpdate(false);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.location !== nextProps.location) {
+            this.getNavbarSelectedIndex(nextProps.location);
         }
     }
 
@@ -202,71 +213,16 @@ export default class App extends React.Component {
         });
     }
 
-    getProfileData() {
-        axios.get('/apis/profile')
-        .then((response) => {
-            if (response.data.status === '200') {
-                this.setState({
-                    userProfileData: response.data.user
-                });
-            } else {
-                console.error('app getProfileData else response from server: ', response);
-                console.error('app getProfileData else message from server: ', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('app getProfileData error', error);
-        });
-    }
-
-    getProfileWillLudoData(user_id) {
-        axios.get(`apis/ludo?stage=1&user_id=${user_id}`)
-        .then((response) => {
-            if (response.data.status === '200') {
-                this.setState({
-                    profileWillLudoData: response.data.ludoList.Items
-                });
-            } else {
-                console.error('app getProfileWillLudoData else response from server: ', response);
-                console.error('app getProfileWillLudoData else message from server: ', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('app getProfileWillLudoData error', error);
-        });
-    }
-
-    getProfileLudoingData(user_id) {
-        axios.get(`apis/ludo?stage=2&user_id=${user_id}`)
-        .then((response) => {
-            if (response.data.status === '200') {
-                this.setState({
-                    profileLudoingData: response.data.ludoList.Items
-                });
-            } else {
-                console.error('app getProfileLudoingData else response from server: ', response);
-                console.error('app getProfileLudoingData else message from server: ', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('app getProfileLudoingData error', error);
-        });
-    }
-
-    getProfileDidLudoData(user_id) {
-        axios.get(`apis/ludo?stage=3&user_id=${user_id}`)
-        .then((response) => {
-            if (response.data.status === '200') {
-                this.setState({
-                    profileDidLudoData: response.data.ludoList.Items
-                });
-            } else {
-                console.error('app getProfileDidLudoData else response from server: ', response);
-                console.error('app getProfileDidLudoData else message from server: ', response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('app getProfileDidLudoData error', error);
+    getNavbarSelectedIndex(location) {
+        let navbarUrlList = [];
+        const width = window.innerWidth || document.body.clientWidth;
+        if (width >= 768) {
+            navbarUrlList = desktopNavbarUrlList;
+        } else {
+            navbarUrlList = mobileNavbarUrlList;
+        }
+        this.setState({
+            navbarSelectedIndex: getSelectedIndex(location.pathname.substring(1) + location.search, navbarUrlList)
         });
     }
 
@@ -416,12 +372,6 @@ export default class App extends React.Component {
         });
     }
 
-    handleIsOpeningProfilePage(boolean) {
-        this.setState({
-            isOpeningProfilePage: boolean
-        });
-    }
-
     handleNavbarClose() {
         this.setState({
             isNavbarVisible: false
@@ -448,29 +398,34 @@ export default class App extends React.Component {
 
     handleScrollEvent(event) {
         const edgeOffsetY = 250;
-        const { isInfiniteLoading, isOpeningLudoListPage, lastEvaluatedKey, ludoList } = this.state;
+        const {
+            isInfiniteLoading,
+            isOpeningLudoListPage,
+            lastEvaluatedKey,
+            ludoList,
+        } = this.state;
+        
         const lastEvaluatedKeyString = JSON.stringify(lastEvaluatedKey);
-        if (isOpeningLudoListPage &&
+        /* ref: http://blog.xuite.net/vexed/tech/27786189-document.body.scrollTop+%E6%B0%B8%E9%81%A0%E6%98%AF+0 */
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        if (
+            isOpeningLudoListPage &&
             !isInfiniteLoading &&
             lastEvaluatedKeyString &&
-            ludoList.length >= 25 &&
-            document.body.scrollTop + edgeOffsetY >= document.body.scrollHeight - window.innerHeight) {
+            scrollTop + edgeOffsetY >= scrollHeight - window.innerHeight
+        ) {
             this.setState({
                 isInfiniteLoading: true
             });
-            this.getUpComingLudoList(this.props.location.search, lastEvaluatedKeyString);
+            const filterCondition = this.props.location.search.replace('?', '');
+            this.getUpComingLudoList(filterCondition, lastEvaluatedKeyString);
         }
     }
 
     handleShouldLudoListUpdate(boolean) {
         this.setState({
             shouldLudoListUpdate: boolean
-        });
-    }
-
-    handleShouldProfileUpdate(boolean) {
-        this.setState({
-            shouldProfileUpdate: boolean
         });
     }
 
@@ -500,6 +455,7 @@ export default class App extends React.Component {
             isOpeningCreateFormPage,
             isOpeningLudoListPage,
             isPersonalCardListVisible,
+            navbarSelectedIndex,
             userBasicData,
         } = this.state;
         const {
@@ -523,22 +479,23 @@ export default class App extends React.Component {
                 />
                 <MediaQuery minWidth={769}>
                     <DesktopNavbar
+                        chatFuelId={userBasicData.chatfuel_id ? userBasicData.chatfuel_id : ''}
                         currentUserId={currentUserId}
-                        chatFuelId={userBasicData.chatfuel_id}
-                        getFilteredLudoList={this.getFilteredLudoList}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
                         isNavbarVisible={isNavbarVisible}
+                        selectedIndex={navbarSelectedIndex}
                     />
                 </MediaQuery>
                 <MediaQuery maxWidth={768}>
                     <MobileNavbar
+                        chatFuelId={userBasicData.chatfuel_id ? userBasicData.chatfuel_id : ''}
                         currentUserId={currentUserId}
-                        chatFuelId={userBasicData.chatfuel_id}
                         handleNavbarClose={this.handleNavbarClose}
                         handleNavbarToggle={this.handleNavbarToggle}
                         isNavbarVisible={isNavbarVisible}
-                        userBasicData={userBasicData}
+                        selectedIndex={navbarSelectedIndex}
+                        userPhotoUrl={userBasicData.photo ? userBasicData.photo : ''}
                     />
                 </MediaQuery>
                 <Main handleScrollEvent={this.handleScrollEvent}>
@@ -551,21 +508,15 @@ export default class App extends React.Component {
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getCurrentLudoData: this.getCurrentLudoData,
                                 getFilteredLudoList: this.getFilteredLudoList,
-                                getProfileData: this.getProfileData,
-                                getProfileWillLudoData: this.getProfileWillLudoData,
-                                getProfileLudoingData: this.getProfileLudoingData,
-                                getProfileDidLudoData: this.getProfileDidLudoData,
                                 getReportOfCurrentLudo: this.getReportOfCurrentLudo,
                                 getUserBasicData: this.getUserBasicData,
                                 handleDenounceBoxOpen: this.handleDenounceBoxOpen,
                                 handleHasGotNewReport: this.handleHasGotNewReport,
                                 handleIsOpeningCreateFormPage: this.handleIsOpeningCreateFormPage,
                                 handleIsOpeningLudoListPage: this.handleIsOpeningLudoListPage,
-                                handleIsOpeningProfilePage: this.handleIsOpeningProfilePage,
                                 handleIsOpeningReportPage: this.handleIsOpeningReportPage,
                                 handlePersonalCardListClose: this.handlePersonalCardListClose,
                                 handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,
-                                handleShouldProfileUpdate: this.handleShouldProfileUpdate,
                                 handleShouldReportUpdate: this.handleShouldReportUpdate,
                                 handleShouldUserBasicDataUpdate: this.handleShouldUserBasicDataUpdate,
                                 updateCurrentFormValue: this.updateCurrentFormValue

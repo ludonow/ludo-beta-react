@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
@@ -68,6 +69,7 @@ const MobileNavbarWrapper = styled.div`
 `;
 
 const StyledListItem = styled.div`
+    background-color: ${props => props.selected ? '#FFC645' : 'transparent'};
     border: 1px solid white;
     border-radius: 20px;
     display: flex;
@@ -107,12 +109,12 @@ const ToggleButtonWrapper = styled.div`
 // child component
 const DoubleCircleIcon = ({
     handleClick,
-    userBasicData,
+    userPhotoUrl,
 }) => (
     <OutSideCircle onClick={handleClick}>
         {
-            userBasicData.photo ?
-                <img src={userBasicData.photo} />
+            userPhotoUrl ?
+                <img src={userPhotoUrl} />
             :
                 <img src={defaultAvatartIcon} />
         }
@@ -123,12 +125,14 @@ const DoubleCircleIcon = ({
 const LinkList = ({
     handleNavbarClose,
     linkInfoList,
+    selectedIndex,
+    startingIndex,
 }) => (
     <LinkListWrapper>
         {
-            linkInfoList.map(linkInfo => (
-                linkInfo.isExternal ? 
-                    <StyledAnchor 
+            linkInfoList.map((linkInfo, arrayIndex)=> (
+                linkInfo.isExternal ?
+                    <StyledAnchor
                         href={linkInfo.url}
                         key={linkInfo.text}
                     >
@@ -142,7 +146,7 @@ const LinkList = ({
                         onClick={handleNavbarClose}
                         to={`${baseUrl}/${linkInfo.url}`}
                     >
-                        <StyledListItem>
+                        <StyledListItem selected={selectedIndex === (arrayIndex + startingIndex)}>
                             {linkInfo.text}
                         </StyledListItem>
                     </StyledLink>
@@ -168,14 +172,14 @@ class ToggleButton extends Component {
 
     render() {
         const {
-            userBasicData,
+            userPhotoUrl,
         } = this.props;
 
         return (
             <ToggleButtonWrapper>
                 <DoubleCircleIcon
                     handleClick={this.handleClick}
-                    userBasicData={userBasicData}
+                    userPhotoUrl={userPhotoUrl}
                 />
             </ToggleButtonWrapper>
         );
@@ -188,7 +192,8 @@ const Mobile = ({
     handleNavbarClose,
     handleNavbarToggle,
     isNavbarVisible,
-    userBasicData,
+    selectedIndex,
+    userPhotoUrl,
 }) => {
     const authInfoList = currentUserId ? authedInfoList : unAuthedInfoList;
 
@@ -197,7 +202,7 @@ const Mobile = ({
             <ToggleButton
                 handleNavbarToggle={handleNavbarToggle}
                 isNavbarVisible={isNavbarVisible}
-                userBasicData={userBasicData}
+                userPhotoUrl={userPhotoUrl}
             />
             <ButtonListWrapper
                 isNavbarVisible={isNavbarVisible}
@@ -206,22 +211,40 @@ const Mobile = ({
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={cardSystemLinkInfoList}
+                    selectedIndex={selectedIndex}
+                    startingIndex={0}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={getMyCardListLinkInfoList(myCardListLinkInfoSampleList, currentUserId)}
+                    selectedIndex={selectedIndex}
+                    startingIndex={3}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={authInfoList}
+                    selectedIndex={selectedIndex}
+                    startingIndex={4}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={getSettingLinkInfoList(chatFuelId)}
+                    selectedIndex={selectedIndex}
+                    startingIndex={5}
                 />
             </ButtonListWrapper>
         </MobileNavbarWrapper>
     );
 }
+
+Mobile.propTypes = {
+    chatFuelId: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    handleNavbarClose: PropTypes.func.isRequired,
+    handleNavbarToggle: PropTypes.func.isRequired,
+    isNavbarVisible: PropTypes.bool.isRequired,
+    selectedIndex: PropTypes.number.isRequired,
+    userPhotoUrl: PropTypes.string.isRequired,
+};
 
 export default Mobile;
