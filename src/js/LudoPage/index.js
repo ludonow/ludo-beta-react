@@ -291,12 +291,8 @@ class LudoPage extends Component {
                 axios.delete(`/apis/ludo/${ludoId}`)
                 .then(response => {
                     if (response.data.status == '200') {
-                        const {
-                            getUserBasicData,
-                            handleShouldProfileUpdate,
-                        } = this.props;
+                        const { getUserBasicData } = this.props;
                         getUserBasicData();
-                        handleShouldProfileUpdate(true);
                         browserHistory.push('/cardList');
                     } else {
                         if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -331,7 +327,6 @@ class LudoPage extends Component {
             getUserBasicData,
             handleDenounceBoxOpen,
             handleHasGotNewReport,
-            handleShouldProfileUpdate,
             handleShouldReportUpdate,
             hasGotNewReport,
             params,
@@ -370,7 +365,6 @@ class LudoPage extends Component {
                         handleReportDialogOpenWithData={this.handleReportDialogOpenWithData}
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                        handleShouldProfileUpdate={handleShouldProfileUpdate}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         hasGotNewReport={hasGotNewReport}
                         isReportDialogOpen={isReportDialogOpen}
@@ -411,7 +405,6 @@ class LudoPage extends Component {
                     currentUserId={currentUserId}
                     editingForm={editingForm}
                     handleReportDialogClose={this.handleReportDialogClose}
-                    handleShouldProfileUpdate={handleShouldProfileUpdate}
                     handleShouldReportUpdate={handleShouldReportUpdate}
                     isReportDialogOpen={isReportDialogOpen}
                     ludoId={params.ludo_id}
@@ -482,7 +475,6 @@ LudoPage.propTypes = {
     handleDenounceBoxOpen: PropTypes.func.isRequired,
     handleHasGotNewReport: PropTypes.func.isRequired,
     handleIsOpeningReportPage: PropTypes.func.isRequired,
-    handleShouldProfileUpdate: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     hasGotNewReport: PropTypes.bool.isRequired,
     params: PropTypes.shape({
