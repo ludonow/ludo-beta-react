@@ -238,9 +238,8 @@ class CreateStepper extends Component {
                                 403: no authority 
                             */
                             if (response.data.status === '200') {
-                                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                                const { getUserBasicData } = this.props;
                                 getUserBasicData();
-                                handleShouldProfileUpdate(true);
                                 browserHistory.push(`/ludo/${ludo_id}`);
                             } else {
                                 if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
@@ -312,9 +311,8 @@ class CreateStepper extends Component {
                                 403: no authority 
                             */
                             if (response.data.status === '200') {
-                                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                                const { getUserBasicData } = this.props;
                                 getUserBasicData();
-                                handleShouldProfileUpdate(true);
                                 browserHistory.push(`/ludo/${ludo_id}`);
                             } else {
                                 if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
@@ -644,9 +642,8 @@ class CreateStepper extends Component {
             axios.delete(`/apis/ludo/${this.props.params.templateId}`)
             .then(response => {
                 if (response.data.status == '200') {
-                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    const { getUserBasicData } = this.props;
                     getUserBasicData();
-                    handleShouldProfileUpdate(true);
                     window.alert('成功刪除模板');
                     browserHistory.push('/cardList');
                 } else {
@@ -677,7 +674,6 @@ class CreateStepper extends Component {
         event.preventDefault();
         const {
             getUserBasicData,
-            handleShouldProfileUpdate,
             params,
         } = this.props;
         const { templateId } = params;
@@ -718,7 +714,6 @@ class CreateStepper extends Component {
             .then((response) => {
                 if (response.data.status == '200') {
                     getUserBasicData();
-                    handleShouldProfileUpdate(true);
                     window.alert('已變更儲存');
                 } else {
                     if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
@@ -747,7 +742,6 @@ class CreateStepper extends Component {
             .then(response => {
                 if (response.data.status == '200') {
                     getUserBasicData();
-                    handleShouldProfileUpdate(true);
                     window.alert('已變更儲存');
                 } else {
                     if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
@@ -822,9 +816,8 @@ class CreateStepper extends Component {
                             403: no authority 
                         */
                         if (response.data.status === '200') {
-                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            const { getUserBasicData } = this.props;
                             getUserBasicData();
-                            handleShouldProfileUpdate(true);
                             browserHistory.push(`/template/${ludo_id}`);
                         } else {
                             if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
@@ -896,9 +889,8 @@ class CreateStepper extends Component {
                             403: no authority 
                         */
                         if (response.data.status === '200') {
-                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            const { getUserBasicData } = this.props;
                             getUserBasicData();
-                            handleShouldProfileUpdate(true);
                             browserHistory.push(`/template/${ludo_id}`);
                         } else {
                             if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {

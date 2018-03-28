@@ -206,11 +206,9 @@ class ReportDialog extends Component {
                 if (response.data.status === '200') {
                     const {
                         handleReportDialogClose,
-                        handleShouldProfileUpdate,
                         handleShouldReportUpdate,
                     } = this.props;
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
                 } else {
                     if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -240,11 +238,9 @@ class ReportDialog extends Component {
                 if (response.data.status === '200') {
                     const {
                         handleReportDialogClose,
-                        handleShouldProfileUpdate,
                         handleShouldReportUpdate,
                     } = this.props;
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
                 } else {
                     if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -294,7 +290,6 @@ class ReportDialog extends Component {
         });
         const {
             handleReportDialogClose,
-            handleShouldProfileUpdate,
             handleShouldReportUpdate,
         } = this.props;
         const { reportType } = this.state;
@@ -335,7 +330,6 @@ class ReportDialog extends Component {
             .then(response => {
                 if (response.data.status === '200') {
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
                 } else {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
@@ -381,7 +375,6 @@ class ReportDialog extends Component {
             .then(response => {
                 if (response.data.status === '200') {
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
                 } else {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
@@ -555,7 +548,6 @@ ReportDialog.propTypes = {
     editForm: PropTypes.object,
     ludoId: PropTypes.string.isRequired,
     handleReportDialogClose: PropTypes.func.isRequired,
-    handleShouldProfileUpdate: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     isReportDialogOpen: PropTypes.bool.isRequired,
     router_currentFormValue: PropTypes.object.isRequired,
