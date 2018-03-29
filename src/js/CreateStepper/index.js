@@ -291,12 +291,7 @@ class CreateStepper extends Component {
                     });
                 });
             } else { // not isUpdatingImage
-                const cardCreateFormWithoutImageLocation = {
-                    ...defaultCardCreateForm,
-                    image_location: '',
-                    video: contentType === 'text' ? '' : defaultCardCreateForm.video,
-                };
-                axios.post('/apis/ludo', cardCreateFormWithoutImageLocation)
+                axios.post('/apis/ludo', defaultCardCreateForm)
                 .then((response) => {
                     if (response.data.status === '200') {
                         const { ludo_id } = response.data;
