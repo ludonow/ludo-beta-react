@@ -405,6 +405,8 @@ class CreateStepper extends Component {
             introduction,
             video,
         } = ludoCreateForm;
+        console.log(image_location);
+        console.log(!image_location);
         if (
             (contentType === 'image' && images.length === 1) ||
             (contentType === 'text' && introduction) ||
@@ -420,11 +422,12 @@ class CreateStepper extends Component {
                 step: 2,
             });
         } else if (
-            (contentType === 'image' && images.length === 0) ||
+            (!isAtTemplatePage && contentType === 'image' && images.length === 0) ||
             (isAtTemplatePage && contentType === 'image' && images.length === 0 && !image_location) ||
             (contentType === 'text' && !introduction) ||
             (contentType === 'video' && !video)
         ) {
+            console.log('hi');
             this.setState({
                 contentType,
                 isCardSubmitButtonDisabled: true,
