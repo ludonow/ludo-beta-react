@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory, IndexRoute,IndexRedirect, Route, Router } from 'react-router';
+import { browserHistory, IndexRedirect, Redirect, Route, Router } from 'react-router';
 import axiosPackage from 'axios';
 import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
@@ -169,6 +169,10 @@ const AppRouter = () => (
                 path={`${baseUrl}/`}
             >
                 <IndexRedirect to="cardList" />
+                <Redirect
+                    from="ludo/:ludo_id"
+                    to="ludo/:ludo_id/card-content"
+                />
                 <Route
                     component={LudoNotFoundPage}
                     path="404"
