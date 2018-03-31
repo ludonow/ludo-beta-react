@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../../axios-config';
@@ -10,8 +9,6 @@ import DiscardAlert from '../../components/DiscardAlert';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
 import Content from './Content';
 import StepButtonList from './StepButtonList';
-
-promiseFinally.shim();
 
 const initialState = {
     imageLocation: '',
@@ -341,18 +338,19 @@ class ReportDialog extends Component {
                         throw new Error(response.data.err);
                     }
                 }
+                this.setState({
+                    isSubmitting: false
+                });
             })
             .catch(error => {
                 console.error('ReportDialog handleSubmit catch an error: ', error);
+                this.setState({
+                    isSubmitting: false
+                });
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
             })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
-            });
         } else if (reportType === 'text' || reportType === 'video') {
             const {
                 currentUserId,
@@ -386,18 +384,19 @@ class ReportDialog extends Component {
                         throw new Error(response.data.err);
                     }
                 }
+                this.setState({
+                    isSubmitting: false
+                });
             })
             .catch(error => {
                 console.error('ReportDialog handleSubmit catch an error: ', error);
+                this.setState({
+                    isSubmitting: false
+                });
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
             })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
-            });
         } else {
             this.setState({
                 isSubmitting: false
