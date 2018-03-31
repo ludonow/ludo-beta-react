@@ -10,7 +10,6 @@ import DiscardAlert from '../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../components/StepperCloseIcon';
 
-
 const initialState = {
     contentType: '',
     images: [],
