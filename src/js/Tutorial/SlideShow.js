@@ -57,7 +57,7 @@ const SlideShow = () => {
                                 index !== (imageList.length - 1) ? 
                                     <img src={image} />
                                 :
-                                    <Link to={`${baseUrl}/cardList?stage=0`}>
+                                    <Link to={`${baseUrl}/cardList`}>
                                         <img src={image} />
                                     </Link>
                             }
