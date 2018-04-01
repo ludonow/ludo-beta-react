@@ -73,6 +73,7 @@ const CardBorderTopWrapper = styled.div`
     font-size: 12px;
     height: 25px;
     justify-content: center;
+    left: 0;
     position: absolute;
     top: 0;
     opacity: ${props => props.isShowingFrontSide ? '100': '0'};
@@ -88,6 +89,10 @@ const CardWrapper = styled.div`
     border-color: ${props => props.isHistory ? '#838383' : 'rgba(0, 0, 0, 0.8)'};
 `;
 
+export const Duration = styled.div`
+    margin-bottom: 15px;
+`;
+
 const EyeIconWrapper = styled.div`
     align-items: center;
     display: flex;
@@ -100,12 +105,14 @@ const EyeIconWrapper = styled.div`
 
 export const FrontIconWrapper = styled.div`
     img {
+        height: 100%;
         width: 100px;
     }
 `;
 
 const Info = styled.div`
     margin: 10px 0;
+    width: 100%;
 `;
 const IntroWrapper = Info.extend`
     font-size: 12px;
@@ -138,6 +145,11 @@ const TemplateCardBorderTopWrapper = styled.div`
     top: 0;
     opacity: ${props => props.isShowingFrontSide ? '0': '100'};
     width: 100%;
+`;
+
+export const Title = styled.div`
+    margin: 20px 0;
+    max-width: calc(100% - 40px);
 `;
 
 const ViewNumberWrapper = styled.div`
@@ -286,8 +298,8 @@ const Card = ({
                     <FrontIconWrapper>
                         <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                     </FrontIconWrapper>
-                    <div className="title">{title}</div>
-                    <div className="duration">{duration}天</div>
+                    <Title>{title}</Title>
+                    <Duration>{duration}天</Duration>
                 </CardFrontWrapper>
                 <ViewWrapper isShowingFrontSide={!isThisCardFlipped}>
                     <EyeIconWrapper>

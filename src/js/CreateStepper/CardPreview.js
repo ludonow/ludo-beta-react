@@ -13,8 +13,10 @@ import {
     BackPeriodIconWrapper,
     CardBackBackgroundColorList,
     CardBackWrapper,
+    Duration,
     FrontIconWrapper,
-    TemplateCardBorderTop
+    TemplateCardBorderTop,
+    Title,
 } from '../components/Card';
 
 const GoPlaceHolder = styled.div`
@@ -153,8 +155,8 @@ export default class CardPreview extends Component {
                             <FrontIconWrapper>
                                 <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                             </FrontIconWrapper>
-                            <div className="title">{title}</div>
-                            <div className="duration">{duration}天</div>
+                            <Title>{title}</Title>
+                            <Duration>{duration}天</Duration>
                         </div>
                     </div>
                 </div>
