@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
@@ -17,8 +17,9 @@ const ImageWrapper = styled.div`
     height: 100%;
     justify-content: center;
 
-    img {
+    a, img {
         height: 100%;
+        width: 100%;
     }
 `;
 
@@ -42,31 +43,41 @@ const Wrapper = styled.div`
     }
 `;
 
-const SlideShow = () => {
-    const width = window.innerWidth || document.body.clientWidth;
-    const imageList = (width <= 768) ? mobileImageList : desktopImageList;
-    const handleClick = (event) => { browserHistory.push('/cardList') }
+class SlideShow extends Component {
+    constructor() {
+        super();
+        this.state = { imageList: [] };
+    }
 
-    return (
-        <Wrapper>
-            <Carousel decorators={decorators}>
-                {
-                    imageList.map((image, index) => (
-                        <ImageWrapper key={`slide-show-image-${index}`}>
-                            {
-                                index !== (imageList.length - 1) ? 
-                                    <img src={image} />
-                                :
-                                    <Link to={`${baseUrl}/cardList`}>
+    componentDidMount() {
+        const width = window.innerWidth || document.body.clientWidth;
+        const imageList = (width <= 768) ? mobileImageList : desktopImageList;
+        this.setState({ imageList });
+    }
+
+    render() {
+        const { imageList } = this.state;
+        return (
+            <Wrapper>
+                <Carousel decorators={decorators}>
+                    {
+                        imageList.map((image, index) => (
+                            <ImageWrapper key={`slide-show-image-${index}`}>
+                                {
+                                    index !== (imageList.length - 1) ? 
                                         <img src={image} />
-                                    </Link>
-                            }
-                        </ImageWrapper>
-                    ))
-                }
-            </Carousel>
-        </Wrapper>
-    );
+                                    :
+                                        <Link to={`${baseUrl}/cardList`}>
+                                            <img src={image} />
+                                        </Link>
+                                }
+                            </ImageWrapper>
+                        ))
+                    }
+                </Carousel>
+            </Wrapper>
+        );
+    }
 }
 
 export default SlideShow;

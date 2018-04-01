@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import { StyledLink } from '../baseStyle';
-import tutorialOpen from '../../images/tutorial/open.png';
+import tutorialOpen from '../../images/tutorial/open.svg';
 import SlideShow from './SlideShow';
 
 const ButtonWrapper = styled.div`

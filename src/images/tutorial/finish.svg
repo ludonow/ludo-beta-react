@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="2085 0 375 614">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-iPhone_6_7_8_12);
+      }
+
+      .cls-2 {
+        fill: #ffc645;
+      }
+
+      .cls-3, .cls-6, .cls-7 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        font-size: 32px;
+        font-family: YuGothicUI-Light, Yu Gothic UI;
+        font-weight: 300;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 3px;
+      }
+
+      .cls-5 {
+        fill: #fa5555;
+      }
+
+      .cls-6 {
+        font-size: 21px;
+        font-family: YuGothicUI-Regular, Yu Gothic UI;
+        letter-spacing: 0.029em;
+      }
+
+      .cls-8 {
+        filter: url(#Rectangle_2104);
+      }
+    </style>
+    <filter id="Rectangle_2104" x="2173" y="287" width="200" height="69" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-iPhone_6_7_8_12">
+      <rect x="2085" width="375" height="614"/>
+    </clipPath>
+  </defs>
+  <g id="iPhone_6_7_8_12" data-name="iPhone 6/7/8 – 12" class="cls-1">
+    <rect class="cls-7" x="2085" width="375" height="614"/>
+    <rect id="背景" class="cls-2" width="375" height="614" transform="translate(2085)"/>
+    <text id="教學完成" class="cls-3" transform="translate(2273 238)"><tspan x="-64" y="0">教學完成</tspan></text>
+    <path id="Path_5895" data-name="Path 5895" class="cls-4" d="M1026.667,231.973l38.217,38.216,83.234-83.234" transform="translate(1198.346 -112.651)"/>
+    <g id="Group_357" data-name="Group 357" transform="translate(2085 194)">
+      <g class="cls-8" transform="matrix(1, 0, 0, 1, -2085, -194)">
+        <rect id="Rectangle_2104-2" data-name="Rectangle 2104" class="cls-5" width="182" height="51" rx="25.5" transform="translate(2182 293)"/>
+      </g>
+      <text id="開始遊戲" class="cls-6" transform="translate(188 132)"><tspan x="-42.913" y="0">開始遊戲</tspan></text>
+    </g>
+  </g>
+</svg>
