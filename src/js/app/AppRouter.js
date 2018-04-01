@@ -64,26 +64,26 @@ const isLoggedIn = (nextState, replace, callback) => {
                 browserHistory.push('/login');
             }
         } else if (response.data.status === '200') {
-            const { user } = response.data;
-            const {
-                email,
-                unVerify,
-                user_id,
-            } = user;
-            if (unVerify === true || typeof(unVerify) === "undefined") {
-                if (window.confirm('你的 email 尚未驗證，請問是否前往 email 驗證頁面？')) {
-                    browserHistory.push({
-                        pathname: '/email-confirm',
-                        state: {
-                            email
-                        },
-                    });
-                } else {
-                    callback();
-                }
-            } else {
-                callback();
-            }
+            callback();
+            // const { user } = response.data;
+            // const {
+            //     email,
+            //     unVerify,
+            // } = user;
+            // if (unVerify === true || typeof(unVerify) === "undefined") {
+            //     if (window.confirm('你的 email 尚未驗證，請問是否前往 email 驗證頁面？')) {
+            //         browserHistory.push({
+            //             pathname: '/email-confirm',
+            //             state: {
+            //                 email
+            //             },
+            //         });
+            //     } else {
+            //         callback();
+            //     }
+            // } else {
+            //     callback();
+            // }
         }
     })
     .catch((error) => {
