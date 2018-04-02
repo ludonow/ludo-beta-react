@@ -26,6 +26,7 @@ const IconWrapper = styled.div`
 
     img {
         height: 120px;
+        width: 100%;
     }
 `;
 

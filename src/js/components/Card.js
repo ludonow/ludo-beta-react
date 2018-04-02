@@ -133,18 +133,9 @@ const LinkWrapper = styled.div`
     }
 `;
 
-const TemplateCardBorderTopWrapper = styled.div`
-    align-items: center;
+const TemplateCardBorderTopWrapper = CardBorderTopWrapper.extend`
     background-color: ${props => props.isAtTemplatePage ? '#63C16A' : 'rgba(0,0,0,0.8)'};
-    color: white;
-    display: flex;
-    font-size: 12px;
-    height: 25px;
-    justify-content: center;
-    position: absolute;
-    top: 0;
     opacity: ${props => props.isShowingFrontSide ? '0': '100'};
-    width: 100%;
 `;
 
 export const Title = styled.div`
