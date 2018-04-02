@@ -104,9 +104,11 @@ const EyeIconWrapper = styled.div`
 `;
 
 export const FrontIconWrapper = styled.div`
+    width: 100px;
+
     img {
         height: 100%;
-        width: 100px;
+        width: 100%;
     }
 `;
 
@@ -139,8 +141,9 @@ const TemplateCardBorderTopWrapper = CardBorderTopWrapper.extend`
 `;
 
 export const Title = styled.div`
-    margin: 20px 0;
-    max-width: calc(100% - 40px);
+    font-size: 18px;
+    margin: 20px;
+    width: calc(100% - 40px);
 `;
 
 const ViewNumberWrapper = styled.div`
