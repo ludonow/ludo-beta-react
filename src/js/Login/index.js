@@ -226,6 +226,10 @@ class Login extends Component {
             if (response.data.status === '200') {
                 this.props.handleShouldUserBasicDataUpdate(true);
                 window.history.go(-1);
+                const isIE = /*@cc_on!@*/false || !!document.documentMode;
+                if (isIE) {
+                    window.location.reload();
+                }
             } else {
                 this.setState({
                     errorMessageFromServer: response.data.message[0]
