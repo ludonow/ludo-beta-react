@@ -10,6 +10,7 @@ export const ReportListWrapper = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 7px;
+    position: relative;
     width: 35vw;
 `;
 
