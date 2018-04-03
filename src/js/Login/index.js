@@ -225,8 +225,7 @@ class Login extends Component {
         .then((response) => {
             if (response.data.status === '200') {
                 this.props.handleShouldUserBasicDataUpdate(true);
-                browserHistory.push('/cardList');
-                window.location.reload();
+                window.history.go(-1);
             } else {
                 this.setState({
                     errorMessageFromServer: response.data.message[0]
