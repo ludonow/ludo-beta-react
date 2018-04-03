@@ -323,6 +323,7 @@ class LudoPage extends Component {
     render() {
         const {
             currentLudoReportData,
+            currentTab,
             currentUserId,
             getUserBasicData,
             handleDenounceBoxOpen,
@@ -354,7 +355,7 @@ class LudoPage extends Component {
                     <DesktopLudoPage
                         baseUrlWithSubDomain={location.pathname.split('/').slice(0, -1).join('/')}
                         currentLudoReportData={currentLudoReportData}
-                        currentTab={location.pathname.split('/').pop()}
+                        currentTab={currentTab}
                         currentUserId={currentUserId}
                         editingForm={editingForm}
                         getUserBasicData={getUserBasicData}

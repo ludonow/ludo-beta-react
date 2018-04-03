@@ -460,6 +460,7 @@ export default class App extends React.Component {
         } = this.state;
         const {
             location,
+            params,
             route,
             router_currentFormValue,
         } = this.props;
@@ -503,6 +504,7 @@ export default class App extends React.Component {
                         React.cloneElement(this.props.children,
                             {
                                 ...this.state,
+                                currentTab: params.currentTab ? params.currentTab : '',
                                 search: location.search,
                                 router_currentFormValue,
                                 clearCurrentFormValue: this.clearCurrentFormValue,

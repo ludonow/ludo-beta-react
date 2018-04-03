@@ -234,7 +234,7 @@ const AppRouter = () => (
                         );
                     }}
                     onEnter={ludoRedirect}
-                    path="ludo/:ludo_id/:currentTab"
+                    path="ludo/:ludo_id/:currentTab(/:participantId)"
                 />
                 <Route
                     component={MyCardList}
