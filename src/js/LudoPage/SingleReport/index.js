@@ -30,6 +30,7 @@ const SingleReport = ({
     index,
     isMyReport,
     label,
+    pathName,
     reportId,
     userPhotoUrl,
     video,
@@ -57,6 +58,7 @@ const SingleReport = ({
             handleDenounceBoxOpen={handleDenounceBoxOpen}
             handleShouldReportUpdate={handleShouldReportUpdate}
             isMyReport={isMyReport}
+            pathName={pathName}
             reportId={reportId}
             userPhotoUrl={userPhotoUrl}
         />
@@ -79,6 +81,7 @@ SingleReport.propTypes = {
     index: PropTypes.number.isRequired,
     isMyReport: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
+    pathName: PropTypes.string.isRequired,
     reportId: PropTypes.string.isRequired,
     userPhotoUrl: PropTypes.string.isRequired,
     video: PropTypes.string,

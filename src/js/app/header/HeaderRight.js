@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import HeaderFBPhoto from './HeaderFBPhoto';
@@ -16,7 +17,8 @@ const HeaderRight = ({
     handlePersonalCardListToggleButtonClick,
     isOpeningLudoListPage,
     isPersonalCardListVisible,
-    userBasicData
+    pathName,
+    userBasicData,
 }) => (
     <HeaderRightWrapper>
         {
@@ -33,10 +35,18 @@ const HeaderRight = ({
                 userBasicData.name ?
                     <HeaderFBPhoto userBasicData={userBasicData} />
                 :
-                    <HeaderLogIn />
+                    <HeaderLogIn pathName={pathName} />
             }
         </div>
     </HeaderRightWrapper>
 );
+
+HeaderRight.propTypes = {
+    handlePersonalCardListToggleButtonClick: PropTypes.func.isRequired,
+    isOpeningLudoListPage: PropTypes.bool.isRequired,
+    isPersonalCardListVisible: PropTypes.bool.isRequired,
+    pathName: PropTypes.string.isRequired,
+    userBasicData: PropTypes.object.isRequired,
+};
 
 export default HeaderRight;

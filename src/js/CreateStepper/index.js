@@ -184,10 +184,11 @@ class CreateStepper extends Component {
         });
         if (!this.props.currentUserId) {
             if (window.confirm('登入後即可發佈卡片！點選「確定」後進入登入頁面。')) {
-                browserHistory.push('/login');
+                browserHistory.push(`/login?redirect=${this.props.location.pathname}`);
             } else {
                 this.setState({
-                    isCardSubmitButtonDisabled: false
+                    isCardSubmitButtonDisabled: false,
+                    isSubmitting: false,
                 });
             }
         } else {

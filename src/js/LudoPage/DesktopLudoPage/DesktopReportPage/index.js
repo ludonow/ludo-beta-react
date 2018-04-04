@@ -64,6 +64,7 @@ const DesktopReportPage = ({
     handleShouldReportUpdate,
     isStageOfCardReady,
     ludoId,
+    pathName,
     playerReportList,
     router_currentFormValue,
     starterReportList,
@@ -98,6 +99,7 @@ const DesktopReportPage = ({
                     handleShouldReportUpdate={handleShouldReportUpdate}
                     isMyReport={router_currentFormValue.starter_id === currentUserId}
                     label="starter"
+                    pathName={pathName}
                     reportList={starterReportList}
                     reportUserId={starter_id}
                     userPhotoUrl={userPhotoUrl}
@@ -114,6 +116,7 @@ const DesktopReportPage = ({
                     isMyReport={router_currentFormValue.player_id === currentUserId}
                     isStageOfCardReady={isStageOfCardReady}
                     label="player"
+                    pathName={pathName}
                     reportList={playerReportList}
                     reportUserId={player_id}
                     userPhotoUrl={userPhotoUrl}
@@ -133,6 +136,7 @@ DesktopReportPage.propTypes = {
     handleShouldReportUpdate: PropTypes.func.isRequired,
     isStageOfCardReady: PropTypes.bool.isRequired,
     ludoId: PropTypes.string.isRequired,
+    pathName: PropTypes.string.isRequired,
     playerReportList: PropTypes.array,
     router_currentFormValue: PropTypes.object.isRequired,
     starterReportList: PropTypes.array,

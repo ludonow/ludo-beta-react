@@ -305,7 +305,7 @@ class LudoPage extends Component {
         if (router_ludoPageIndex === 0 || router_ludoPageIndex === 2) {
             if (!this.props.currentUserId) {
                 if (window.confirm('登入後即可加入此卡片！點選「確定」後進入登入頁面。')) {
-                    browserHistory.push('/login');
+                    browserHistory.push(`/login?redirect=${this.props.location.pathname}`);
                 }
             } else {
                 const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
@@ -385,6 +385,7 @@ class LudoPage extends Component {
             handleHasGotNewReport,
             handleShouldReportUpdate,
             hasGotNewReport,
+            location,
             params,
             router_currentFormValue,
             router_ludoPageIndex,
@@ -426,6 +427,7 @@ class LudoPage extends Component {
                         hasGotNewReport={hasGotNewReport}
                         isReportDialogOpen={isReportDialogOpen}
                         ludoId={params.ludo_id}
+                        pathName={location.pathname}
                         reportList={reportList}
                         router_currentFormValue={router_currentFormValue}
                         router_ludoPageIndex={router_ludoPageIndex}
@@ -444,6 +446,7 @@ class LudoPage extends Component {
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         ludoId={params.ludo_id}
+                        pathName={location.pathname}
                         reportList={reportList}
                         router_currentFormValue={router_currentFormValue}
                         setMobileTabIndex={this.setMobileTabIndex}

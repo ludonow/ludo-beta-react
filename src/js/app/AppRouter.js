@@ -61,7 +61,7 @@ const isLoggedIn = (nextState, replace, callback) => {
     .then((response) => {
         if (response.data.status !== '200') {
             if (window.confirm('登入後即可使用該功能！點選「確定」後進入登入頁面。')) {
-                browserHistory.push('/login');
+                browserHistory.push(`/login?redirect=${nextState.location.pathname}`);
             }
         } else if (response.data.status === '200') {
             callback();

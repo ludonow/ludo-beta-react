@@ -71,6 +71,8 @@ export default class HeaderLogIn extends Component {
     }
 
     render() {
+        const { pathName } = this.props;
+
         return(
             /* components/_header-profile */
             <div
@@ -78,7 +80,7 @@ export default class HeaderLogIn extends Component {
                 onMouseLeave={this.handleTooltipDisappear}
                 onMouseOver={this.handleTooltipShow}
             >
-                <Link to={`${baseUrl}/login`}>
+                <Link to={{ pathname: `${baseUrl}/login`, query: { redirect: pathName }}}>
                     <DefaultAvatarImg src={defaultAvatartIcon} />
                 </Link>
                 <Tooltip

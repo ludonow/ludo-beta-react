@@ -34,6 +34,7 @@ const DesktopLudoPage = ({
     handleReportExpandMoreButtonTouchTap,
     handleShouldReportUpdate,
     ludoId,
+    pathName,
     reportList,
     router_currentFormValue,
     router_ludoPageIndex,
@@ -65,6 +66,7 @@ const DesktopLudoPage = ({
                         isStageOfCardReady={getIsStageOfCardReady(router_currentFormValue.player_id)}
                         ludoId={ludoId}
                         baseUrlWithSubDomain={baseUrlWithSubDomain}
+                        pathName={pathName}
                         playerReportList={reportList.player}
                         router_currentFormValue={router_currentFormValue}
                         starterReportList={reportList.starter}
@@ -86,6 +88,7 @@ DesktopLudoPage.propTypes = {
     handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     ludoId: PropTypes.string.isRequired,
+    pathName: PropTypes.string.isRequired,
     reportList: PropTypes.object,
     router_currentFormValue: PropTypes.object.isRequired,
     router_ludoPageIndex: PropTypes.number.isRequired,

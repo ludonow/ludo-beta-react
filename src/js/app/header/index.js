@@ -154,12 +154,13 @@ class Header extends Component {
             isNavbarVisible,
             isOpeningLudoListPage,
             isPersonalCardListVisible,
-            userBasicData 
+            pathName,
+            userBasicData,
         } = this.props;
 
         const {
             isSearching,
-            searchingText
+            searchingText,
         } = this.state;
 
         return (
@@ -209,6 +210,7 @@ class Header extends Component {
                         handlePersonalCardListToggleButtonClick={this.handlePersonalCardListToggleButtonClick}
                         isOpeningLudoListPage={isOpeningLudoListPage}
                         isPersonalCardListVisible={isPersonalCardListVisible}
+                        pathName={pathName}
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>
@@ -224,6 +226,7 @@ Header.propTypes = {
     isNavbarVisible: PropTypes.bool.isRequired,
     isOpeningLudoListPage: PropTypes.bool.isRequired,
     isPersonalCardListVisible: PropTypes.bool.isRequired,
+    pathName: PropTypes.string.isRequired,
     userBasicData: PropTypes.object.isRequired,
 };
 

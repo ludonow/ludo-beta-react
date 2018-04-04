@@ -476,6 +476,7 @@ export default class App extends React.Component {
                     isNavbarVisible={isNavbarVisible}
                     isOpeningLudoListPage={isOpeningLudoListPage}
                     isPersonalCardListVisible={isPersonalCardListVisible}
+                    pathName={location.pathname}
                     userBasicData={userBasicData}
                 />
                 <MediaQuery minWidth={769}>

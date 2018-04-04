@@ -187,17 +187,33 @@ const mobileTitleStyle = {
 };
 
 class Login extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
+            bodyStyle: {},
+            buttonWidth: '',
             errorMessageFromServer: '',
             isButtonDisabled: false,
             open: true,
+            titleStyle: {},
         };
         this.disableButton = this.disableButton.bind(this);
         this.enableButton = this.enableButton.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        const width = window.innerWidth || document.body.clientWidth;
+        const bodyStyle = (width <= 768) ? mobileBodyStyle : desktopBodyStyle;
+        const buttonWidth = (width <= 768) ? '85px' : '95px';
+        const titleStyle = (width <= 768) ? mobileTitleStyle : desktopTitleStyle;
+
+        this.setState({
+            bodyStyle,
+            buttonWidth,
+            titleStyle,
+        });
     }
 
     disableButton() {
@@ -245,16 +261,13 @@ class Login extends Component {
 
     render() {
         const {
+            bodyStyle,
+            buttonWidth,
             errorMessageFromServer,
             isButtonDisabled,
             open,
+            titleStyle,
         } = this.state;
-
-        const width = window.innerWidth || document.body.clientWidth;
-
-        const bodyStyle = (width <= 768) ? mobileBodyStyle : desktopBodyStyle;
-        const titleStyle = (width <= 768) ? mobileTitleStyle : desktopTitleStyle;
-        const buttonWidth = (width <= 768) ? '85px' : '95px';
 
         return (
             <StyledDialog
@@ -278,7 +291,7 @@ class Login extends Component {
                                 padding="8px 5px 8px 30px"
                                 width="180px"
                             >
-                                <StyledAnchor href="https://api.ludonow.com/auth/facebook">
+                                <StyledAnchor href={`https://api.ludonow.com/auth/facebook${this.props.location.search}`}>
                                     facebook登入
                                     <StyledImg src={rightArrowIcon} />
                                 </StyledAnchor>
