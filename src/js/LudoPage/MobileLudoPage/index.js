@@ -109,10 +109,13 @@ class MobileLudoPage extends Component {
             handleReportExpandMoreButtonTouchTap,
             handleShouldReportUpdate,
             ludoId,
+            setMobileTabIndex,
             reportList,
             router_currentFormValue,
             userPhotoUrl,
+            tabIndex,
         } = this.props;
+
         const {
             comments_nick,
             image_location,
@@ -130,7 +133,10 @@ class MobileLudoPage extends Component {
         return (
             <div>
                 <DarkBackGround display={this.state.isShowingDarkBackGround} />
-                <Tabs defaultIndex={1}>
+                <Tabs
+                    onSelect={setMobileTabIndex}
+                    selectedIndex={tabIndex}
+                >
                     <TabList className="react-tabs__tab-list mobile-avatar">
                         <Tab 
                             className="react-tabs__tab mobile-avatar"
@@ -242,6 +248,8 @@ MobileLudoPage.propTypes = {
     ludoId: PropTypes.string,
     reportList: PropTypes.object,
     router_currentFormValue: PropTypes.object.isRequired,
+    setMobileTabIndex: PropTypes.func.isRequired,
+    tabIndex: PropTypes.number.isRequired,
     userPhotoUrl: PropTypes.string,
 };
 

@@ -505,8 +505,9 @@ export default class App extends React.Component {
                             {
                                 ...this.state,
                                 currentTab: params.currentTab ? params.currentTab : '',
-                                search: location.search,
+                                participantId: params.participantId ? params.participantId : '',
                                 router_currentFormValue,
+                                search: location.search,
                                 clearCurrentFormValue: this.clearCurrentFormValue,
                                 getCurrentLudoData: this.getCurrentLudoData,
                                 getFilteredLudoList: this.getFilteredLudoList,

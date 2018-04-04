@@ -21,6 +21,38 @@ const compareByCreatedDate = (a, b) => (
     new Date(b.CreatedAt) - new Date(a.CreatedAt)
 );
 
+const getLatestReportDate = (reportList) => {
+    let latestReportDate = '';
+    if (reportList.length !== 0) {
+        latestReportDate = reportList[reportList.length - 1].date;
+    }
+    return latestReportDate;
+}
+
+const getMobileTabIndex = (userId, ludoInfo) => {
+    let mobileTabIndex = 1;
+
+    const starterLatestReportDateString = getLatestReportDate(ludoInfo.checkList.starter_check);
+    const playerLatestReportDateString = getLatestReportDate(ludoInfo.checkList.player_check);
+    if (starterLatestReportDateString && playerLatestReportDateString) {
+        const starterLatestReportDate = new Date(starterLatestReportDateString);
+        const playerLatestReportDate = new Date(playerLatestReportDateString);
+        if (starterLatestReportDate >= playerLatestReportDate) {
+            mobileTabIndex = 0;
+        } else {
+            mobileTabIndex = 2;
+        }
+    } else if (starterLatestReportDateString) {
+        mobileTabIndex = 0;
+    } else if (playerLatestReportDateString) {
+        mobileTabIndex = 2;
+    } else {
+        mobileTabIndex = 1;
+    }
+
+    return mobileTabIndex;
+}
+
 const nullConditionFn = (props) => !props.isOpen;
 
 // child comopnents
@@ -42,9 +74,11 @@ class LudoPage extends Component {
             isJoinButtonDisabled: false,
             isShowingDeleteButton: false,
             isImageLightBoxOpen: false,
+            isMobileTabIndexSet: false,
             isPopOverOfEditOpen: false,
             isPopOverOfExpandMoreOpen: false,
             isReportDialogOpen: false,
+            mobileTabIndex: 1,
             reportList: {
                 player: [],
                 starter: [],
@@ -63,6 +97,7 @@ class LudoPage extends Component {
         this.handleReportEditing = this.handleReportEditing.bind(this);
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.setMobileTabIndex = this.setMobileTabIndex.bind(this);
     }
 
     componentWillMount() {
@@ -102,6 +137,20 @@ class LudoPage extends Component {
                 }
             });
             this.props.handleHasGotNewReport(false);
+        }
+
+        if (!this.state.isMobileTabIndexSet) {
+            let userId = '';
+            if (this.props.participantId) {
+                userId = this.props.participantId;
+            } else if (this.props.currentUserId) {
+                userId = this.props.currentUserId;
+            }
+            const mobileTabIndex = getMobileTabIndex(userId, this.props.router_currentFormValue);
+            this.setState({
+                isMobileTabIndexSet: true,
+                mobileTabIndex,
+            });
         }
     }
 
@@ -319,6 +368,12 @@ class LudoPage extends Component {
         }
     }
 
+    setMobileTabIndex(mobileTabIndex) {
+        this.setState({
+            mobileTabIndex
+        });
+    }
+
     /* components/_report-form.scss */
     render() {
         const {
@@ -346,6 +401,7 @@ class LudoPage extends Component {
             isPopOverOfExpandMoreOpen,
             isReportDialogOpen,
             isShowingDeleteButton,
+            mobileTabIndex,
             reportList,
         } = this.state;
 
@@ -390,6 +446,8 @@ class LudoPage extends Component {
                         ludoId={params.ludo_id}
                         reportList={reportList}
                         router_currentFormValue={router_currentFormValue}
+                        setMobileTabIndex={this.setMobileTabIndex}
+                        tabIndex={mobileTabIndex}
                         userPhotoUrl={userBasicData ? userBasicData.photo : ''}
                     />
                 </MediaQuery>

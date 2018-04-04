@@ -208,7 +208,6 @@ class ReportDialog extends Component {
                 return axios.put(`/apis/report/${reportId}`, reportPutBody)
             })
             .then((response) => {
-                console.log(response);
                 if (response.data.status === '200') {
                     handleReportDialogClose();
                     handleShouldReportUpdate(true);
