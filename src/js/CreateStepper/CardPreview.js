@@ -19,11 +19,6 @@ import {
     Title,
 } from '../components/Card';
 
-const GoPlaceHolder = styled.div`
-    height: 60px;
-    width: 60px;
-`
-
 const TemplateInfo = styled.div`
     margin: 10px 0;
 `;
@@ -144,7 +139,6 @@ export default class CardPreview extends Component {
                                     />
                                 </TemplateInfo>
                             </TemplateInfoWrapper>
-                            <GoPlaceHolder />
                         </CardBackWrapper>
                         <div className="card-front-info">
                             <TemplateCardBorderTop
