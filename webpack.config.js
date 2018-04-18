@@ -126,6 +126,10 @@ const common = {
                 {
                     name: 'og:type',
                     content: 'website',
+                },
+                {
+                    name: 'google-site-verification',
+                    content: '03sx2HVBZ0jbtsNlpoqQa5N3830VSDJA2CzDEcTSYQg',
                 }
             ],
             scripts: [

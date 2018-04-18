@@ -1,8 +1,8 @@
-import HalfMoonIcon from '../../images/bonus_period_icon/half-moon.png';
+import HalfMoonIcon from '../../images/bonus_period_icon/half-moon.svg';
 import SunAndMoonIcon from '../../images/bonus_period_icon/sun-and-moon.svg';
-import SunIcon from '../../images/bonus_period_icon/sun.png';
-import SunSetIcon from '../../images/bonus_period_icon/sunset.png';
-import SunRiseIcon from '../../images/bonus_period_icon/sunrise.png';
+import SunIcon from '../../images/bonus_period_icon/sun.svg';
+import SunSetIcon from '../../images/bonus_period_icon/sunset.svg';
+import SunRiseIcon from '../../images/bonus_period_icon/sunrise.svg';
 
 export const bonusPeriodIconList = [
     SunRiseIcon,
