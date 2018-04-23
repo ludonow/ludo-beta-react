@@ -68,7 +68,7 @@ export default class App extends React.Component {
             isOpeningCreateFormPage: false,
             isOpeningLudoListPage: false,
             isPersonalCardListVisible: false,
-            lastEvaluatedKey: {},
+            lastEvaluatedKey: '',
             ludoList: [],
             navbarSelectedIndex: 0,
             shouldLudoListUpdate: false,
@@ -97,6 +97,7 @@ export default class App extends React.Component {
         this.handleShouldLudoListUpdate = this.handleShouldLudoListUpdate.bind(this);
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
+        this.resetEvaluatedKey = this.resetEvaluatedKey.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
@@ -194,11 +195,11 @@ export default class App extends React.Component {
                     ludoList: response.data.ludoList.Items,
                 });
                 if (response.data.ludoList.LastEvaluatedKey) {
-                    this.setState({
-                        lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey
-                    });
-                    const lastEvaluatedKeyString = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
-                    this.getUpComingLudoList(filterCondition, lastEvaluatedKeyString);
+                    const lastEvaluatedKey = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
+                    if (Object.getOwnPropertyNames(lastEvaluatedKey).length !== 0) {
+                        this.setState({ lastEvaluatedKey });
+                        this.getUpComingLudoList(filterCondition, lastEvaluatedKey);
+                    }
                 }
             } else {
                 if (window.confirm('取得卡片列表資訊時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -207,6 +208,7 @@ export default class App extends React.Component {
             }
         })
         .catch((error) => {
+            console.error(error);
             if (window.confirm('取得卡片列表資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                 window.open("https://www.facebook.com/messages/t/ludonow");
             }
@@ -244,8 +246,18 @@ export default class App extends React.Component {
         });
     }
 
-    getUpComingLudoList(filterCondition, lastEvaluatedKeyString) {
-        axios.get(`/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKeyString}`)
+    getUpComingLudoList(filterCondition, lastEvaluatedKey) {
+        let apiUrl = '';
+        if (!filterCondition && !lastEvaluatedKey) {
+            apiUrl = `/apis/ludo`;
+        } else if (!filterCondition && lastEvaluatedKey) {
+            apiUrl = `/apis/ludo?startkey=${lastEvaluatedKey}`;
+        } else if (filterCondition && !lastEvaluatedKey) {
+            apiUrl = `/apis/ludo?${filterCondition}`;
+        } else {
+            apiUrl = `/apis/ludo?${filterCondition}&startkey=${lastEvaluatedKey}`;
+        }
+        axios.get(apiUrl)
         .then((response) => {
             if (response.data.status === '200') {
                 const newLudoList = [];
@@ -253,10 +265,16 @@ export default class App extends React.Component {
                 newLudoList.push.apply(newLudoList, response.data.ludoList.Items);
                 this.setState({
                     isInfiniteLoading: false,
-                    lastEvaluatedKey: response.data.ludoList.LastEvaluatedKey,
-                    ludoList: newLudoList
+                    ludoList: newLudoList,
                 });
+                if (response.data.ludoList.LastEvaluatedKey) {
+                    const lastEvaluatedKey = JSON.stringify(response.data.ludoList.LastEvaluatedKey);
+                    if (Object.getOwnPropertyNames(lastEvaluatedKey).length !== 0) {
+                        this.setState({ lastEvaluatedKey });
+                    }
+                }
             } else {
+                console.error(response);
                 this.setState({
                     isInfiniteLoading: false
                 });
@@ -266,6 +284,7 @@ export default class App extends React.Component {
             }
         })
         .catch((error) => {
+            console.error(error);
             this.setState({
                 isInfiniteLoading: false
             });
@@ -404,22 +423,21 @@ export default class App extends React.Component {
             lastEvaluatedKey,
             ludoList,
         } = this.state;
-        
-        const lastEvaluatedKeyString = JSON.stringify(lastEvaluatedKey);
+
         /* ref: http://blog.xuite.net/vexed/tech/27786189-document.body.scrollTop+%E6%B0%B8%E9%81%A0%E6%98%AF+0 */
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
         const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
         if (
             isOpeningLudoListPage &&
             !isInfiniteLoading &&
-            lastEvaluatedKeyString &&
+            lastEvaluatedKey &&
             scrollTop + edgeOffsetY >= scrollHeight - window.innerHeight
         ) {
             this.setState({
                 isInfiniteLoading: true
             });
             const filterCondition = this.props.location.search.replace('?', '');
-            this.getUpComingLudoList(filterCondition, lastEvaluatedKeyString);
+            this.getUpComingLudoList(filterCondition, lastEvaluatedKey);
         }
     }
 
@@ -438,6 +456,12 @@ export default class App extends React.Component {
     handleShouldUserBasicDataUpdate(boolean) {
         this.setState({
             shouldUserBasicDataUpdate: boolean
+        });
+    }
+
+    resetEvaluatedKey() {
+        this.setState({
+            lastEvaluatedKey: '',
         });
     }
 
@@ -523,6 +547,7 @@ export default class App extends React.Component {
                                 handleShouldLudoListUpdate: this.handleShouldLudoListUpdate,
                                 handleShouldReportUpdate: this.handleShouldReportUpdate,
                                 handleShouldUserBasicDataUpdate: this.handleShouldUserBasicDataUpdate,
+                                resetEvaluatedKey: this.resetEvaluatedKey,
                                 updateCurrentFormValue: this.updateCurrentFormValue
                             }
                         )
