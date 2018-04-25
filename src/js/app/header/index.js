@@ -136,9 +136,8 @@ class Header extends Component {
     }
 
     searchSubmit(searchText) {
-        const searchParams = {
-            "title": searchText
-        };
+        const key = this.props.searchFilter;
+        const searchParams = { [key]: searchText };
         /**
          * How to serialize an Object into a list of parameters?
          * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
@@ -227,6 +226,7 @@ Header.propTypes = {
     isOpeningLudoListPage: PropTypes.bool.isRequired,
     isPersonalCardListVisible: PropTypes.bool.isRequired,
     pathName: PropTypes.string.isRequired,
+    searchFilter: PropTypes.string.isRequired,
     userBasicData: PropTypes.object.isRequired,
 };
 

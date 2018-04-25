@@ -71,6 +71,7 @@ export default class App extends React.Component {
             lastEvaluatedKey: '',
             ludoList: [],
             navbarSelectedIndex: 0,
+            searchFilter: 'title',
             shouldLudoListUpdate: false,
             shouldReportUpdate: false,
             shouldUserBasicDataUpdate: false,
@@ -98,6 +99,7 @@ export default class App extends React.Component {
         this.handleShouldReportUpdate = this.handleShouldReportUpdate.bind(this);
         this.handleShouldUserBasicDataUpdate = this.handleShouldUserBasicDataUpdate.bind(this);
         this.resetEvaluatedKey = this.resetEvaluatedKey.bind(this);
+        this.setSearchFilter = this.setSearchFilter.bind(this);
         this.updateCurrentFormValue = this.updateCurrentFormValue.bind(this);
     }
 
@@ -121,6 +123,9 @@ export default class App extends React.Component {
         window.addEventListener('scroll', this.handleScrollEvent);
         const { location } = this.props;
         this.getNavbarSelectedIndex(location);
+        if (location.pathname.includes('search')) {
+            this.setSearchFilter(location.search);
+        }
     }
 
     componentDidUpdate() {
@@ -146,6 +151,9 @@ export default class App extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.location !== nextProps.location) {
             this.getNavbarSelectedIndex(nextProps.location);
+            if (nextProps.location.pathname.includes('search')) {
+                this.setSearchFilter(nextProps.location.search);
+            }
         }
     }
 
@@ -465,6 +473,11 @@ export default class App extends React.Component {
         });
     }
 
+    setSearchFilter(search) {
+        const searchFilter = search.split(/stage=(\d+)&(\S+)=(\S+)/i)[2];
+        this.setState({ searchFilter });
+    }
+
     updateCurrentFormValue(ludoForm) {
         this.setState({
             currentFormValue: ludoForm
@@ -480,6 +493,7 @@ export default class App extends React.Component {
             isOpeningLudoListPage,
             isPersonalCardListVisible,
             navbarSelectedIndex,
+            searchFilter,
             userBasicData,
         } = this.state;
         const {
@@ -501,6 +515,7 @@ export default class App extends React.Component {
                     isOpeningLudoListPage={isOpeningLudoListPage}
                     isPersonalCardListVisible={isPersonalCardListVisible}
                     pathName={location.pathname}
+                    searchFilter={searchFilter}
                     userBasicData={userBasicData}
                 />
                 <MediaQuery minWidth={769}>
