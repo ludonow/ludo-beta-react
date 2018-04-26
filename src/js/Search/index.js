@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
-import MediaQuery from 'react-responsive';
 import styled from 'styled-components';
 
 import axios from '../axios-config';
@@ -105,6 +104,7 @@ class Search extends Component {
             currentSearchStage: '1',
             isAtTemplateListPage: false,
             isCardListFetched: false,
+            isMobile: false,
             isLoadingCardList: false,
             queryKeyword: '',
             searchResult: [],
@@ -115,6 +115,10 @@ class Search extends Component {
     }
 
     componentDidMount() {
+        const width = window.innerWidth || document.body.clientWidth;
+        if (width < 768) {
+            this.setState({ isMobile: true });
+        }
         if (this.props.search !== this.state.search) {
             const newSearch = this.props.search;
             const newState = this.getStateAfterSearchConditionChange(newSearch);
@@ -180,98 +184,62 @@ class Search extends Component {
             currentSearchStage,
             isAtTemplateListPage,
             isCardListFetched,
+            isMobile,
             isLoadingCardList,
             queryKeyword,
             searchResult,
         } = this.state;
         return (
             <Wrapper>
-                <MediaQuery minWidth={769}>
-                    <TabListWrapper>
-                        {
-                            tabList.map((tabInfo, index) => (
-                                <StyledLink
-                                    key={`search-result-tab-${index}`}
-                                    to={`${baseUrl}/search?stage=${currentSearchStage}&${tabInfo.searchFilter}=${queryKeyword}`}
-                                >
-                                    <Tab selected={searchFilter === tabInfo.searchFilter}>
-                                        {tabInfo.label}
-                                    </Tab>
-                                </StyledLink>
-                            ))
-                        }
-                    </TabListWrapper>
-                    <ClassificationTabLinkList>
-                        {
-                            filterInfoList.map((filterInfo, index) => (
-                                <ButtonWrapper
-                                    key={`search-filter-${index}`}
-                                    to={`${baseUrl}/search?stage=${filterInfo.stage}&${searchFilter}=${queryKeyword}`}
-                                >
-                                    <Button
-                                        backgroundColor={filterInfo.backgroundColor}
-                                        fontSize="16px"
-                                        label={filterInfo.label}
-                                        padding="5px 0"
-                                    />
-                                </ButtonWrapper>
-                            ))
-                        }
-                    </ClassificationTabLinkList>
-                    <CenteredCardListWrapper>
-                        <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
-                        {
-                            !isLoadingCardList && isCardListFetched ?
-                                <StyledMasonry options={masonryOptions}>
-                                    <CardListContainer
-                                        emptyText="搜尋不到相關的結果"
-                                        isAtTemplateListPage={isAtTemplateListPage}
-                                        isCardListFetched={isCardListFetched}
-                                        keyPrefix="search-result"
-                                        ludoList={searchResult}
-                                    />
-                                </StyledMasonry>
-                            : null
-                        }
-                    </CenteredCardListWrapper>
-                </MediaQuery>
-                <MediaQuery maxWidth={768}>
-                    <ClassificationTabLinkList>
-                        {
-                            filterInfoList.map((filterInfo, index) => (
-                                <ButtonWrapper
-                                    key={`search-filter-${index}`}
-                                    to={`${baseUrl}/search?stage=${filterInfo.stage}&${searchFilter}=${queryKeyword}`}
-                                >
-                                    <Button
-                                        backgroundColor={filterInfo.backgroundColor}
-                                        fontSize="16px"
-                                        label={filterInfo.label}
-                                        padding="5px 0"
-                                        margin="0"
-                                        width="80px"
-                                    />
-                                </ButtonWrapper>
-                            ))
-                        }
-                    </ClassificationTabLinkList>
-                    <CenteredCardListWrapper>
-                        <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
-                        {
-                            !isLoadingCardList && isCardListFetched ?
-                                <StyledMasonry options={masonryOptions}>
-                                    <CardListContainer
-                                        emptyText="搜尋不到相關的結果"
-                                        isAtTemplateListPage={isAtTemplateListPage}
-                                        isCardListFetched={isCardListFetched}
-                                        keyPrefix="search-result"
-                                        ludoList={searchResult}
-                                    />
-                                </StyledMasonry>
-                            : null
-                        }
-                    </CenteredCardListWrapper>
-                </MediaQuery>
+                <TabListWrapper>
+                    {
+                        tabList.map((tabInfo, index) => (
+                            <StyledLink
+                                key={`search-result-tab-${index}`}
+                                to={`${baseUrl}/search?stage=${currentSearchStage}&${tabInfo.searchFilter}=${queryKeyword}`}
+                            >
+                                <Tab selected={searchFilter === tabInfo.searchFilter}>
+                                    {tabInfo.label}
+                                </Tab>
+                            </StyledLink>
+                        ))
+                    }
+                </TabListWrapper>
+                <ClassificationTabLinkList>
+                    {
+                        filterInfoList.map((filterInfo, index) => (
+                            <ButtonWrapper
+                                key={`search-filter-${index}`}
+                                to={`${baseUrl}/search?stage=${filterInfo.stage}&${searchFilter}=${queryKeyword}`}
+                            >
+                                <Button
+                                    backgroundColor={filterInfo.backgroundColor}
+                                    fontSize="16px"
+                                    label={filterInfo.label}
+                                    margin={isMobile ? 0 : ''}
+                                    padding="5px 0"
+                                    width={isMobile ? '80px' : ''}
+                                />
+                            </ButtonWrapper>
+                        ))
+                    }
+                </ClassificationTabLinkList>
+                <CenteredCardListWrapper>
+                    <CardListLoadingIcon isLoadingCardList={isLoadingCardList} />
+                    {
+                        !isLoadingCardList && isCardListFetched ?
+                            <StyledMasonry options={masonryOptions}>
+                                <CardListContainer
+                                    emptyText="搜尋不到相關的結果"
+                                    isAtTemplateListPage={isAtTemplateListPage}
+                                    isCardListFetched={isCardListFetched}
+                                    keyPrefix="search-result"
+                                    ludoList={searchResult}
+                                />
+                            </StyledMasonry>
+                        : null
+                    }
+                </CenteredCardListWrapper>
             </Wrapper>
         );
     }
