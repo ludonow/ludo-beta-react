@@ -136,14 +136,17 @@ class Header extends Component {
     }
 
     searchSubmit(searchText) {
-        const key = this.props.searchFilter;
-        const searchParams = { [key]: searchText };
+        const {
+            searchFilter,
+            searchStage,
+        } = this.props;
+        const searchParams = { [searchFilter]: searchText };
         /**
          * How to serialize an Object into a list of parameters?
          * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
          */
         const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
-        browserHistory.push(`/search?stage=1&${filterCondition}`);
+        browserHistory.push(`/search?stage=${searchStage}&${filterCondition}`);
     }
 
     render() {

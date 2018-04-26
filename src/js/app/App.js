@@ -72,6 +72,7 @@ export default class App extends React.Component {
             ludoList: [],
             navbarSelectedIndex: 0,
             searchFilter: 'title',
+            searchStage: '1',
             shouldLudoListUpdate: false,
             shouldReportUpdate: false,
             shouldUserBasicDataUpdate: false,
@@ -474,8 +475,11 @@ export default class App extends React.Component {
     }
 
     setSearchFilter(search) {
-        const searchFilter = search.split(/stage=(\d+)&(\S+)=(\S+)/i)[2];
-        this.setState({ searchFilter });
+        const searchParamList = search.split(/stage=(\d+)&(\S+)=(\S+)/i);
+        this.setState({
+            searchFilter: searchParamList[2],
+            searchStage: searchParamList[1],
+        });
     }
 
     updateCurrentFormValue(ludoForm) {
@@ -494,6 +498,7 @@ export default class App extends React.Component {
             isPersonalCardListVisible,
             navbarSelectedIndex,
             searchFilter,
+            searchStage,
             userBasicData,
         } = this.state;
         const {
@@ -516,6 +521,7 @@ export default class App extends React.Component {
                     isPersonalCardListVisible={isPersonalCardListVisible}
                     pathName={location.pathname}
                     searchFilter={searchFilter}
+                    searchStage={searchStage}
                     userBasicData={userBasicData}
                 />
                 <MediaQuery minWidth={769}>
