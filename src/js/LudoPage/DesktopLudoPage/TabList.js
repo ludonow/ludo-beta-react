@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { StyledLink } from '../../baseStyle';
 import {
-    baseUrl,
+    StyledLink,
     Tab,
     TabListWrapper,
-} from '../../baseurl-config';
+} from '../../baseStyle';
+import { baseUrl } from '../../baseurl-config';
 
 const tabList = [
     {
