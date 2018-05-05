@@ -6,7 +6,6 @@ import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import axios from '../axios-config';
 import { baseUrl } from '../baseurl-config';
-
 import App from './App';
 import BikeFestivalCertificate from '../Certificate/BikeFestival';
 import Bind from '../Bind/index';
@@ -24,6 +23,8 @@ import SignUp from '../SignUp/index';
 import Tutorial from '../Tutorial/index';
 import TutorialSlideShow from '../Tutorial/SlideShow';
 import LoadingPage from '../LoadingPage';
+import { getCorrectFormatOfResponseLudoInfo } from '../utils/format';
+
 /*
     auth        statement：
     0           not login
@@ -131,7 +132,7 @@ const ludoRedirect = (nextState, replace, callback) => {
     .then((response) => {
         if (response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
-            router_currentFormValue = response.data.ludo;
+            router_currentFormValue = getCorrectFormatOfResponseLudoInfo(response.data.ludo);
             router_currentLudoId = response.data.ludo.ludo_id;
             callback();
         } else if (response.data.status === '404') {

@@ -12,6 +12,7 @@ import { labelList } from '../assets/reportInterval';
 import viewIcon from '../../images/eye.svg';
 import Button from './Button';
 import CircleButton from './CircleButton';
+import { getCorrectFormatOfResponseLudoInfo } from '../utils/format';
 
 export const CardBackBackgroundColorList = [
     '#FFFF9F',
@@ -206,6 +207,8 @@ const Card = ({
     isThisCardFlipped,
     singleLudoObject,
 }) => {
+    const correctFormOfLudoInfo = getCorrectFormatOfResponseLudoInfo(singleLudoObject);
+
     const {
         duration,
         interval,
@@ -216,7 +219,7 @@ const Card = ({
         tags,
         title,
         views,
-    } = singleLudoObject;
+    } = correctFormOfLudoInfo;
 
     const bonusPeriodIndex = getBonusPeriodIndexFromPeriod(period);
     const renderedInterval = interval ? Number(interval) : 1;

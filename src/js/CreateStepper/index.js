@@ -9,6 +9,10 @@ import Content from './Content';
 import DiscardAlert from '../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../components/StepperCloseIcon';
+import {
+    getCorrectFormatOfRequestLudoInfo,
+    getCorrectFormatOfResponseLudoInfo,
+} from '../utils/format';
 
 const initialState = {
     contentType: '',
@@ -144,6 +148,7 @@ class CreateStepper extends Component {
             */
             if (response.data.status === '200') {
                 const isMyTemplate = response.data.ludo.starter_id === this.props.currentUserId;
+                const ludoCreateForm = getCorrectFormatOfResponseLudoInfo(response.data.ludo);
                 this.setState({
                     contentType: this.getContentTypeByFormData(response.data.ludo),
                     isAtTemplatePage: true,
@@ -153,7 +158,7 @@ class CreateStepper extends Component {
                     isPreviewButtonDisabled: false,
                     isTemplateSaveButtonDisabled: false,
                     isTemplateSubmitButtonDisabled: false,
-                    ludoCreateForm: response.data.ludo,
+                    ludoCreateForm,
                     step: stepOfPreview,
                 });
             } else {
@@ -197,8 +202,9 @@ class CreateStepper extends Component {
                 images,
                 ludoCreateForm,
             } = this.state;
+            const requestLudoInfo = getCorrectFormatOfRequestLudoInfo(ludoCreateForm);
             let defaultCardCreateForm = {
-                ...ludoCreateForm,
+                ...requestLudoInfo,
                 template_id: this.props.params.templateId,
             };
             const isUpdatingImage = this.isUpdatingImage(contentType, images);
@@ -401,8 +407,6 @@ class CreateStepper extends Component {
             introduction,
             video,
         } = ludoCreateForm;
-        console.log(image_location);
-        console.log(!image_location);
         if (
             (contentType === 'image' && images.length === 1) ||
             (contentType === 'text' && introduction) ||
@@ -423,7 +427,6 @@ class CreateStepper extends Component {
             (contentType === 'text' && !introduction) ||
             (contentType === 'video' && !video)
         ) {
-            console.log('hi');
             this.setState({
                 contentType,
                 isCardSubmitButtonDisabled: true,
@@ -775,7 +778,13 @@ class CreateStepper extends Component {
             isSubmitting: true,
             isTemplateSubmitButtonDisabled: true
         });
-        const { contentType } = this.state;
+        const {
+            contentType,
+            ludoCreateForm,
+        } = this.state;
+
+        const requestLudoInfo = getCorrectFormatOfRequestLudoInfo(ludoCreateForm);
+
         if (contentType === 'image') {
             const imagePost = new FormData();
             imagePost.append('file', this.state.images[0]);
@@ -790,9 +799,8 @@ class CreateStepper extends Component {
                 }
             })
             .then(imageLocation => {
-                const { ludoCreateForm } = this.state;
                 const ludoTemplateForm = {
-                    ...ludoCreateForm,
+                    ...requestLudoInfo,
                     image_location: imageLocation,
                     type: 'blank',
                     video: '',
@@ -867,9 +875,8 @@ class CreateStepper extends Component {
                 }
             });
         } else if (contentType === 'text' || contentType === 'video') {
-            const { ludoCreateForm } = this.state;
             const ludoTemplateForm = {
-                ...ludoCreateForm,
+                ...requestLudoInfo,
                 type: 'blank',
             };
             axios.post('/apis/ludo', ludoTemplateForm)
