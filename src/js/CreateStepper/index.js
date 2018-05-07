@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import styled from 'styled-components';
-import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../axios-config';
@@ -11,8 +10,10 @@ import Content from './Content';
 import DiscardAlert from '../components/DiscardAlert';
 import StepButtonList from './StepButtonList';
 import StepperCloseIcon from '../components/StepperCloseIcon';
-
-promiseFinally.shim();
+import {
+    getCorrectFormatOfRequestLudoInfo,
+    getCorrectFormatOfResponseLudoInfo,
+} from '../utils/format';
 
 const initialState = {
     contentType: '',
@@ -153,6 +154,7 @@ class CreateStepper extends Component {
             */
             if (response.data.status === '200') {
                 const isMyTemplate = response.data.ludo.starter_id === this.props.currentUserId;
+                const ludoCreateForm = getCorrectFormatOfResponseLudoInfo(response.data.ludo);
                 this.setState({
                     contentType: this.getContentTypeByFormData(response.data.ludo),
                     isAtTemplatePage: true,
@@ -162,25 +164,25 @@ class CreateStepper extends Component {
                     isPreviewButtonDisabled: false,
                     isTemplateSaveButtonDisabled: false,
                     isTemplateSubmitButtonDisabled: false,
-                    ludoCreateForm: response.data.ludo,
+                    ludoCreateForm,
                     step: stepOfPreview,
                 });
             } else {
-                if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
-                    window.open("https://www.facebook.com/messages/t/ludonow");
-                }
                 this.setState({
                     isCardSubmitButtonDisabled: false
                 });
+                if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
             }
         })
         .catch((error) => {
-            if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                window.open("https://www.facebook.com/messages/t/ludonow");
-            }
             this.setState({
                 isCardSubmitButtonDisabled: false
             });
+            if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                window.open("https://www.facebook.com/messages/t/ludonow");
+            }
         });
     }
 
@@ -217,10 +219,11 @@ class CreateStepper extends Component {
         });
         if (!this.props.currentUserId) {
             if (window.confirm('登入後即可發佈卡片！點選「確定」後進入登入頁面。')) {
-                browserHistory.push('/login');
+                browserHistory.push(`/login?redirect=${this.props.location.pathname}`);
             } else {
                 this.setState({
-                    isCardSubmitButtonDisabled: false
+                    isCardSubmitButtonDisabled: false,
+                    isSubmitting: false,
                 });
             }
         } else {
@@ -229,8 +232,9 @@ class CreateStepper extends Component {
                 images,
                 ludoCreateForm,
             } = this.state;
+            const requestLudoInfo = getCorrectFormatOfRequestLudoInfo(ludoCreateForm);
             let defaultCardCreateForm = {
-                ...ludoCreateForm,
+                ...requestLudoInfo,
                 template_id: this.props.params.templateId,
             };
             const isUpdatingImage = this.isUpdatingImage(contentType, images);
@@ -255,6 +259,10 @@ class CreateStepper extends Component {
                     return axios.post('/apis/ludo', cardCreateFormWithUpdatedImage)
                 })
                 .then((response) => {
+                    this.setState({
+                        isCardSubmitButtonDisabled: false,
+                        isSubmitting: false,
+                    });
                     if (response.data.status === '200') {
                         const { ludo_id } = response.data;
                         /* get ludo information after create ludo post */
@@ -268,72 +276,63 @@ class CreateStepper extends Component {
                                 403: no authority 
                             */
                             if (response.data.status === '200') {
-                                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                                const { getUserBasicData } = this.props;
                                 getUserBasicData();
-                                handleShouldProfileUpdate(true);
                                 browserHistory.push(`/ludo/${ludo_id}`);
                             } else {
                                 if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                                     window.open("https://www.facebook.com/messages/t/ludonow");
                                 }
-                                this.setState({
-                                    isCardSubmitButtonDisabled: false
-                                });
                             }
                         })
                         .catch((error) => {
                             if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                                 window.open("https://www.facebook.com/messages/t/ludonow");
                             }
-                            this.setState({
-                                isCardSubmitButtonDisabled: false
-                            });
                         });
                     } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                        this.setState({
+                            isCardSubmitButtonDisabled: false,
+                            isSubmitting: false,
+                        });
                         window.alert('燃料或彈珠數不足: ' + response.data.message);
-                        this.setState({
-                            isCardSubmitButtonDisabled: false
-                        });
                     } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                        window.alert('有部分欄位為空白');
                         this.setState({
-                            isCardSubmitButtonDisabled: false
+                            isCardSubmitButtonDisabled: false,
+                            isSubmitting: false,
                         });
+                        window.alert('有部分欄位為空白');
                     } else {
+                        this.setState({
+                            isCardSubmitButtonDisabled: false,
+                            isSubmitting: false,
+                        });
                         if (window.confirm('發送Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
-                        this.setState({
-                            isCardSubmitButtonDisabled: false
-                        });
                     }
                 })
                 .catch((error) => {
+                    this.setState({
+                        isCardSubmitButtonDisabled: false,
+                        isSubmitting: false,
+                    });
                     if (window.confirm('發送Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isCardSubmitButtonDisabled: false
-                    });
                 })
-                .finally(() => {
-                    this.setState({
-                        isSubmitting: false
-                    });
-                });
             } else { // not isUpdatingImage
-                const cardCreateFormWithoutImageLocation = {
-                    ...defaultCardCreateForm,
-                    image_location: '',
-                    video: contentType === 'text' ? '' : defaultCardCreateForm.video,
-                };
-                axios.post('/apis/ludo', cardCreateFormWithoutImageLocation)
+                axios.post('/apis/ludo', defaultCardCreateForm)
                 .then((response) => {
                     if (response.data.status === '200') {
                         const { ludo_id } = response.data;
                         /* get ludo information after create ludo post */
                         axios.get(`/apis/ludo/${ludo_id}`)
                         .then((response) => {
+                            this.setState({
+                                isCardSubmitButtonDisabled: false,
+                                isSubmitting: false,
+                            });
                             /*
                                 response.data.status
                                 200: everything's fine;
@@ -342,58 +341,54 @@ class CreateStepper extends Component {
                                 403: no authority 
                             */
                             if (response.data.status === '200') {
-                                const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                                const { getUserBasicData } = this.props;
                                 getUserBasicData();
-                                handleShouldProfileUpdate(true);
                                 browserHistory.push(`/ludo/${ludo_id}`);
                             } else {
                                 if (window.confirm('取得Ludo卡片資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                                     window.open("https://www.facebook.com/messages/t/ludonow");
                                 }
-                                this.setState({
-                                    isCardSubmitButtonDisabled: false
-                                });
                             }
                         })
                         .catch((error) => {
+                            this.setState({
+                                isCardSubmitButtonDisabled: false,
+                                isSubmitting: false,
+                            });
                             if (window.confirm('取得Ludo卡片資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                                 window.open("https://www.facebook.com/messages/t/ludonow");
                             }
-                            this.setState({
-                                isCardSubmitButtonDisabled: false
-                            });
                         });
                     } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                        this.setState({
+                            isCardSubmitButtonDisabled: false,
+                            isSubmitting: false,
+                        });
                         window.alert('燃料或彈珠數不足: ' + response.data.message);
-                        this.setState({
-                            isCardSubmitButtonDisabled: false
-                        });
                     } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                        window.alert('有部分欄位為空白');
                         this.setState({
-                            isCardSubmitButtonDisabled: false
+                            isCardSubmitButtonDisabled: false,
+                            isSubmitting: false,
                         });
+                        window.alert('有部分欄位為空白');
                     } else {
+                        this.setState({
+                            isCardSubmitButtonDisabled: false,
+                            isSubmitting: false,
+                        });
                         if (window.confirm('發送Ludo卡片資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
-                        this.setState({
-                            isCardSubmitButtonDisabled: false
-                        });
                     }
                 })
                 .catch((error) => {
+                    this.setState({
+                        isCardSubmitButtonDisabled: false,
+                        isSubmitting: false,
+                    });
                     if (window.confirm('發送Ludo卡片資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isCardSubmitButtonDisabled: false
-                    });
-                })
-                .finally(() => {
-                    this.setState({
-                        isSubmitting: false
-                    });
                 });
             }
         }
@@ -457,7 +452,7 @@ class CreateStepper extends Component {
                 step: 2,
             });
         } else if (
-            (contentType === 'image' && images.length === 0) ||
+            (!isAtTemplatePage && contentType === 'image' && images.length === 0) ||
             (isAtTemplatePage && contentType === 'image' && images.length === 0 && !image_location) ||
             (contentType === 'text' && !introduction) ||
             (contentType === 'video' && !video)
@@ -671,34 +666,37 @@ class CreateStepper extends Component {
         const isSureToDelete = window.confirm('你確定要刪除這個Ludo模板嗎？');
         // const isSureToDelete = window.confirm('Are you sure to delete this template ludo?');
         if (isSureToDelete) {
+            this.setState({ isSubmitting: true });
             axios.delete(`/apis/ludo/${this.props.params.templateId}`)
             .then(response => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateDeleteButtonDisabled: false,
+                });
                 if (response.data.status == '200') {
-                    const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                    const { getUserBasicData } = this.props;
                     getUserBasicData();
-                    handleShouldProfileUpdate(true);
                     window.alert('成功刪除模板');
                     browserHistory.push('/cardList');
                 } else {
                     if (window.confirm('刪除Ludo模板時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isTemplateDeleteButtonDisabled: false
-                    });
                 }
             })
             .catch(error => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateDeleteButtonDisabled: false,
+                });
                 if (window.confirm('刪除Ludo模板時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                this.setState({
-                    isTemplateDeleteButtonDisabled: false
-                });
             });
         } else {
             this.setState({
-                isTemplateDeleteButtonDisabled: false
+                isSubmitting: false,
+                isTemplateDeleteButtonDisabled: false,
             });
         }
     }
@@ -707,7 +705,6 @@ class CreateStepper extends Component {
         event.preventDefault();
         const {
             getUserBasicData,
-            handleShouldProfileUpdate,
             params,
         } = this.props;
         const { templateId } = params;
@@ -746,55 +743,52 @@ class CreateStepper extends Component {
                 return axios.put(`/apis/ludo/${templateId}`, ludoTemplateFormWithUpdatedImage)
             })
             .then((response) => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateSaveButtonDisabled: false,
+                });
                 if (response.data.status == '200') {
                     getUserBasicData();
-                    handleShouldProfileUpdate(true);
                     window.alert('已變更儲存');
                 } else {
                     if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isTemplateSaveButtonDisabled: false
-                    });
                 }
             })
             .catch((error) => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateSaveButtonDisabled: false,
+                });
                 if (window.confirm('修改Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                this.setState({
-                    isTemplateSaveButtonDisabled: false
-                });
             })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
-            });
         } else {
             axios.put(`/apis/ludo/${templateId}`, ludoTemplateForm)
             .then(response => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateSaveButtonDisabled: false,
+                });
                 if (response.data.status == '200') {
                     getUserBasicData();
-                    handleShouldProfileUpdate(true);
                     window.alert('已變更儲存');
                 } else {
                     if (window.confirm('修改Ludo模板資訊時伺服器回傳資料不正確，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isTemplateSaveButtonDisabled: false
-                    });
                 }
             })
             .catch(error => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateSaveButtonDisabled: false,
+                });
                 if (window.confirm('修改Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                this.setState({
-                    isTemplateSaveButtonDisabled: false
-                });
             });
         }
     }
@@ -814,7 +808,13 @@ class CreateStepper extends Component {
             isSubmitting: true,
             isTemplateSubmitButtonDisabled: true
         });
-        const { contentType } = this.state;
+        const {
+            contentType,
+            ludoCreateForm,
+        } = this.state;
+
+        const requestLudoInfo = getCorrectFormatOfRequestLudoInfo(ludoCreateForm);
+
         if (contentType === 'image') {
             const imagePost = new FormData();
             imagePost.append('file', this.state.images[0]);
@@ -829,9 +829,8 @@ class CreateStepper extends Component {
                 }
             })
             .then(imageLocation => {
-                const { ludoCreateForm } = this.state;
                 const ludoTemplateForm = {
-                    ...ludoCreateForm,
+                    ...requestLudoInfo,
                     image_location: imageLocation,
                     type: 'blank',
                     video: '',
@@ -844,6 +843,10 @@ class CreateStepper extends Component {
                     /* get ludo information after create ludo post */
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then((response) => {
+                        this.setState({
+                            isSubmitting: false,
+                            isTemplateSubmitButtonDisabled: false,
+                        });
                         /*
                             response.data.status
                             200: everything's fine;
@@ -852,63 +855,58 @@ class CreateStepper extends Component {
                             403: no authority 
                         */
                         if (response.data.status === '200') {
-                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            const { getUserBasicData } = this.props;
                             getUserBasicData();
-                            handleShouldProfileUpdate(true);
                             browserHistory.push(`/template/${ludo_id}`);
                         } else {
                             if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                                 window.open("https://www.facebook.com/messages/t/ludonow");
                             }
-                            this.setState({
-                                isTemplateSubmitButtonDisabled: false
-                            });
                         }
                     })
                     .catch((error) => {
+                        this.setState({
+                            isSubmitting: false,
+                            isTemplateSubmitButtonDisabled: false,
+                        });
                         if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
-                        this.setState({
-                            isTemplateSubmitButtonDisabled: false
-                        });
                     });
                 } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                    this.setState({
+                        isSubmitting: false,
+                        isTemplateSubmitButtonDisabled: false,
+                    });
                     window.alert('燃料或彈珠數不足: ' + response.data.message);
-                    this.setState({
-                        isTemplateSubmitButtonDisabled: false
-                    });
                 } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                    window.alert('有部分欄位為空白');
                     this.setState({
-                        isTemplateSubmitButtonDisabled: false
+                        isSubmitting: false,
+                        isTemplateSubmitButtonDisabled: false,
                     });
+                    window.alert('有部分欄位為空白');
                 } else {
+                    this.setState({
+                        isSubmitting: false,
+                        isTemplateSubmitButtonDisabled: false,
+                    });
                     if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isTemplateSubmitButtonDisabled: false
-                    });
                 }
             })
             .catch((error) => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateSubmitButtonDisabled: false,
+                });
                 if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                this.setState({
-                    isTemplateSubmitButtonDisabled: false
-                });
-            })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
             });
         } else if (contentType === 'text' || contentType === 'video') {
-            const { ludoCreateForm } = this.state;
             const ludoTemplateForm = {
-                ...ludoCreateForm,
+                ...requestLudoInfo,
                 type: 'blank',
             };
             axios.post('/apis/ludo', ludoTemplateForm)
@@ -918,6 +916,10 @@ class CreateStepper extends Component {
                     /* get ludo information after create ludo post */
                     axios.get(`/apis/ludo/${ludo_id}`)
                     .then((response) => {
+                        this.setState({
+                            isSubmitting: false,
+                            isTemplateSubmitButtonDisabled: false,
+                        });
                         /*
                             response.data.status
                             200: everything's fine;
@@ -926,62 +928,59 @@ class CreateStepper extends Component {
                             403: no authority 
                         */
                         if (response.data.status === '200') {
-                            const { getUserBasicData, handleShouldProfileUpdate } = this.props;
+                            const { getUserBasicData } = this.props;
                             getUserBasicData();
-                            handleShouldProfileUpdate(true);
                             browserHistory.push(`/template/${ludo_id}`);
                         } else {
                             if (window.confirm('取得Ludo模板資訊時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                                 window.open("https://www.facebook.com/messages/t/ludonow");
                             }
-                            this.setState({
-                                isTemplateSubmitButtonDisabled: false
-                            });
                         }
                     })
                     .catch((error) => {
+                        this.setState({
+                            isSubmitting: false,
+                            isTemplateSubmitButtonDisabled: false,
+                        });
                         if (window.confirm('取得Ludo模板資訊時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                             window.open("https://www.facebook.com/messages/t/ludonow");
                         }
-                        this.setState({
-                            isTemplateSubmitButtonDisabled: false
-                        });
                     });
                 } else if (response.data.status === '400' && response.data.message === 'Your Fuel is out.') {
+                    this.setState({
+                        isSubmitting: false,
+                        isTemplateSubmitButtonDisabled: false,
+                    });
                     window.alert('燃料或彈珠數不足: ' + response.data.message);
-                    this.setState({
-                        isTemplateSubmitButtonDisabled: false
-                    });
                 } else if (response.data.status === '400' && response.data.message === 'some fields are blank') {
-                    window.alert('有部分欄位為空白');
                     this.setState({
-                        isTemplateSubmitButtonDisabled: false
+                        isSubmitting: false,
+                        isTemplateSubmitButtonDisabled: false,
                     });
+                    window.alert('有部分欄位為空白');
                 } else {
+                    this.setState({
+                        isSubmitting: false,
+                        isTemplateSubmitButtonDisabled: false,
+                    });
                     if (window.confirm('發送Ludo模板資料時伺服器未回傳正確資料，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
                     }
-                    this.setState({
-                        isTemplateSubmitButtonDisabled: false
-                    });
                 }
             })
             .catch((error) => {
+                this.setState({
+                    isSubmitting: false,
+                    isTemplateSubmitButtonDisabled: false,
+                });
                 if (window.confirm('發送Ludo模板資料時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
-                this.setState({
-                    isTemplateSubmitButtonDisabled: false
-                });
-            })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
             });
         } else {
             this.setState({
-                isSubmitting: false
+                isSubmitting: false,
+                isTemplateSubmitButtonDisabled: false,
             });
             window.alert('請選擇模板形式');
         }

@@ -109,10 +109,14 @@ class MobileLudoPage extends Component {
             handleReportExpandMoreButtonTouchTap,
             handleShouldReportUpdate,
             ludoId,
+            pathName,
+            setMobileTabIndex,
             reportList,
             router_currentFormValue,
             userPhotoUrl,
+            tabIndex,
         } = this.props;
+
         const {
             comments_nick,
             image_location,
@@ -130,7 +134,10 @@ class MobileLudoPage extends Component {
         return (
             <div>
                 <DarkBackGround display={this.state.isShowingDarkBackGround} />
-                <Tabs defaultIndex={1}>
+                <Tabs
+                    onSelect={setMobileTabIndex}
+                    selectedIndex={tabIndex}
+                >
                     <TabList className="react-tabs__tab-list mobile-avatar">
                         <Tab 
                             className="react-tabs__tab mobile-avatar"
@@ -180,6 +187,7 @@ class MobileLudoPage extends Component {
                             handleShouldReportUpdate={handleShouldReportUpdate}
                             isMyReport={starter_id === currentUserId}
                             label="starter"
+                            pathName={pathName}
                             reportList={reportList.starter}
                             reportUserId={starter_id}
                             userPhotoUrl={userPhotoUrl}
@@ -208,6 +216,7 @@ class MobileLudoPage extends Component {
                             handleShouldReportUpdate={handleShouldReportUpdate}
                             isMyReport={player_id === currentUserId}
                             label="player"
+                            pathName={pathName}
                             reportList={reportList.player}
                             reportUserId={playerId}
                             userPhotoUrl={userPhotoUrl}
@@ -240,8 +249,11 @@ MobileLudoPage.propTypes = {
     handleReportExpandMoreButtonTouchTap: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     ludoId: PropTypes.string,
+    pathName: PropTypes.string.isRequired,
     reportList: PropTypes.object,
     router_currentFormValue: PropTypes.object.isRequired,
+    setMobileTabIndex: PropTypes.func.isRequired,
+    tabIndex: PropTypes.number.isRequired,
     userPhotoUrl: PropTypes.string,
 };
 

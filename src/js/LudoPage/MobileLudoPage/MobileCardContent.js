@@ -136,7 +136,7 @@ MobileCardContent.propTypes = {
     introduction: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string.isRequired),
     title: PropTypes.string.isRequired,
-    video: PropTypes.string.isRequired,
+    video: PropTypes.string,
 };
 
 export default MobileCardContent;

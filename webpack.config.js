@@ -108,29 +108,37 @@ const common = {
             headHtmlSnippet: '<style> body img#loading { display: block; margin: 0 auto; width: 50vw; } </style>',
             meta: [
                 {
+                    content: 'IE=Edge',
+                    'http-equiv': 'X-UA-Compatible',
+                },
+                {
                     name: 'viewport',
-                    content: 'width=device-width, initial-scale=1'
+                    content: 'width=device-width, initial-scale=1',
                 },
                 {
                     name: 'og:title',
-                    content: 'LUDO Now 如荼生活'
+                    content: 'LUDO Now 如荼生活',
                 },
                 {
                     name: 'og:description',
-                    content: 'LUDO 是一種對生活的態度：生活遊戲化。 我們將提供一個平台網站讓生活中的困難點能被有趣地解決'
+                    content: 'LUDO 是一種對生活的態度：生活遊戲化。 我們將提供一個平台網站讓生活中的困難點能被有趣地解決',
                 },
                 {
                     name: 'og:type',
-                    content: 'website'
+                    content: 'website',
+                },
+                {
+                    name: 'google-site-verification',
+                    content: '03sx2HVBZ0jbtsNlpoqQa5N3830VSDJA2CzDEcTSYQg',
                 }
             ],
             scripts: [
                 {
                     src: '/hideImage.js',
-                    type: 'text/javascript'
+                    type: 'text/javascript',
                 }
             ],
-            title: 'Ludo'
+            title: 'Ludo',
         }),
         new webpack.NoEmitOnErrorsPlugin()
     ]

@@ -6,6 +6,7 @@ import Formsy from 'formsy-react';
 
 import axios from '../axios-config';
 import DiscardAlert from '../components/DiscardAlert';
+import StepperCloseIcon from '../components/StepperCloseIcon';
 import FormsyHOCInput from '../app/FormsyHOCInput';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
 const StyledForm = styled(Formsy.Form)`
     display: flex;
     justify-content: center;
+    margin-top: 35px;
 `;
 
 class EmailConfirm extends Component {
@@ -99,6 +101,7 @@ class EmailConfirm extends Component {
                 onRequestClose={this.handleCloseClick}
                 open={open}
             >
+                <StepperCloseIcon handleCloseClick={this.handleCloseClick} />
                 <StyledForm
                     onInvalid={this.disableButton}
                     onValid={this.enableButton}

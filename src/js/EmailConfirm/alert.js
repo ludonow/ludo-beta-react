@@ -5,6 +5,7 @@ import Dialog from 'material-ui/Dialog';
 import Formsy from 'formsy-react';
 
 import axios from '../axios-config';
+import StepperCloseIcon from '../components/StepperCloseIcon';
 import FormsyHOCInput from '../app/FormsyHOCInput';
 
 const initialState = {
@@ -15,12 +16,14 @@ const initialState = {
 
 // styled comopnents
 const ResendWrapper = styled.div`
+    display: none;
     margin-top: 20px;
 `;
 
 const StyledForm = styled(Formsy.Form)`
     display: flex;
     justify-content: center;
+    margin-top: 35px;
 `;
 
 const TextCenter = styled.div`
@@ -34,8 +37,22 @@ class EmailConfirm extends Component {
     constructor(props) {
         super(props);
         this.state = initialState;
+        this.disableButton = this.disableButton.bind(this);
+        this.enableButton = this.enableButton.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    disableButton() {
+        this.setState({
+            isSubmitButtonDisabled: true
+        });
+    }
+
+    enableButton() {
+        this.setState({
+            isSubmitButtonDisabled: false
+        });
     }
 
     handleDialogClose() {
@@ -84,8 +101,11 @@ class EmailConfirm extends Component {
                 open={open}
                 title="驗證信件已送出"
             >
+                <StepperCloseIcon handleCloseClick={this.handleDialogClose} />
                 <div>
-                    請到該電子信箱開啟驗證信件進行驗證
+                    請到以下電子信箱<br />
+                    {email}<br />
+                    開啟驗證信件進行驗證
                 </div>
                 <ResendWrapper>
                     <TextCenter>

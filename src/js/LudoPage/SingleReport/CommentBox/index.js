@@ -19,9 +19,9 @@ const LoginButtonWrapper = styled.div`
     text-align: center;
 `;
 
-const LoginButton = () => (
+const LoginButton = ({ pathName }) => (
     <LoginButtonWrapper>
-        <Link to={`${baseUrl}/login`}>
+        <Link to={{ pathname: `${baseUrl}/login`, query: { redirect: pathName }}}>
             登入後即可留言
         </Link>
     </LoginButtonWrapper>
@@ -75,6 +75,7 @@ class CommentBox extends Component {
             handleDenounceBoxOpen,
             handleShouldReportUpdate,
             isMyReport,
+            pathName,
             reportId,
             userPhotoUrl,
         } = this.props;
@@ -103,6 +104,7 @@ class CommentBox extends Component {
                 <CommentFormWithNotLogin
                     currentLudoId={currentLudoId}
                     currentUserId={currentUserId}
+                    pathName={pathName}
                     reportId={reportId}
                     updateTempCommentList={this.updateTempCommentList}
                     updateTempCommentListAfterPost={this.updateTempCommentListAfterPost}

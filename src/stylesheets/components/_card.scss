@@ -60,14 +60,6 @@ $grid-item_total-width: $grid-item_width + 2*13px;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-
-        .title {
-            margin: 20px;
-        }
-
-        .duration {
-            margin-bottom: 15px;
-        }
     }
     .card-views {
         @include backface-visibility(hidden);

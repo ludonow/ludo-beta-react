@@ -8,6 +8,10 @@ import {
 
 const AvatarWrapper = styled.div`
     ${props => props.usedInReport ? "position : absolute;" : ""}
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
     .avatar-in-comments {
         .avatar-container__photo  {
             height: 35px;

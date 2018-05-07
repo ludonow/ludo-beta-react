@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { baseUrl } from '../baseurl-config';
 import Button from '../components/Button';
 import { StyledLink } from '../baseStyle';
-import tutorialOpen from '../../images/tutorial/open.png';
+import tutorialOpen from '../../images/tutorial/open.svg';
 import SlideShow from './SlideShow';
 
 const ButtonWrapper = styled.div`
@@ -13,23 +13,29 @@ const ButtonWrapper = styled.div`
     flex-direction: column;
     height: 100%;
     justify-content: flex-end;
+    position: absolute;
+    width: 100%;
 `;
 
 const ImageWrapper = styled.div`
     display: flex;
+    height: 100%;
     justify-content: center;
+    position: absolute;
+    width: 100%;
 
     img {
         height: 100%;
         max-height: 1600px;
         max-width: 1000px;
-        position: absolute;
         z-index: -1;
     }
 `;
 
 const Wrapper = styled.div`
+    display: flex;
     height: calc(100vh - 70px);
+    width: 100%;
 `;
 
 const Tutorial = () => (

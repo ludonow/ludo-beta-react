@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import promiseFinally from 'promise.prototype.finally';
 import Dialog from 'material-ui/Dialog';
 
 import axios from '../../axios-config';
@@ -10,8 +10,6 @@ import DiscardAlert from '../../components/DiscardAlert';
 import StepperCloseIcon from '../../components/StepperCloseIcon';
 import Content from './Content';
 import StepButtonList from './StepButtonList';
-
-promiseFinally.shim();
 
 const initialState = {
     imageLocation: '',
@@ -171,6 +169,13 @@ class ReportDialog extends Component {
         this.setState({ isSubmitting: true });
 
         const {
+            currentUserId,
+            handleReportDialogClose,
+            handleShouldReportUpdate,
+            ludoId,
+        } = this.props;
+
+        const {
             imageLocation,
             images,
             reportId,
@@ -204,14 +209,9 @@ class ReportDialog extends Component {
             })
             .then((response) => {
                 if (response.data.status === '200') {
-                    const {
-                        handleReportDialogClose,
-                        handleShouldProfileUpdate,
-                        handleShouldReportUpdate,
-                    } = this.props;
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
+                    browserHistory.push(`/ludo/${ludoId}/report-list/${currentUserId}`);
                 } else {
                     if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
@@ -238,14 +238,9 @@ class ReportDialog extends Component {
             axios.put(`/apis/report/${reportId}`, reportPutBody)
             .then((response) => {
                 if (response.data.status === '200') {
-                    const {
-                        handleReportDialogClose,
-                        handleShouldProfileUpdate,
-                        handleShouldReportUpdate,
-                    } = this.props;
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
+                    browserHistory.push(`/ludo/${ludoId}/report-list/${currentUserId}`);
                 } else {
                     if (window.confirm('送出回報編輯資料時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
@@ -293,11 +288,17 @@ class ReportDialog extends Component {
             isSubmitting: true,
         });
         const {
+            currentUserId,
             handleReportDialogClose,
-            handleShouldProfileUpdate,
             handleShouldReportUpdate,
+            ludoId,
+            router_currentFormValue,
         } = this.props;
-        const { reportType } = this.state;
+        const {
+            reportType,
+            text,
+            video,
+        } = this.state;
         if (reportType === 'image') {
             const imagePost = new FormData();
             imagePost.append('file', this.state.images[0]);
@@ -312,15 +313,6 @@ class ReportDialog extends Component {
                 }
             })
             .then(imageLocation => {
-                const {
-                    currentUserId,
-                    ludoId,
-                    router_currentFormValue,
-                } = this.props;
-                const {
-                    text,
-                    video,
-                } = this.state;
                 let whoIsUser = '';
                 (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
                 const ludoReportPost = {
@@ -335,8 +327,8 @@ class ReportDialog extends Component {
             .then(response => {
                 if (response.data.status === '200') {
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
+                    browserHistory.push(`/ludo/${ludoId}/report-list/${currentUserId}`);
                 } else {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
@@ -347,28 +339,20 @@ class ReportDialog extends Component {
                         throw new Error(response.data.err);
                     }
                 }
+                this.setState({
+                    isSubmitting: false
+                });
             })
             .catch(error => {
                 console.error('ReportDialog handleSubmit catch an error: ', error);
+                this.setState({
+                    isSubmitting: false
+                });
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
             })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
-            });
         } else if (reportType === 'text' || reportType === 'video') {
-            const {
-                currentUserId,
-                ludoId,
-                router_currentFormValue,
-            } = this.props;
-            const {
-                text,
-                video,
-            } = this.state;
             let whoIsUser = '';
             (router_currentFormValue.starter_id == currentUserId) ? whoIsUser = 'starter_check' : whoIsUser = 'player_check'
             const ludoReportPost = {
@@ -381,8 +365,8 @@ class ReportDialog extends Component {
             .then(response => {
                 if (response.data.status === '200') {
                     handleReportDialogClose();
-                    handleShouldProfileUpdate(true);
                     handleShouldReportUpdate(true);
+                    browserHistory.push(`/ludo/${ludoId}/report-list/${currentUserId}`);
                 } else {
                     if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                         window.open("https://www.facebook.com/messages/t/ludonow");
@@ -393,18 +377,19 @@ class ReportDialog extends Component {
                         throw new Error(response.data.err);
                     }
                 }
+                this.setState({
+                    isSubmitting: false
+                });
             })
             .catch(error => {
                 console.error('ReportDialog handleSubmit catch an error: ', error);
+                this.setState({
+                    isSubmitting: false
+                });
                 if (window.confirm('回報時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
                     window.open("https://www.facebook.com/messages/t/ludonow");
                 }
             })
-            .finally(() => {
-                this.setState({
-                    isSubmitting: false
-                });
-            });
         } else {
             this.setState({
                 isSubmitting: false
@@ -555,7 +540,6 @@ ReportDialog.propTypes = {
     editForm: PropTypes.object,
     ludoId: PropTypes.string.isRequired,
     handleReportDialogClose: PropTypes.func.isRequired,
-    handleShouldProfileUpdate: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     isReportDialogOpen: PropTypes.bool.isRequired,
     router_currentFormValue: PropTypes.object.isRequired,

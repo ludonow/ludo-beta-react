@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Link } from "react-router";
 import styled from 'styled-components';
 
@@ -36,6 +37,8 @@ const myCardListLinkInfoSampleList = [
 ];
 
 // styled components
+const selectedStyle = 'background-color: black; border: 1px white solid; border-radius: 1rem;';
+
 const Label = styled.div`
     font-size: 12px;
     margin-left: 15px;
@@ -53,6 +56,8 @@ const ListItem = styled.li`
     cursor: pointer;
     margin: 15px 0;
     padding: 2px 0;
+
+    ${props => props.selected ? selectedStyle: ''}
 
     &:active {
         background-color: black;
@@ -87,7 +92,9 @@ const NavbarWrapper = styled.div`
 const LinkList = ({
     handleNavbarClose,
     label,
-    linkInfoList
+    linkInfoList,
+    selectedIndex,
+    startingIndex,
 }) => (
     <LinkListWrapper>
         { label ?
@@ -95,7 +102,7 @@ const LinkList = ({
             : null
         }
         {
-            linkInfoList.map(linkInfo => (
+            linkInfoList.map((linkInfo, arrayIndex) => (
                 linkInfo.isExternal ? 
                     <StyledAnchor 
                         href={linkInfo.url}
@@ -111,7 +118,7 @@ const LinkList = ({
                         onClick={handleNavbarClose}
                         to={`${baseUrl}/${linkInfo.url}`}
                     >
-                        <ListItem>
+                        <ListItem selected={selectedIndex === (arrayIndex + startingIndex)}>
                             {linkInfo.text}
                         </ListItem>
                     </StyledLink>
@@ -120,12 +127,13 @@ const LinkList = ({
     </LinkListWrapper>
 );
 
-const Desktop =({
+const Desktop = ({
     chatFuelId,
     currentUserId,
     handleNavbarClose,
     handleNavbarToggle,
-    isNavbarVisible
+    isNavbarVisible,
+    selectedIndex,
 }) => {
     return (
         <Modal isNavbarVisible={isNavbarVisible}>
@@ -137,19 +145,34 @@ const Desktop =({
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={cardSystemLinkInfoList}
+                    selectedIndex={selectedIndex}
+                    startingIndex={0}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     label={ProfileLabel}
                     linkInfoList={getMyCardListLinkInfoList(myCardListLinkInfoSampleList, currentUserId)}
+                    selectedIndex={selectedIndex}
+                    startingIndex={3}
                 />
                 <LinkList
                     handleNavbarClose={handleNavbarClose}
                     linkInfoList={getSettingLinkInfoList(chatFuelId)}
+                    selectedIndex={selectedIndex}
+                    startingIndex={7}
                 />
             </NavbarWrapper>
         </Modal>
     );
+};
+
+Desktop.propTypes = {
+    chatFuelId: PropTypes.string.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+    handleNavbarClose: PropTypes.func.isRequired,
+    handleNavbarToggle: PropTypes.func.isRequired,
+    isNavbarVisible: PropTypes.bool.isRequired,
+    selectedIndex: PropTypes.number.isRequired,
 };
 
 export default Desktop;

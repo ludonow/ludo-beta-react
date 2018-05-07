@@ -12,6 +12,7 @@ import { labelList } from '../assets/reportInterval';
 import viewIcon from '../../images/eye.svg';
 import Button from './Button';
 import CircleButton from './CircleButton';
+import { getCorrectFormatOfResponseLudoInfo } from '../utils/format';
 
 export const CardBackBackgroundColorList = [
     '#FFFF9F',
@@ -73,6 +74,7 @@ const CardBorderTopWrapper = styled.div`
     font-size: 12px;
     height: 25px;
     justify-content: center;
+    left: 0;
     position: absolute;
     top: 0;
     opacity: ${props => props.isShowingFrontSide ? '100': '0'};
@@ -80,12 +82,17 @@ const CardBorderTopWrapper = styled.div`
 `;
 
 const CardFrontWrapper = styled.div`
-    background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};
+    /*background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};*/
+    background-color: white;
     text-align: center;
 `;
 
 const CardWrapper = styled.div`
     border-color: ${props => props.isHistory ? '#838383' : 'rgba(0, 0, 0, 0.8)'};
+`;
+
+export const Duration = styled.div`
+    margin-bottom: 15px;
 `;
 
 const EyeIconWrapper = styled.div`
@@ -99,13 +106,17 @@ const EyeIconWrapper = styled.div`
 `;
 
 export const FrontIconWrapper = styled.div`
+    width: 100px;
+
     img {
-        width: 100px;
+        height: 100%;
+        width: 100%;
     }
 `;
 
 const Info = styled.div`
     margin: 10px 0;
+    width: 100%;
 `;
 const IntroWrapper = Info.extend`
     font-size: 12px;
@@ -126,18 +137,15 @@ const LinkWrapper = styled.div`
     }
 `;
 
-const TemplateCardBorderTopWrapper = styled.div`
-    align-items: center;
+const TemplateCardBorderTopWrapper = CardBorderTopWrapper.extend`
     background-color: ${props => props.isAtTemplatePage ? '#63C16A' : 'rgba(0,0,0,0.8)'};
-    color: white;
-    display: flex;
-    font-size: 12px;
-    height: 25px;
-    justify-content: center;
-    position: absolute;
-    top: 0;
     opacity: ${props => props.isShowingFrontSide ? '0': '100'};
-    width: 100%;
+`;
+
+export const Title = styled.div`
+    font-size: 18px;
+    margin: 20px;
+    width: calc(100% - 40px);
 `;
 
 const ViewNumberWrapper = styled.div`
@@ -199,6 +207,8 @@ const Card = ({
     isThisCardFlipped,
     singleLudoObject,
 }) => {
+    const correctFormOfLudoInfo = getCorrectFormatOfResponseLudoInfo(singleLudoObject);
+
     const {
         duration,
         interval,
@@ -209,7 +219,7 @@ const Card = ({
         tags,
         title,
         views,
-    } = singleLudoObject;
+    } = correctFormOfLudoInfo;
 
     const bonusPeriodIndex = getBonusPeriodIndexFromPeriod(period);
     const renderedInterval = interval ? Number(interval) : 1;
@@ -286,8 +296,8 @@ const Card = ({
                     <FrontIconWrapper>
                         <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                     </FrontIconWrapper>
-                    <div className="title">{title}</div>
-                    <div className="duration">{duration}天</div>
+                    <Title>{title}</Title>
+                    <Duration>{duration}天</Duration>
                 </CardFrontWrapper>
                 <ViewWrapper isShowingFrontSide={!isThisCardFlipped}>
                     <EyeIconWrapper>

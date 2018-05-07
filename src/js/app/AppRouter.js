@@ -1,12 +1,11 @@
 import React from 'react';
-import { browserHistory, IndexRoute,IndexRedirect, Route, Router } from 'react-router';
+import { browserHistory, IndexRedirect, Redirect, Route, Router } from 'react-router';
 import axiosPackage from 'axios';
 import MediaQuery from 'react-responsive';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import axios from '../axios-config';
 import { baseUrl } from '../baseurl-config';
-
 import App from './App';
 import BikeFestivalCertificate from '../Certificate/BikeFestival';
 import Bind from '../Bind/index';
@@ -24,6 +23,8 @@ import SignUp from '../SignUp/index';
 import Tutorial from '../Tutorial/index';
 import TutorialSlideShow from '../Tutorial/SlideShow';
 import LoadingPage from '../LoadingPage';
+import { getCorrectFormatOfResponseLudoInfo } from '../utils/format';
+
 /*
     auth        statement：
     0           not login
@@ -61,29 +62,29 @@ const isLoggedIn = (nextState, replace, callback) => {
     .then((response) => {
         if (response.data.status !== '200') {
             if (window.confirm('登入後即可使用該功能！點選「確定」後進入登入頁面。')) {
-                browserHistory.push('/login');
+                browserHistory.push(`/login?redirect=${nextState.location.pathname}`);
             }
         } else if (response.data.status === '200') {
-            const { user } = response.data;
-            const {
-                email,
-                unVerify,
-                user_id,
-            } = user;
-            if (unVerify === true || typeof(unVerify) === "undefined") {
-                if (window.confirm('你的 email 尚未驗證，請問是否前往 email 驗證頁面？')) {
-                    browserHistory.push({
-                        pathname: '/email-confirm',
-                        state: {
-                            email
-                        },
-                    });
-                } else {
-                    callback();
-                }
-            } else {
-                callback();
-            }
+            callback();
+            // const { user } = response.data;
+            // const {
+            //     email,
+            //     unVerify,
+            // } = user;
+            // if (unVerify === true || typeof(unVerify) === "undefined") {
+            //     if (window.confirm('你的 email 尚未驗證，請問是否前往 email 驗證頁面？')) {
+            //         browserHistory.push({
+            //             pathname: '/email-confirm',
+            //             state: {
+            //                 email
+            //             },
+            //         });
+            //     } else {
+            //         callback();
+            //     }
+            // } else {
+            //     callback();
+            // }
         }
     })
     .catch((error) => {
@@ -131,7 +132,7 @@ const ludoRedirect = (nextState, replace, callback) => {
     .then((response) => {
         if (response.data.status === '200') {
             router_ludoPageIndex = response.data.auth;
-            router_currentFormValue = response.data.ludo;
+            router_currentFormValue = getCorrectFormatOfResponseLudoInfo(response.data.ludo);
             router_currentLudoId = response.data.ludo.ludo_id;
             callback();
         } else if (response.data.status === '404') {
@@ -169,6 +170,10 @@ const AppRouter = () => (
                 path={`${baseUrl}/`}
             >
                 <IndexRedirect to="cardList" />
+                <Redirect
+                    from="ludo/:ludo_id"
+                    to="ludo/:ludo_id/card-content"
+                />
                 <Route
                     component={LudoNotFoundPage}
                     path="404"
@@ -230,7 +235,7 @@ const AppRouter = () => (
                         );
                     }}
                     onEnter={ludoRedirect}
-                    path="ludo/:ludo_id/:currentTab"
+                    path="ludo/:ludo_id/:currentTab(/:participantId)"
                 />
                 <Route
                     component={MyCardList}

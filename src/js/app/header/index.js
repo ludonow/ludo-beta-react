@@ -136,15 +136,17 @@ class Header extends Component {
     }
 
     searchSubmit(searchText) {
-        const searchParams = {
-            "title": searchText
-        };
+        const {
+            searchFilter,
+            searchStage,
+        } = this.props;
+        const searchParams = { [searchFilter]: searchText };
         /**
          * How to serialize an Object into a list of parameters?
          * ref: https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-parameters/23639793#23639793
          */
         const filterCondition = Object.entries(searchParams).map(([key, val]) => `${key}=${val}`).join('&');
-        browserHistory.push(`/search?stage=1&${filterCondition}`);
+        browserHistory.push(`/search?stage=${searchStage}&${filterCondition}`);
     }
 
     render() {
@@ -154,12 +156,13 @@ class Header extends Component {
             isNavbarVisible,
             isOpeningLudoListPage,
             isPersonalCardListVisible,
-            userBasicData 
+            pathName,
+            userBasicData,
         } = this.props;
 
         const {
             isSearching,
-            searchingText
+            searchingText,
         } = this.state;
 
         return (
@@ -209,6 +212,7 @@ class Header extends Component {
                         handlePersonalCardListToggleButtonClick={this.handlePersonalCardListToggleButtonClick}
                         isOpeningLudoListPage={isOpeningLudoListPage}
                         isPersonalCardListVisible={isPersonalCardListVisible}
+                        pathName={pathName}
                         userBasicData={userBasicData}
                     />
                 </StyledMediaQuery>
@@ -224,6 +228,8 @@ Header.propTypes = {
     isNavbarVisible: PropTypes.bool.isRequired,
     isOpeningLudoListPage: PropTypes.bool.isRequired,
     isPersonalCardListVisible: PropTypes.bool.isRequired,
+    pathName: PropTypes.string.isRequired,
+    searchFilter: PropTypes.string.isRequired,
     userBasicData: PropTypes.object.isRequired,
 };
 

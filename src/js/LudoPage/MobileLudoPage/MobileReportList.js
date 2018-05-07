@@ -20,6 +20,7 @@ const MobileReportList = ({
     handleShouldReportUpdate,
     isMyReport,
     label,
+    pathName,
     reportList,
     reportUserId,
     userPhotoUrl,
@@ -44,6 +45,7 @@ const MobileReportList = ({
                     isMyReport={isMyReport}
                     key={`${label}-report-${index}`}
                     label={label}
+                    pathName={pathName}
                     reportId={reportObject.report_id}
                     userPhotoUrl={userPhotoUrl}
                     video={reportObject.video}
@@ -64,6 +66,7 @@ MobileReportList.propTypes = {
     handleShouldReportUpdate: PropTypes.func.isRequired,
     isMyReport: PropTypes.bool.isRequired,
     label: PropTypes.string.isRequired,
+    pathName: PropTypes.string.isRequired,
     reportList: PropTypes.array.isRequired,
     reportUserId: PropTypes.string.isRequired,
     userPhotoUrl: PropTypes.string,

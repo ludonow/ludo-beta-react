@@ -21,6 +21,38 @@ const compareByCreatedDate = (a, b) => (
     new Date(b.CreatedAt) - new Date(a.CreatedAt)
 );
 
+const getLatestReportDate = (reportList) => {
+    let latestReportDate = '';
+    if (reportList.length !== 0) {
+        latestReportDate = reportList[reportList.length - 1].date;
+    }
+    return latestReportDate;
+}
+
+const getMobileTabIndex = (userId, ludoInfo) => {
+    let mobileTabIndex = 1;
+
+    const starterLatestReportDateString = getLatestReportDate(ludoInfo.checkList.starter_check);
+    const playerLatestReportDateString = getLatestReportDate(ludoInfo.checkList.player_check);
+    if (starterLatestReportDateString && playerLatestReportDateString) {
+        const starterLatestReportDate = new Date(starterLatestReportDateString);
+        const playerLatestReportDate = new Date(playerLatestReportDateString);
+        if (starterLatestReportDate >= playerLatestReportDate) {
+            mobileTabIndex = 0;
+        } else {
+            mobileTabIndex = 2;
+        }
+    } else if (starterLatestReportDateString) {
+        mobileTabIndex = 0;
+    } else if (playerLatestReportDateString) {
+        mobileTabIndex = 2;
+    } else {
+        mobileTabIndex = 1;
+    }
+
+    return mobileTabIndex;
+}
+
 const nullConditionFn = (props) => !props.isOpen;
 
 // child comopnents
@@ -42,9 +74,11 @@ class LudoPage extends Component {
             isJoinButtonDisabled: false,
             isShowingDeleteButton: false,
             isImageLightBoxOpen: false,
+            isMobileTabIndexSet: false,
             isPopOverOfEditOpen: false,
             isPopOverOfExpandMoreOpen: false,
             isReportDialogOpen: false,
+            mobileTabIndex: 1,
             reportList: {
                 player: [],
                 starter: [],
@@ -63,6 +97,7 @@ class LudoPage extends Component {
         this.handleReportEditing = this.handleReportEditing.bind(this);
         this.handleReportExpandMoreButtonTouchTap = this.handleReportExpandMoreButtonTouchTap.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.setMobileTabIndex = this.setMobileTabIndex.bind(this);
     }
 
     componentWillMount() {
@@ -102,6 +137,20 @@ class LudoPage extends Component {
                 }
             });
             this.props.handleHasGotNewReport(false);
+        }
+
+        if (!this.state.isMobileTabIndexSet) {
+            let userId = '';
+            if (this.props.participantId) {
+                userId = this.props.participantId;
+            } else if (this.props.currentUserId) {
+                userId = this.props.currentUserId;
+            }
+            const mobileTabIndex = getMobileTabIndex(userId, this.props.router_currentFormValue);
+            this.setState({
+                isMobileTabIndexSet: true,
+                mobileTabIndex,
+            });
         }
     }
 
@@ -256,7 +305,7 @@ class LudoPage extends Component {
         if (router_ludoPageIndex === 0 || router_ludoPageIndex === 2) {
             if (!this.props.currentUserId) {
                 if (window.confirm('登入後即可加入此卡片！點選「確定」後進入登入頁面。')) {
-                    browserHistory.push('/login');
+                    browserHistory.push(`/login?redirect=${this.props.location.pathname}`);
                 }
             } else {
                 const isSureToJoin = window.confirm('你確定要加入此Ludo嗎？');
@@ -291,12 +340,8 @@ class LudoPage extends Component {
                 axios.delete(`/apis/ludo/${ludoId}`)
                 .then(response => {
                     if (response.data.status == '200') {
-                        const {
-                            getUserBasicData,
-                            handleShouldProfileUpdate,
-                        } = this.props;
+                        const { getUserBasicData } = this.props;
                         getUserBasicData();
-                        handleShouldProfileUpdate(true);
                         browserHistory.push('/cardList');
                     } else {
                         if (window.confirm('刪除Ludo時伺服器未回傳正確資訊，請點擊「確定」回報此問題給開發團隊')) {
@@ -323,17 +368,24 @@ class LudoPage extends Component {
         }
     }
 
+    setMobileTabIndex(mobileTabIndex) {
+        this.setState({
+            mobileTabIndex
+        });
+    }
+
     /* components/_report-form.scss */
     render() {
         const {
             currentLudoReportData,
+            currentTab,
             currentUserId,
             getUserBasicData,
             handleDenounceBoxOpen,
             handleHasGotNewReport,
-            handleShouldProfileUpdate,
             handleShouldReportUpdate,
             hasGotNewReport,
+            location,
             params,
             router_currentFormValue,
             router_ludoPageIndex,
@@ -350,6 +402,7 @@ class LudoPage extends Component {
             isPopOverOfExpandMoreOpen,
             isReportDialogOpen,
             isShowingDeleteButton,
+            mobileTabIndex,
             reportList,
         } = this.state;
 
@@ -359,7 +412,7 @@ class LudoPage extends Component {
                     <DesktopLudoPage
                         baseUrlWithSubDomain={location.pathname.split('/').slice(0, -1).join('/')}
                         currentLudoReportData={currentLudoReportData}
-                        currentTab={location.pathname.split('/').pop()}
+                        currentTab={currentTab}
                         currentUserId={currentUserId}
                         editingForm={editingForm}
                         getUserBasicData={getUserBasicData}
@@ -370,11 +423,11 @@ class LudoPage extends Component {
                         handleReportDialogOpenWithData={this.handleReportDialogOpenWithData}
                         handleReportEditButtonTouchTap={this.handleReportEditButtonTouchTap}
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
-                        handleShouldProfileUpdate={handleShouldProfileUpdate}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         hasGotNewReport={hasGotNewReport}
                         isReportDialogOpen={isReportDialogOpen}
                         ludoId={params.ludo_id}
+                        pathName={location.pathname}
                         reportList={reportList}
                         router_currentFormValue={router_currentFormValue}
                         router_ludoPageIndex={router_ludoPageIndex}
@@ -393,8 +446,11 @@ class LudoPage extends Component {
                         handleReportExpandMoreButtonTouchTap={this.handleReportExpandMoreButtonTouchTap}
                         handleShouldReportUpdate={handleShouldReportUpdate}
                         ludoId={params.ludo_id}
+                        pathName={location.pathname}
                         reportList={reportList}
                         router_currentFormValue={router_currentFormValue}
+                        setMobileTabIndex={this.setMobileTabIndex}
+                        tabIndex={mobileTabIndex}
                         userPhotoUrl={userBasicData ? userBasicData.photo : ''}
                     />
                 </MediaQuery>
@@ -411,7 +467,6 @@ class LudoPage extends Component {
                     currentUserId={currentUserId}
                     editingForm={editingForm}
                     handleReportDialogClose={this.handleReportDialogClose}
-                    handleShouldProfileUpdate={handleShouldProfileUpdate}
                     handleShouldReportUpdate={handleShouldReportUpdate}
                     isReportDialogOpen={isReportDialogOpen}
                     ludoId={params.ludo_id}
@@ -482,7 +537,6 @@ LudoPage.propTypes = {
     handleDenounceBoxOpen: PropTypes.func.isRequired,
     handleHasGotNewReport: PropTypes.func.isRequired,
     handleIsOpeningReportPage: PropTypes.func.isRequired,
-    handleShouldProfileUpdate: PropTypes.func.isRequired,
     handleShouldReportUpdate: PropTypes.func.isRequired,
     hasGotNewReport: PropTypes.bool.isRequired,
     params: PropTypes.shape({

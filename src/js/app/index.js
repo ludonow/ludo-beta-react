@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import AppRouter from './AppRouter';
 
+global._babelPolyfill = false;
+
 const rwdMeta = document.createElement('meta');
 rwdMeta.name = 'viewport';
 rwdMeta.content = 'width=device-width, initial-scale=1.0';

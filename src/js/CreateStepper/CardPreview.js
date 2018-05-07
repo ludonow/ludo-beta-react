@@ -13,14 +13,11 @@ import {
     BackPeriodIconWrapper,
     CardBackBackgroundColorList,
     CardBackWrapper,
+    Duration,
     FrontIconWrapper,
-    TemplateCardBorderTop
+    TemplateCardBorderTop,
+    Title,
 } from '../components/Card';
-
-const GoPlaceHolder = styled.div`
-    height: 60px;
-    width: 60px;
-`
 
 const TemplateInfo = styled.div`
     margin: 10px 0;
@@ -142,7 +139,6 @@ export default class CardPreview extends Component {
                                     />
                                 </TemplateInfo>
                             </TemplateInfoWrapper>
-                            <GoPlaceHolder />
                         </CardBackWrapper>
                         <div className="card-front-info">
                             <TemplateCardBorderTop
@@ -153,8 +149,8 @@ export default class CardPreview extends Component {
                             <FrontIconWrapper>
                                 <img src={bonusPeriodIconList[bonusPeriodIndex]} />
                             </FrontIconWrapper>
-                            <div className="title">{title}</div>
-                            <div className="duration">{duration}天</div>
+                            <Title>{title}</Title>
+                            <Duration>{duration}天</Duration>
                         </div>
                     </div>
                 </div>

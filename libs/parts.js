@@ -1,4 +1,5 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const PurifyCSSPlugin = require('purifycss-webpack');
@@ -140,7 +141,8 @@ exports.minify = function() {
                     // Don't mangle function names
                     keep_fnames: true
                 }
-            })
+            }),
+            new CompressionPlugin()
         ]
     };
 }
