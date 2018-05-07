@@ -14,7 +14,6 @@ const PATHS = {
     imagesbuild: path.resolve(__dirname, 'build', 'images'),
     mainscss: path.resolve(__dirname, 'src', 'stylesheets', 'main.scss'),
     src: path.resolve(__dirname, 'src'),
-    style: path.resolve(__dirname, 'src', 'stylesheets')
 };
 
 const common = {
