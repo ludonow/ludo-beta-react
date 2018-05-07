@@ -200,14 +200,52 @@ class CreateStepper extends Component {
 
     handleAutoMatchConfirm(event) {
         event.preventDefault();
-        console.log('handleAutoMatchConfirm');
-        this.handleAutoMatchDialogClose();
+        const { templateId } = this.props.params;
+        const requestBody = { type: 'autoMatch' };
+        axios.put(`/apis/ludo/${templateId}`, requestBody)
+            .then(response => {
+                if (response.data.status == '200') {
+                    this.handleAutoMatchDialogClose();
+                    browserHistory.push(`/ludo/${response.data.ludo_id}`);
+                } else {
+                    console.error('CreateStepper handleAutoMatchConfirm response status from server is not OK, which is: ', response);
+                    const errorMessage = 'CreateStepper handleAutoMatchConfirm response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                if (window.confirm('自動配對Ludo卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+            })
     }
 
     handleAutoMatchSearch(event) {
         event.preventDefault();
-        console.log('handleAutoMatchSearch');
-        this.handleAutoMatchDialogOpen();
+        const { templateId } = this.props.params;
+        axios.get(`/apis/ludo?stage=1&template_id=${templateId}`)
+            .then(response => {
+                if (response.data.status === '200') {
+                    const matchedCardList = response.data.ludoList.Items;
+                    if (matchedCardList.length >= 1) {
+                        this.handleAutoMatchDialogOpen();
+                    } else {
+                        this.handleCardSubmit(event);
+                    }
+                } else {
+                    console.error('CreateStepper handleAutoMatchSearch response status from server is not OK, which is: ', response);
+                    const errorMessage = 'CreateStepper handleAutoMatchSearch response message from server: ' + response.data.message;
+                    throw new Error(errorMessage);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                if (window.confirm('搜尋是否有可以自動配對的卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                    window.open("https://www.facebook.com/messages/t/ludonow");
+                }
+            })
+        
     }
 
     handleCardSubmit(event) {
