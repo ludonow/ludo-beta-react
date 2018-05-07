@@ -5,6 +5,7 @@ import {
     animalImageList,
     colorList,
 } from '../assets/avatarImage';
+import defaultUserAvatar from '../../images/user.svg';
 
 const AvatarWrapper = styled.div`
     ${props => props.usedInReport ? "position : absolute;" : ""}
@@ -55,7 +56,7 @@ const Avatar = ({
                     isThisBelongToCurrentUser ?
                         <img
                             className="avatar-container__photo"
-                            src={userPhotoUrl}
+                            src={userPhotoUrl === 'default' ? defaultUserAvatar : userPhotoUrl}
                         />
                     :
                         <img

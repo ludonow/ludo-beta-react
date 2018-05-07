@@ -13,7 +13,7 @@ import {
     getMyCardListLinkInfoList,
     getSettingLinkInfoList,
 } from './common';
-import defaultAvatartIcon from '../../../images/header/default_avatar.png';
+import defaultUserAvatar from '../../../images/user.svg';
 
 const authedInfoList = [
     {
@@ -113,10 +113,10 @@ const DoubleCircleIcon = ({
 }) => (
     <OutSideCircle onClick={handleClick}>
         {
-            userPhotoUrl ?
+            userPhotoUrl && userPhotoUrl !== 'default' ?
                 <img src={userPhotoUrl} />
             :
-                <img src={defaultAvatartIcon} />
+                <img src={defaultUserAvatar} />
         }
     </OutSideCircle>
 );

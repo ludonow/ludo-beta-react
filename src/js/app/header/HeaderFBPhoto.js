@@ -3,6 +3,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import styled from 'styled-components';
+import defaultUserAvatar from '../../../images/user.svg';
 
 // styled-components
 const AvatarPhotoWrapper = styled.div`
@@ -86,9 +87,10 @@ export default class HeaderFBPhoto extends Component {
                 onMouseLeave={this.handleTooltipHide}
             >
                 {
-                    userBasicData.photo ?
+                    userBasicData.photo && userBasicData.photo !== 'default' ?
                         <img src={userBasicData.photo} />
-                    : null
+                    :
+                        <img src={defaultUserAvatar} />
                 }
                 <Popover
                     anchorEl={anchorEl}
