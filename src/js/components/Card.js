@@ -50,7 +50,8 @@ export const BackPeriodIconWrapper = styled.div`
 `;
 
 export const CardBackWrapper = styled.div`
-    background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'};
+    /* background-color: ${props => props.backgroundColor ? props.backgroundColor : 'white'}; */
+    background-color: 'white';
 `;
 
 const getEntryUrlOfCard = (stage, id) => {
