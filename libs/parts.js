@@ -117,29 +117,24 @@ exports.minify = function() {
     return {
         plugins: [
             new UglifyJsPlugin({
-                // Don't beautify output (enable for neater output)
-                beautify: false,
-
-                // Eliminate comments
-                comments: false,
-
-                // Compression specific options
-                compress: {
-                    // Drop `console` statements
-                    drop_console: true,
-                    warnings: false
-                },
-
-                // Mangling specific options
-                mangle: {
-                    // Don't mangle $
-                    except: ['$'],
-
+                uglifyOptions: {
+                    // Compression specific options
+                    compress: {
+                        // Drop `console` statements
+                        drop_console: true,
+                        warnings: false
+                    },
                     // Don't care about IE8
-                    screw_ie8 : true,
-
+                    ie8 : false,
                     // Don't mangle function names
-                    keep_fnames: true
+                    keep_fnames: true,
+                    output: {
+                        // Don't beautify output (enable for neater output)
+                        beautify: false,
+        
+                        // Eliminate comments
+                        comments: false
+                    }
                 }
             }),
             new CompressionPlugin()
