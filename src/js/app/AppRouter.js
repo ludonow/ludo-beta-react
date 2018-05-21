@@ -155,7 +155,7 @@ const TutorialRedirect = (nextState, replace, callback) => {
     const viewTutorialDate = localStorage.getItem('viewTutorialDate');
     if (viewTutorialDate !== '2018-03-19') {
         localStorage.setItem('viewTutorialDate', '2018-03-19');
-        browserHistory.push('/tutorial');
+        window.location.assign("https://www.intro.ludonow.com")
     } else {
         callback();
     }
