@@ -8,20 +8,21 @@ import axios from '../axios-config';
 import { baseUrl } from '../baseurl-config';
 import App from './App';
 import BikeFestivalCertificate from '../Certificate/BikeFestival';
-import Bind from '../Bind/index';
+import Bind from '../Bind';
 import CreateStepper from '../CreateStepper';
-import EmailConfirm from '../EmailConfirm/index';
+import EmailConfirm from '../EmailConfirm';
 import EmailConfirmAlert from '../EmailConfirm/alert';
-import Login from '../Login/index.js';
-import LoginRecommend from '../LoginRecommend/index';
+import Login from '../Login';
+import LoginForMessenger from '../Login/messenger';
+import LoginRecommend from '../LoginRecommend';
 import LudoNotFoundPage from '../404';
-import LudoPage from '../LudoPage/index.js';
-import MyCardList from '../MyCardList/index';
+import LudoPage from '../LudoPage';
+import MyCardList from '../MyCardList';
 import Playground from '../playground/Playground';
 import RedirectToMessenger from '../RedirectToMessenger';
-import Search from '../Search/index';
-import SignUp from '../SignUp/index';
-import Tutorial from '../Tutorial/index';
+import Search from '../Search';
+import SignUp from '../SignUp';
+import Tutorial from '../Tutorial';
 import TutorialSlideShow from '../Tutorial/SlideShow';
 import LoadingPage from '../LoadingPage';
 import { getCorrectFormatOfResponseLudoInfo } from '../utils/format';
@@ -224,6 +225,10 @@ const AppRouter = () => (
                 <Route
                     component={Login}
                     path="login"
+                />
+                <Route
+                    component={LoginForMessenger}
+                    path="loginForMessenger"
                 />
                 <Route
                     getComponent={(nextState, cb) => {
