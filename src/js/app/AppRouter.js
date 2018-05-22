@@ -18,6 +18,7 @@ import LudoNotFoundPage from '../404';
 import LudoPage from '../LudoPage/index.js';
 import MyCardList from '../MyCardList/index';
 import Playground from '../playground/Playground';
+import RedirectToMessenger from '../RedirectToMessenger';
 import Search from '../Search/index';
 import SignUp from '../SignUp/index';
 import Tutorial from '../Tutorial/index';
@@ -215,6 +216,10 @@ const AppRouter = () => (
                 <Route
                     component={LoadingPage}
                     path="redirectTo/:url"
+                />
+                <Route
+                    component={RedirectToMessenger}
+                    path="redirectToMessenger"
                 />
                 <Route
                     component={Login}
