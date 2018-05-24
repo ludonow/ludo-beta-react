@@ -101,7 +101,7 @@ class Bind extends Component {
                     width="130px"
                 >
                     <StyledAnchor href="https://m.me/ludonow?ref=link">
-                        確認綁定帳號
+                        確認連結帳號
                     </StyledAnchor>
                 </StyledButton>
                 <Description>
