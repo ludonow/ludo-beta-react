@@ -341,7 +341,7 @@ class Login extends Component {
                                 type="submit"
                                 width={buttonWidth}
                             />
-                            <StyledLink to={`${baseUrl}/login-recommend`}>
+                            <StyledLink to={`${baseUrl}/signup`}>
                                 <Button
                                     backgroundColor="#005074"
                                     fontSize="12px"

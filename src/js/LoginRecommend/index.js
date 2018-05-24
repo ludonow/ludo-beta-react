@@ -124,7 +124,7 @@ class LoginRecommend extends Component {
                             使用 Facebook 登入，
                         </div>
                         <div>
-                            綁定 Messneger
+                            連結 Messenger
                         </div>
                     </Paragraph>
                     <div>
@@ -139,7 +139,7 @@ class LoginRecommend extends Component {
                         width="180px"
                     >
                         <StyledAnchor href="https://api.ludonow.com/auth/facebook">
-                            facebook登入
+                            facebook註冊
                             <StyledImg src={rightArrowIcon} />
                         </StyledAnchor>
                     </StyledButton>
@@ -150,7 +150,7 @@ class LoginRecommend extends Component {
                             backgroundColor="#B2B2B2"
                             fontSize="16px"
                             onClick={this.handleButtonClick}
-                            label="繼續註冊"
+                            label="一般註冊"
                             padding="8px"
                             width="180px"
                         />
