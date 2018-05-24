@@ -291,7 +291,7 @@ class Login extends Component {
                                 padding="8px 5px 8px 30px"
                                 width="180px"
                             >
-                                <StyledAnchor href="https://api.ludonow.com/auth/facebook?redirect=%2FredirectToMessenger">
+                                <StyledAnchor href="https://api.ludonow.com/auth/botFacebook">
                                     facebook登入
                                     <StyledImg src={rightArrowIcon} />
                                 </StyledAnchor>
