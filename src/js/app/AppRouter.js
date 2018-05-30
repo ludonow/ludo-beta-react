@@ -157,7 +157,15 @@ const TutorialRedirect = (nextState, replace, callback) => {
     const viewTutorialDate = localStorage.getItem('viewTutorialDate');
     if (viewTutorialDate !== '2018-03-19') {
         localStorage.setItem('viewTutorialDate', '2018-03-19');
-        window.location.assign("https://www.intro.ludonow.com")
+        
+        if (window.innerWidth <= 768) { 
+            //if using mobile device
+            browserHistory.push('/tutorial/slide-show');
+        } else {
+            window.location.assign("https://www.intro.ludonow.com");
+        }
+        
+
     } else {
         callback();
     }
@@ -273,7 +281,7 @@ const AppRouter = () => (
                     path="template/:templateId"
                 />
                 <Route
-                    component={Tutorial}
+                    component={window.innerWidth <= 768 ? TutorialSlideShow : Tutorial }
                     path="tutorial"
                 />
                 <Route

@@ -29,10 +29,15 @@ const Wrapper = styled.div`
 
     .slider-list, .slider-slide {
         height: 80vh !important;
+        @media (max-width: 768px) {
+            height: 83vh !important;
+        }
     }
 
     @media (max-width: 768px) {
-        margin-top: 90px;
+        /* margin-top: 90px; */
+        width: 100%;
+        margin: 0;
         .slider-decorator-2 {
             bottom: -40px !important;
         }
