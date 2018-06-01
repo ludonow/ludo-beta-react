@@ -15,6 +15,7 @@ import EmailConfirmAlert from '../EmailConfirm/alert';
 import Login from '../Login';
 import LoginForMessenger from '../Login/messenger';
 import LoginRecommend from '../LoginRecommend';
+import LoginRedirect from '../Login/redirect';
 import LudoNotFoundPage from '../404';
 import LudoPage from '../LudoPage';
 import MyCardList from '../MyCardList';
@@ -237,6 +238,10 @@ const AppRouter = () => (
                 <Route
                     component={LoginForMessenger}
                     path="loginForMessenger"
+                />
+                <Route
+                    component={LoginRedirect}
+                    path="loginRedirect"
                 />
                 <Route
                     getComponent={(nextState, cb) => {

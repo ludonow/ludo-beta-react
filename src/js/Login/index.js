@@ -214,6 +214,10 @@ class Login extends Component {
             buttonWidth,
             titleStyle,
         });
+
+        const { search } = this.props.location;
+        const previousRelativeUrl = unescape(search.split('redirect=')[1]);
+        localStorage.setItem('loginRedirectUrl', previousRelativeUrl);
     }
 
     disableButton() {
