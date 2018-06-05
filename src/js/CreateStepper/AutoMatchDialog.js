@@ -34,16 +34,10 @@ const AutoMatchDialog = ({
             contentStyle={discardDialogContentStyle}
             onRequestClose={handleRequestClose}
             open={open}
-            title="已有其他人開啟之卡片，要加入其他人創建的卡片嗎"
+            title="你好幸運！已經有人在開了這張卡片你可以直接加入他！"
             titleStyle={discardDialogStyle.title}
         >
             <StyledButtonListWrapper>
-                <Button
-                    backgroundColor="#FFFFFF"
-                    label="仍要創建新卡片"
-                    onClick={handleCardSubmit}
-                    textColor="#707070"
-                />
                 <Button
                     backgroundColor="#FF6262"
                     label="加入已開啟之卡片"

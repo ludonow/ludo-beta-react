@@ -108,13 +108,6 @@ const StepButtonList = ({
         case 4:
             return (
                 <MultipleButtonListWrapper>
-                    <Button
-                        backgroundColor={'#B1B1B1'}
-                        disabled={isSubmitting}
-                        label="修改內容"
-                        onClick={handleTemplateModify}
-                        width={isAtTemplatePage ? '75px' : '100px'}
-                    />
                     {
                         !isAtTemplatePage ?
                             <Button
