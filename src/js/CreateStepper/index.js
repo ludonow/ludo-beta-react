@@ -20,6 +20,7 @@ const initialState = {
     images: [],
     isAtTemplatePage: false,
     isAutoMatchDialogOpen: false,
+    isMyCard:false,
     isDiscardAlertOpen: false,
     isEditing: false,
     isCardSubmitButtonDisabled: true,
@@ -198,6 +199,12 @@ class CreateStepper extends Component {
         });
     }
 
+    handleIsMyCard() {
+        this.setState({
+            isMyCard: true,
+        });
+    }
+
     handleAutoMatchConfirm(event) {
         event.preventDefault();
         const { templateId } = this.props.params;
@@ -228,7 +235,11 @@ class CreateStepper extends Component {
             .then(response => {
                 if (response.data.status === '200') {
                     const matchedCardList = response.data.ludoList.Items;
-                    if (matchedCardList.length >= 1) {
+                    const matchedCardListStarterId = response.data.ludoList.Items[0] ? response.data.ludoList.Items[0].starter_id: null;
+                    if (matchedCardList.length >= 1 && this.props.currentUserId != matchedCardListStarterId) {
+                        this.handleAutoMatchDialogOpen();
+                    } else if ( this.props.currentUserId === matchedCardListStarterId){
+                        this.handleIsMyCard();
                         this.handleAutoMatchDialogOpen();
                     } else {
                         this.handleCardSubmit(event);
@@ -1110,6 +1121,7 @@ class CreateStepper extends Component {
             images,
             isAtTemplatePage,
             isAutoMatchDialogOpen,
+            isMyCard,
             isCardSubmitButtonDisabled,
             isDiscardAlertOpen,
             isMyTemplate,
@@ -1211,6 +1223,7 @@ class CreateStepper extends Component {
                     handleCardSubmit={this.handleCardSubmit}
                     handleRequestClose={this.handleAutoMatchDialogClose}
                     open={isAutoMatchDialogOpen}
+                    isMyCard={isMyCard}
                 />
             </StyledDialog>
         );
