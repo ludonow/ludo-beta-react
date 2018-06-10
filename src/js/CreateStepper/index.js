@@ -231,32 +231,39 @@ class CreateStepper extends Component {
     handleAutoMatchSearch(event) {
         event.preventDefault();
         const { templateId } = this.props.params;
-        axios.get(`/apis/ludo?stage=1&template_id=${templateId}`)
-            .then(response => {
-                if (response.data.status === '200') {
-                    const matchedCardList = response.data.ludoList.Items;
-                    const matchedCardListStarterId = response.data.ludoList.Items[0] ? response.data.ludoList.Items[0].starter_id: null;
-                    if (matchedCardList.length >= 1 && this.props.currentUserId != matchedCardListStarterId) {
-                        this.handleAutoMatchDialogOpen();
-                    } else if ( this.props.currentUserId === matchedCardListStarterId){
-                        this.handleIsMyCard();
-                        this.handleAutoMatchDialogOpen();
+        if (!this.props.currentUserId) {
+            if (window.confirm('登入後即可發佈卡片！點選「確定」後進入登入頁面。')) {
+                browserHistory.push(`/login?redirect=${this.props.location.pathname}`);
+            } else {
+            }
+        } else {    
+            axios.get(`/apis/ludo?stage=1&template_id=${templateId}`)
+                .then(response => {
+                    if (response.data.status === '200') {
+                        const matchedCardList = response.data.ludoList.Items;
+                        const matchedCardListStarterId = response.data.ludoList.Items[0] ? response.data.ludoList.Items[0].starter_id: null;
+                        
+                        if (matchedCardList.length >= 1 && this.props.currentUserId != matchedCardListStarterId) {
+                            this.handleAutoMatchDialogOpen();
+                        } else if ( this.props.currentUserId === matchedCardListStarterId){
+                            this.handleIsMyCard();
+                            this.handleAutoMatchDialogOpen();
+                        } else {
+                            this.handleCardSubmit(event);
+                        }
                     } else {
-                        this.handleCardSubmit(event);
+                        console.error('CreateStepper handleAutoMatchSearch response status from server is not OK, which is: ', response);
+                        const errorMessage = 'CreateStepper handleAutoMatchSearch response message from server: ' + response.data.message;
+                        throw new Error(errorMessage);
                     }
-                } else {
-                    console.error('CreateStepper handleAutoMatchSearch response status from server is not OK, which is: ', response);
-                    const errorMessage = 'CreateStepper handleAutoMatchSearch response message from server: ' + response.data.message;
-                    throw new Error(errorMessage);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                if (window.confirm('搜尋是否有可以自動配對的卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
-                    window.open("https://www.facebook.com/messages/t/ludonow");
-                }
-            })
-        
+                })
+                .catch((error) => {
+                    console.error(error);
+                    if (window.confirm('搜尋是否有可以自動配對的卡片時發生錯誤，請點擊「確定」回報此問題給開發團隊')) {
+                        window.open("https://www.facebook.com/messages/t/ludonow");
+                    }
+                })
+        }
     }
 
     handleCardSubmit(event) {
