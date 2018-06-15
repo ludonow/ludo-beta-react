@@ -84,7 +84,30 @@ class ImageUploadAndPreview extends Component {
         } else if (files.length == 1) {
             const image = files[0];
             if (image.size >= 1*1024*1024) {
-                window.alert('你上傳的圖片已超過上限 1 MB！');
+                window.alert('您上傳的圖片已超過上限 1 MB！請改用messenger bot 上傳回報');
+                
+                // const reader = new FileReader();
+                // const tempImage = new Image();
+
+                // reader.onload = function(e) {
+                //     tempImage.src = e.target.result;
+                // };
+                // reader.readAsDataURL(image);
+
+                // console.log("old img"+image);
+
+                // tempImage.onload = () => {
+                //     const canvas = document.createElement('canvas'); 
+                //     const context = canvas.getContext('2d'); 
+                //     canvas.width = 400; 
+                //     canvas.height = 300; 
+                //     context.drawImage(tempImage,0,0,400,300);
+                //     const newUrl = canvas.toDataURL();   
+                //     const newImage = new Image();
+                //     newImage.src = newUrl;
+                //     this.props.handleImageChange(newImage);
+                //     this.handleImagePreview(newUrl);
+                // };
             } else {
                 // this.handleImageUpload(image);
                 this.props.handleImageChange(image);
@@ -135,6 +158,7 @@ class ImageUploadAndPreview extends Component {
         image.src = imageUrl;
         image.onload = () => {
             this.resizePreviewImage(image, MAX_WIDTH, MAX_HEIGHT, 0.7);
+            console.log("preview");
         };
     }
 
