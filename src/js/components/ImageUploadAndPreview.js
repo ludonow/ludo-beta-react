@@ -82,36 +82,44 @@ class ImageUploadAndPreview extends Component {
         if (files.length > 1) {
             window.alert('一次只能上傳一張圖片');
         } else if (files.length == 1) {
-            const image = files[0];
-            if (image.size >= 1*1024*1024) {
-                window.alert('您上傳的圖片已超過上限 1 MB！請改用messenger bot 上傳回報');
-                
-                // const reader = new FileReader();
-                // const tempImage = new Image();
+            const tempFile = files[0];
+            if (tempFile.size >= 1*1024*1024) {
+                // window.alert('您上傳的圖片已超過上限 1 MB！請改用messenger bot 上傳回報');
+                const handleImageChange = this.props.handleImageChange;
+                const handleImagePreview = this.handleImagePreview;
 
-                // reader.onload = function(e) {
-                //     tempImage.src = e.target.result;
-                // };
-                // reader.readAsDataURL(image);
+                this.props.handleImageChange(tempFile);
+                const imageUrl = tempFile.preview;
+                handleImagePreview(imageUrl);
 
-                // console.log("old img"+image);
+                const reader = new FileReader();
+                const tempImage = new Image();
 
-                // tempImage.onload = () => {
-                //     const canvas = document.createElement('canvas'); 
-                //     const context = canvas.getContext('2d'); 
-                //     canvas.width = 400; 
-                //     canvas.height = 300; 
-                //     context.drawImage(tempImage,0,0,400,300);
-                //     const newUrl = canvas.toDataURL();   
-                //     const newImage = new Image();
-                //     newImage.src = newUrl;
-                //     this.props.handleImageChange(newImage);
-                //     this.handleImagePreview(newUrl);
-                // };
+                reader.onload = function(e) {
+                    tempImage.src = e.target.result;
+                };
+                reader.readAsDataURL(tempFile);
+
+                tempImage.onload = () => {
+                    const canvas = document.createElement('canvas'); 
+                    const context = canvas.getContext('2d'); 
+                    canvas.width = tempImage.width / (tempFile.size / (1*1024*1024)); 
+                    canvas.height = tempImage.height / (tempFile.size / (1*1024*1024)); 
+                    context.drawImage(tempImage,0,0,canvas.width,canvas.height);
+                    // const newUrl = canvas.toDataURL();   
+                    // const newImage = new Image();
+                    // newImage.src = newUrl;
+                    canvas.toBlob(function(blob) {
+                        var resizedFile = new File([blob], tempFile.name, {type: blob.type, lastModified: Date.now()});
+                        resizedFile.preview = tempFile.preview;
+                        handleImageChange(resizedFile);
+                    });
+                };
+                //
             } else {
-                // this.handleImageUpload(image);
-                this.props.handleImageChange(image);
-                const imageUrl = image.preview;
+                // this.handleImageUpload(tempFile);
+                this.props.handleImageChange(tempFile);
+                const imageUrl = tempFile.preview;
                 this.handleImagePreview(imageUrl);
             }
         }
@@ -158,7 +166,6 @@ class ImageUploadAndPreview extends Component {
         image.src = imageUrl;
         image.onload = () => {
             this.resizePreviewImage(image, MAX_WIDTH, MAX_HEIGHT, 0.7);
-            console.log("preview");
         };
     }
 

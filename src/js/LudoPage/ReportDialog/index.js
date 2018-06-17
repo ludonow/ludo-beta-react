@@ -11,6 +11,7 @@ import StepperCloseIcon from '../../components/StepperCloseIcon';
 import Content from './Content';
 import StepButtonList from './StepButtonList';
 
+
 const initialState = {
     imageLocation: '',
     images: [],
@@ -302,6 +303,7 @@ class ReportDialog extends Component {
         if (reportType === 'image') {
             const imagePost = new FormData();
             imagePost.append('file', this.state.images[0]);
+            //
             axios.post('/apis/report-image', imagePost)
             .then(response => {
                 if (response.data.status === '200') {
