@@ -70,6 +70,7 @@ class ImageUploadAndPreview extends Component {
         this.handleImageLightBoxOpen = this.handleImageLightBoxOpen.bind(this);
         this.handleImagePreview = this.handleImagePreview.bind(this);
         this.resizePreviewImage = this.resizePreviewImage.bind(this);
+        this.handleFileResize = this.handleFileResize.bind(this);
     }
 
     componentDidMount() {
@@ -84,40 +85,47 @@ class ImageUploadAndPreview extends Component {
         } else if (files.length == 1) {
             const tempFile = files[0];
             if (tempFile.size >= 1*1024*1024) {
+                const handleFileResize = this.handleFileResize;
+                handleFileResize(tempFile);
                 // window.alert('您上傳的圖片已超過上限 1 MB！請改用messenger bot 上傳回報');
-                const handleImageChange = this.props.handleImageChange;
-                const handleImagePreview = this.handleImagePreview;
+                // const handleImageChange = this.props.handleImageChange;
+                // const handleImagePreview = this.handleImagePreview;
+                // 
 
-                this.props.handleImageChange(tempFile);
-                const imageUrl = tempFile.preview;
-                handleImagePreview(imageUrl);
+                // this.props.handleImageChange(tempFile);
+                // const imageUrl = tempFile.preview;
+                // handleImagePreview(imageUrl);
 
-                const reader = new FileReader();
-                const tempImage = new Image();
+                // const reader = new FileReader();
+                // const tempImage = new Image();
 
-                reader.onload = function(e) {
-                    tempImage.src = e.target.result;
-                };
-                reader.readAsDataURL(tempFile);
+                // reader.onload = function(e) {
+                //     tempImage.src = e.target.result;
+                // };
+                // reader.readAsDataURL(tempFile);
 
-                tempImage.onload = () => {
-                    const canvas = document.createElement('canvas'); 
-                    const context = canvas.getContext('2d'); 
-                    canvas.width = tempImage.width / (tempFile.size / (1*1024*1024)); 
-                    canvas.height = tempImage.height / (tempFile.size / (1*1024*1024)); 
-                    context.drawImage(tempImage,0,0,canvas.width,canvas.height);
-                    // const newUrl = canvas.toDataURL();   
-                    // const newImage = new Image();
-                    // newImage.src = newUrl;
-                    canvas.toBlob(function(blob) {
-                        var resizedFile = new File([blob], tempFile.name, {type: blob.type, lastModified: Date.now()});
-                        resizedFile.preview = tempFile.preview;
-                        if (resizedFile.size >= 1*1024*1024) {
-                            window.alert('您上傳的圖片已超過上限 1 MB！size : ' + resizedFile.size);
-                        }
-                        handleImageChange(resizedFile);
-                    });
-                };
+                // tempImage.onload = () => {
+                //     const canvas = document.createElement('canvas'); 
+                //     const context = canvas.getContext('2d'); 
+                //     canvas.width = tempImage.width / (tempFile.size / (1*1024*1024.0)); 
+                //     canvas.height = tempImage.height / (tempFile.size / (1*1024*1024.0)); 
+                //     console.log("tempFile size : " + tempFile.size);
+                //     console.log(tempImage.width + "," + tempImage.height);
+                //     console.log(canvas.width + "," + canvas.height);
+                //     context.drawImage(tempImage,0,0,canvas.width,canvas.height);
+                //     // const newUrl = canvas.toDataURL();   
+                //     // const newImage = new Image();
+                //     // newImage.src = newUrl;
+                //     canvas.toBlob(function(blob) {
+                //         var resizedFile = new File([blob], tempFile.name, {type: blob.type, lastModified: Date.now()});
+                //         resizedFile.preview = tempFile.preview;
+                //         if (resizedFile.size >= 1*1024*1024) {
+                //             // window.alert('您上傳的圖片已超過上限 1 MB！size : ' + resizedFile.size);
+                //             handleFileResize(resizedFile);
+                //         }
+                //         handleImageChange(resizedFile);
+                //     },'image/jpeg');
+                // };
                 //
             } else {
                 // this.handleImageUpload(tempFile);
@@ -128,6 +136,50 @@ class ImageUploadAndPreview extends Component {
         }
     }
 
+    handleFileResize(tempFile) {
+        const handleImageChange = this.props.handleImageChange;
+        const handleImagePreview = this.handleImagePreview;
+        const handleFileResize = this.handleFileResize;
+        
+        handleImageChange(tempFile);
+        const imageUrl = tempFile.preview;
+        let returnFile;
+        handleImagePreview(imageUrl);
+
+        const reader = new FileReader();
+        const tempImage = new Image();
+
+        reader.onload = function(e) {
+            tempImage.src = e.target.result;
+        };
+        reader.readAsDataURL(tempFile);
+
+        tempImage.onload = () => {
+            const canvas = document.createElement('canvas'); 
+            const context = canvas.getContext('2d'); 
+            canvas.width = tempImage.width / (tempFile.size / (1*1024*1024.0)); 
+            canvas.height = tempImage.height / (tempFile.size / (1*1024*1024.0)); 
+            console.log("tempFile size : " + tempFile.size);
+            console.log(tempImage.width + "," + tempImage.height);
+            console.log(canvas.width + "," + canvas.height);
+            context.drawImage(tempImage,0,0,canvas.width,canvas.height);
+            // const newUrl = canvas.toDataURL();   
+            // const newImage = new Image();
+            // newImage.src = newUrl;
+            canvas.toBlob(function(blob) {
+                var resizedFile = new File([blob], tempFile.name, {type: blob.type, lastModified: Date.now()});
+                resizedFile.preview = tempFile.preview;
+                if (resizedFile.size >= 1*1024*1024) {
+                    // window.alert('您上傳的圖片已超過上限 1 MB！size : ' + resizedFile.size);
+                    handleFileResize(resizedFile);
+                }
+                console.log('您上傳的圖片size : ' + resizedFile.size);
+                returnFile = resizedFile;
+                handleImageChange(resizedFile);
+
+            },'image/jpeg');
+        };
+    }
     /**
      * @TODO: 等到後端資料庫檔案管理完成後，圖片上傳機制改為選取圖片完後立即上傳資料庫
      */
