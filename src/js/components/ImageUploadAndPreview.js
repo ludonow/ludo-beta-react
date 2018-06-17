@@ -112,6 +112,9 @@ class ImageUploadAndPreview extends Component {
                     canvas.toBlob(function(blob) {
                         var resizedFile = new File([blob], tempFile.name, {type: blob.type, lastModified: Date.now()});
                         resizedFile.preview = tempFile.preview;
+                        if (resizedFile.size >= 1*1024*1024) {
+                            window.alert('您上傳的圖片已超過上限 1 MB！size : ' + resizedFile.size);
+                        }
                         handleImageChange(resizedFile);
                     });
                 };
