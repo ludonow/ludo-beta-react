@@ -131,19 +131,19 @@ const OtherLinkWrapper = styled.div`
 const SocialMediaWrapper = styled.div`
     align-items: center;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
 
     @media (min-width: 769px) {
-        border-right: 2px solid #B5B5B5;
+        /* border-right: 2px solid #B5B5B5;
         grid-column: 1 / 2;
-        grid-row: 1 / 3;
+        grid-row: 1 / 3; */
     }
 
     @media (max-width: 768px) {
-        border-bottom: 2px solid #B5B5B5;
+        /* border-bottom: 2px solid #B5B5B5;
         grid-column: 1 / 3;
-        grid-row: 1 / 2;
+        grid-row: 1 / 2; */
     }
 `;
 
@@ -152,9 +152,9 @@ const StyledImg = styled.img`
 `;
 
 const Wrapper = styled.div`
-    display: grid;
+    /* display: grid;
     grid-template-columns: 0.5fr 0.5fr;
-    grid-template-rows: 0.3fr 0.7fr;
+    grid-template-rows: 0.3fr 0.7fr; */
 
     @media (max-width: 768px) {
         padding: 0 30px;
@@ -208,11 +208,13 @@ class Login extends Component {
         const bodyStyle = (width <= 768) ? mobileBodyStyle : desktopBodyStyle;
         const buttonWidth = (width <= 768) ? '85px' : '95px';
         const titleStyle = (width <= 768) ? mobileTitleStyle : desktopTitleStyle;
+        const { lang } = this.props.params;
 
         this.setState({
             bodyStyle,
             buttonWidth,
             titleStyle,
+            lang,
         });
     }
 
@@ -267,6 +269,7 @@ class Login extends Component {
             isButtonDisabled,
             open,
             titleStyle,
+            lang,
         } = this.state;
 
         return (
@@ -275,7 +278,7 @@ class Login extends Component {
                 onRequestClose={this.handleDialogClose}
                 open={open}
                 style={dialogStyle}
-                title="成為會員，與玩家們互動吧！"
+                title={lang ? "Login" : "成為會員，與玩家們互動吧！"}
                 titleStyle={titleStyle}
             >
                 <Wrapper>
@@ -292,79 +295,12 @@ class Login extends Component {
                                 width="180px"
                             >
                                 <StyledAnchor href="https://api.ludonow.com/auth/botFacebook">
-                                    facebook登入
+                                    {lang ? "facebook login": "facebook 登入"}
                                     <StyledImg src={rightArrowIcon} />
                                 </StyledAnchor>
                             </StyledButton>
                         </FacebookLoginButtonWrapper>
-                        <Or>
-                            或
-                        </Or>
                     </SocialMediaWrapper>
-                    <LoginForm
-                        onInvalid={this.disableButton}
-                        onValid={this.enableButton}
-                        onValidSubmit={this.handleLoginSubmit}
-                    >
-                        <FormsyHOCInput
-                            name="email"
-                            placeholder="信箱"
-                            required
-                            type="text"
-                            validationErrors={{
-                                isEmail: validators.email.message,
-                            }}
-                            validations={{
-                                isEmail: true,
-                            }}
-                        />
-                        <FormsyHOCInput
-                            name="password"
-                            placeholder="密碼"
-                            required
-                            type="password"
-                            validationErrors={{
-                                isPassword: validators.password.message,
-                            }}
-                            validations={{
-                                isPassword: true,
-                            }}
-                        />
-                        <ButtonList>
-                            <Button
-                                backgroundColor="#FF5C5C"
-                                disabled={isButtonDisabled}
-                                fontSize="12px"
-                                label="登入"
-                                margin="0"
-                                padding="8px"
-                                type="submit"
-                                width={buttonWidth}
-                            />
-                            <StyledLink to={`${baseUrl}/signup`}>
-                                <Button
-                                    backgroundColor="#005074"
-                                    fontSize="12px"
-                                    label="註冊"
-                                    margin="0"
-                                    padding="8px"
-                                    width={buttonWidth}
-                                />
-                            </StyledLink>
-                        </ButtonList>
-                        <ErrorMessage>
-                            {errorMessageFromServer}
-                        </ErrorMessage>
-                        <OtherLinkWrapper>
-                            <StyledAnchor
-                                color="#B4B0B0"
-                                fontFamily="Exo, Microsoft JhengHei"
-                                href="https://api.ludonow.com/users/password/new"
-                            >
-                                忘記密碼？
-                            </StyledAnchor>
-                        </OtherLinkWrapper>
-                    </LoginForm>
                 </Wrapper>
             </StyledDialog>
         );

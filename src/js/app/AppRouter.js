@@ -237,6 +237,10 @@ const AppRouter = () => (
                 />
                 <Route
                     component={LoginForMessenger}
+                    path="loginForMessenger/:lang"
+                />
+                <Route
+                    component={LoginForMessenger}
                     path="loginForMessenger"
                 />
                 <Route
