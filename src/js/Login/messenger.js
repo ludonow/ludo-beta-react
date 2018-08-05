@@ -294,7 +294,16 @@ class Login extends Component {
                                 padding="8px 5px 8px 30px"
                                 width="180px"
                             >
-                                <StyledAnchor href="https://api.ludonow.com/auth/botFacebook">
+                                
+                                <StyledAnchor 
+                                    href=
+                                    { 
+                                        lang == "fc" ? 
+                                        "https://api.ludonow.com/auth/fc/botFacebook" 
+                                        : 
+                                        "https://api.ludonow.com/auth/botFacebook"
+                                    }
+                                    >
                                     {lang ? "facebook login": "facebook 登入"}
                                     <StyledImg src={rightArrowIcon} />
                                 </StyledAnchor>

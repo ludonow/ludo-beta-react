@@ -37,8 +37,8 @@ const titleStyle = {
 };
 
 class Bind extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             isBindButtonClicked: false,
             open: true,
@@ -48,6 +48,14 @@ class Bind extends Component {
         this.handleDialogClose = this.handleDialogClose.bind(this);
     }
     
+    componentDidMount() {
+        const { bot } = this.props.params;
+
+        this.setState({
+            bot,
+        });
+    }
+
     handleButtonClick() {
         this.setState({
             isBindButtonClicked: true,
@@ -77,7 +85,8 @@ class Bind extends Component {
 
     render() {
         const {
-            open
+            open,
+            bot
         } = this.state;
 
         return (
@@ -100,7 +109,8 @@ class Bind extends Component {
                     padding="8px"
                     width="130px"
                 >
-                    <StyledAnchor href="https://m.me/ludonow?ref=link">
+                    
+                    <StyledAnchor href={ bot == "fc" ? "https://m.me/217900415560138/fc?ref=link" : "https://m.me/ludonow?ref=link" }>
                         確認連結帳號
                     </StyledAnchor>
                 </StyledButton>

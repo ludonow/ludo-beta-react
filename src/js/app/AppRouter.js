@@ -180,7 +180,7 @@ const AppRouter = () => (
                 component={App}
                 path={`${baseUrl}/`}
             >
-                <IndexRedirect to="cardList" />
+                <IndexRedirect to="MyCardList" />
                 <Redirect
                     from="ludo/:ludo_id"
                     to="ludo/:ludo_id/card-content"
@@ -192,6 +192,10 @@ const AppRouter = () => (
                 <Route
                     component={Bind}
                     path="bind"
+                />
+                <Route
+                    component={Bind}
+                    path="bind/:bot"
                 />
                 <Route
                     component={Playground}
