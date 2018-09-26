@@ -180,7 +180,7 @@ const AppRouter = () => (
                 component={App}
                 path={`${baseUrl}/`}
             >
-                <IndexRedirect to="MyCardList" />
+                <IndexRedirect to="cardList" />
                 <Redirect
                     from="ludo/:ludo_id"
                     to="ludo/:ludo_id/card-content"
