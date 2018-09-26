@@ -113,14 +113,14 @@ export const StyledLink = styled(Link)`
 
 export const Tab = styled.div`
     border-bottom: ${props => props.selected ? '1.5px solid #727272' : 'none'};
-    color: ${props => props.selected ? '#727272' : 'white'};
+    color: ${props => props.selected ? '#727272' : '#727272'};
     cursor: pointer;
     font-size: 15px;
     margin: 0 55px;
     padding: 5px 12.5px;
 
     &:hover {
-        transition: all 0.2s ease-out;
+        /* transition: all 0.2s ease-out; */
         border-bottom: 1.5px solid #727272;
         color: #727272;
     }

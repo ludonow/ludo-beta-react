@@ -198,7 +198,7 @@ const AppRouter = () => (
                     path="bind/:bot"
                 />
                 <Route
-                    component={Playground}
+                    component={Search}
                     onEnter={TutorialRedirect}
                     path="cardList"
                 />
@@ -278,7 +278,7 @@ const AppRouter = () => (
                     path="login-recommend"
                 />
                 <Route
-                    component={Playground}
+                    component={Search}
                     path="playground"
                 />
                 <Route

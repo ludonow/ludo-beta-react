@@ -46,7 +46,7 @@ const StyledMasonry = styled(Masonry)`
 `;
 
 const StyledLink = styled(Link)`
-    color: rgba(255,255,255,0.4);
+    color: grey;
     font-weight: bold;
     text-decoration: none;
 `;
@@ -64,8 +64,9 @@ const StyledTab = styled.div`
 `;
 
 const StyledSelectedTab = StyledTab.extend`
-    border-bottom: 1.5px solid white;
-    color: white;
+    border-bottom: 1.5px solid grey;
+    color: grey;
+    font-weight:bold;
 `;
 
 const StyledTabList = styled.div`

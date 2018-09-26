@@ -140,11 +140,16 @@ class Search extends Component {
     }
 
     getStateAfterSearchConditionChange(newSearch) {
+        let queryKeyword = String(newSearch.split(/stage=(\d+)&(\S+)=(\S+)/g)[3])
+        if (!queryKeyword || queryKeyword == "undefined") {
+            queryKeyword = ""
+            console.log("query undefined");
+        } 
         return {
             currentSearchStage: String(newSearch.split(/stage=(\d+)&/g)[1]),
             isAtTemplateListPage: newSearch.includes('stage=0'),
             search: newSearch,
-            queryKeyword: String(newSearch.split(/stage=(\d+)&(\S+)=(\S+)/g)[3]),
+            queryKeyword: queryKeyword,
         };
     }
 
@@ -155,7 +160,7 @@ class Search extends Component {
             const query = search.split('?')[1];
             apiUrl = `/apis/ludo?${query}`;
         } else {
-            apiUrl = `/apis/ludo?`;
+            apiUrl = `/apis/ludo?stage=1&title=`;
         }
         axios.get(apiUrl)
         .then((response) => {
@@ -179,7 +184,7 @@ class Search extends Component {
     }
 
     render() {
-        const { searchFilter } = this.props;
+        const searchFilter = this.props.searchFilter ? this.props.searchFilter : "title";
         const {
             currentSearchStage,
             isAtTemplateListPage,
