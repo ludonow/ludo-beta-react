@@ -9,10 +9,12 @@ class LoginRedirect extends Component {
 
     componentDidMount() {
         const loginRedirectUrl = localStorage.getItem('loginRedirectUrl') || '%2F';
+        console.log("loginRedirectUrl:" + loginRedirectUrl)
         if (loginRedirectUrl == "www") {
             window.location.href = "http://www.ludonow.com"
+        } else {
+            browserHistory.replace(loginRedirectUrl);
         }
-        browserHistory.replace(loginRedirectUrl);
     }
 
     render() {
